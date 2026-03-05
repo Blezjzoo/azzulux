@@ -477,7 +477,9 @@ function setTxt(id,v){var e=$id(id);if(e)e.textContent=v;}
 function setHtml(id,v){var e=$id(id);if(e)e.innerHTML=v;}
 
 /* ── state ── */
-var lang='pl',T=LANGS.pl;
+var urlLang=new URLSearchParams(window.location.search).get('lang');
+var lang=(urlLang&&LANGS[urlLang])?urlLang:'pl';
+var T=LANGS[lang];
 var adults=0,kids=0,selOpt=null,cy,cm,cache=null,selStart=null,selEnd=null;
 
 var PRICES={1:{4:70,5:80,6:90,7:100,8:120,9:90,10:70},2:{4:90,5:120,6:140,7:160,8:175,9:120,10:90},3:{4:80,5:90,6:100,7:110,8:130,9:100,10:80}};
@@ -793,6 +795,7 @@ function openMessenger(){
 }
 
 /* ── init ── */
+document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.textContent.toLowerCase()===lang);});
 applyT();
 </script>
 </body>

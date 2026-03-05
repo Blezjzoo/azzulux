@@ -326,7 +326,7 @@ var LANGS={
     bed1:'+ 1 dostawka',bedN:'+ {n} dostawki',orLbl:'— lub —',
     months:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
     wdays:['Pon','Wt','Śr','Czw','Pt','Sob','Nd'],
-    adDesc1:' dorosła osoba',adDescN:' dorosłych',
+    adDesc1:' osoba',adDesc2:' osoby',adDescN:' osób',
     kdPre:'Maks. ',kdBed1:' dodatkowe łóżko w apartamencie',kdBedN:' dodatkowe łóżka w apartamencie',kdFor:'',
     n1:' noc',n2:' noce',n5:' nocy',
     mHi:'Dzień dobry,',mInt:'jestem zainteresowany/a ',mIn:' w terminie ',
@@ -368,7 +368,7 @@ var LANGS={
     bed1:'+ 1 Zustellbett',bedN:'+ {n} Zustellbetten',orLbl:'— oder —',
     months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
     wdays:['Mo','Di','Mi','Do','Fr','Sa','So'],
-    adDesc1:' Erwachsener',adDescN:' Erwachsene',
+    adDesc1:' Person',adDesc2:' Personen',adDescN:' Personen',
     kdPre:'Max. ',kdBed1:' Zustellbett in der Unterkunft',kdBedN:' Zustellbetten in der Unterkunft',kdFor:'',
     n1:' Nacht',n2:' Nächte',n5:' Nächte',
     mHi:'Guten Tag,',mInt:'ich interessiere mich für ',mIn:' im Zeitraum ',
@@ -410,7 +410,7 @@ var LANGS={
     bed1:'+ 1 lit suppl.',bedN:'+ {n} lits suppl.',orLbl:'— ou —',
     months:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
     wdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
-    adDesc1:' adulte',adDescN:' adultes',
+    adDesc1:' personne',adDesc2:' personnes',adDescN:' personnes',
     kdPre:'Max. ',kdBed1:' lit supplémentaire dans l\'appartement',kdBedN:' lits supplémentaires dans l\'appartement',kdFor:'',
     n1:' nuit',n2:' nuits',n5:' nuits',
     mHi:'Bonjour,',mInt:"je suis intéressé(e) par ",mIn:' du ',
@@ -452,7 +452,7 @@ var LANGS={
     bed1:'+ 1 extra bed',bedN:'+ {n} extra beds',orLbl:'— or —',
     months:['January','February','March','April','May','June','July','August','September','October','November','December'],
     wdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-    adDesc1:' adult',adDescN:' adults',
+    adDesc1:' person',adDesc2:' people',adDescN:' people',
     kdPre:'Max. ',kdBed1:' extra bed in the apartment',kdBedN:' extra beds in the apartment',kdFor:'',
     n1:' night',n2:' nights',n5:' nights',
     mHi:'Hello,',mInt:"I'm interested in ",mIn:' from ',
@@ -529,8 +529,9 @@ function buildWdays(){
 function refreshDescs(){
   var mk=maxK(adults);
   if(adults>0){
-    setTxt('ad-desc',adults+(adults===1?T.adDesc1:T.adDescN));
-    setTxt('kd-desc',T.kdPre+mk+(mk===1?T.kdBed1:T.kdBedN)+T.kdFor+adults+(adults===1?T.adDesc1:T.adDescN));
+    var adSuffix=adults===1?T.adDesc1:(T.adDesc2&&adults>=2&&adults<=4?T.adDesc2:T.adDescN);
+    setTxt('ad-desc',adults+adSuffix);
+    setTxt('kd-desc',T.kdPre+mk+(mk===1?T.kdBed1:T.kdBedN));
   }else{setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
 }
 

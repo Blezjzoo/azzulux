@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Azzurro Luxury Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sand:#f7f3ed;--sand2:#ede7dc;--ocean:#1a4a5c;--ocean2:#2a6a80;
+  --wave:#4a9ab5;--foam:#d8eef5;--gold:#c9a84c;
+  --text:#1a2a30;--muted:#6a8a98;--white:#fff;
+  --paw:#0097a7;--paw-l:#e0f7fa;
+  --tom:#c0392b;--tom-l:#fdecea;
+  --baz:#2e7d32;--baz-l:#e8f5e9;
+  --busy:#c0392b;--free-bg:#f0faf0;
+  --sel:#1a4a5c;--range:#d8eef5;
+}
+html{-webkit-tap-highlight-color:transparent}
+body{font-family:"DM Sans",sans-serif;background:var(--sand);color:var(--text);min-height:100vh;overflow-x:hidden}
+.lang-bar{background:var(--ocean2);padding:8px 20px;display:flex;justify-content:flex-end;align-items:center;gap:6px}
+.lang-btn{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);padding:4px 10px;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;letter-spacing:.03em}
+.lang-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.lang-btn.active{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.7);color:#fff;font-weight:600}
+header{background:var(--ocean);padding:44px 20px 60px;text-align:center;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 70% 0%,rgba(42,106,128,.6),transparent 60%)}
+.wave-svg{position:absolute;bottom:-1px;left:0;right:0;height:48px;fill:var(--sand)}
+.logo-tag{display:block;font-size:9px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;position:relative}
+header h1{font-family:"Cormorant Garamond",serif;font-size:2.6rem;font-weight:300;color:#fff;line-height:1.1;position:relative}
+header h1 em{font-style:italic;color:#b8dce8}
+header .tagline{font-size:13px;color:rgba(255,255,255,.6);margin-top:8px;font-weight:300;position:relative}
+main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
+.steps{display:flex;align-items:center;margin-bottom:36px}
+.step{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:500;color:var(--muted);transition:color .3s}
+.step.active{color:var(--ocean)}.step.done{color:var(--wave)}
+.snum{width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .3s;flex-shrink:0}
+.step.active .snum{background:var(--ocean);border-color:var(--ocean);color:#fff}
+.step.done .snum{background:var(--wave);border-color:var(--wave);color:#fff}
+.sline{flex:1;height:1px;background:var(--sand2);margin:0 6px}
+.slabel{font-size:9px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--wave);margin-bottom:6px}
+.stitle{font-family:"Cormorant Garamond",serif;font-size:1.9rem;font-weight:300;color:var(--ocean);margin-bottom:4px}
+.ssub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ss{animation:fadeUp .38s ease both}
+.hidden{display:none!important}
+.counters{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.crow{background:var(--white);border:1.5px solid var(--sand2);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.crow.disabled{opacity:.35;pointer-events:none}
+.crow-label{font-size:14px;font-weight:500;color:var(--ocean)}
+.crow-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+.crow-ctrl{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.cbtn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--sand2);background:var(--white);color:var(--ocean);font-size:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.cbtn:active:not(:disabled){background:var(--foam);border-color:var(--wave)}
+.cbtn:disabled{opacity:.25;cursor:not-allowed}
+.cval{min-width:44px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:2rem;font-weight:600;color:var(--ocean)}
+.btn-main{width:100%;background:var(--ocean);color:#fff;border:none;padding:15px;border-radius:14px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .22s;touch-action:manipulation}
+.btn-main:active:not(:disabled){background:var(--ocean2)}
+.btn-main:disabled{opacity:.3;cursor:not-allowed}
+.apt-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.aopt{background:var(--white);border:1.5px solid var(--sand2);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .22s;touch-action:manipulation}
+.aopt:active{transform:scale(.99)}
+.aopt.sel{border-color:var(--ocean);box-shadow:0 4px 20px rgba(26,74,92,.15)}
+.aopt.unavail{opacity:.2;pointer-events:none}
+.abar{height:4px}
+.aopt[data-t="1"] .abar{background:var(--paw)}
+.aopt[data-t="2"] .abar{background:var(--tom)}
+.aopt[data-t="3"] .abar{background:var(--baz)}
+.aopt[data-t="13"] .abar{background:linear-gradient(90deg,var(--paw) 50%,var(--baz) 50%)}
+.aopt[data-t="23"] .abar{background:linear-gradient(90deg,var(--tom) 50%,var(--baz) 50%)}
+.aopt[data-t="L"]  .abar{background:linear-gradient(90deg,var(--paw) 33%,var(--tom) 33% 66%,var(--baz) 66%)}
+.aopt[data-t="1"].sel{border-color:var(--paw)}
+.aopt[data-t="2"].sel{border-color:var(--tom)}
+.aopt[data-t="3"].sel{border-color:var(--baz)}
+.aopt[data-t="13"].sel,.aopt[data-t="23"].sel,.aopt[data-t="L"].sel{border-color:var(--ocean)}
+.ainner{padding:14px 16px}
+.arow{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.adots{display:flex;gap:4px}
+.adot{width:9px;height:9px;border-radius:50%}
+.adot.p{background:var(--paw)}.adot.t{background:var(--tom)}.adot.b{background:var(--baz)}
+.aname{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:600;color:var(--ocean)}
+.atags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.atag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;background:var(--sand);color:var(--muted)}
+.atag.kids{background:var(--baz-l);color:var(--baz)}
+.aor{text-align:center;font-size:11px;color:var(--muted);padding:2px 0;font-style:italic}
+.cal{background:var(--white);border-radius:18px;overflow:hidden;border:1.5px solid var(--sand2);box-shadow:0 2px 20px rgba(26,74,92,.06)}
+.cal-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.cal-hdr.c1{background:var(--paw)}.cal-hdr.c2{background:var(--tom)}.cal-hdr.c3{background:var(--baz)}.cal-hdr.cM{background:var(--ocean)}
+.cal-hdr-info h3{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:300;color:#fff;line-height:1.2}
+.cal-hdr-info p{font-size:10px;color:rgba(255,255,255,.7);margin-top:2px}
+.cal-nav{display:flex;align-items:center;gap:4px}
+.cnav-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;width:30px;height:30px;border-radius:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.cnav-btn:active{background:rgba(255,255,255,.32)}
+.cal-month{font-size:12px;font-weight:500;color:#fff;min-width:96px;text-align:center}
+.min-stay{display:none;padding:8px 14px;background:#fff8e1;border-bottom:1px solid #ffe082;font-size:11px;color:#7a6020;text-align:center}
+.cal-grid{padding:10px 8px 8px}
+.wdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:3px}
+.wday{text-align:center;font-size:9px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:3px 0}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.day{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:11px;position:relative;cursor:pointer;user-select:none;padding:3px 1px;min-height:44px;transition:background .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.day-num{font-size:12px;font-weight:500;line-height:1}
+.day-price{font-size:8px;color:var(--muted);line-height:1.2;margin-top:1px;font-weight:400}
+.day.past{opacity:.35;cursor:default;pointer-events:none}
+.day.today .day-num{font-weight:700;color:var(--ocean)}
+.day.today::after{content:"";position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(--gold)}
+.day.busy{background:var(--busy);border-radius:8px;cursor:not-allowed}
+.day.busy .day-num{color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.5)}
+.day.busy .day-price{color:rgba(255,255,255,.6)}
+.day.free:hover{background:var(--foam)}
+.day.sel-start,.day.sel-end{background:var(--sel)!important;border-radius:8px}
+.day.sel-start .day-num,.day.sel-end .day-num{color:#fff!important}
+.day.sel-start .day-price,.day.sel-end .day-price{color:rgba(255,255,255,.8)!important}
+.day.in-range{background:var(--range);border-radius:0}
+.day.in-range .day-num{color:var(--ocean)}
+.day.sel-start{border-radius:8px 0 0 8px}
+.day.sel-end{border-radius:0 8px 8px 0}
+.day.sel-start.sel-end{border-radius:8px}
+.cal-hint{padding:8px 12px;font-size:11px;color:var(--muted);text-align:center;border-top:1px solid var(--sand2)}
+.cal-legend{display:flex;gap:10px;padding:8px 12px;border-top:1px solid var(--sand2);flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.ld{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.cal-status{padding:40px 16px;text-align:center;font-size:13px;color:var(--muted)}
+.spinner{width:24px;height:24px;border:2px solid var(--sand2);border-top-color:var(--wave);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{color:var(--tom);font-size:12px;line-height:1.5}
+.summary{background:var(--white);border:1.5px solid var(--sand2);border-radius:16px;overflow:hidden;margin-top:14px}
+.sum-hdr{background:var(--ocean);padding:12px 16px}
+.sum-hdr h4{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:300;color:#fff}
+.sum-body{padding:14px 16px}
+.sum-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;padding:5px 0;border-bottom:1px solid var(--sand2)}
+.sum-row:last-child{border-bottom:none}
+.sum-row.total{font-weight:600;font-size:15px;color:var(--ocean)}
+.sum-label{color:var(--muted)}
+.sum-val{font-weight:500;color:var(--text)}
+.sum-row.total .sum-val{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--ocean)}
+.sum-row.kaucja{border-top:2px dashed var(--sand2);margin-top:4px;padding-top:10px;border-bottom:none}
+.sum-row.kaucja .sum-label{color:var(--ocean);font-weight:500}
+.sum-row.kaucja .sum-val{color:var(--ocean);font-weight:600;font-family:"Cormorant Garamond",serif;font-size:1.2rem}
+.kaucja-note{font-size:11px;color:var(--muted);line-height:1.5;padding:6px 0 2px}
+.inclusions{background:var(--baz-l);border:1.5px solid #a5d6a7;border-radius:14px;padding:12px 16px;margin-top:12px}
+.incl-title{font-size:11px;font-weight:600;color:var(--baz);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.incl-items{display:flex;flex-direction:column;gap:5px}
+.incl-item{font-size:12px;color:#2e5c30;display:flex;align-items:center;gap:6px}
+.incl-item::before{content:"\2713";font-weight:700;color:var(--baz);flex-shrink:0}
+.cin-badge{background:var(--white);border:1.5px solid #c5d8e0;border-radius:14px;padding:12px 16px;margin-top:12px;display:flex;align-items:flex-start;gap:10px}
+.cin-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.cin-title{font-size:11px;font-weight:600;color:var(--ocean);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.cin-text{font-size:11px;color:var(--muted);line-height:1.6}
+.cin-code{font-size:10px;font-family:monospace;color:var(--ocean2);font-weight:600;background:var(--foam);display:inline-block;padding:2px 7px;border-radius:6px;margin-top:4px;letter-spacing:.04em}
+.min-warn{background:#fff8e1;border:1.5px solid #ffe082;border-radius:12px;padding:10px 14px;margin-top:10px;font-size:12px;color:#7a6020;display:none}
+.contact{margin-top:16px;padding:14px 16px;background:var(--white);border:1.5px solid var(--sand2);border-radius:14px}
+.btn-messenger{width:100%;background:#0084FF;color:#fff;border:none;padding:15px 20px;border-radius:14px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .22s;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
+.btn-messenger:active{background:#0070d6}
+.contact-note{font-size:11px;color:var(--muted);text-align:center;line-height:1.5}
+.btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--sand2);padding:11px 20px;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:13px;cursor:pointer;width:100%;margin-top:12px;touch-action:manipulation}
+.btn-back:active{background:var(--sand)}
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('pl')">PL</button>
+  <button class="lang-btn" onclick="setLang('de')">DE</button>
+  <button class="lang-btn" onclick="setLang('fr')">FR</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<header>
+  <span class="logo-tag">Azzurro Luxury Boutique</span>
+  <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
+  <p class="tagline" id="hdr-tagline">Wybierz grupę i termin</p>
+  <svg class="wave-svg" viewBox="0 0 1440 48" preserveAspectRatio="none">
+    <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z"/>
+  </svg>
+</header>
+
+<main>
+  <div class="steps">
+    <div class="step active" id="i1"><div class="snum" id="sn1">1</div><span id="t-step1">Grupa</span></div>
+    <div class="sline"></div>
+    <div class="step" id="i2"><div class="snum" id="sn2">2</div><span id="t-step2">Opcja</span></div>
+    <div class="sline"></div>
+    <div class="step" id="i3"><div class="snum" id="sn3">3</div><span id="t-step3">Termin</span></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="s1" class="ss">
+    <p class="slabel" id="t-s1label">Krok 1 z 3</p>
+    <h2 class="stitle" id="t-s1title">Twoja grupa</h2>
+    <p class="ssub" id="t-s1sub">Podaj liczbę dorosłych i dzieci, które będą spać na dostawkach.</p>
+    <div class="counters">
+      <div class="crow">
+        <div>
+          <div class="crow-label" id="t-adults-lbl">Dorośli</div>
+          <div class="crow-desc" id="ad-desc">1–8 osób</div>
+        </div>
+        <div class="crow-ctrl">
+          <button class="cbtn" id="am" onclick="chA(-1)" disabled>&#8722;</button>
+          <div class="cval" id="av">0</div>
+          <button class="cbtn" id="ap" onclick="chA(1)">+</button>
+        </div>
+      </div>
+      <div class="crow disabled" id="krow">
+        <div>
+          <div class="crow-label" id="t-kids-lbl">Dzieci / nastolatkowie</div>
+          <div class="crow-desc" id="kd-desc">Dostawki — najpierw wybierz liczbę dorosłych</div>
+        </div>
+        <div class="crow-ctrl">
+          <button class="cbtn" id="km" onclick="chK(-1)" disabled>&#8722;</button>
+          <div class="cval" id="kv">0</div>
+          <button class="cbtn" id="kp" onclick="chK(1)" disabled>+</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn-main" id="btn1" onclick="goStep2()" disabled><span id="t-btn1">Dalej</span> &rarr;</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="s2" class="ss hidden">
+    <p class="slabel" id="t-s2label">Krok 2 z 3</p>
+    <h2 class="stitle" id="t-s2title">Wybierz opcję</h2>
+    <p class="ssub" id="s2sub"></p>
+    <div class="apt-list" id="apt-list"></div>
+    <button class="btn-back" onclick="goBack(1)">&#8592; <span id="t-back1">Zmień grupę</span></button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="s3" class="ss hidden">
+    <p class="slabel" id="t-s3label">Krok 3 z 3</p>
+    <h2 class="stitle" id="t-s3title">Wybierz termin</h2>
+    <p class="ssub" id="t-s3sub">Kliknij dzień przyjazdu, a następnie dzień wyjazdu.</p>
+    <div class="cal" id="cal">
+      <div class="cal-hdr cM" id="cal-hdr">
+        <div class="cal-hdr-info">
+          <h3 id="cal-name">-</h3>
+          <p id="cal-desc">-</p>
+        </div>
+        <div class="cal-nav">
+          <button class="cnav-btn" onclick="chMonth(-1)">&#8249;</button>
+          <span class="cal-month" id="cal-ml">-</span>
+          <button class="cnav-btn" onclick="chMonth(1)">&#8250;</button>
+        </div>
+      </div>
+      <div id="min-stay-note" class="min-stay"></div>
+      <div id="cstatus" class="cal-status">
+        <div class="spinner"></div>
+        <span id="t-loading">Ładowanie...</span>
+      </div>
+      <div id="cgrid" class="cal-grid" style="display:none">
+        <div class="wdays" id="wdays-row"></div>
+        <div class="days" id="cdays"></div>
+      </div>
+      <div id="cal-hint" class="cal-hint"></div>
+      <div class="cal-legend" id="cal-legend"></div>
+    </div>
+    <div id="min-warn" class="min-warn"></div>
+    <div id="summary" class="summary hidden">
+      <div class="sum-hdr"><h4 id="t-sum-title">Podsumowanie</h4></div>
+      <div class="sum-body" id="sum-body"></div>
+    </div>
+    <div class="inclusions">
+      <div class="incl-title" id="t-incl-title">W cenie</div>
+      <div class="incl-items">
+        <div class="incl-item" id="t-incl1">Ręczniki i pościel</div>
+        <div class="incl-item" id="t-incl2">Sprzątanie</div>
+        <div class="incl-item" id="t-incl3">Brak opłaty turystycznej</div>
+      </div>
+    </div>
+    <div class="cin-badge">
+      <div class="cin-icon">&#127861;</div>
+      <div>
+        <div class="cin-title" id="t-cin-title">Zarejestrowany wynajem we Włoszech</div>
+        <div class="cin-text" id="t-cin-text">Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.</div>
+        <span class="cin-code">CIN IT090058C2000T3650</span>
+      </div>
+    </div>
+    <div class="contact">
+      <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/></svg>
+        <span id="t-btn-msg">Napisz na Messengerze</span>
+      </button>
+      <p class="contact-note" id="t-contact-note">Ustalimy wszystkie szczegóły.</p>
+    </div>
+    <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień opcję</span></button>
+  </div>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+/* ============================================================
+   TRANSLATIONS
+============================================================ */
+var LANGS={
+  pl:{
+    h1:'Sprawdź<br><em>dostępność</em>',
+    tagline:'Wybierz grupę i termin',
+    step1:'Grupa',step2:'Opcja',step3:'Termin',
+    s1label:'Krok 1 z 3',s1title:'Twoja grupa',
+    s1sub:'Podaj liczbę dorosłych i dzieci, które będą spać na dostawkach.',
+    s2label:'Krok 2 z 3',s2title:'Wybierz opcję',
+    s3label:'Krok 3 z 3',s3title:'Wybierz termin',
+    s3sub:'Kliknij dzień przyjazdu, a następnie dzień wyjazdu.',
+    adultsLbl:'Dorośli',kidsLbl:'Dzieci / nastolatkowie',
+    adDescDef:'1–8 osób',kdDescDef:'Dostawki — najpierw wybierz liczbę dorosłych',
+    btn1:'Dalej',back1:'Zmień grupę',back2:'Zmień opcję',
+    loading:'Ładowanie...',
+    legFree:'Wolny',legBusy:'Niedostępny',legSel:'Wybrany termin',
+    minStay:'⚠ Lipiec i sierpień: minimalny pobyt to 5 nocy',
+    minWarn:'⚠ W lipcu i sierpniu obowiązuje minimalny pobyt 5 nocy. Wybierz co najmniej 5 nocy.',
+    hintArrival:'Kliknij dzień przyjazdu',hintDepart:'Teraz kliknij dzień wyjazdu',
+    hintBusy:'W wybranym zakresie jest zajęty dzień — zacznij od nowa i wybierz inny termin przyjazdu.',
+    sumTitle:'Podsumowanie',sumDate:'Termin',sumNights:'Noce',sumApt:'Apartament',
+    sumKids:'Dostawki',sumTotal:'Razem',sumDeposit:'+ Kaucja zwrotna',
+    depositNote:'Kaucja pobierana jest przy zameldowaniu jako zabezpieczenie. Zwracana w całości po wymeldowaniu — nie wchodzi w skład ceny najmu.',
+    inclTitle:'W cenie',incl1:'Ręczniki i pościel',incl2:'Sprzątanie',incl3:'Brak opłaty turystycznej',
+    cinTitle:'Zarejestrowany wynajem we Włoszech',
+    cinText:'Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.',
+    btnMsg:'Napisz na Messengerze',contactNote:'Ustalimy wszystkie szczegóły.',
+    optFor:'Opcje dla',adult1:' dorosłego',adults:' dorosłych',kid1:' dziecko',kids:' dzieci',
+    calA1:' dorosły',calAN:' dorosłych',calK1:' dziecko',calKN:' dzieci',
+    apt1:'Apartament nr 1',apt2:'Apartament nr 2',apt3:'Apartament nr 3',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartamenty dla 6 osób',aptL:'3 apartamenty dla 8 osób',
+    t1a:'2-osobowy',t1b:'bez balkonu',t3a:'2-osobowy',t3b:'z tarasem',
+    t2a:'4-osobowy',t2b:'z balkonem',t13a:'2+2 osoby',t13b:'Apt 3 z tarasem',
+    t23a:'Apt 2 z balkonem + Apt 3 z tarasem',tL:'Apt 1 + Apt 2 + Apt 3',
+    bed1:'+ 1 dostawka',bedN:'+ {n} dostawki',orLbl:'— lub —',
+    months:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+    wdays:['Pon','Wt','Śr','Czw','Pt','Sob','Nd'],
+    adDesc1:' dorosła osoba',adDescN:' dorosłych',
+    kdPre:'Maks. ',kdBed1:' dostawka',kdBedN:' dostawki',kdFor:' dla ',
+    n1:' noc',n2:' noce',n5:' nocy',
+    mHi:'Dzień dobry,',mInt:'jestem zainteresowany/a ',mIn:' w terminie ',
+    mFrom:' od dnia ',mG:' liczba osób: ',mAsk:'. Proszę o informacje dotyczące rezerwacji.',
+    errLoad:'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.'
+  },
+  de:{
+    h1:'Verfügbarkeit<br><em>prüfen</em>',
+    tagline:'Gruppe und Reisedaten auswählen',
+    step1:'Gruppe',step2:'Option',step3:'Datum',
+    s1label:'Schritt 1 von 3',s1title:'Ihre Reisegruppe',
+    s1sub:'Wie viele Erwachsene und Kinder (Zustellbetten) reisen mit?',
+    s2label:'Schritt 2 von 3',s2title:'Unterkunft wählen',
+    s3label:'Schritt 3 von 3',s3title:'Reisedaten wählen',
+    s3sub:'Wählen Sie zuerst Ihr Anreisedatum, dann das Abreisedatum.',
+    adultsLbl:'Erwachsene',kidsLbl:'Kinder / Jugendliche',
+    adDescDef:'1–8 Personen',kdDescDef:'Zustellbetten — bitte zuerst Erwachsene angeben',
+    btn1:'Weiter',back1:'Gruppe ändern',back2:'Option ändern',
+    loading:'Wird geladen...',
+    legFree:'Verfügbar',legBusy:'Nicht verfügbar',legSel:'Ausgewählter Zeitraum',
+    minStay:'⚠ Juli & August: Mindestaufenthalt 5 Nächte',
+    minWarn:'⚠ Im Juli und August gilt ein Mindestaufenthalt von 5 Nächten. Bitte mindestens 5 Nächte auswählen.',
+    hintArrival:'Bitte Anreisedatum auswählen',hintDepart:'Jetzt das Abreisedatum auswählen',
+    hintBusy:'Ein Tag im gewählten Zeitraum ist belegt — bitte ein neues Anreisedatum auswählen.',
+    sumTitle:'Zusammenfassung',sumDate:'Zeitraum',sumNights:'Nächte',sumApt:'Apartment',
+    sumKids:'Zustellbetten',sumTotal:'Gesamt',sumDeposit:'+ Rückerstattbare Kaution',
+    depositNote:'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Mietpreis enthalten.',
+    inclTitle:'Im Preis enthalten',incl1:'Handtücher und Bettwäsche',incl2:'Reinigung',incl3:'Keine Kurtaxe',
+    cinTitle:'Offizielle Ferienvermietung in Italien registriert',
+    cinText:'Unsere Unterkunft verfügt über die offizielle italienische Kennnummer (CIN), vergeben vom Ministerium für Tourismus. Jeder Gast wird gemäß den gesetzlichen Vorschriften bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
+    btnMsg:'Auf Messenger schreiben',contactNote:'Wir klären gemeinsam alle Details.',
+    optFor:'Optionen für',adult1:' Erwachsenen',adults:' Erwachsene',kid1:' Kind',kids:' Kinder',
+    calA1:' Erwachsener',calAN:' Erwachsene',calK1:' Kind',calKN:' Kinder',
+    apt1:'Apartment Nr. 1',apt2:'Apartment Nr. 2',apt3:'Apartment Nr. 3',
+    apt13:'Apt 1 + Apt 3',apt23:'2 Apartments für 6 Personen',aptL:'3 Apartments für 8 Personen',
+    t1a:'2 Personen',t1b:'ohne Balkon',t3a:'2 Personen',t3b:'mit Terrasse',
+    t2a:'4 Personen',t2b:'mit Balkon',t13a:'2+2 Personen',t13b:'Apt 3 mit Terrasse',
+    t23a:'Apt 2 mit Balkon + Apt 3 mit Terrasse',tL:'Apt 1 + Apt 2 + Apt 3',
+    bed1:'+ 1 Zustellbett',bedN:'+ {n} Zustellbetten',orLbl:'— oder —',
+    months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    wdays:['Mo','Di','Mi','Do','Fr','Sa','So'],
+    adDesc1:' Erwachsener',adDescN:' Erwachsene',
+    kdPre:'Max. ',kdBed1:' Zustellbett',kdBedN:' Zustellbetten',kdFor:' für ',
+    n1:' Nacht',n2:' Nächte',n5:' Nächte',
+    mHi:'Guten Tag,',mInt:'ich interessiere mich für ',mIn:' im Zeitraum ',
+    mFrom:' ab dem ',mG:', Anzahl der Personen: ',mAsk:'. Ich bitte um Informationen zur Buchung.',
+    errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden.'
+  },
+  fr:{
+    h1:'Vérifier<br><em>la disponibilité</em>',
+    tagline:'Choisissez votre groupe et vos dates',
+    step1:'Groupe',step2:'Option',step3:'Dates',
+    s1label:'Étape 1 sur 3',s1title:'Votre groupe',
+    s1sub:"Indiquez le nombre d'adultes et d'enfants qui auront besoin d'un lit supplémentaire.",
+    s2label:'Étape 2 sur 3',s2title:'Choisir un logement',
+    s3label:'Étape 3 sur 3',s3title:'Choisir vos dates',
+    s3sub:"Cliquez d'abord sur la date d'arrivée, puis sur la date de départ.",
+    adultsLbl:'Adultes',kidsLbl:'Enfants / adolescents',
+    adDescDef:'1–8 personnes',kdDescDef:"Lits supplémentaires — sélectionnez d'abord les adultes",
+    btn1:'Continuer',back1:'Modifier le groupe',back2:"Modifier l'option",
+    loading:'Chargement en cours...',
+    legFree:'Disponible',legBusy:'Indisponible',legSel:'Période sélectionnée',
+    minStay:'⚠ Juillet et août : séjour minimum de 5 nuits',
+    minWarn:'⚠ En juillet et août, le séjour minimum est de 5 nuits. Veuillez sélectionner au moins 5 nuits.',
+    hintArrival:"Cliquez sur la date d'arrivée",hintDepart:'Maintenant, cliquez sur la date de départ',
+    hintBusy:"Un jour dans la période choisie est déjà pris — sélectionnez une nouvelle date d'arrivée.",
+    sumTitle:'Récapitulatif',sumDate:'Période',sumNights:'Nuits',sumApt:'Appartement',
+    sumKids:'Lits supplémentaires',sumTotal:'Total',sumDeposit:'+ Caution remboursable',
+    depositNote:"La caution est perçue à l'arrivée en guise de garantie et intégralement remboursée au départ — elle ne fait pas partie du montant de la location.",
+    inclTitle:'Inclus dans le prix',incl1:'Serviettes et literie',incl2:'Ménage',incl3:'Taxe de séjour offerte',
+    cinTitle:'Location officiellement enregistrée en Italie',
+    cinText:"Notre établissement dispose du numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes, conformément à la réglementation en vigueur — réservez en toute sérénité.",
+    btnMsg:'Écrire sur Messenger',contactNote:'Nous réglerons ensemble tous les détails.',
+    optFor:'Options pour',adult1:' adulte',adults:' adultes',kid1:' enfant',kids:' enfants',
+    calA1:' adulte',calAN:' adultes',calK1:' enfant',calKN:' enfants',
+    apt1:'Appartement n° 1',apt2:'Appartement n° 2',apt3:'Appartement n° 3',
+    apt13:'App. 1 + App. 3',apt23:'2 appartements pour 6 personnes',aptL:'3 appartements pour 8 personnes',
+    t1a:'2 personnes',t1b:'sans balcon',t3a:'2 personnes',t3b:'avec terrasse',
+    t2a:'4 personnes',t2b:'avec balcon',t13a:'2+2 personnes',t13b:'App. 3 avec terrasse',
+    t23a:'App. 2 avec balcon + App. 3 avec terrasse',tL:'App. 1 + App. 2 + App. 3',
+    bed1:'+ 1 lit suppl.',bedN:'+ {n} lits suppl.',orLbl:'— ou —',
+    months:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    wdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+    adDesc1:' adulte',adDescN:' adultes',
+    kdPre:'Max. ',kdBed1:' lit suppl.',kdBedN:' lits suppl.',kdFor:' pour ',
+    n1:' nuit',n2:' nuits',n5:' nuits',
+    mHi:'Bonjour,',mInt:"je suis intéressé(e) par ",mIn:' du ',
+    mFrom:' à partir du ',mG:', nombre de personnes : ',mAsk:'. Je souhaite recevoir des informations sur la réservation.',
+    errLoad:'Impossible de charger le calendrier. Veuillez recharger la page.'
+  },
+  en:{
+    h1:'Check<br><em>availability</em>',
+    tagline:'Choose your group and travel dates',
+    step1:'Group',step2:'Option',step3:'Dates',
+    s1label:'Step 1 of 3',s1title:'Your group',
+    s1sub:"Tell us how many adults and children (extra beds) will be staying.",
+    s2label:'Step 2 of 3',s2title:'Choose accommodation',
+    s3label:'Step 3 of 3',s3title:'Choose your dates',
+    s3sub:'Click your arrival date first, then your departure date.',
+    adultsLbl:'Adults',kidsLbl:'Children / teenagers',
+    adDescDef:'1–8 people',kdDescDef:'Extra beds — please select adults first',
+    btn1:'Next',back1:'Change group',back2:'Change option',
+    loading:'Loading...',
+    legFree:'Available',legBusy:'Unavailable',legSel:'Selected dates',
+    minStay:'⚠ July & August: minimum stay is 5 nights',
+    minWarn:'⚠ A minimum stay of 5 nights applies in July and August. Please select at least 5 nights.',
+    hintArrival:'Click your arrival date',hintDepart:'Now click your departure date',
+    hintBusy:"A day within your selected range is already taken — please pick a new arrival date.",
+    sumTitle:'Booking summary',sumDate:'Dates',sumNights:'Nights',sumApt:'Apartment',
+    sumKids:'Extra beds',sumTotal:'Total',sumDeposit:'+ Refundable security deposit',
+    depositNote:'The deposit is collected at check-in as a security guarantee and fully refunded at check-out — it is not part of the rental price.',
+    inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'Cleaning',incl3:'No tourist tax',
+    cinTitle:'Officially registered rental in Italy',
+    cinText:'Our property holds the official Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is registered with the relevant authorities in accordance with Italian law — book with complete peace of mind.',
+    btnMsg:'Message us on Messenger',contactNote:"We'll sort out all the details together.",
+    optFor:'Options for',adult1:' adult',adults:' adults',kid1:' child',kids:' children',
+    calA1:' adult',calAN:' adults',calK1:' child',calKN:' children',
+    apt1:'Apartment No. 1',apt2:'Apartment No. 2',apt3:'Apartment No. 3',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartments for 6 people',aptL:'3 apartments for 8 people',
+    t1a:'2-person',t1b:'no balcony',t3a:'2-person',t3b:'with terrace',
+    t2a:'4-person',t2b:'with balcony',t13a:'2+2 people',t13b:'Apt 3 with terrace',
+    t23a:'Apt 2 with balcony + Apt 3 with terrace',tL:'Apt 1 + Apt 2 + Apt 3',
+    bed1:'+ 1 extra bed',bedN:'+ {n} extra beds',orLbl:'— or —',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    wdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    adDesc1:' adult',adDescN:' adults',
+    kdPre:'Max. ',kdBed1:' extra bed',kdBedN:' extra beds',kdFor:' for ',
+    n1:' night',n2:' nights',n5:' nights',
+    mHi:'Hello,',mInt:"I'm interested in ",mIn:' from ',
+    mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me reservation details?',
+    errLoad:'Could not load the calendar. Please refresh the page and try again.'
+  }
+};
+
+/* ── safe helpers ── */
+function $id(id){return document.getElementById(id);}
+function setTxt(id,v){var e=$id(id);if(e)e.textContent=v;}
+function setHtml(id,v){var e=$id(id);if(e)e.innerHTML=v;}
+
+/* ── state ── */
+var lang='pl',T=LANGS.pl;
+var adults=0,kids=0,selOpt=null,cy,cm,cache=null,selStart=null,selEnd=null;
+
+var PRICES={1:{4:70,5:80,6:90,7:100,8:120,9:90,10:70},2:{4:90,5:120,6:140,7:160,8:175,9:120,10:90},3:{4:80,5:90,6:100,7:110,8:130,9:100,10:80}};
+var KIDS_PRICE=5;
+var DEPOSIT={1:200,2:300,3:500};
+var MIN_STAY_NIGHTS=5;
+var ICAL_DIRECT="https://calendar.google.com/calendar/ical/azzurro.luxurybutique%40gmail.com/public/basic.ics";
+var ICAL_PROXIES=["https://corsproxy.io/?url="+encodeURIComponent(ICAL_DIRECT),"https://proxy.cors.sh/"+ICAL_DIRECT,"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(ICAL_DIRECT)];
+
+/* ── language ── */
+function setLang(l){
+  lang=l;T=LANGS[l];
+  document.documentElement.lang=l;
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.textContent.toLowerCase()===l);});
+  applyT();
+  if(adults>0)refreshDescs();
+  var s2=$id('s2'),s3=$id('s3');
+  if(s2&&!s2.classList.contains('hidden'))refreshS2();
+  if(s3&&!s3.classList.contains('hidden')){renderCal();updateHint();updateMinNote();updateSummary();}
+}
+
+function applyT(){
+  setHtml('hdr-h1',T.h1);
+  setTxt('hdr-tagline',T.tagline);
+  setTxt('t-step1',T.step1);setTxt('t-step2',T.step2);setTxt('t-step3',T.step3);
+  setTxt('t-s1label',T.s1label);setTxt('t-s1title',T.s1title);setTxt('t-s1sub',T.s1sub);
+  setTxt('t-adults-lbl',T.adultsLbl);setTxt('t-kids-lbl',T.kidsLbl);
+  setTxt('t-btn1',T.btn1);
+  setTxt('t-s2label',T.s2label);setTxt('t-s2title',T.s2title);
+  setTxt('t-back1',T.back1);
+  setTxt('t-s3label',T.s3label);setTxt('t-s3title',T.s3title);setTxt('t-s3sub',T.s3sub);
+  setTxt('t-back2',T.back2);
+  setTxt('t-loading',T.loading);
+  setTxt('t-sum-title',T.sumTitle);
+  setTxt('t-incl-title',T.inclTitle);
+  setTxt('t-incl1',T.incl1);setTxt('t-incl2',T.incl2);setTxt('t-incl3',T.incl3);
+  setTxt('t-cin-title',T.cinTitle);setTxt('t-cin-text',T.cinText);
+  setTxt('t-btn-msg',T.btnMsg);setTxt('t-contact-note',T.contactNote);
+  if(adults===0){setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
+  buildLegend();updateMinNote();
+  var mw=$id('min-warn');if(mw)mw.textContent=T.minWarn;
+  updateHint();
+}
+
+function buildLegend(){
+  var l=$id('cal-legend');if(!l)return;
+  l.innerHTML='<div class="li"><div class="ld" style="background:var(--free-bg);border:1px solid #a5d6a7"></div>'+T.legFree+'</div>'
+    +'<div class="li"><div class="ld" style="background:var(--busy)"></div>'+T.legBusy+'</div>'
+    +'<div class="li"><div class="ld" style="background:var(--sel)"></div>'+T.legSel+'</div>';
+}
+
+function buildWdays(){
+  var w=$id('wdays-row');if(!w)return;
+  w.innerHTML='';
+  T.wdays.forEach(function(d){var e=document.createElement('div');e.className='wday';e.textContent=d;w.appendChild(e);});
+}
+
+/* ── counter descs ── */
+function refreshDescs(){
+  var mk=maxK(adults);
+  if(adults>0){
+    setTxt('ad-desc',adults+(adults===1?T.adDesc1:T.adDescN));
+    setTxt('kd-desc',T.kdPre+mk+(mk===1?T.kdBed1:T.kdBedN)+T.kdFor+adults+(adults===1?T.adDesc1:T.adDescN));
+  }else{setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
+}
+
+function maxK(a){if(a<=0)return 0;if(a<=2)return 1;if(a<=6)return 2;return 3;}
+function getPrice(n,mo){return(PRICES[n]&&PRICES[n][mo])?PRICES[n][mo]:60;}
+function getDayPrice(apts,mo){var t=0;apts.forEach(function(n){t+=getPrice(n,mo);});return t;}
+
+/* ── step 1 ── */
+function chA(d){
+  adults=Math.max(0,Math.min(8,adults+d));
+  setTxt('av',adults);
+  $id('am').disabled=adults<=0;$id('ap').disabled=adults>=8;
+  var mk=maxK(adults);kids=Math.min(kids,mk);
+  setTxt('kv',kids);
+  var kr=$id('krow');
+  if(adults>0){kr.classList.remove('disabled');$id('km').disabled=kids<=0;$id('kp').disabled=kids>=mk;}
+  else kr.classList.add('disabled');
+  refreshDescs();
+  $id('btn1').disabled=adults<=0;
+}
+function chK(d){
+  var mk=maxK(adults);kids=Math.max(0,Math.min(mk,kids+d));
+  setTxt('kv',kids);$id('km').disabled=kids<=0;$id('kp').disabled=kids>=mk;
+}
+
+/* ── step 2 ── */
+function buildOpts(a,k){
+  var opts=[];
+  if(a<=2){
+    opts.push({id:'1',apts:[1],name:T.apt1,tags:[T.t1a,T.t1b],mk:1,group:1});
+    opts.push({id:'3',apts:[3],name:T.apt3,tags:[T.t3a,T.t3b],mk:1,group:2});
+  }else if(a<=4){
+    opts.push({id:'2',apts:[2],name:T.apt2,tags:[T.t2a,T.t2b],mk:1,group:1});
+    opts.push({id:'13',apts:[1,3],name:T.apt13,tags:[T.t13a,T.t13b],mk:2,group:2});
+  }else if(a<=6){
+    opts.push({id:'23',apts:[2,3],name:T.apt23,tags:[T.t23a],mk:2,group:1});
+  }else{
+    opts.push({id:'L',apts:[1,2,3],name:T.aptL,tags:[T.tL],mk:3,group:1});
+  }
+  opts.forEach(function(o){
+    if(k>0&&o.mk>=k)o.tags.push(k===1?T.bed1:T.bedN.replace('{n}',k));
+    o.unavail=(k>o.mk);
+  });
+  return opts;
+}
+
+var dotCls={1:'p',2:'t',3:'b'};
+function makeCard(o){
+  var div=document.createElement('div');
+  div.className='aopt'+(o.unavail?' unavail':'');
+  div.setAttribute('data-t',o.id);
+  var dots=o.apts.map(function(n){return'<span class="adot '+dotCls[n]+'"></span>';}).join('');
+  var tags=o.tags.map(function(t){
+    var isK=t.indexOf('dostawka')!==-1||t.indexOf('dostawki')!==-1||t.indexOf('extra bed')!==-1||t.indexOf('Zustellbett')!==-1||t.indexOf('lit suppl')!==-1;
+    return'<span class="atag'+(isK?' kids':'')+'">'+t+'</span>';
+  }).join('');
+  div.innerHTML='<div class="abar"></div><div class="ainner"><div class="arow"><div class="adots">'+dots+'</div><div class="aname">'+o.name+'</div></div><div class="atags">'+tags+'</div></div>';
+  div.onclick=function(){
+    if(o.unavail)return;
+    document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
+    div.classList.add('sel');selOpt=o;selStart=null;selEnd=null;
+    setTimeout(goStep3,240);
+  };
+  return div;
+}
+
+function renderOptList(){
+  var opts=buildOpts(adults,kids);
+  var sub=T.optFor+' '+adults+(adults===1?T.adult1:T.adults);
+  if(kids>0)sub+=' + '+kids+(kids===1?T.kid1:T.kids);
+  setTxt('s2sub',sub+':');
+  var list=$id('apt-list');list.innerHTML='';
+  var lastG=null;
+  opts.forEach(function(o){
+    if(lastG!==null&&lastG!==o.group){var or=document.createElement('div');or.className='aor';or.textContent=T.orLbl;list.appendChild(or);}
+    list.appendChild(makeCard(o));lastG=o.group;
+  });
+}
+
+function goStep2(){if(!adults)return;renderOptList();show('s2');hide('s1');mkDone(1);mkActive(2);}
+function refreshS2(){renderOptList();}
+
+/* ── step 3 ── */
+function goStep3(){
+  show('s3');hide('s2');mkDone(2);mkActive(3);
+  var now=new Date();cy=now.getFullYear();cm=now.getMonth();
+  var o=selOpt,isM=o.apts.length>1;
+  $id('cal-hdr').className='cal-hdr '+(isM?'cM':'c'+o.apts[0]);
+  setTxt('cal-name',o.name);
+  setTxt('cal-desc',adults+(adults===1?T.calA1:T.calAN)+(kids>0?', '+kids+(kids===1?T.calK1:T.calKN):''));
+  buildLegend();updateHint();updateMinNote();
+  var mw=$id('min-warn');if(mw)mw.textContent=T.minWarn;
+  showSt(T.loading,false);
+  if(cache!==null)renderCal();else fetchIcal();
+}
+
+/* ── iCal ── */
+function fetchIcal(){showSt(T.loading,false);tryProxy(0);}
+function tryProxy(i){
+  if(i>=ICAL_PROXIES.length){showSt(T.errLoad,true);return;}
+  var x=new XMLHttpRequest();
+  x.open('GET',ICAL_PROXIES[i],true);x.timeout=12000;
+  x.onload=function(){if(x.status===200&&x.responseText.indexOf('BEGIN:VCALENDAR')!==-1){cache=parseIcal(x.responseText);renderCal();}else tryProxy(i+1);};
+  x.onerror=function(){tryProxy(i+1);};x.ontimeout=function(){tryProxy(i+1);};
+  x.send();
+}
+function parseIcal(txt){
+  var ev={};
+  txt=txt.replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\n[ \t]/g,'');
+  var ll=txt.split('\n'),inE=false,sum='',ds='',de='';
+  function flush(){if(!ds)return;var ap=detApt(sum);if(!ap.length)return;expandR(ds,de).forEach(function(d){if(!ev[d])ev[d]=[];ap.forEach(function(n){if(ev[d].indexOf(n)===-1)ev[d].push(n);});});}
+  ll.forEach(function(ln){ln=ln.trim();if(ln==='BEGIN:VEVENT'){inE=true;sum='';ds='';de='';}else if(ln==='END:VEVENT'){flush();inE=false;}else if(inE){if(ln.indexOf('SUMMARY')===0)sum=ln.replace(/^SUMMARY[^:]*:/,'').toLowerCase().trim();else if(ln.indexOf('DTSTART')===0)ds=ln.replace(/^DTSTART[^:]*:/,'').trim();else if(ln.indexOf('DTEND')===0)de=ln.replace(/^DTEND[^:]*:/,'').trim();}});
+  return ev;
+}
+function detApt(s){var f=[];if(/1/.test(s))f.push(1);if(/2/.test(s))f.push(2);if(/3/.test(s))f.push(3);return f;}
+function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s),last=new Date(e);last.setDate(last.getDate()-1);while(c<=last){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
+function pD(s){if(!s)return null;var y=+s.substr(0,4),mo=+s.substr(4,2)-1,d=+s.substr(6,2);return(isNaN(y)||isNaN(mo)||isNaN(d))?null:new Date(y,mo,d);}
+function pD4(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function dkey(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function p2(n){return n<10?'0'+n:''+n;}
+
+/* ── render calendar ── */
+function renderCal(){
+  $id('cstatus').style.display='none';$id('cgrid').style.display='block';
+  setTxt('cal-ml',T.months[cm]+' '+cy);
+  buildWdays();
+  var container=$id('cdays');container.innerHTML='';
+  var today=new Date(),tk=dkey(today);
+  var first=new Date(cy,cm,1),last=new Date(cy,cm+1,0);
+  var off=(first.getDay()+6)%7;
+  for(var e=0;e<off;e++){var emp=document.createElement('div');emp.className='day';container.appendChild(emp);}
+  var sApts=selOpt.apts,moNum=cm+1;
+  for(var d=1;d<=last.getDate();d++){
+    var dk=cy+'-'+p2(cm+1)+'-'+p2(d);
+    var dt=new Date(cy,cm,d);
+    var past=dt<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    var busyList=cache[dk]||[];
+    var isBusy=sApts.some(function(n){return busyList.indexOf(n)!==-1;});
+    var cell=document.createElement('div');
+    cell.className='day'+(past?' past':isBusy?' busy':' free');
+    if(!past&&dk===tk)cell.classList.add('today');
+    var numEl=document.createElement('div');numEl.className='day-num';numEl.textContent=d;cell.appendChild(numEl);
+    if(!past&&!isBusy){var dayP=getDayPrice(sApts,moNum)+(kids*KIDS_PRICE);var prEl=document.createElement('div');prEl.className='day-price';prEl.textContent=dayP+'€';cell.appendChild(prEl);}
+    if(!past&&!isBusy){
+      if(dk===selStart&&dk===selEnd)cell.classList.add('sel-start','sel-end');
+      else if(dk===selStart)cell.classList.add('sel-start');
+      else if(dk===selEnd)cell.classList.add('sel-end');
+      else if(selStart&&selEnd&&dk>selStart&&dk<selEnd)cell.classList.add('in-range');
+      else if(selStart&&!selEnd&&dk>selStart)cell.classList.add('in-range');
+      cell.setAttribute('data-key',dk);
+      cell.onclick=function(){dayClick(this.getAttribute('data-key'));};
+    }
+    container.appendChild(cell);
+  }
+  updateSummary();updateMinNote();
+}
+
+function dayClick(dk){
+  if(!selStart||selEnd){selStart=dk;selEnd=null;updateHint(T.hintDepart);}
+  else{
+    if(dk<=selStart){selStart=dk;selEnd=null;updateHint(T.hintDepart);}
+    else{
+      var sApts=selOpt.apts,ok=true;
+      var c=new Date(pD4(selStart));c.setDate(c.getDate()+1);
+      var eD=pD4(dk);
+      while(c<eD){var bl=cache[dkey(c)]||[];if(sApts.some(function(n){return bl.indexOf(n)!==-1;})){ok=false;break;}c.setDate(c.getDate()+1);}
+      if(!ok){selStart=dk;selEnd=null;updateHint(T.hintBusy);}
+      else{selEnd=dk;updateHint('');}
+    }
+  }
+  renderCal();
+}
+
+function updateHint(msg){
+  var h=$id('cal-hint');if(!h)return;
+  if(msg!==undefined){h.textContent=msg||'';h.style.display=msg?'':'none';return;}
+  if(!selStart){h.textContent=T.hintArrival;h.style.display='';}
+  else if(!selEnd){h.textContent=T.hintDepart;h.style.display='';}
+  else h.style.display='none';
+}
+
+function updateMinNote(){
+  var n=$id('min-stay-note');if(!n)return;
+  if(cm+1===7||cm+1===8){n.textContent=T.minStay;n.style.display='block';}
+  else n.style.display='none';
+}
+
+/* ── summary ── */
+function updateSummary(){
+  var sum=$id('summary'),warn=$id('min-warn');if(!sum)return;
+  if(!selStart||!selEnd){sum.classList.add('hidden');if(warn)warn.style.display='none';return;}
+  var s=pD4(selStart),e=pD4(selEnd);
+  var nights=Math.round((e-s)/(1000*60*60*24));
+  if(nights<=0){sum.classList.add('hidden');return;}
+  var isMinMo=(s.getMonth()+1===7||s.getMonth()+1===8||e.getMonth()+1===7||e.getMonth()+1===8);
+  if(isMinMo&&nights<MIN_STAY_NIGHTS){if(warn){warn.textContent=T.minWarn;warn.style.display='block';}sum.classList.add('hidden');return;}
+  if(warn)warn.style.display='none';
+  var sApts=selOpt.apts,totalApt=0;
+  var c=new Date(s);
+  for(var i=0;i<nights;i++){totalApt+=getDayPrice(sApts,c.getMonth()+1);c.setDate(c.getDate()+1);}
+  var totalKids=kids*KIDS_PRICE*nights,total=totalApt+totalKids,kaucja=DEPOSIT[sApts.length]||200;
+  var rows='';
+  rows+='<div class="sum-row"><span class="sum-label">'+T.sumDate+'</span><span class="sum-val">'+fmtDate(s)+' → '+fmtDate(e)+'</span></div>';
+  rows+='<div class="sum-row"><span class="sum-label">'+T.sumNights+'</span><span class="sum-val">'+nights+'</span></div>';
+  rows+='<div class="sum-row"><span class="sum-label">'+T.sumApt+'</span><span class="sum-val">'+totalApt+'€</span></div>';
+  if(totalKids>0)rows+='<div class="sum-row"><span class="sum-label">'+T.sumKids+' ('+kids+' × '+KIDS_PRICE+'€ × '+nights+')</span><span class="sum-val">'+totalKids+'€</span></div>';
+  rows+='<div class="sum-row total"><span class="sum-label">'+T.sumTotal+'</span><span class="sum-val">'+total+'€</span></div>';
+  rows+='<div class="sum-row kaucja"><span class="sum-label">'+T.sumDeposit+'</span><span class="sum-val">'+kaucja+'€</span></div>';
+  rows+='<div class="kaucja-note">'+T.depositNote+'</div>';
+  $id('sum-body').innerHTML=rows;
+  sum.classList.remove('hidden');
+}
+
+function fmtDate(d){return p2(d.getDate())+'.'+p2(d.getMonth()+1)+'.'+d.getFullYear();}
+function chMonth(d){cm+=d;if(cm>11){cm=0;cy++;}if(cm<0){cm=11;cy--;}if(cache)renderCal();updateMinNote();}
+function showSt(msg,err){$id('cgrid').style.display='none';var se=$id('cstatus');se.style.display='block';se.innerHTML=err?'<p class="err">&#9888; '+msg+'</p>':'<div class="spinner"></div>'+msg;}
+
+/* ── navigation ── */
+function show(id){$id(id).classList.remove('hidden');}
+function hide(id){$id(id).classList.add('hidden');}
+function mkActive(n){var e=$id('i'+n);e.classList.remove('done');e.classList.add('active');}
+function mkDone(n){var e=$id('i'+n);e.classList.remove('active');e.classList.add('done');$id('sn'+n).textContent='\u2713';}
+function resetI(n){var e=$id('i'+n);e.classList.remove('done','active');e.querySelector('.snum').textContent=n;}
+function goBack(step){
+  if(step===1){show('s1');hide('s2');mkActive(1);resetI(2);resetI(3);}
+  else if(step===2){show('s2');hide('s3');mkActive(2);resetI(3);selStart=null;selEnd=null;}
+}
+
+/* ── messenger ── */
+function openMessenger(){
+  var msg=T.mHi;
+  if(selOpt){
+    var aptName=selOpt.name;
+    var osoby=adults+(adults===1?T.calA1:T.calAN);
+    if(kids>0)osoby+=', '+kids+(kids===1?T.calK1:T.calKN);
+    if(selStart&&selEnd){
+      var s=pD4(selStart),e=pD4(selEnd);
+      var nights=Math.round((e-s)/(1000*60*60*24));
+      var ns=nights===1?'1'+T.n1:(nights<5?nights+T.n2:nights+T.n5);
+      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+T.mAsk;
+    }else if(selStart){
+      msg=T.mHi+' '+T.mInt+aptName+T.mFrom+fmtDate(pD4(selStart))+','+T.mG+osoby+T.mAsk;
+    }else{
+      msg=T.mHi+' '+T.mInt+aptName+','+T.mG+osoby+T.mAsk;
+    }
+  }
+  window.open('https://m.me/azzurrosardegna?text='+encodeURIComponent(msg),'_blank','noopener');
+}
+
+/* ── init ── */
+applyT();
+</script>
+</body>
+</html>

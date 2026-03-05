@@ -153,6 +153,8 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .btn-messenger:active{background:#0070d6}
 .contact-note{font-size:11px;color:var(--muted);text-align:center;line-height:1.5}
 .btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--sand2);padding:11px 20px;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:13px;cursor:pointer;width:100%;margin-top:12px;touch-action:manipulation}
+.group-tip{background:#f0f7fa;border:1.5px solid #c5dde8;border-radius:13px;padding:11px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#4a6a78;line-height:1.55}
+.tip-icon{flex-shrink:0;font-size:14px;margin-top:1px}
 .btn-back:active{background:var(--sand)}
 </style>
 </head>
@@ -211,6 +213,10 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
           <button class="cbtn" id="kp" onclick="chK(1)" disabled>+</button>
         </div>
       </div>
+    </div>
+    <div class="group-tip" id="t-group-tip">
+      <span class="tip-icon">💡</span>
+      <span id="t-tip-text">Np. rodzina 2+1: wybierz 2 osoby i 1 dostawkę — taniej niż 3 osoby w większym apartamencie. Jeśli dziecko jest starsze i woli osobne łóżko, wybierz po prostu 3 osoby.</span>
     </div>
     <button class="btn-main" id="btn1" onclick="goStep2()" disabled><span id="t-btn1">Dalej</span> &rarr;</button>
   </div>
@@ -331,7 +337,8 @@ var LANGS={
     n1:' noc',n2:' noce',n5:' nocy',
     mHi:'Dzień dobry,',mInt:'jestem zainteresowany/a ',mIn:' w terminie ',
     mFrom:' od dnia ',mG:' liczba osób: ',mAsk:'. Proszę o informacje dotyczące rezerwacji.',
-    errLoad:'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.'
+    errLoad:'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
+    tipText:'Np. rodzina 2+1: wybierz 2 osoby i 1 dostawkę — taniej niż 3 osoby w większym apartamencie. Jeśli starsze dziecko woli własne łóżko, wybierz 3 osoby.'
   },
   de:{
     h1:'Verfügbarkeit<br><em>prüfen</em>',
@@ -373,7 +380,8 @@ var LANGS={
     n1:' Nacht',n2:' Nächte',n5:' Nächte',
     mHi:'Guten Tag,',mInt:'ich interessiere mich für ',mIn:' im Zeitraum ',
     mFrom:' ab dem ',mG:', Anzahl der Personen: ',mAsk:'. Ich bitte um Informationen zur Buchung.',
-    errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden.'
+    errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden.',
+    tipText:'Tipp: Familie 2+1 — wählen Sie 2 Personen und 1 Zustellbett. Das ist günstiger als 3 Personen in einer größeren Unterkunft. Wenn das Kind lieber ein eigenes Bett möchte, wählen Sie einfach 3 Personen.'
   },
   fr:{
     h1:'Vérifier<br><em>la disponibilité</em>',
@@ -415,7 +423,8 @@ var LANGS={
     n1:' nuit',n2:' nuits',n5:' nuits',
     mHi:'Bonjour,',mInt:"je suis intéressé(e) par ",mIn:' du ',
     mFrom:' à partir du ',mG:', nombre de personnes : ',mAsk:'. Je souhaite recevoir des informations sur la réservation.',
-    errLoad:'Impossible de charger le calendrier. Veuillez recharger la page.'
+    errLoad:'Impossible de charger le calendrier. Veuillez recharger la page.',
+    tipText:'Ex. famille 2+1 : choisissez 2 personnes et 1 lit supplémentaire — moins cher qu\'un grand appartement pour 3. Si l\'enfant préfère son propre lit, sélectionnez simplement 3 personnes.'
   },
   en:{
     h1:'Check<br><em>availability</em>',
@@ -457,7 +466,8 @@ var LANGS={
     n1:' night',n2:' nights',n5:' nights',
     mHi:'Hello,',mInt:"I'm interested in ",mIn:' from ',
     mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me reservation details?',
-    errLoad:'Could not load the calendar. Please refresh the page and try again.'
+    errLoad:'Could not load the calendar. Please refresh the page and try again.',
+    tipText:'E.g. family of 2+1: choose 2 people and 1 extra bed — better value than booking a larger apartment for 3. If your child prefers their own bed, simply select 3 people.'
   }
 };
 
@@ -507,6 +517,7 @@ function applyT(){
   setTxt('t-cin-title',T.cinTitle);setTxt('t-cin-text',T.cinText);
   setTxt('t-btn-msg',T.btnMsg);setTxt('t-contact-note',T.contactNote);
   if(adults===0){setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
+  setTxt('t-tip-text',T.tipText);
   buildLegend();updateMinNote();
   var mw=$id('min-warn');if(mw)mw.textContent=T.minWarn;
   updateHint();

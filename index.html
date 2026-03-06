@@ -626,10 +626,10 @@ function chK(d){
 function buildOpts(a,k){
   var opts=[];
   if(a<=2){
-    opts.push({id:'1',apts:[1],name:T.apt1,tags:[T.t1a,T.t1b],mk:1,group:1});
-    opts.push({id:'3',apts:[3],name:T.apt3,tags:[T.t3a,T.t3b],mk:1,group:2});
+    opts.push({id:'1',apts:[1],name:T.apt1,tags:[T.t1b],mk:1,group:1});
+    opts.push({id:'3',apts:[3],name:T.apt3,tags:[T.t3b],mk:1,group:2});
   }else if(a<=4){
-    opts.push({id:'2',apts:[2],name:T.apt2,tags:[T.t2a,T.t2b],mk:1,group:1});
+    opts.push({id:'2',apts:[2],name:T.apt2,tags:[T.t2b],mk:1,group:1});
     opts.push({id:'13',apts:[1,3],name:T.apt13,tags:[T.t13b],mk:2,group:2});
   }else if(a<=6){
     opts.push({id:'23',apts:[2,3],name:T.apt23,tags:[],mk:2,group:1});
@@ -825,8 +825,10 @@ function makeCard(o){
     +   '<div class="atags">'+tags+'</div>'
     + '</div>';
 
-  div.onclick=function(){
+  div.onclick=function(e){
     if(o.unavail)return;
+    /* ignore clicks inside the gallery (nav buttons, zoom, dots) */
+    if(e.target.closest('.apt-gallery'))return;
     document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
     div.classList.add('sel');selOpt=o;selStart=null;selEnd=null;
     setTimeout(goStep3,240);

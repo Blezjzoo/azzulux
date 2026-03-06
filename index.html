@@ -161,10 +161,10 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .btn-back:active{background:var(--sand)}
 
 /* ── apartment gallery ── */
-.apt-gallery{position:relative;overflow:hidden;background:#1a2a30;width:100%;aspect-ratio:4/3}
+.apt-gallery{position:relative;overflow:hidden;background:#1a2a30;width:100%;padding-top:66.66%}
 .apt-gallery-inner{position:absolute;inset:0;overflow:hidden}
-.apt-gallery-track{display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
-.apt-gallery-slide{min-width:100%;height:100%;flex-shrink:0}
+.apt-gallery-track{display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform}
+.apt-gallery-slide{flex:0 0 100%;width:100%;height:100%}
 .apt-gallery-slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s}
 @media(min-width:500px){
   .apt-gallery{background:#e8f0f4}
@@ -783,14 +783,16 @@ function galJump(dot, idx, e) {
   galGoTo(dot.closest('.apt-gallery'), idx);
 }
 function galGoTo(gallery, idx) {
-  var inner = gallery.querySelector('.apt-gallery-inner');
   var track = gallery.querySelector('.apt-gallery-track');
   var slides = track.querySelectorAll('.apt-gallery-slide');
   var n = slides.length;
   idx = ((idx % n) + n) % n;
   gallery.dataset.idx = idx;
-  var w = inner.getBoundingClientRect().width || inner.offsetWidth || gallery.offsetWidth;
-  track.style.transform = 'translateX(-' + (idx * w) + 'px)';
+  /* Each slide is flex: 0 0 100% of inner = gallery width.
+     We translate the track by idx * gallery.offsetWidth.
+     gallery is a block element — offsetWidth is always valid in DOM. */
+  var w = gallery.offsetWidth;
+  track.style.transform = w ? 'translateX(-' + (idx * w) + 'px)' : 'translateX(-' + (idx * 100) + '%)';
   /* lazy load current + next */
   [idx, (idx+1)%n].forEach(function(i){
     var img = slides[i].querySelector('img[data-src]');
@@ -808,16 +810,8 @@ function initGallery(gallery) {
     var img = slides[0].querySelector('img[data-src]');
     if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
   }
-  /* reset position after layout — use rAF to ensure real width is available */
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      galGoTo(gallery, parseInt(gallery.dataset.idx)||0);
-    });
-  });
-  /* handle window resize / orientation change */
-  window.addEventListener('resize', function(){
-    galGoTo(gallery, parseInt(gallery.dataset.idx)||0);
-  }, {passive:true});
+  /* set initial position (idx=0, but safe regardless) */
+  galGoTo(gallery, parseInt(gallery.dataset.idx)||0);
   /* swipe */
   var startX = 0, startY = 0, moving = false, locked = false;
   inner.addEventListener('touchstart', function(e){
@@ -868,12 +862,6 @@ function makeCard(o){
     setTimeout(goStep3,240);
   };
 
-  /* init gallery after adding to DOM */
-  setTimeout(function(){
-    var g = div.querySelector('.apt-gallery');
-    if (g) initGallery(g);
-  }, 0);
-
   return div;
 }
 
@@ -890,8 +878,12 @@ function renderOptList(){
   });
 }
 
-function goStep2(){if(!adults)return;renderOptList();show('s2');hide('s1');mkDone(1);mkActive(2);}
-function refreshS2(){renderOptList();}
+function goStep2(){if(!adults)return;renderOptList();show('s2');hide('s1');mkDone(1);mkActive(2);initAllGalleries();}
+function refreshS2(){renderOptList();initAllGalleries();}
+function initAllGalleries(){
+  /* s2 is now visible — offsetWidth is valid */
+  document.querySelectorAll('#apt-list .apt-gallery').forEach(function(g){ initGallery(g); });
+}
 
 /* ── step 3 ── */
 function goStep3(){
@@ -1036,7 +1028,7 @@ function mkDone(n){var e=$id('i'+n);e.classList.remove('active');e.classList.add
 function resetI(n){var e=$id('i'+n);e.classList.remove('done','active');e.querySelector('.snum').textContent=n;}
 function goBack(step){
   if(step===1){show('s1');hide('s2');mkActive(1);resetI(2);resetI(3);}
-  else if(step===2){show('s2');hide('s3');mkActive(2);resetI(3);selStart=null;selEnd=null;}
+  else if(step===2){show('s2');hide('s3');mkActive(2);resetI(3);selStart=null;selEnd=null;initAllGalleries();}
 }
 
 /* ── messenger ── */

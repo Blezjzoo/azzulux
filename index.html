@@ -693,7 +693,7 @@ function buildGallery(aptIds) {
   var photosJson = JSON.stringify(photos).replace(/'/g,"&#39;");
 
   var slides = photos.map(function(url, i) {
-    return '<div class="apt-gallery-slide" onclick="lbOpen('+photosJson+','+i+')" style="cursor:zoom-in"><img data-src="' + url + '" alt="Zdjęcie ' + (i+1) + '" loading="lazy"></div>';
+    return '<div class="apt-gallery-slide"><img data-src="' + url + '" alt="Zdjęcie ' + (i+1) + '" loading="lazy"></div>';
   }).join('');
 
   var dots = photos.length > 1 ? photos.map(function(_, i) {

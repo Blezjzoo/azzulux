@@ -161,15 +161,16 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .btn-back:active{background:var(--sand)}
 
 /* ── apartment gallery ── */
-.apt-gallery{position:relative;overflow:hidden;background:#e8f0f4;width:100%;height:0;padding-bottom:125%}
-.apt-gallery-track{position:absolute;inset:0;display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
-.apt-gallery-slide{min-width:100%;height:100%;flex-shrink:0;overflow:hidden}
+.apt-gallery{position:relative;overflow:hidden;background:#e8f0f4;width:100%;padding-bottom:125%}
+.apt-gallery-inner{position:absolute;inset:0;overflow:hidden}
+.apt-gallery-track{display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
+.apt-gallery-slide{min-width:100%;height:100%;flex-shrink:0}
 .apt-gallery-slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s}
 .apt-gallery-slide img[data-src]{opacity:0}
 .apt-gallery-slide img.loaded{opacity:1}
-.gal-prev,.gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .2s;touch-action:manipulation}
+.gal-prev,.gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.85);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .2s;touch-action:manipulation}
 .gal-prev{left:8px}.gal-next{right:8px}
-.gal-prev:hover,.gal-next:hover{background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.gal-prev:hover,.gal-next:hover{background:#fff}
 .gal-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
 .gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:all .2s;cursor:pointer}
 .gal-dot.active{background:#fff;width:16px;border-radius:3px}
@@ -732,9 +733,11 @@ function buildGallery(aptIds) {
     : '';
 
   return '<div class="apt-gallery" data-idx="0" data-rk="'+rk+'">'
+    +'<div class="apt-gallery-inner">'
     +'<div class="apt-gallery-track">'+slides+'</div>'
     +navBtns
     +(dots?'<div class="gal-dots">'+dots+'</div>':'')
+    +'</div>'
     +'</div>';
 }
 
@@ -777,39 +780,49 @@ function galJump(dot, idx, e) {
   galGoTo(dot.closest('.apt-gallery'), idx);
 }
 function galGoTo(gallery, idx) {
+  var inner = gallery.querySelector('.apt-gallery-inner');
   var track = gallery.querySelector('.apt-gallery-track');
   var slides = track.querySelectorAll('.apt-gallery-slide');
   var n = slides.length;
   idx = ((idx % n) + n) % n;
   gallery.dataset.idx = idx;
-  track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-  /* lazy load */
-  var img = slides[idx].querySelector('img[data-src]');
-  if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
+  var w = inner.offsetWidth;
+  track.style.transform = 'translateX(-' + (idx * w) + 'px)';
+  /* lazy load current + next */
+  [idx, (idx+1)%n].forEach(function(i){
+    var img = slides[i].querySelector('img[data-src]');
+    if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
+  });
   var dots = gallery.querySelectorAll('.gal-dot');
   dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
 }
 function initGallery(gallery) {
-  var slides = gallery.querySelectorAll('.apt-gallery-slide');
+  var inner = gallery.querySelector('.apt-gallery-inner');
+  var track = gallery.querySelector('.apt-gallery-track');
+  var slides = track.querySelectorAll('.apt-gallery-slide');
+  /* load first image */
   if (slides[0]) {
     var img = slides[0].querySelector('img[data-src]');
     if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
   }
-  var startX = 0, startY = 0, isDragging = false;
-  gallery.addEventListener('touchstart', function(e){
+  /* swipe */
+  var startX = 0, startY = 0, moving = false, locked = false;
+  inner.addEventListener('touchstart', function(e){
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
-    isDragging = false;
+    moving = false; locked = false;
   },{passive:true});
-  gallery.addEventListener('touchmove', function(e){
-    var dx = Math.abs(e.touches[0].clientX - startX);
-    var dy = Math.abs(e.touches[0].clientY - startY);
-    if (dx > dy && dx > 8) { isDragging = true; e.preventDefault(); }
+  inner.addEventListener('touchmove', function(e){
+    if (locked) return;
+    var dx = e.touches[0].clientX - startX;
+    var dy = e.touches[0].clientY - startY;
+    if (!moving && Math.abs(dy) > Math.abs(dx)) { locked = true; return; }
+    if (Math.abs(dx) > 6) { moving = true; e.preventDefault(); }
   },{passive:false});
-  gallery.addEventListener('touchend', function(e){
-    if (!isDragging) return;
+  inner.addEventListener('touchend', function(e){
+    if (!moving) return;
     var dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 40) galGoTo(gallery, parseInt(gallery.dataset.idx) + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) > 30) galGoTo(gallery, parseInt(gallery.dataset.idx) + (dx < 0 ? 1 : -1));
   },{passive:true});
 }
 

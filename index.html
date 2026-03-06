@@ -161,8 +161,8 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .btn-back:active{background:var(--sand)}
 
 /* ── apartment gallery ── */
-.apt-gallery{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:#e8f0f4}
-.apt-gallery-track{display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
+.apt-gallery{position:relative;overflow:hidden;background:#e8f0f4;width:100%;height:0;padding-bottom:125%}
+.apt-gallery-track{position:absolute;inset:0;display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
 .apt-gallery-slide{min-width:100%;height:100%;flex-shrink:0;overflow:hidden}
 .apt-gallery-slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .3s}
 .apt-gallery-slide img[data-src]{opacity:0}

@@ -728,7 +728,7 @@ function buildGallery(aptIds) {
     ? '<button class="gal-prev" onclick="galMove(this,-1,event)">&#8249;</button><button class="gal-next" onclick="galMove(this,1,event)">&#8250;</button>'
     : '';
 
-  var zoomBtn = '<button data-rk="'+rk+'" onclick="event.stopPropagation();lbOpen(_galReg[this.getAttribute(\'data-rk\')],parseInt(this.closest(\'.apt-gallery\').dataset.idx))" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
+  var zoomBtn = '<button class="gal-zoom-btn" data-rk="'+rk+'" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
 
   return '<div class="apt-gallery" data-idx="0">'
     +'<div class="apt-gallery-track">'+slides+'</div>'
@@ -827,7 +827,6 @@ function makeCard(o){
 
   div.onclick=function(e){
     if(o.unavail)return;
-    /* ignore clicks inside the gallery (nav buttons, zoom, dots) */
     if(e.target.closest('.apt-gallery'))return;
     document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
     div.classList.add('sel');selOpt=o;selStart=null;selEnd=null;
@@ -837,7 +836,19 @@ function makeCard(o){
   /* init gallery after adding to DOM */
   setTimeout(function(){
     var g = div.querySelector('.apt-gallery');
-    if (g) initGallery(g);
+    if (!g) return;
+    initGallery(g);
+    /* attach zoom button via addEventListener so stopPropagation works reliably */
+    var zBtn = g.querySelector('.gal-zoom-btn');
+    if (zBtn) {
+      zBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var rk = zBtn.getAttribute('data-rk');
+        var photos = _galReg[rk] || [];
+        var idx = parseInt(g.dataset.idx) || 0;
+        lbOpen(photos, idx);
+      });
+    }
   }, 0);
 
   return div;

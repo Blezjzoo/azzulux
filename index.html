@@ -186,9 +186,12 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,.25)}
 .lb-counter{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:13px;z-index:10001;font-family:"DM Sans",sans-serif}
 .lb-spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;position:absolute}
-.apt-meta{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 0;border-bottom:1px solid var(--sand2);margin-bottom:0}
+.apt-meta{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 0;border-bottom:1px solid var(--sand2);margin-bottom:0;align-items:center}
 .apt-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:500}
 .apt-meta-icon{font-size:14px}
+.meta-zoom-btn{margin-left:auto;background:var(--foam);border:1.5px solid var(--wave);color:var(--ocean);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;touch-action:manipulation;transition:background .2s;flex-shrink:0}
+.meta-zoom-btn:hover{background:var(--wave);color:#fff}
+.meta-zoom-lbl{font-family:"DM Sans",sans-serif}
 .ainner{padding:10px 14px 14px}
 </style>
 </head>
@@ -728,11 +731,9 @@ function buildGallery(aptIds) {
     ? '<button class="gal-prev" onclick="galMove(this,-1,event)">&#8249;</button><button class="gal-next" onclick="galMove(this,1,event)">&#8250;</button>'
     : '';
 
-  var zoomBtn = '<button class="gal-zoom-btn" data-rk="'+rk+'" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
-
-  return '<div class="apt-gallery" data-idx="0">'
+  return '<div class="apt-gallery" data-idx="0" data-rk="'+rk+'">'
     +'<div class="apt-gallery-track">'+slides+'</div>'
-    +navBtns+zoomBtn
+    +navBtns
     +(dots?'<div class="gal-dots">'+dots+'</div>':'')
     +'</div>';
 }
@@ -763,7 +764,7 @@ function buildMeta(aptIds) {
   var items = meta.map(function(m) {
     return '<div class="apt-meta-item"><span class="apt-meta-icon">'+m.icon+'</span>'+metaLabel(m)+'</div>';
   }).join('');
-  return '<div class="apt-meta">' + items + '</div>';
+  return '<div class="apt-meta">' + items + '<button class="meta-zoom-btn" title="Powiększ zdjęcia">&#x26F6; <span class="meta-zoom-lbl">foto</span></button></div>';
 }
 
 function galMove(btn, dir, e) {
@@ -836,18 +837,16 @@ function makeCard(o){
   /* init gallery after adding to DOM */
   setTimeout(function(){
     var g = div.querySelector('.apt-gallery');
-    if (!g) return;
-    initGallery(g);
-    /* attach zoom button via addEventListener so stopPropagation works reliably */
-    var zBtn = g.querySelector('.gal-zoom-btn');
-    if (zBtn) {
-      zBtn.addEventListener('click', function(e){
+    if (g) initGallery(g);
+    /* zoom button is in meta bar — outside gallery, no conflict */
+    var zBtn = div.querySelector('.meta-zoom-btn');
+    if (zBtn && g) {
+      zBtn.onclick = function(e){
         e.stopPropagation();
-        var rk = zBtn.getAttribute('data-rk');
+        var rk = g.getAttribute('data-rk');
         var photos = _galReg[rk] || [];
-        var idx = parseInt(g.dataset.idx) || 0;
-        lbOpen(photos, idx);
-      });
+        lbOpen(photos, parseInt(g.dataset.idx)||0);
+      };
     }
   }, 0);
 

@@ -159,6 +159,24 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .group-tip{background:#f0f7fa;border:1.5px solid #c5dde8;border-radius:13px;padding:11px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#4a6a78;line-height:1.55}
 .tip-icon{flex-shrink:0;font-size:14px;margin-top:1px}
 .btn-back:active{background:var(--sand)}
+
+/* ── apartment gallery ── */
+.apt-gallery{position:relative;width:100%;height:190px;overflow:hidden;background:#e8f0f4}
+.apt-gallery-track{display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
+.apt-gallery-slide{min-width:100%;height:100%;flex-shrink:0;overflow:hidden}
+.apt-gallery-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s}
+.apt-gallery-slide img[data-src]{opacity:0}
+.apt-gallery-slide img.loaded{opacity:1}
+.gal-prev,.gal-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:all .2s;touch-action:manipulation}
+.gal-prev{left:8px}.gal-next{right:8px}
+.gal-prev:hover,.gal-next:hover{background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.gal-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:all .2s;cursor:pointer}
+.gal-dot.active{background:#fff;width:16px;border-radius:3px}
+.apt-meta{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 0;border-bottom:1px solid var(--sand2);margin-bottom:0}
+.apt-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:500}
+.apt-meta-icon{font-size:14px}
+.ainner{padding:10px 14px 14px}
 </style>
 </head>
 <body>
@@ -600,7 +618,135 @@ function buildOpts(a,k){
   return opts;
 }
 
+/* ── apartment photos config ── easy to update: just change the URLs below ── */
+var APT_PHOTOS = {
+  1: [
+    /* === APARTAMENT 1 ZDJĘCIA === */
+    /* Wstaw bezpośrednie linki do zdjęć poniżej (po jednym na linię): */
+    'https://drive.google.com/uc?export=view&id=PHOTO_1A_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_1B_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_1C_ID'
+  ],
+  2: [
+    /* === APARTAMENT 2 ZDJĘCIA === */
+    'https://drive.google.com/uc?export=view&id=PHOTO_2A_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_2B_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_2C_ID'
+  ],
+  3: [
+    /* === APARTAMENT 3 ZDJĘCIA === */
+    'https://drive.google.com/uc?export=view&id=PHOTO_3A_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_3B_ID',
+    'https://drive.google.com/uc?export=view&id=PHOTO_3C_ID'
+  ]
+};
+
+/* Metadane apartamentów (osoby, udogodnienia) */
+var APT_META = {
+  1: [{icon:'👥',label:'2 osoby'},{icon:'🛏️',label:'1 sypialnia'},{icon:'🚿',label:'łazienka'}],
+  2: [{icon:'👥',label:'4 osoby'},{icon:'🛏️',label:'2 sypialnie'},{icon:'🏖️',label:'balkon'},{icon:'🚿',label:'łazienka'}],
+  3: [{icon:'👥',label:'2 osoby'},{icon:'🛏️',label:'1 sypialnia'},{icon:'🌿',label:'taras'},{icon:'🚿',label:'łazienka'}]
+};
+
 var dotCls={1:'p',2:'t',3:'b'};
+
+function buildGallery(aptIds) {
+  /* Merge photos from all apartments in this option */
+  var photos = [];
+  aptIds.forEach(function(id) {
+    var p = APT_PHOTOS[id] || [];
+    p.forEach(function(url) { photos.push(url); });
+  });
+  if (!photos.length) return '';
+
+  var slides = photos.map(function(url, i) {
+    return '<div class="apt-gallery-slide"><img data-src="' + url + '" alt="Zdjęcie ' + (i+1) + '" loading="lazy"></div>';
+  }).join('');
+
+  var dots = photos.length > 1 ? photos.map(function(_, i) {
+    return '<div class="gal-dot' + (i===0?' active':'') + '" onclick="galJump(this,'+i+',event)"></div>';
+  }).join('') : '';
+
+  var navBtns = photos.length > 1
+    ? '<button class="gal-prev" onclick="galMove(this,-1,event)">&#8249;</button><button class="gal-next" onclick="galMove(this,1,event)">&#8250;</button>'
+    : '';
+
+  return '<div class="apt-gallery" data-idx="0">'
+    + '<div class="apt-gallery-track">' + slides + '</div>'
+    + navBtns
+    + (dots ? '<div class="gal-dots">' + dots + '</div>' : '')
+    + '</div>';
+}
+
+function buildMeta(aptIds) {
+  var meta = [];
+  if (aptIds.length === 1) {
+    meta = APT_META[aptIds[0]] || [];
+  } else {
+    /* multi-apt: combine people counts */
+    var totalPpl = 0;
+    aptIds.forEach(function(id) {
+      var m = APT_META[id] || [];
+      m.forEach(function(item) {
+        if (item.icon === '👥') {
+          var n = parseInt(item.label);
+          if (!isNaN(n)) totalPpl += n;
+        }
+      });
+    });
+    meta = [{icon:'👥', label: totalPpl + ' osób'}];
+    aptIds.forEach(function(id) {
+      var m = APT_META[id] || [];
+      m.forEach(function(item) {
+        if (item.icon !== '👥') meta.push(item);
+      });
+    });
+  }
+  if (!meta.length) return '';
+  var items = meta.map(function(m) {
+    return '<div class="apt-meta-item"><span class="apt-meta-icon">'+m.icon+'</span>'+m.label+'</div>';
+  }).join('');
+  return '<div class="apt-meta">' + items + '</div>';
+}
+
+function galMove(btn, dir, e) {
+  e && e.stopPropagation();
+  var gallery = btn.closest('.apt-gallery');
+  galGoTo(gallery, (parseInt(gallery.dataset.idx) + dir));
+}
+function galJump(dot, idx, e) {
+  e && e.stopPropagation();
+  galGoTo(dot.closest('.apt-gallery'), idx);
+}
+function galGoTo(gallery, idx) {
+  var track = gallery.querySelector('.apt-gallery-track');
+  var slides = track.querySelectorAll('.apt-gallery-slide');
+  var n = slides.length;
+  idx = ((idx % n) + n) % n;
+  gallery.dataset.idx = idx;
+  track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+  /* lazy load */
+  var img = slides[idx].querySelector('img[data-src]');
+  if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
+  var dots = gallery.querySelectorAll('.gal-dot');
+  dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
+}
+function initGallery(gallery) {
+  var slides = gallery.querySelectorAll('.apt-gallery-slide');
+  /* load first image */
+  if (slides[0]) {
+    var img = slides[0].querySelector('img[data-src]');
+    if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function(){img.classList.add('loaded');}; }
+  }
+  /* touch/swipe */
+  var startX = 0;
+  gallery.addEventListener('touchstart', function(e){startX=e.touches[0].clientX;},{passive:true});
+  gallery.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) galGoTo(gallery, parseInt(gallery.dataset.idx) + (dx < 0 ? 1 : -1));
+  },{passive:true});
+}
+
 function makeCard(o){
   var div=document.createElement('div');
   div.className='aopt'+(o.unavail?' unavail':'');
@@ -610,13 +756,31 @@ function makeCard(o){
     var isK=t.indexOf('dostawka')!==-1||t.indexOf('dostawki')!==-1||t.indexOf('extra bed')!==-1||t.indexOf('Zustellbett')!==-1||t.indexOf('lit suppl')!==-1;
     return'<span class="atag'+(isK?' kids':'')+'">'+t+'</span>';
   }).join('');
-  div.innerHTML='<div class="abar"></div><div class="ainner"><div class="arow"><div class="adots">'+dots+'</div><div class="aname">'+o.name+'</div></div><div class="atags">'+tags+'</div></div>';
+
+  var galleryHtml = buildGallery(o.apts);
+  var metaHtml = buildMeta(o.apts);
+
+  div.innerHTML = '<div class="abar"></div>'
+    + galleryHtml
+    + metaHtml
+    + '<div class="ainner">'
+    +   '<div class="arow"><div class="adots">'+dots+'</div><div class="aname">'+o.name+'</div></div>'
+    +   '<div class="atags">'+tags+'</div>'
+    + '</div>';
+
   div.onclick=function(){
     if(o.unavail)return;
     document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
     div.classList.add('sel');selOpt=o;selStart=null;selEnd=null;
     setTimeout(goStep3,240);
   };
+
+  /* init gallery after adding to DOM */
+  setTimeout(function(){
+    var g = div.querySelector('.apt-gallery');
+    if (g) initGallery(g);
+  }, 0);
+
   return div;
 }
 
@@ -821,7 +985,7 @@ function openWhatsApp(){
       msg=T.mHi+' '+T.mInt+aptName+','+T.mG+osoby+T.mAsk;
     }
   }
-  window.open('https://wa.me/48698043271?text='+encodeURIComponent(msg),'_blank','noopener');
+  window.open('https://wa.me/48728703663?text='+encodeURIComponent(msg),'_blank','noopener');
 }
 
 /* ── init ── */

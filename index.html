@@ -149,8 +149,11 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .cin-code{font-size:10px;font-family:monospace;color:var(--ocean2);font-weight:600;background:var(--foam);display:inline-block;padding:2px 7px;border-radius:6px;margin-top:4px;letter-spacing:.04em}
 .min-warn{background:#fff8e1;border:1.5px solid #ffe082;border-radius:12px;padding:10px 14px;margin-top:10px;font-size:12px;color:#7a6020;display:none}
 .contact{margin-top:16px;padding:14px 16px;background:var(--white);border:1.5px solid var(--sand2);border-radius:14px}
-.btn-messenger{width:100%;background:#0084FF;color:#fff;border:none;padding:15px 20px;border-radius:14px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .22s;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
+.btn-contact-row{display:flex;gap:10px;margin-bottom:8px}
+.btn-messenger,.btn-whatsapp{flex:1;background:#0084FF;color:#fff;border:none;padding:14px 10px;border-radius:14px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .22s;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-messenger:active{background:#0070d6}
+.btn-whatsapp{background:#25D366}
+.btn-whatsapp:active{background:#1da851}
 .contact-note{font-size:11px;color:var(--muted);text-align:center;line-height:1.5}
 .btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--sand2);padding:11px 20px;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:13px;cursor:pointer;width:100%;margin-top:12px;touch-action:manipulation}
 .group-tip{background:#f0f7fa;border:1.5px solid #c5dde8;border-radius:13px;padding:11px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#4a6a78;line-height:1.55}
@@ -281,10 +284,16 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
       </div>
     </div>
     <div class="contact">
-      <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/></svg>
-        <span id="t-btn-msg">Napisz na Messengerze</span>
-      </button>
+      <div class="btn-contact-row">
+        <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/></svg>
+          <span id="t-btn-msg">Messenger</span>
+        </button>
+        <button class="btn-whatsapp" id="btn-whatsapp" onclick="openWhatsApp()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          <span id="t-btn-wa">WhatsApp</span>
+        </button>
+      </div>
       <p class="contact-note" id="t-contact-note">Ustalimy wszystkie szczegóły.</p>
     </div>
     <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień opcję</span></button>
@@ -321,7 +330,7 @@ var LANGS={
     inclTitle:'W cenie',incl1:'Ręczniki i pościel',incl2:'Sprzątanie',incl3:'Brak opłaty turystycznej',
     cinTitle:'Zarejestrowany wynajem we Włoszech',
     cinText:'Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.',
-    btnMsg:'Napisz na Messengerze',contactNote:'Ustalimy wszystkie szczegóły.',
+    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Ustalimy wszystkie szczegóły.',
     optFor:'Opcje dla',adult1:' osoby',adults:' osób',kid1:' dostawka',kids:' dostawki',
     calA1:' osoba',calAN:' osób',calK1:' dostawka',calKN:' dostawki',
     apt1:'Apartament nr 1',apt2:'Apartament nr 2',apt3:'Apartament nr 3',
@@ -364,7 +373,7 @@ var LANGS={
     inclTitle:'Im Preis enthalten',incl1:'Handtücher und Bettwäsche',incl2:'Reinigung',incl3:'Keine Kurtaxe',
     cinTitle:'Offizielle Ferienvermietung in Italien registriert',
     cinText:'Unsere Unterkunft verfügt über die offizielle italienische Kennnummer (CIN), vergeben vom Ministerium für Tourismus. Jeder Gast wird gemäß den gesetzlichen Vorschriften bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
-    btnMsg:'Auf Messenger schreiben',contactNote:'Wir klären gemeinsam alle Details.',
+    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Wir klären gemeinsam alle Details.',
     optFor:'Optionen für',adult1:' Person',adults:' Personen',kid1:' Zustellbett',kids:' Zustellbetten',
     calA1:' Person',calAN:' Personen',calK1:' Zustellbett',calKN:' Zustellbetten',
     apt1:'Apartment Nr. 1',apt2:'Apartment Nr. 2',apt3:'Apartment Nr. 3',
@@ -407,7 +416,7 @@ var LANGS={
     inclTitle:'Inclus dans le prix',incl1:'Serviettes et literie',incl2:'Ménage',incl3:'Taxe de séjour offerte',
     cinTitle:'Location officiellement enregistrée en Italie',
     cinText:"Notre établissement dispose du numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes, conformément à la réglementation en vigueur — réservez en toute sérénité.",
-    btnMsg:'Écrire sur Messenger',contactNote:'Nous réglerons ensemble tous les détails.',
+    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Nous réglerons ensemble tous les détails.',
     optFor:'Options pour',adult1:' personne',adults:' personnes',kid1:' lit suppl.',kids:' lits suppl.',
     calA1:' personne',calAN:' personnes',calK1:' lit suppl.',calKN:' lits suppl.',
     apt1:'Appartement n° 1',apt2:'Appartement n° 2',apt3:'Appartement n° 3',
@@ -450,7 +459,7 @@ var LANGS={
     inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'Cleaning',incl3:'No tourist tax',
     cinTitle:'Officially registered rental in Italy',
     cinText:'Our property holds the official Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is registered with the relevant authorities in accordance with Italian law — book with complete peace of mind.',
-    btnMsg:'Message us on Messenger',contactNote:"We'll sort out all the details together.",
+    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:"We'll sort out all the details together.",
     optFor:'Options for',adult1:' person',adults:' people',kid1:' extra bed',kids:' extra beds',
     calA1:' person',calAN:' people',calK1:' extra bed',calKN:' extra beds',
     apt1:'Apartment No. 1',apt2:'Apartment No. 2',apt3:'Apartment No. 3',
@@ -517,7 +526,7 @@ function applyT(){
   setTxt('t-incl-title',T.inclTitle);
   setTxt('t-incl1',T.incl1);setTxt('t-incl2',T.incl2);setTxt('t-incl3',T.incl3);
   setTxt('t-cin-title',T.cinTitle);setTxt('t-cin-text',T.cinText);
-  setTxt('t-btn-msg',T.btnMsg);setTxt('t-contact-note',T.contactNote);
+  setTxt('t-btn-msg',T.btnMsg);setTxt('t-btn-wa',T.btnWa||'WhatsApp');setTxt('t-contact-note',T.contactNote);
   if(adults===0){setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
   setTxt('t-tip-text',T.tipText);
   buildLegend();updateMinNote();
@@ -660,7 +669,8 @@ function parseIcal(txt){
   return ev;
 }
 function detApt(s){var f=[];if(/1/.test(s))f.push(1);if(/2/.test(s))f.push(2);if(/3/.test(s))f.push(3);return f;}
-function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s);c.setDate(c.getDate()+1);var last=new Date(e);last.setDate(last.getDate()-1);while(c<=last){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}function pD(s){if(!s)return null;var y=+s.substr(0,4),mo=+s.substr(4,2)-1,d=+s.substr(6,2);return(isNaN(y)||isNaN(mo)||isNaN(d))?null:new Date(y,mo,d);}
+function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s);c.setDate(c.getDate()+1);var last=new Date(e);last.setDate(last.getDate()-1);while(c<=last){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
+function pD(s){if(!s)return null;var y=+s.substr(0,4),mo=+s.substr(4,2)-1,d=+s.substr(6,2);return(isNaN(y)||isNaN(mo)||isNaN(d))?null:new Date(y,mo,d);}
 function pD4(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function dkey(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
 function p2(n){return n<10?'0'+n:''+n;}
@@ -791,6 +801,27 @@ function openMessenger(){
     }
   }
   window.open('https://m.me/azzurrosardegna?text='+encodeURIComponent(msg),'_blank','noopener');
+}
+
+/* ── whatsapp ── */
+function openWhatsApp(){
+  var msg=T.mHi;
+  if(selOpt){
+    var aptName=selOpt.name;
+    var osoby=adults+(adults===1?T.calA1:T.calAN);
+    if(kids>0)osoby+=', '+kids+(kids===1?T.calK1:T.calKN);
+    if(selStart&&selEnd){
+      var s=pD4(selStart),e=pD4(selEnd);
+      var nights=Math.round((e-s)/(1000*60*60*24));
+      var ns=nights===1?'1'+T.n1:(nights<5?nights+T.n2:nights+T.n5);
+      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+T.mAsk;
+    }else if(selStart){
+      msg=T.mHi+' '+T.mInt+aptName+T.mFrom+fmtDate(pD4(selStart))+','+T.mG+osoby+T.mAsk;
+    }else{
+      msg=T.mHi+' '+T.mInt+aptName+','+T.mG+osoby+T.mAsk;
+    }
+  }
+  window.open('https://wa.me/48698043271?text='+encodeURIComponent(msg),'_blank','noopener');
 }
 
 /* ── init ── */

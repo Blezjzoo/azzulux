@@ -630,11 +630,11 @@ function buildOpts(a,k){
     opts.push({id:'3',apts:[3],name:T.apt3,tags:[T.t3a,T.t3b],mk:1,group:2});
   }else if(a<=4){
     opts.push({id:'2',apts:[2],name:T.apt2,tags:[T.t2a,T.t2b],mk:1,group:1});
-    opts.push({id:'13',apts:[1,3],name:T.apt13,tags:[T.t13a,T.t13b],mk:2,group:2});
+    opts.push({id:'13',apts:[1,3],name:T.apt13,tags:[T.t13b],mk:2,group:2});
   }else if(a<=6){
-    opts.push({id:'23',apts:[2,3],name:T.apt23,tags:[T.t23a],mk:2,group:1});
+    opts.push({id:'23',apts:[2,3],name:T.apt23,tags:[],mk:2,group:1});
   }else{
-    opts.push({id:'L',apts:[1,2,3],name:T.aptL,tags:[T.tL],mk:3,group:1});
+    opts.push({id:'L',apts:[1,2,3],name:T.aptL,tags:[],mk:3,group:1});
   }
   opts.forEach(function(o){
     if(k>0&&o.mk>=k)o.tags.push(k===1?T.bed1:T.bedN.replace('{n}',k));
@@ -681,10 +681,10 @@ var APT_META = {
 };
 
 var META_LABELS = {
-  pl: { persons:['osoba','osoby','osób'], bedrooms:['sypialnia','sypialnie','sypialni'], bathroom:'łazienka', balcony:'balkon', terrace:'taras' },
-  de: { persons:['Person','Personen','Personen'], bedrooms:['Schlafzimmer','Schlafzimmer','Schlafzimmer'], bathroom:'Bad', balcony:'Balkon', terrace:'Terrasse' },
-  fr: { persons:['personne','personnes','personnes'], bedrooms:['chambre','chambres','chambres'], bathroom:'salle de bain', balcony:'balcon', terrace:'terrasse' },
-  en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', balcony:'balcony', terrace:'terrace' }
+  pl: { persons:['osoba','osoby','osób'], bedrooms:['sypialnia','sypialnie','sypialni'], bathroom:'łazienka', bathrooms:'łazienki', balcony:'balkon', terrace:'taras' },
+  de: { persons:['Person','Personen','Personen'], bedrooms:['Schlafzimmer','Schlafzimmer','Schlafzimmer'], bathroom:'Bad', bathrooms:'Bäder', balcony:'Balkon', terrace:'Terrasse' },
+  fr: { persons:['personne','personnes','personnes'], bedrooms:['chambre','chambres','chambres'], bathroom:'salle de bain', bathrooms:'salles de bain', balcony:'balcon', terrace:'terrasse' },
+  en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', bathrooms:'bathrooms', balcony:'balcony', terrace:'terrace' }
 };
 
 function metaLabel(item) {
@@ -694,41 +694,47 @@ function metaLabel(item) {
     var form = n===1 ? forms[0] : (n>=2&&n<=4 ? forms[1] : forms[2]);
     return n + ' ' + form;
   }
+  if (item.key === 'bathroom') {
+    var n2 = item.n || 1;
+    if (n2 > 1) return n2 + ' ' + ml.bathrooms;
+    return ml[item.key] || item.key;
+  }
   return ml[item.key] || item.key;
 }
 
 var dotCls={1:'p',2:'t',3:'b'};
+var _galReg = {}; var _galN = 0;
 
 function buildGallery(aptIds) {
   var photos = [];
+  var maxPer = aptIds.length > 1 ? 3 : 99;
   aptIds.forEach(function(id) {
-    var p = APT_PHOTOS[id] || [];
-    p.forEach(function(url) { photos.push(url); });
+    (APT_PHOTOS[id]||[]).slice(0,maxPer).forEach(function(url){photos.push(url);});
   });
   if (!photos.length) return '';
 
-  var photosJson = JSON.stringify(photos).replace(/'/g,"&#39;");
+  var rk = 'r'+(++_galN);
+  _galReg[rk] = photos;
 
-  var slides = photos.map(function(url, i) {
-    return '<div class="apt-gallery-slide"><img data-src="' + url + '" alt="Zdjęcie ' + (i+1) + '" loading="lazy"></div>';
+  var slides = photos.map(function(url,i){
+    return '<div class="apt-gallery-slide"><img data-src="'+url+'" alt="Foto '+(i+1)+'" loading="lazy"></div>';
   }).join('');
 
-  var dots = photos.length > 1 ? photos.map(function(_, i) {
-    return '<div class="gal-dot' + (i===0?' active':'') + '" onclick="galJump(this,'+i+',event)"></div>';
+  var dots = photos.length > 1 ? photos.map(function(_,i){
+    return '<div class="gal-dot'+(i===0?' active':'')+'" onclick="galJump(this,'+i+',event)"></div>';
   }).join('') : '';
 
   var navBtns = photos.length > 1
     ? '<button class="gal-prev" onclick="galMove(this,-1,event)">&#8249;</button><button class="gal-next" onclick="galMove(this,1,event)">&#8250;</button>'
     : '';
 
-  var zoomBtn = '<button onclick="event.stopPropagation();lbOpen('+photosJson+',parseInt(this.closest(\'.apt-gallery\').dataset.idx))" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
+  var zoomBtn = '<button data-rk="'+rk+'" onclick="event.stopPropagation();lbOpen(_galReg[this.getAttribute(\'data-rk\')],parseInt(this.closest(\'.apt-gallery\').dataset.idx))" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
 
   return '<div class="apt-gallery" data-idx="0">'
-    + '<div class="apt-gallery-track">' + slides + '</div>'
-    + navBtns
-    + zoomBtn
-    + (dots ? '<div class="gal-dots">' + dots + '</div>' : '')
-    + '</div>';
+    +'<div class="apt-gallery-track">'+slides+'</div>'
+    +navBtns+zoomBtn
+    +(dots?'<div class="gal-dots">'+dots+'</div>':'')
+    +'</div>';
 }
 
 function buildMeta(aptIds) {
@@ -736,16 +742,22 @@ function buildMeta(aptIds) {
   if (aptIds.length === 1) {
     meta = APT_META[aptIds[0]] || [];
   } else {
-    var totalPpl = 0;
+    /* Sum numeric items, deduplicate others */
+    var totalPpl = 0, totalBed = 0, totalBath = 0;
+    var extras = {}; /* taras, balkon etc — show once each */
     aptIds.forEach(function(id) {
       var m = APT_META[id] || [];
-      m.forEach(function(item) { if (item.key==='persons') totalPpl += item.n; });
+      m.forEach(function(item) {
+        if (item.key==='persons') totalPpl += item.n;
+        else if (item.key==='bedrooms') totalBed += item.n;
+        else if (item.key==='bathroom') totalBath++;
+        else extras[item.key] = item;
+      });
     });
-    meta = [{icon:'👥', key:'persons', n:totalPpl}];
-    aptIds.forEach(function(id) {
-      var m = APT_META[id] || [];
-      m.forEach(function(item) { if (item.key!=='persons') meta.push(item); });
-    });
+    meta.push({icon:'👥', key:'persons', n:totalPpl});
+    if (totalBed>0) meta.push({icon:'🛏️', key:'bedrooms', n:totalBed});
+    if (totalBath>0) meta.push({icon:'🚿', key:'bathroom', n:totalBath});
+    Object.keys(extras).forEach(function(k){ meta.push(extras[k]); });
   }
   if (!meta.length) return '';
   var items = meta.map(function(m) {

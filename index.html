@@ -675,10 +675,27 @@ var APT_PHOTOS = {
 
 /* Metadane apartamentów (osoby, udogodnienia) */
 var APT_META = {
-  1: [{icon:'👥',label:'2 osoby'},{icon:'🛏️',label:'1 sypialnia'},{icon:'🚿',label:'łazienka'}],
-  2: [{icon:'👥',label:'4 osoby'},{icon:'🛏️',label:'2 sypialnie'},{icon:'🏖️',label:'balkon'},{icon:'🚿',label:'łazienka'}],
-  3: [{icon:'👥',label:'2 osoby'},{icon:'🛏️',label:'1 sypialnia'},{icon:'🌿',label:'taras'},{icon:'🚿',label:'łazienka'}]
+  1: [{icon:'👥', key:'persons', n:2},{icon:'🛏️', key:'bedrooms', n:1},{icon:'🚿', key:'bathroom'}],
+  2: [{icon:'👥', key:'persons', n:4},{icon:'🛏️', key:'bedrooms', n:2},{icon:'🏖️', key:'balcony'},{icon:'🚿', key:'bathroom'}],
+  3: [{icon:'👥', key:'persons', n:2},{icon:'🛏️', key:'bedrooms', n:1},{icon:'🌿', key:'terrace'},{icon:'🚿', key:'bathroom'}]
 };
+
+var META_LABELS = {
+  pl: { persons:['osoba','osoby','osób'], bedrooms:['sypialnia','sypialnie','sypialni'], bathroom:'łazienka', balcony:'balkon', terrace:'taras' },
+  de: { persons:['Person','Personen','Personen'], bedrooms:['Schlafzimmer','Schlafzimmer','Schlafzimmer'], bathroom:'Bad', balcony:'Balkon', terrace:'Terrasse' },
+  fr: { persons:['personne','personnes','personnes'], bedrooms:['chambre','chambres','chambres'], bathroom:'salle de bain', balcony:'balcon', terrace:'terrasse' },
+  en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', balcony:'balcony', terrace:'terrace' }
+};
+
+function metaLabel(item) {
+  var ml = META_LABELS[lang] || META_LABELS['pl'];
+  if (item.key === 'persons' || item.key === 'bedrooms') {
+    var n = item.n, forms = ml[item.key];
+    var form = n===1 ? forms[0] : (n>=2&&n<=4 ? forms[1] : forms[2]);
+    return n + ' ' + form;
+  }
+  return ml[item.key] || item.key;
+}
 
 var dotCls={1:'p',2:'t',3:'b'};
 
@@ -704,7 +721,7 @@ function buildGallery(aptIds) {
     ? '<button class="gal-prev" onclick="galMove(this,-1,event)">&#8249;</button><button class="gal-next" onclick="galMove(this,1,event)">&#8250;</button>'
     : '';
 
-  var zoomBtn = '<button onclick="lbOpen('+photosJson+',parseInt(this.closest(\'.apt-gallery\').dataset.idx))" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
+  var zoomBtn = '<button onclick="event.stopPropagation();lbOpen('+photosJson+',parseInt(this.closest(\'.apt-gallery\').dataset.idx))" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.38);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;touch-action:manipulation" title="Powiększ">&#x26F6;</button>';
 
   return '<div class="apt-gallery" data-idx="0">'
     + '<div class="apt-gallery-track">' + slides + '</div>'
@@ -719,28 +736,20 @@ function buildMeta(aptIds) {
   if (aptIds.length === 1) {
     meta = APT_META[aptIds[0]] || [];
   } else {
-    /* multi-apt: combine people counts */
     var totalPpl = 0;
     aptIds.forEach(function(id) {
       var m = APT_META[id] || [];
-      m.forEach(function(item) {
-        if (item.icon === '👥') {
-          var n = parseInt(item.label);
-          if (!isNaN(n)) totalPpl += n;
-        }
-      });
+      m.forEach(function(item) { if (item.key==='persons') totalPpl += item.n; });
     });
-    meta = [{icon:'👥', label: totalPpl + ' osób'}];
+    meta = [{icon:'👥', key:'persons', n:totalPpl}];
     aptIds.forEach(function(id) {
       var m = APT_META[id] || [];
-      m.forEach(function(item) {
-        if (item.icon !== '👥') meta.push(item);
-      });
+      m.forEach(function(item) { if (item.key!=='persons') meta.push(item); });
     });
   }
   if (!meta.length) return '';
   var items = meta.map(function(m) {
-    return '<div class="apt-meta-item"><span class="apt-meta-icon">'+m.icon+'</span>'+m.label+'</div>';
+    return '<div class="apt-meta-item"><span class="apt-meta-icon">'+m.icon+'</span>'+metaLabel(m)+'</div>';
   }).join('');
   return '<div class="apt-meta">' + items + '</div>';
 }

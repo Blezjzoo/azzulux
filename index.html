@@ -200,6 +200,14 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .meta-zoom-btn:hover{background:var(--wave);color:#fff}
 .meta-zoom-lbl{font-family:"DM Sans",sans-serif}
 .ainner{padding:10px 14px 14px}
+
+/* ── location highlights ── */
+.highlights{background:linear-gradient(135deg,#e8f4f8 0%,#f0f8e8 100%);border:1.5px solid #a8d4e0;border-radius:14px;padding:14px 16px;margin-top:12px}
+.hl-title{font-size:11px;font-weight:600;color:var(--ocean);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.hl-title::before{content:"✦";color:var(--gold);font-size:10px}
+.hl-items{display:flex;flex-direction:column;gap:7px}
+.hl-item{font-size:12px;color:#1a3a48;display:flex;align-items:flex-start;gap:8px;line-height:1.45}
+.hl-icon{font-size:14px;flex-shrink:0;margin-top:-1px}
 </style>
 </head>
 <body>
@@ -315,6 +323,16 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
         <div class="incl-item" id="t-incl1">Ręczniki i pościel</div>
         <div class="incl-item" id="t-incl2">Sprzątanie</div>
         <div class="incl-item" id="t-incl3">Brak opłaty turystycznej</div>
+        <div class="incl-item" id="t-incl4">Pralka</div>
+      </div>
+    </div>
+    <div class="highlights">
+      <div class="hl-title" id="t-hl-title">Dlaczego warto?</div>
+      <div class="hl-items">
+        <div class="hl-item"><span class="hl-icon">✈️</span><span id="t-hl1">25 minut od lotniska Alghero (Porto Torres)</span></div>
+        <div class="hl-item"><span class="hl-icon">🏖️</span><span id="t-hl2">5 minut do plaży</span></div>
+        <div class="hl-item"><span class="hl-icon">🥂</span><span id="t-hl3">W samym centrum — kawiarnie, restauracje, sklepy tuż za rogiem</span></div>
+        <div class="hl-item"><span class="hl-icon">🅿️</span><span id="t-hl4">Duży darmowy parking</span></div>
       </div>
     </div>
     <div class="cin-badge">
@@ -381,7 +399,12 @@ var LANGS={
     sumTitle:'Podsumowanie',sumDate:'Termin',sumNights:'Noce',sumApt:'Apartament',
     sumKids:'Dostawki',sumTotal:'Razem',sumDeposit:'+ Kaucja zwrotna',
     depositNote:'Kaucja pobierana jest przy zameldowaniu jako zabezpieczenie. Zwracana w całości po wymeldowaniu — nie wchodzi w skład ceny najmu.',
-    inclTitle:'W cenie',incl1:'Ręczniki i pościel',incl2:'Sprzątanie',incl3:'Brak opłaty turystycznej',
+    inclTitle:'W cenie',incl1:'Ręczniki i pościel',incl2:'Sprzątanie',incl3:'Brak opłaty turystycznej',incl4:'Pralka',
+    hlTitle:'Dlaczego warto?',
+    hl1:'25 minut od lotniska Alghero (Porto Torres)',
+    hl2:'5 minut do plaży',
+    hl3:'W samym centrum — kawiarnie, restauracje, sklepy tuż za rogiem',
+    hl4:'Duży darmowy parking',
     cinTitle:'Zarejestrowany wynajem we Włoszech',
     cinText:'Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.',
     btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Ustalimy wszystkie szczegóły.',
@@ -424,7 +447,12 @@ var LANGS={
     sumTitle:'Zusammenfassung',sumDate:'Zeitraum',sumNights:'Nächte',sumApt:'Apartment',
     sumKids:'Zustellbetten',sumTotal:'Gesamt',sumDeposit:'+ Rückerstattbare Kaution',
     depositNote:'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Mietpreis enthalten.',
-    inclTitle:'Im Preis enthalten',incl1:'Handtücher und Bettwäsche',incl2:'Reinigung',incl3:'Keine Kurtaxe',
+    inclTitle:'Im Preis enthalten',incl1:'Handtücher und Bettwäsche',incl2:'Reinigung',incl3:'Keine Kurtaxe',incl4:'Waschmaschine',
+    hlTitle:'Warum bei uns?',
+    hl1:'25 Minuten vom Flughafen Alghero (Porto Torres)',
+    hl2:'5 Minuten zum Strand',
+    hl3:'Direkt im Stadtzentrum — Cafés, Restaurants und Geschäfte gleich um die Ecke',
+    hl4:'Großer kostenloser Parkplatz',
     cinTitle:'Offizielle Ferienvermietung in Italien registriert',
     cinText:'Unsere Unterkunft verfügt über die offizielle italienische Kennnummer (CIN), vergeben vom Ministerium für Tourismus. Jeder Gast wird gemäß den gesetzlichen Vorschriften bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
     btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Wir klären gemeinsam alle Details.',
@@ -467,7 +495,12 @@ var LANGS={
     sumTitle:'Récapitulatif',sumDate:'Période',sumNights:'Nuits',sumApt:'Appartement',
     sumKids:'Lits supplémentaires',sumTotal:'Total',sumDeposit:'+ Caution remboursable',
     depositNote:"La caution est perçue à l'arrivée en guise de garantie et intégralement remboursée au départ — elle ne fait pas partie du montant de la location.",
-    inclTitle:'Inclus dans le prix',incl1:'Serviettes et literie',incl2:'Ménage',incl3:'Taxe de séjour offerte',
+    inclTitle:'Inclus dans le prix',incl1:'Serviettes et literie',incl2:'Ménage',incl3:'Taxe de séjour offerte',incl4:'Machine à laver',
+    hlTitle:'Pourquoi nous choisir ?',
+    hl1:"À 25 minutes de l'aéroport d'Alghero (Porto Torres)",
+    hl2:'À 5 minutes de la plage',
+    hl3:'En plein centre-ville — cafés, restaurants et boutiques à deux pas',
+    hl4:'Grand parking gratuit',
     cinTitle:'Location officiellement enregistrée en Italie',
     cinText:"Notre établissement dispose du numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes, conformément à la réglementation en vigueur — réservez en toute sérénité.",
     btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Nous réglerons ensemble tous les détails.',
@@ -510,7 +543,12 @@ var LANGS={
     sumTitle:'Booking summary',sumDate:'Dates',sumNights:'Nights',sumApt:'Apartment',
     sumKids:'Extra beds',sumTotal:'Total',sumDeposit:'+ Refundable security deposit',
     depositNote:'The deposit is collected at check-in as a security guarantee and fully refunded at check-out — it is not part of the rental price.',
-    inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'Cleaning',incl3:'No tourist tax',
+    inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'Cleaning',incl3:'No tourist tax',incl4:'Washing machine',
+    hlTitle:'Why stay with us?',
+    hl1:'25 minutes from Alghero Airport (Porto Torres)',
+    hl2:'5 minutes to the beach',
+    hl3:'Right in the city centre — cafés, restaurants and shops on your doorstep',
+    hl4:'Large free parking',
     cinTitle:'Officially registered rental in Italy',
     cinText:'Our property holds the official Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is registered with the relevant authorities in accordance with Italian law — book with complete peace of mind.',
     btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:"We'll sort out all the details together.",
@@ -553,7 +591,12 @@ var LANGS={
     sumTitle:'Shrnutí',sumDate:'Termín',sumNights:'Noci',sumApt:'Apartmán',
     sumKids:'Přistýlky',sumTotal:'Celkem',sumDeposit:'+ Vratná kauce',
     depositNote:'Kauce je vybírána při příjezdu jako záruka a po odjezdu je plně vrácena — není součástí ceny pronájmu.',
-    inclTitle:'V ceně',incl1:'Ručníky a ložní prádlo',incl2:'Úklid',incl3:'Bez turistického poplatku',
+    inclTitle:'V ceně',incl1:'Ručníky a ložní prádlo',incl2:'Úklid',incl3:'Bez turistického poplatku',incl4:'Pračka',
+    hlTitle:'Proč zvolit nás?',
+    hl1:'25 minut od letiště Alghero (Porto Torres)',
+    hl2:'5 minut na pláž',
+    hl3:'Přímo v centru města — kavárny, restaurace a obchody za rohem',
+    hl4:'Velké bezplatné parkoviště',
     cinTitle:'Oficiálně registrovaný pronájem v Itálii',
     cinText:'Náš objekt má oficiální italské identifikační číslo (CIN) vydané Ministerstvem cestovního ruchu. Každý host je v souladu s italskými právními předpisy nahlášen příslušným orgánům — rezervujte s naprostým klidem a jistotou.',
     btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Společně dohodneme všechny podrobnosti.',
@@ -621,7 +664,9 @@ function applyT(){
   setTxt('t-loading',T.loading);
   setTxt('t-sum-title',T.sumTitle);
   setTxt('t-incl-title',T.inclTitle);
-  setTxt('t-incl1',T.incl1);setTxt('t-incl2',T.incl2);setTxt('t-incl3',T.incl3);
+  setTxt('t-incl1',T.incl1);setTxt('t-incl2',T.incl2);setTxt('t-incl3',T.incl3);setTxt('t-incl4',T.incl4||T.incl4);
+  setTxt('t-hl-title',T.hlTitle);
+  setTxt('t-hl1',T.hl1);setTxt('t-hl2',T.hl2);setTxt('t-hl3',T.hl3);setTxt('t-hl4',T.hl4);
   setTxt('t-cin-title',T.cinTitle);setTxt('t-cin-text',T.cinText);
   setTxt('t-btn-msg',T.btnMsg);setTxt('t-btn-wa',T.btnWa||'WhatsApp');setTxt('t-contact-note',T.contactNote);
   if(adults===0){setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}

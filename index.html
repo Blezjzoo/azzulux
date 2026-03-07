@@ -223,7 +223,7 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 <header>
   <span class="logo-tag">Azzurro Luxury Boutique</span>
   <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
-  <p class="tagline" id="hdr-tagline">Wybierz grupę i termin</p>
+  <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
   <svg class="wave-svg" viewBox="0 0 1440 48" preserveAspectRatio="none">
     <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z"/>
   </svg>
@@ -231,23 +231,23 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 
 <main>
   <div class="steps">
-    <div class="step active" id="i1"><div class="snum" id="sn1">1</div><span id="t-step1">Grupa</span></div>
+    <div class="step active" id="i1"><div class="snum" id="sn1">1</div><span id="t-step1">Goście</span></div>
     <div class="sline"></div>
-    <div class="step" id="i2"><div class="snum" id="sn2">2</div><span id="t-step2">Opcja</span></div>
+    <div class="step" id="i2"><div class="snum" id="sn2">2</div><span id="t-step2">Apartament</span></div>
     <div class="sline"></div>
-    <div class="step" id="i3"><div class="snum" id="sn3">3</div><span id="t-step3">Termin</span></div>
+    <div class="step" id="i3"><div class="snum" id="sn3">3</div><span id="t-step3">Daty</span></div>
   </div>
 
   <!-- STEP 1 -->
   <div id="s1" class="ss">
     <p class="slabel" id="t-s1label">Krok 1 z 3</p>
-    <h2 class="stitle" id="t-s1title">Twoja grupa</h2>
+    <h2 class="stitle" id="t-s1title">Kto przyjeżdża?</h2>
     <p class="ssub" id="t-s1sub"></p>
     <div class="counters">
       <div class="crow">
         <div>
-          <div class="crow-label" id="t-adults-lbl">Liczba osób</div>
-          <div class="crow-desc" id="ad-desc">1–8 osób</div>
+          <div class="crow-label" id="t-adults-lbl">Liczba gości</div>
+          <div class="crow-desc" id="ad-desc">1–8 gości</div>
         </div>
         <div class="crow-ctrl">
           <button class="cbtn" id="am" onclick="chA(-1)" disabled>&#8722;</button>
@@ -257,8 +257,8 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
       </div>
       <div class="crow disabled" id="krow">
         <div>
-          <div class="crow-label" id="t-kids-lbl">Dostawka</div>
-          <div class="crow-desc" id="kd-desc">Najpierw wybierz liczbę osób</div>
+          <div class="crow-label" id="t-kids-lbl">Dostawka dla dziecka</div>
+          <div class="crow-desc" id="kd-desc">Najpierw podaj liczbę gości</div>
         </div>
         <div class="crow-ctrl">
           <button class="cbtn" id="km" onclick="chK(-1)" disabled>&#8722;</button>
@@ -269,7 +269,7 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
     </div>
     <div class="group-tip" id="t-group-tip">
       <span class="tip-icon">💡</span>
-      <span id="t-tip-text">Np. rodzina 2+1: wybierz 2 osoby i 1 dostawkę — taniej niż 3 osoby w większym apartamencie. Jeśli dziecko jest starsze i woli osobne łóżko, wybierz po prostu 3 osoby.</span>
+      <span id="t-tip-text">Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.</span>
     </div>
     <button class="btn-main" id="btn1" onclick="goStep2()" disabled><span id="t-btn1">Dalej</span> &rarr;</button>
   </div>
@@ -277,17 +277,17 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
   <!-- STEP 2 -->
   <div id="s2" class="ss hidden">
     <p class="slabel" id="t-s2label">Krok 2 z 3</p>
-    <h2 class="stitle" id="t-s2title">Wybierz opcję</h2>
+    <h2 class="stitle" id="t-s2title">Wybierz apartament</h2>
     <p class="ssub" id="s2sub"></p>
     <div class="apt-list" id="apt-list"></div>
-    <button class="btn-back" onclick="goBack(1)">&#8592; <span id="t-back1">Zmień grupę</span></button>
+    <button class="btn-back" onclick="goBack(1)">&#8592; <span id="t-back1">Zmień skład grupy</span></button>
   </div>
 
   <!-- STEP 3 -->
   <div id="s3" class="ss hidden">
     <p class="slabel" id="t-s3label">Krok 3 z 3</p>
-    <h2 class="stitle" id="t-s3title">Wybierz termin</h2>
-    <p class="ssub" id="t-s3sub">Kliknij dzień przyjazdu, a następnie dzień wyjazdu.</p>
+    <h2 class="stitle" id="t-s3title">Wybierz daty pobytu</h2>
+    <p class="ssub" id="t-s3sub">Zaznacz datę przyjazdu, a następnie datę wyjazdu.</p>
     <div class="cal" id="cal">
       <div class="cal-hdr cM" id="cal-hdr">
         <div class="cal-hdr-info">
@@ -318,28 +318,28 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
       <div class="sum-body" id="sum-body"></div>
     </div>
     <div class="inclusions">
-      <div class="incl-title" id="t-incl-title">W cenie</div>
+      <div class="incl-title" id="t-incl-title">Co zawiera cena?</div>
       <div class="incl-items">
         <div class="incl-item" id="t-incl1">Ręczniki i pościel</div>
-        <div class="incl-item" id="t-incl2">Sprzątanie</div>
-        <div class="incl-item" id="t-incl3">Brak opłaty turystycznej</div>
-        <div class="incl-item" id="t-incl4">Pralka</div>
+        <div class="incl-item" id="t-incl2">Sprzątanie końcowe</div>
+        <div class="incl-item" id="t-incl3">Bez opłaty klimatycznej</div>
+        <div class="incl-item" id="t-incl4">Pralka do dyspozycji</div>
       </div>
     </div>
     <div class="highlights">
-      <div class="hl-title" id="t-hl-title">Dlaczego warto?</div>
+      <div class="hl-title" id="t-hl-title">Dlaczego warto wybrać nas?</div>
       <div class="hl-items">
         <div class="hl-item"><span class="hl-icon">✈️</span><span id="t-hl1">25 minut od lotniska Alghero (Porto Torres)</span></div>
-        <div class="hl-item"><span class="hl-icon">🏖️</span><span id="t-hl2">5 minut do plaży</span></div>
-        <div class="hl-item"><span class="hl-icon">🥂</span><span id="t-hl3">W samym centrum — kawiarnie, restauracje, sklepy tuż za rogiem</span></div>
-        <div class="hl-item"><span class="hl-icon">🅿️</span><span id="t-hl4">Duży darmowy parking</span></div>
+        <div class="hl-item"><span class="hl-icon">🏖️</span><span id="t-hl2">5 minut spacerem do plaży</span></div>
+        <div class="hl-item"><span class="hl-icon">🥂</span><span id="t-hl3">Centrum miasta — kawiarnie, restauracje i sklepy tuż pod ręką</span></div>
+        <div class="hl-item"><span class="hl-icon">🅿️</span><span id="t-hl4">Bezpłatny parking przy obiekcie</span></div>
       </div>
     </div>
     <div class="cin-badge">
       <div class="cin-icon">&#128737;</div>
       <div>
-        <div class="cin-title" id="t-cin-title">Zarejestrowany wynajem we Włoszech</div>
-        <div class="cin-text" id="t-cin-text">Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.</div>
+        <div class="cin-title" id="t-cin-title">Legalny wynajem krótkoterminowy we Włoszech</div>
+        <div class="cin-text" id="t-cin-text">Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.</div>
         <span class="cin-code">CIN IT090058C2000T3650</span>
       </div>
     </div>
@@ -347,16 +347,16 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
       <div class="btn-contact-row">
         <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/></svg>
-          <span id="t-btn-msg">Messenger</span>
+          <span id="t-btn-msg">Napisz na Messenger</span>
         </button>
         <button class="btn-whatsapp" id="btn-whatsapp" onclick="openWhatsApp()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-          <span id="t-btn-wa">WhatsApp</span>
+          <span id="t-btn-wa">Napisz na WhatsApp</span>
         </button>
       </div>
-      <p class="contact-note" id="t-contact-note">Ustalimy wszystkie szczegóły.</p>
+      <p class="contact-note" id="t-contact-note">Odpiszemy szybko i ustalimy wszystkie szczegóły.</p>
     </div>
-    <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień opcję</span></button>
+    <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień apartament</span></button>
   </div>
 </main>
 
@@ -380,243 +380,248 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 var LANGS={
   pl:{
     h1:'Sprawdź<br><em>dostępność</em>',
-    tagline:'Wybierz grupę i termin',
-    step1:'Grupa',step2:'Opcja',step3:'Termin',
-    s1label:'Krok 1 z 3',s1title:'Twoja grupa',
+    tagline:'Wybierz skład grupy i daty pobytu',
+    step1:'Goście',step2:'Apartament',step3:'Daty',
+    s1label:'Krok 1 z 3',s1title:'Kto przyjeżdża?',
     s1sub:'',
-    s2label:'Krok 2 z 3',s2title:'Wybierz opcję',
-    s3label:'Krok 3 z 3',s3title:'Wybierz termin',
-    s3sub:'Kliknij dzień przyjazdu, a następnie dzień wyjazdu.',
-    adultsLbl:'Liczba osób',kidsLbl:'Dostawka',
-    adDescDef:'1–8 osób',kdDescDef:'Najpierw wybierz liczbę osób',
-    btn1:'Dalej',back1:'Zmień grupę',back2:'Zmień opcję',
-    loading:'Ładowanie...',
-    legFree:'Wolny',legBusy:'Niedostępny',legSel:'Wybrany termin',
-    minStay:'⚠ Lipiec i sierpień: minimalny pobyt to 5 nocy',
-    minWarn:'⚠ W lipcu i sierpniu obowiązuje minimalny pobyt 5 nocy. Wybierz co najmniej 5 nocy.',
-    hintArrival:'Kliknij dzień przyjazdu',hintDepart:'Teraz kliknij dzień wyjazdu',
-    hintBusy:'W wybranym zakresie jest zajęty dzień — zacznij od nowa i wybierz inny termin przyjazdu.',
-    sumTitle:'Podsumowanie',sumDate:'Termin',sumNights:'Noce',sumApt:'Apartament',
-    sumKids:'Dostawki',sumTotal:'Razem',sumDeposit:'+ Kaucja zwrotna',
-    depositNote:'Kaucja pobierana jest przy zameldowaniu jako zabezpieczenie. Zwracana w całości po wymeldowaniu — nie wchodzi w skład ceny najmu.',
-    inclTitle:'W cenie',incl1:'Ręczniki i pościel',incl2:'Sprzątanie',incl3:'Brak opłaty turystycznej',incl4:'Pralka',
-    hlTitle:'Dlaczego warto?',
+    s2label:'Krok 2 z 3',s2title:'Wybierz apartament',
+    s3label:'Krok 3 z 3',s3title:'Wybierz daty pobytu',
+    s3sub:'Zaznacz datę przyjazdu, a następnie datę wyjazdu.',
+    adultsLbl:'Liczba gości',kidsLbl:'Dostawka dla dziecka',
+    adDescDef:'1–8 gości',kdDescDef:'Najpierw podaj liczbę gości',
+    btn1:'Dalej',back1:'Zmień skład grupy',back2:'Zmień apartament',
+    loading:'Ładowanie kalendarza...',
+    legFree:'Dostępny',legBusy:'Zarezerwowany',legSel:'Twój pobyt',
+    minStay:'⚠ Lipiec i sierpień: minimalny pobyt 5 nocy',
+    minWarn:'⚠ W lipcu i sierpniu minimalny pobyt wynosi 5 nocy. Wybierz co najmniej 5 nocy.',
+    hintArrival:'Wybierz datę przyjazdu',hintDepart:'Teraz wybierz datę wyjazdu',
+    hintBusy:'Wybrany zakres zawiera zajęte dni — wybierz inną datę przyjazdu.',
+    sumTitle:'Podsumowanie rezerwacji',sumDate:'Pobyt',sumNights:'Liczba nocy',sumApt:'Apartament',
+    sumKids:'Dostawki',sumTotal:'Łącznie',sumDeposit:'+ Kaucja zwrotna',
+    depositNote:'Kaucja jest pobierana przy zameldowaniu i zwracana w całości po wymeldowaniu — nie jest wliczona w cenę pobytu.',
+    inclTitle:'Co zawiera cena?',incl1:'Ręczniki i pościel',incl2:'Sprzątanie końcowe',incl3:'Bez opłaty klimatycznej',incl4:'Pralka do dyspozycji',
+    hlTitle:'Dlaczego warto wybrać nas?',
     hl1:'25 minut od lotniska Alghero (Porto Torres)',
-    hl2:'5 minut do plaży',
-    hl3:'W samym centrum — kawiarnie, restauracje, sklepy tuż za rogiem',
-    hl4:'Duży darmowy parking',
-    cinTitle:'Zarejestrowany wynajem we Włoszech',
-    cinText:'Nasz obiekt posiada oficjalny włoski numer identyfikacyjny (CIN) nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do właściwych organów zgodnie z przepisami prawa — możesz wynajmować z pełnym spokojem i bezpieczeństwem.',
-    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Ustalimy wszystkie szczegóły.',
-    optFor:'Opcje dla',adult1:' osoby',adults:' osób',kid1:' dostawka',kids:' dostawki',
-    calA1:' osoba',calAN:' osób',calK1:' dostawka',calKN:' dostawki',
+    hl2:'5 minut spacerem do plaży',
+    hl3:'Centrum miasta — kawiarnie, restauracje i sklepy tuż pod ręką',
+    hl4:'Bezpłatny parking przy obiekcie',
+    cinTitle:'Legalny wynajem krótkoterminowy we Włoszech',
+    cinText:'Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.',
+    btnMsg:'Napisz na Messenger',btnWa:'Napisz na WhatsApp',contactNote:'Odpiszemy szybko i ustalimy wszystkie szczegóły.',
+    optFor:'Dostępne opcje dla',adult1:' gościa',adults:' gości',kid1:' dostawka',kids:' dostawki',
+    calA1:' gość',calAN:' gości',calK1:' dostawka',calKN:' dostawki',
     apt1:'Apartament nr 1',apt2:'Apartament nr 2',apt3:'Apartament nr 3',
-    apt13:'Apt 1 + Apt 3',apt23:'2 apartamenty dla 6 osób',aptL:'3 apartamenty dla 8 osób',
-    t1a:'2-osobowy',t1b:'bez balkonu',t3a:'2-osobowy',t3b:'z tarasem',
-    t2a:'4-osobowy',t2b:'z balkonem',t13a:'2+2 osoby',t13b:'Apt 3 z tarasem',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartamenty — do 6 osób',aptL:'3 apartamenty — do 8 osób',
+    t1a:'dla 2 osób',t1b:'bez balkonu',t3a:'dla 2 osób',t3b:'z tarasem',
+    t2a:'dla 4 osób',t2b:'z balkonem',t13a:'dla 2+2 osób',t13b:'Apt 3 z tarasem',
     t23a:'Apt 2 z balkonem + Apt 3 z tarasem',tL:'Apt 1 + Apt 2 + Apt 3',
     bed1:'+ 1 dostawka',bedN:'+ {n} dostawki',orLbl:'— lub —',
     months:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
     wdays:['Pon','Wt','Śr','Czw','Pt','Sob','Nd'],
-    adDesc1:' osoba',adDesc2:' osoby',adDescN:' osób',
-    kdPre:'Maks. ',kdBed1:' dodatkowe łóżko w apartamencie',kdBedN:' dodatkowe łóżka w apartamencie',kdFor:'',
+    adDesc1:' gość',adDesc2:' gości',adDescN:' gości',
+    kdPre:'maks. ',kdBed1:' dostawka w apartamencie',kdBedN:' dostawki w apartamencie',kdFor:'',
     n1:' noc',n2:' noce',n5:' nocy',
     mHi:'Dzień dobry,',mInt:'jestem zainteresowany/a ',mIn:' w terminie ',
-    mFrom:' od dnia ',mG:' liczba osób: ',mAsk:'. Proszę o informacje dotyczące rezerwacji.',
+    mFrom:' od ',mG:' liczba gości: ',mAsk:'. Proszę o informacje dotyczące rezerwacji.',
+    mPrice:' Wyliczona cena za ten pobyt: ',
     errLoad:'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
-    tipText:'Np. rodzina 2+1: wybierz 2 osoby i 1 dostawkę — taniej niż 3 osoby w większym apartamencie. Jeśli starsze dziecko woli własne łóżko, wybierz 3 osoby.'
+    tipText:'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.'
   },
   de:{
     h1:'Verfügbarkeit<br><em>prüfen</em>',
-    tagline:'Gruppe und Reisedaten auswählen',
-    step1:'Gruppe',step2:'Option',step3:'Datum',
-    s1label:'Schritt 1 von 3',s1title:'Ihre Reisegruppe',
+    tagline:'Reisegruppe und Reisedaten auswählen',
+    step1:'Gäste',step2:'Apartment',step3:'Daten',
+    s1label:'Schritt 1 von 3',s1title:'Wer reist mit?',
     s1sub:'',
-    s2label:'Schritt 2 von 3',s2title:'Unterkunft wählen',
+    s2label:'Schritt 2 von 3',s2title:'Apartment wählen',
     s3label:'Schritt 3 von 3',s3title:'Reisedaten wählen',
-    s3sub:'Wählen Sie zuerst Ihr Anreisedatum, dann das Abreisedatum.',
-    adultsLbl:'Personenanzahl',kidsLbl:'Zustellbett',
-    adDescDef:'1–8 Personen',kdDescDef:'Bitte zuerst Personenanzahl wählen',
-    btn1:'Weiter',back1:'Gruppe ändern',back2:'Option ändern',
-    loading:'Wird geladen...',
-    legFree:'Verfügbar',legBusy:'Nicht verfügbar',legSel:'Ausgewählter Zeitraum',
+    s3sub:'Wählen Sie zuerst das Anreisedatum, dann das Abreisedatum.',
+    adultsLbl:'Anzahl der Gäste',kidsLbl:'Zustellbett',
+    adDescDef:'1–8 Gäste',kdDescDef:'Bitte zuerst Gästeanzahl wählen',
+    btn1:'Weiter',back1:'Gruppe ändern',back2:'Apartment ändern',
+    loading:'Kalender wird geladen...',
+    legFree:'Verfügbar',legBusy:'Bereits gebucht',legSel:'Ihr Aufenthalt',
     minStay:'⚠ Juli & August: Mindestaufenthalt 5 Nächte',
     minWarn:'⚠ Im Juli und August gilt ein Mindestaufenthalt von 5 Nächten. Bitte mindestens 5 Nächte auswählen.',
-    hintArrival:'Bitte Anreisedatum auswählen',hintDepart:'Jetzt das Abreisedatum auswählen',
-    hintBusy:'Ein Tag im gewählten Zeitraum ist belegt — bitte ein neues Anreisedatum auswählen.',
-    sumTitle:'Zusammenfassung',sumDate:'Zeitraum',sumNights:'Nächte',sumApt:'Apartment',
+    hintArrival:'Anreisedatum auswählen',hintDepart:'Jetzt das Abreisedatum auswählen',
+    hintBusy:'Im gewählten Zeitraum ist ein Tag bereits belegt — bitte neues Anreisedatum wählen.',
+    sumTitle:'Buchungsübersicht',sumDate:'Aufenthalt',sumNights:'Nächte',sumApt:'Apartment',
     sumKids:'Zustellbetten',sumTotal:'Gesamt',sumDeposit:'+ Rückerstattbare Kaution',
-    depositNote:'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Mietpreis enthalten.',
-    inclTitle:'Im Preis enthalten',incl1:'Handtücher und Bettwäsche',incl2:'Reinigung',incl3:'Keine Kurtaxe',incl4:'Waschmaschine',
-    hlTitle:'Warum bei uns?',
+    depositNote:'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Übernachtungspreis enthalten.',
+    inclTitle:'Im Preis inbegriffen',incl1:'Handtücher und Bettwäsche',incl2:'Endreinigung',incl3:'Keine Kurtaxe',incl4:'Waschmaschine zur freien Nutzung',
+    hlTitle:'Warum bei uns übernachten?',
     hl1:'25 Minuten vom Flughafen Alghero (Porto Torres)',
-    hl2:'5 Minuten zum Strand',
-    hl3:'Direkt im Stadtzentrum — Cafés, Restaurants und Geschäfte gleich um die Ecke',
-    hl4:'Großer kostenloser Parkplatz',
-    cinTitle:'Offizielle Ferienvermietung in Italien registriert',
-    cinText:'Unsere Unterkunft verfügt über die offizielle italienische Kennnummer (CIN), vergeben vom Ministerium für Tourismus. Jeder Gast wird gemäß den gesetzlichen Vorschriften bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
-    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Wir klären gemeinsam alle Details.',
-    optFor:'Optionen für',adult1:' Person',adults:' Personen',kid1:' Zustellbett',kids:' Zustellbetten',
-    calA1:' Person',calAN:' Personen',calK1:' Zustellbett',calKN:' Zustellbetten',
+    hl2:'5 Minuten zu Fuß zum Strand',
+    hl3:'Direkt im Stadtzentrum — Cafés, Restaurants und Geschäfte vor der Tür',
+    hl4:'Kostenloser Parkplatz direkt am Haus',
+    cinTitle:'Offiziell registrierte Ferienvermietung in Italien',
+    cinText:'Unser Objekt verfügt über die offizielle italienische Identifikationsnummer (CIN), ausgestellt vom Ministerium für Tourismus. Jeder Gast wird gemäß italienischem Recht bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
+    btnMsg:'Über Messenger schreiben',btnWa:'Über WhatsApp schreiben',contactNote:'Wir antworten schnell und klären alle Details.',
+    optFor:'Verfügbare Optionen für',adult1:' Gast',adults:' Gäste',kid1:' Zustellbett',kids:' Zustellbetten',
+    calA1:' Gast',calAN:' Gäste',calK1:' Zustellbett',calKN:' Zustellbetten',
     apt1:'Apartment Nr. 1',apt2:'Apartment Nr. 2',apt3:'Apartment Nr. 3',
-    apt13:'Apt 1 + Apt 3',apt23:'2 Apartments für 6 Personen',aptL:'3 Apartments für 8 Personen',
-    t1a:'2 Personen',t1b:'ohne Balkon',t3a:'2 Personen',t3b:'mit Terrasse',
-    t2a:'4 Personen',t2b:'mit Balkon',t13a:'2+2 Personen',t13b:'Apt 3 mit Terrasse',
+    apt13:'Apt 1 + Apt 3',apt23:'2 Apartments — bis 6 Personen',aptL:'3 Apartments — bis 8 Personen',
+    t1a:'für 2 Personen',t1b:'ohne Balkon',t3a:'für 2 Personen',t3b:'mit Terrasse',
+    t2a:'für 4 Personen',t2b:'mit Balkon',t13a:'für 2+2 Personen',t13b:'Apt 3 mit Terrasse',
     t23a:'Apt 2 mit Balkon + Apt 3 mit Terrasse',tL:'Apt 1 + Apt 2 + Apt 3',
     bed1:'+ 1 Zustellbett',bedN:'+ {n} Zustellbetten',orLbl:'— oder —',
     months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
     wdays:['Mo','Di','Mi','Do','Fr','Sa','So'],
-    adDesc1:' Person',adDesc2:' Personen',adDescN:' Personen',
-    kdPre:'Max. ',kdBed1:' Zustellbett in der Unterkunft',kdBedN:' Zustellbetten in der Unterkunft',kdFor:'',
+    adDesc1:' Gast',adDesc2:' Gäste',adDescN:' Gäste',
+    kdPre:'max. ',kdBed1:' Zustellbett im Apartment',kdBedN:' Zustellbetten im Apartment',kdFor:'',
     n1:' Nacht',n2:' Nächte',n5:' Nächte',
     mHi:'Guten Tag,',mInt:'ich interessiere mich für ',mIn:' im Zeitraum ',
-    mFrom:' ab dem ',mG:', Anzahl der Personen: ',mAsk:'. Ich bitte um Informationen zur Buchung.',
-    errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden.',
-    tipText:'Tipp: Familie 2+1 — wählen Sie 2 Personen und 1 Zustellbett. Das ist günstiger als 3 Personen in einer größeren Unterkunft. Wenn das Kind lieber ein eigenes Bett möchte, wählen Sie einfach 3 Personen.'
+    mFrom:' ab dem ',mG:', Anzahl der Gäste: ',mAsk:'. Ich bitte um Informationen zur Buchung.',
+    mPrice:' Berechneter Preis für diesen Aufenthalt: ',
+    errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden und erneut versuchen.',
+    tipText:'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3 Personen. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.'
   },
   fr:{
-    h1:'Vérifier<br><em>la disponibilité</em>',
-    tagline:'Choisissez votre groupe et vos dates',
-    step1:'Groupe',step2:'Option',step3:'Dates',
-    s1label:'Étape 1 sur 3',s1title:'Votre groupe',
+    h1:'Vérifier<br><em>les disponibilités</em>',
+    tagline:'Indiquez votre groupe et vos dates de séjour',
+    step1:'Voyageurs',step2:'Appartement',step3:'Dates',
+    s1label:'Étape 1 sur 3',s1title:'Qui voyage ?',
     s1sub:'',
-    s2label:'Étape 2 sur 3',s2title:'Choisir un logement',
-    s3label:'Étape 3 sur 3',s3title:'Choisir vos dates',
-    s3sub:"Cliquez d'abord sur la date d'arrivée, puis sur la date de départ.",
-    adultsLbl:'Nombre de personnes',kidsLbl:'Lit supplémentaire',
-    adDescDef:'1–8 personnes',kdDescDef:"Sélectionnez d\'abord le nombre de personnes",
-    btn1:'Continuer',back1:'Modifier le groupe',back2:"Modifier l'option",
-    loading:'Chargement en cours...',
-    legFree:'Disponible',legBusy:'Indisponible',legSel:'Période sélectionnée',
+    s2label:'Étape 2 sur 3',s2title:'Choisir un appartement',
+    s3label:'Étape 3 sur 3',s3title:'Choisir vos dates de séjour',
+    s3sub:"Sélectionnez d'abord la date d'arrivée, puis la date de départ.",
+    adultsLbl:'Nombre de voyageurs',kidsLbl:'Lit supplémentaire',
+    adDescDef:'1–8 voyageurs',kdDescDef:"Sélectionnez d'abord le nombre de voyageurs",
+    btn1:'Continuer',back1:'Modifier le groupe',back2:"Modifier l'appartement",
+    loading:'Chargement du calendrier...',
+    legFree:'Disponible',legBusy:'Déjà réservé',legSel:'Votre séjour',
     minStay:'⚠ Juillet et août : séjour minimum de 5 nuits',
-    minWarn:'⚠ En juillet et août, le séjour minimum est de 5 nuits. Veuillez sélectionner au moins 5 nuits.',
-    hintArrival:"Cliquez sur la date d'arrivée",hintDepart:'Maintenant, cliquez sur la date de départ',
-    hintBusy:"Un jour dans la période choisie est déjà pris — sélectionnez une nouvelle date d'arrivée.",
-    sumTitle:'Récapitulatif',sumDate:'Période',sumNights:'Nuits',sumApt:'Appartement',
+    minWarn:'⚠ En juillet et août, la durée minimale de séjour est de 5 nuits. Veuillez sélectionner au moins 5 nuits.',
+    hintArrival:"Sélectionnez votre date d'arrivée",hintDepart:'Sélectionnez maintenant votre date de départ',
+    hintBusy:"Un jour dans la période choisie est déjà réservé — veuillez sélectionner une nouvelle date d'arrivée.",
+    sumTitle:'Récapitulatif de la réservation',sumDate:'Séjour',sumNights:'Nuits',sumApt:'Appartement',
     sumKids:'Lits supplémentaires',sumTotal:'Total',sumDeposit:'+ Caution remboursable',
-    depositNote:"La caution est perçue à l'arrivée en guise de garantie et intégralement remboursée au départ — elle ne fait pas partie du montant de la location.",
-    inclTitle:'Inclus dans le prix',incl1:'Serviettes et literie',incl2:'Ménage',incl3:'Taxe de séjour offerte',incl4:'Machine à laver',
-    hlTitle:'Pourquoi nous choisir ?',
+    depositNote:"La caution est perçue à l'arrivée et intégralement remboursée au départ — elle n'est pas incluse dans le prix du séjour.",
+    inclTitle:'Ce qui est inclus',incl1:'Serviettes et literie',incl2:'Ménage de fin de séjour',incl3:'Taxe de séjour offerte',incl4:'Machine à laver à disposition',
+    hlTitle:'Pourquoi choisir notre logement ?',
     hl1:"À 25 minutes de l'aéroport d'Alghero (Porto Torres)",
-    hl2:'À 5 minutes de la plage',
+    hl2:'À 5 minutes à pied de la plage',
     hl3:'En plein centre-ville — cafés, restaurants et boutiques à deux pas',
-    hl4:'Grand parking gratuit',
-    cinTitle:'Location officiellement enregistrée en Italie',
-    cinText:"Notre établissement dispose du numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes, conformément à la réglementation en vigueur — réservez en toute sérénité.",
-    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Nous réglerons ensemble tous les détails.',
-    optFor:'Options pour',adult1:' personne',adults:' personnes',kid1:' lit suppl.',kids:' lits suppl.',
-    calA1:' personne',calAN:' personnes',calK1:' lit suppl.',calKN:' lits suppl.',
+    hl4:'Parking gratuit sur place',
+    cinTitle:'Location de vacances officiellement enregistrée en Italie',
+    cinText:"Notre logement possède le numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes conformément à la législation italienne — réservez en toute confiance.",
+    btnMsg:'Écrire sur Messenger',btnWa:'Écrire sur WhatsApp',contactNote:'Nous répondons rapidement et réglons tous les détails ensemble.',
+    optFor:'Options disponibles pour',adult1:' voyageur',adults:' voyageurs',kid1:' lit suppl.',kids:' lits suppl.',
+    calA1:' voyageur',calAN:' voyageurs',calK1:' lit suppl.',calKN:' lits suppl.',
     apt1:'Appartement n° 1',apt2:'Appartement n° 2',apt3:'Appartement n° 3',
-    apt13:'App. 1 + App. 3',apt23:'2 appartements pour 6 personnes',aptL:'3 appartements pour 8 personnes',
-    t1a:'2 personnes',t1b:'sans balcon',t3a:'2 personnes',t3b:'avec terrasse',
-    t2a:'4 personnes',t2b:'avec balcon',t13a:'2+2 personnes',t13b:'App. 3 avec terrasse',
+    apt13:'App. 1 + App. 3',apt23:'2 appartements — jusqu\'à 6 personnes',aptL:'3 appartements — jusqu\'à 8 personnes',
+    t1a:'pour 2 personnes',t1b:'sans balcon',t3a:'pour 2 personnes',t3b:'avec terrasse',
+    t2a:'pour 4 personnes',t2b:'avec balcon',t13a:'pour 2+2 personnes',t13b:'App. 3 avec terrasse',
     t23a:'App. 2 avec balcon + App. 3 avec terrasse',tL:'App. 1 + App. 2 + App. 3',
     bed1:'+ 1 lit suppl.',bedN:'+ {n} lits suppl.',orLbl:'— ou —',
     months:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
     wdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
-    adDesc1:' personne',adDesc2:' personnes',adDescN:' personnes',
-    kdPre:'Max. ',kdBed1:' lit supplémentaire dans l\'appartement',kdBedN:' lits supplémentaires dans l\'appartement',kdFor:'',
+    adDesc1:' voyageur',adDesc2:' voyageurs',adDescN:' voyageurs',
+    kdPre:'max. ',kdBed1:' lit supplémentaire dans l\'appartement',kdBedN:' lits supplémentaires dans l\'appartement',kdFor:'',
     n1:' nuit',n2:' nuits',n5:' nuits',
     mHi:'Bonjour,',mInt:"je suis intéressé(e) par ",mIn:' du ',
-    mFrom:' à partir du ',mG:', nombre de personnes : ',mAsk:'. Je souhaite recevoir des informations sur la réservation.',
-    errLoad:'Impossible de charger le calendrier. Veuillez recharger la page.',
-    tipText:'Ex. famille 2+1 : choisissez 2 personnes et 1 lit supplémentaire — moins cher qu\'un grand appartement pour 3. Si l\'enfant préfère son propre lit, sélectionnez simplement 3 personnes.'
+    mFrom:' à partir du ',mG:', nombre de voyageurs : ',mAsk:'. Je souhaite recevoir des informations sur la réservation.',
+    mPrice:' Prix calculé pour ce séjour : ',
+    errLoad:'Impossible de charger le calendrier. Veuillez recharger la page et réessayer.',
+    tipText:'Astuce : famille 2+1 ? Choisissez 2 voyageurs et 1 lit supplémentaire — plus économique qu\'un grand appartement pour 3. Si votre enfant préfère son propre lit, sélectionnez simplement 3 voyageurs.'
   },
   en:{
     h1:'Check<br><em>availability</em>',
-    tagline:'Choose your group and travel dates',
-    step1:'Group',step2:'Option',step3:'Dates',
-    s1label:'Step 1 of 3',s1title:'Your group',
+    tagline:'Tell us who\'s coming and when',
+    step1:'Guests',step2:'Apartment',step3:'Dates',
+    s1label:'Step 1 of 3',s1title:'Who\'s coming?',
     s1sub:'',
-    s2label:'Step 2 of 3',s2title:'Choose accommodation',
-    s3label:'Step 3 of 3',s3title:'Choose your dates',
-    s3sub:'Click your arrival date first, then your departure date.',
-    adultsLbl:'Number of guests',kidsLbl:'Extra bed',
-    adDescDef:'1–8 people',kdDescDef:'Please select number of guests first',
-    btn1:'Next',back1:'Change group',back2:'Change option',
-    loading:'Loading...',
-    legFree:'Available',legBusy:'Unavailable',legSel:'Selected dates',
+    s2label:'Step 2 of 3',s2title:'Choose your apartment',
+    s3label:'Step 3 of 3',s3title:'Pick your dates',
+    s3sub:'Select your check-in date, then your check-out date.',
+    adultsLbl:'Guests',kidsLbl:'Extra bed',
+    adDescDef:'1–8 guests',kdDescDef:'Select the number of guests first',
+    btn1:'Continue',back1:'Change guests',back2:'Change apartment',
+    loading:'Loading calendar...',
+    legFree:'Available',legBusy:'Already booked',legSel:'Your stay',
     minStay:'⚠ July & August: minimum stay is 5 nights',
     minWarn:'⚠ A minimum stay of 5 nights applies in July and August. Please select at least 5 nights.',
-    hintArrival:'Click your arrival date',hintDepart:'Now click your departure date',
-    hintBusy:"A day within your selected range is already taken — please pick a new arrival date.",
-    sumTitle:'Booking summary',sumDate:'Dates',sumNights:'Nights',sumApt:'Apartment',
+    hintArrival:'Select your check-in date',hintDepart:'Now select your check-out date',
+    hintBusy:"A day within your selected range is already booked — please pick a new check-in date.",
+    sumTitle:'Booking summary',sumDate:'Stay',sumNights:'Nights',sumApt:'Apartment',
     sumKids:'Extra beds',sumTotal:'Total',sumDeposit:'+ Refundable security deposit',
-    depositNote:'The deposit is collected at check-in as a security guarantee and fully refunded at check-out — it is not part of the rental price.',
-    inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'Cleaning',incl3:'No tourist tax',incl4:'Washing machine',
+    depositNote:'The security deposit is collected at check-in and fully refunded at check-out — it is not included in the accommodation price.',
+    inclTitle:"What's included",incl1:'Towels and bed linen',incl2:'End-of-stay cleaning',incl3:'No tourist tax',incl4:'Washing machine available',
     hlTitle:'Why stay with us?',
     hl1:'25 minutes from Alghero Airport (Porto Torres)',
-    hl2:'5 minutes to the beach',
-    hl3:'Right in the city centre — cafés, restaurants and shops on your doorstep',
-    hl4:'Large free parking',
-    cinTitle:'Officially registered rental in Italy',
-    cinText:'Our property holds the official Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is registered with the relevant authorities in accordance with Italian law — book with complete peace of mind.',
-    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:"We'll sort out all the details together.",
-    optFor:'Options for',adult1:' person',adults:' people',kid1:' extra bed',kids:' extra beds',
-    calA1:' person',calAN:' people',calK1:' extra bed',calKN:' extra beds',
+    hl2:'5-minute walk to the beach',
+    hl3:'Right in the heart of the city — cafés, restaurants and shops on your doorstep',
+    hl4:'Free parking on site',
+    cinTitle:'Officially registered holiday rental in Italy',
+    cinText:'Our property is officially registered and holds the Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is reported to the relevant authorities in accordance with Italian law — book with complete confidence.',
+    btnMsg:'Message us on Messenger',btnWa:'Message us on WhatsApp',contactNote:"We'll get back to you quickly and sort out all the details.",
+    optFor:'Available options for',adult1:' guest',adults:' guests',kid1:' extra bed',kids:' extra beds',
+    calA1:' guest',calAN:' guests',calK1:' extra bed',calKN:' extra beds',
     apt1:'Apartment No. 1',apt2:'Apartment No. 2',apt3:'Apartment No. 3',
-    apt13:'Apt 1 + Apt 3',apt23:'2 apartments for 6 people',aptL:'3 apartments for 8 people',
-    t1a:'2-person',t1b:'no balcony',t3a:'2-person',t3b:'with terrace',
-    t2a:'4-person',t2b:'with balcony',t13a:'2+2 people',t13b:'Apt 3 with terrace',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartments — up to 6 guests',aptL:'3 apartments — up to 8 guests',
+    t1a:'for 2 guests',t1b:'no balcony',t3a:'for 2 guests',t3b:'with terrace',
+    t2a:'for 4 guests',t2b:'with balcony',t13a:'for 2+2 guests',t13b:'Apt 3 with terrace',
     t23a:'Apt 2 with balcony + Apt 3 with terrace',tL:'Apt 1 + Apt 2 + Apt 3',
     bed1:'+ 1 extra bed',bedN:'+ {n} extra beds',orLbl:'— or —',
     months:['January','February','March','April','May','June','July','August','September','October','November','December'],
     wdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-    adDesc1:' person',adDesc2:' people',adDescN:' people',
-    kdPre:'Max. ',kdBed1:' extra bed in the apartment',kdBedN:' extra beds in the apartment',kdFor:'',
+    adDesc1:' guest',adDesc2:' guests',adDescN:' guests',
+    kdPre:'max. ',kdBed1:' extra bed in the apartment',kdBedN:' extra beds in the apartment',kdFor:'',
     n1:' night',n2:' nights',n5:' nights',
     mHi:'Hello,',mInt:"I'm interested in ",mIn:' from ',
-    mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me reservation details?',
+    mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me booking details?',
+    mPrice:' Estimated price for this stay: ',
     errLoad:'Could not load the calendar. Please refresh the page and try again.',
-    tipText:'E.g. family of 2+1: choose 2 people and 1 extra bed — better value than booking a larger apartment for 3. If your child prefers their own bed, simply select 3 people.'
+    tipText:'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.'
   },
   cs:{
     h1:'Zkontrolovat<br><em>dostupnost</em>',
-    tagline:'Vyberte skupinu a termín',
-    step1:'Skupina',step2:'Možnost',step3:'Termín',
-    s1label:'Krok 1 ze 3',s1title:'Vaše skupina',
+    tagline:'Zadejte počet hostů a data pobytu',
+    step1:'Hosté',step2:'Apartmán',step3:'Data',
+    s1label:'Krok 1 ze 3',s1title:'Kdo přijíždí?',
     s1sub:'',
-    s2label:'Krok 2 ze 3',s2title:'Vyberte ubytování',
-    s3label:'Krok 3 ze 3',s3title:'Vyberte termín',
+    s2label:'Krok 2 ze 3',s2title:'Vyberte apartmán',
+    s3label:'Krok 3 ze 3',s3title:'Vyberte data pobytu',
     s3sub:'Nejprve klikněte na datum příjezdu, poté na datum odjezdu.',
-    adultsLbl:'Počet osob',kidsLbl:'Přistýlka',
-    adDescDef:'1–8 osob',kdDescDef:'Nejprve vyberte počet osob',
-    btn1:'Dále',back1:'Změnit skupinu',back2:'Změnit možnost',
-    loading:'Načítání...',
-    legFree:'Volný',legBusy:'Nedostupný',legSel:'Vybraný termín',
+    adultsLbl:'Počet hostů',kidsLbl:'Přistýlka',
+    adDescDef:'1–8 hostů',kdDescDef:'Nejprve zadejte počet hostů',
+    btn1:'Pokračovat',back1:'Změnit hosty',back2:'Změnit apartmán',
+    loading:'Načítání kalendáře...',
+    legFree:'Dostupný',legBusy:'Již rezervováno',legSel:'Váš pobyt',
     minStay:'⚠ Červenec a srpen: minimální pobyt je 5 nocí',
-    minWarn:'⚠ V červenci a srpnu platí minimální pobyt 5 nocí. Vyberte prosím alespoň 5 nocí.',
-    hintArrival:'Klikněte na datum příjezdu',hintDepart:'Nyní klikněte na datum odjezdu',
-    hintBusy:'Ve vybraném rozsahu je obsazený den — vyberte prosím nové datum příjezdu.',
-    sumTitle:'Shrnutí',sumDate:'Termín',sumNights:'Noci',sumApt:'Apartmán',
+    minWarn:'⚠ V červenci a srpnu platí minimální délka pobytu 5 nocí. Vyberte prosím alespoň 5 nocí.',
+    hintArrival:'Vyberte datum příjezdu',hintDepart:'Nyní vyberte datum odjezdu',
+    hintBusy:'Ve vybraném rozmezí je obsazený den — vyberte prosím nové datum příjezdu.',
+    sumTitle:'Souhrn rezervace',sumDate:'Pobyt',sumNights:'Počet nocí',sumApt:'Apartmán',
     sumKids:'Přistýlky',sumTotal:'Celkem',sumDeposit:'+ Vratná kauce',
-    depositNote:'Kauce je vybírána při příjezdu jako záruka a po odjezdu je plně vrácena — není součástí ceny pronájmu.',
-    inclTitle:'V ceně',incl1:'Ručníky a ložní prádlo',incl2:'Úklid',incl3:'Bez turistického poplatku',incl4:'Pračka',
+    depositNote:'Kauce je vybrána při příjezdu a po odjezdu plně vrácena — není součástí ceny pobytu.',
+    inclTitle:'Co je zahrnuto v ceně',incl1:'Ručníky a ložní prádlo',incl2:'Úklid po odjezdu',incl3:'Bez turistického poplatku',incl4:'Pračka k dispozici',
     hlTitle:'Proč zvolit nás?',
     hl1:'25 minut od letiště Alghero (Porto Torres)',
-    hl2:'5 minut na pláž',
+    hl2:'5 minut pěšky na pláž',
     hl3:'Přímo v centru města — kavárny, restaurace a obchody za rohem',
-    hl4:'Velké bezplatné parkoviště',
+    hl4:'Bezplatné parkoviště u objektu',
     cinTitle:'Oficiálně registrovaný pronájem v Itálii',
-    cinText:'Náš objekt má oficiální italské identifikační číslo (CIN) vydané Ministerstvem cestovního ruchu. Každý host je v souladu s italskými právními předpisy nahlášen příslušným orgánům — rezervujte s naprostým klidem a jistotou.',
-    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Společně dohodneme všechny podrobnosti.',
-    optFor:'Možnosti pro',adult1:' osobu',adults:' osob',kid1:' přistýlka',kids:' přistýlky',
-    calA1:' osoba',calAN:' osob',calK1:' přistýlka',calKN:' přistýlky',
+    cinText:'Náš objekt je oficiálně registrován a disponuje italským identifikačním číslem (CIN) vydaným Ministerstvem cestovního ruchu. Každý host je v souladu s italskými předpisy nahlášen příslušným orgánům — rezervujte bez starostí.',
+    btnMsg:'Napsat na Messenger',btnWa:'Napsat na WhatsApp',contactNote:'Odpovíme rychle a dohodneme vše potřebné.',
+    optFor:'Dostupné možnosti pro',adult1:' hosta',adults:' hostů',kid1:' přistýlka',kids:' přistýlky',
+    calA1:' host',calAN:' hostů',calK1:' přistýlka',calKN:' přistýlky',
     apt1:'Apartmán č. 1',apt2:'Apartmán č. 2',apt3:'Apartmán č. 3',
-    apt13:'Apt 1 + Apt 3',apt23:'2 apartmány pro 6 osob',aptL:'3 apartmány pro 8 osob',
-    t1a:'2-osobový',t1b:'bez balkonu',t3a:'2-osobový',t3b:'s terasou',
-    t2a:'4-osobový',t2b:'s balkonem',t13a:'2+2 osoby',t13b:'Apt 3 s terasou',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartmány — až 6 hostů',aptL:'3 apartmány — až 8 hostů',
+    t1a:'pro 2 hosty',t1b:'bez balkonu',t3a:'pro 2 hosty',t3b:'s terasou',
+    t2a:'pro 4 hosty',t2b:'s balkonem',t13a:'pro 2+2 hosty',t13b:'Apt 3 s terasou',
     t23a:'Apt 2 s balkonem + Apt 3 s terasou',tL:'Apt 1 + Apt 2 + Apt 3',
     bed1:'+ 1 přistýlka',bedN:'+ {n} přistýlky',orLbl:'— nebo —',
     months:['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'],
     wdays:['Po','Út','St','Čt','Pá','So','Ne'],
-    adDesc1:' osoba',adDesc2:' osoby',adDescN:' osob',
-    kdPre:'Max. ',kdBed1:' přistýlka v apartmánu',kdBedN:' přistýlky v apartmánu',kdFor:'',
+    adDesc1:' host',adDesc2:' hosté',adDescN:' hostů',
+    kdPre:'max. ',kdBed1:' přistýlka v apartmánu',kdBedN:' přistýlky v apartmánu',kdFor:'',
     n1:' noc',n2:' noci',n5:' nocí',
     mHi:'Dobrý den,',mInt:'mám zájem o ',mIn:' v termínu ',
-    mFrom:' od ',mG:', počet osob: ',mAsk:'. Prosím o informace ohledně rezervace.',
+    mFrom:' od ',mG:', počet hostů: ',mAsk:'. Prosím o informace ohledně rezervace.',
+    mPrice:' Vypočtená cena za tento pobyt: ',
     errLoad:'Nepodařilo se načíst kalendář. Obnovte stránku a zkuste to znovu.',
-    tipText:'Např. rodina 2+1: vyberte 2 osoby a 1 přistýlku — levnější než 3 osoby ve větším apartmánu. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 osoby.'
+    tipText:'Tip: cestujete jako 2+1? Zvolte 2 hosty a 1 přistýlku — výhodnější než větší apartmán pro 3. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 hosty.'
   }
 };
 
@@ -1125,6 +1130,13 @@ function goBack(step){
 }
 
 /* ── messenger ── */
+function calcTotalForMsg(s,e,nights){
+  var sApts=selOpt.apts,totalApt=0;
+  var c=new Date(s);
+  for(var i=0;i<nights;i++){totalApt+=getDayPrice(sApts,c.getMonth()+1);c.setDate(c.getDate()+1);}
+  var totalKids=kids*KIDS_PRICE*nights;
+  return totalApt+totalKids;
+}
 function openMessenger(){
   var msg=T.mHi;
   if(selOpt){
@@ -1135,7 +1147,8 @@ function openMessenger(){
       var s=pD4(selStart),e=pD4(selEnd);
       var nights=Math.round((e-s)/(1000*60*60*24));
       var ns=nights===1?'1'+T.n1:(nights<5?nights+T.n2:nights+T.n5);
-      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+T.mAsk;
+      var total=calcTotalForMsg(s,e,nights);
+      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+'.'+T.mPrice+total+'€.'+T.mAsk;
     }else if(selStart){
       msg=T.mHi+' '+T.mInt+aptName+T.mFrom+fmtDate(pD4(selStart))+','+T.mG+osoby+T.mAsk;
     }else{
@@ -1156,7 +1169,8 @@ function openWhatsApp(){
       var s=pD4(selStart),e=pD4(selEnd);
       var nights=Math.round((e-s)/(1000*60*60*24));
       var ns=nights===1?'1'+T.n1:(nights<5?nights+T.n2:nights+T.n5);
-      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+T.mAsk;
+      var total=calcTotalForMsg(s,e,nights);
+      msg=T.mHi+' '+T.mInt+aptName+T.mIn+fmtDate(s)+' - '+fmtDate(e)+' ('+ns+'),'+T.mG+osoby+'.'+T.mPrice+total+'€.'+T.mAsk;
     }else if(selStart){
       msg=T.mHi+' '+T.mInt+aptName+T.mFrom+fmtDate(pD4(selStart))+','+T.mG+osoby+T.mAsk;
     }else{

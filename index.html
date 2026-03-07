@@ -209,6 +209,7 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
   <button class="lang-btn" onclick="setLang('de')">DE</button>
   <button class="lang-btn" onclick="setLang('fr')">FR</button>
   <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('cs')">CS</button>
 </div>
 
 <header>
@@ -530,6 +531,49 @@ var LANGS={
     mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me reservation details?',
     errLoad:'Could not load the calendar. Please refresh the page and try again.',
     tipText:'E.g. family of 2+1: choose 2 people and 1 extra bed — better value than booking a larger apartment for 3. If your child prefers their own bed, simply select 3 people.'
+  },
+  cs:{
+    h1:'Zkontrolovat<br><em>dostupnost</em>',
+    tagline:'Vyberte skupinu a termín',
+    step1:'Skupina',step2:'Možnost',step3:'Termín',
+    s1label:'Krok 1 ze 3',s1title:'Vaše skupina',
+    s1sub:'',
+    s2label:'Krok 2 ze 3',s2title:'Vyberte ubytování',
+    s3label:'Krok 3 ze 3',s3title:'Vyberte termín',
+    s3sub:'Nejprve klikněte na datum příjezdu, poté na datum odjezdu.',
+    adultsLbl:'Počet osob',kidsLbl:'Přistýlka',
+    adDescDef:'1–8 osob',kdDescDef:'Nejprve vyberte počet osob',
+    btn1:'Dále',back1:'Změnit skupinu',back2:'Změnit možnost',
+    loading:'Načítání...',
+    legFree:'Volný',legBusy:'Nedostupný',legSel:'Vybraný termín',
+    minStay:'⚠ Červenec a srpen: minimální pobyt je 5 nocí',
+    minWarn:'⚠ V červenci a srpnu platí minimální pobyt 5 nocí. Vyberte prosím alespoň 5 nocí.',
+    hintArrival:'Klikněte na datum příjezdu',hintDepart:'Nyní klikněte na datum odjezdu',
+    hintBusy:'Ve vybraném rozsahu je obsazený den — vyberte prosím nové datum příjezdu.',
+    sumTitle:'Shrnutí',sumDate:'Termín',sumNights:'Noci',sumApt:'Apartmán',
+    sumKids:'Přistýlky',sumTotal:'Celkem',sumDeposit:'+ Vratná kauce',
+    depositNote:'Kauce je vybírána při příjezdu jako záruka a po odjezdu je plně vrácena — není součástí ceny pronájmu.',
+    inclTitle:'V ceně',incl1:'Ručníky a ložní prádlo',incl2:'Úklid',incl3:'Bez turistického poplatku',
+    cinTitle:'Oficiálně registrovaný pronájem v Itálii',
+    cinText:'Náš objekt má oficiální italské identifikační číslo (CIN) vydané Ministerstvem cestovního ruchu. Každý host je v souladu s italskými právními předpisy nahlášen příslušným orgánům — rezervujte s naprostým klidem a jistotou.',
+    btnMsg:'Messenger',btnWa:'WhatsApp',contactNote:'Společně dohodneme všechny podrobnosti.',
+    optFor:'Možnosti pro',adult1:' osobu',adults:' osob',kid1:' přistýlka',kids:' přistýlky',
+    calA1:' osoba',calAN:' osob',calK1:' přistýlka',calKN:' přistýlky',
+    apt1:'Apartmán č. 1',apt2:'Apartmán č. 2',apt3:'Apartmán č. 3',
+    apt13:'Apt 1 + Apt 3',apt23:'2 apartmány pro 6 osob',aptL:'3 apartmány pro 8 osob',
+    t1a:'2-osobový',t1b:'bez balkonu',t3a:'2-osobový',t3b:'s terasou',
+    t2a:'4-osobový',t2b:'s balkonem',t13a:'2+2 osoby',t13b:'Apt 3 s terasou',
+    t23a:'Apt 2 s balkonem + Apt 3 s terasou',tL:'Apt 1 + Apt 2 + Apt 3',
+    bed1:'+ 1 přistýlka',bedN:'+ {n} přistýlky',orLbl:'— nebo —',
+    months:['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'],
+    wdays:['Po','Út','St','Čt','Pá','So','Ne'],
+    adDesc1:' osoba',adDesc2:' osoby',adDescN:' osob',
+    kdPre:'Max. ',kdBed1:' přistýlka v apartmánu',kdBedN:' přistýlky v apartmánu',kdFor:'',
+    n1:' noc',n2:' noci',n5:' nocí',
+    mHi:'Dobrý den,',mInt:'mám zájem o ',mIn:' v termínu ',
+    mFrom:' od ',mG:', počet osob: ',mAsk:'. Prosím o informace ohledně rezervace.',
+    errLoad:'Nepodařilo se načíst kalendář. Obnovte stránku a zkuste to znovu.',
+    tipText:'Např. rodina 2+1: vyberte 2 osoby a 1 přistýlku — levnější než 3 osoby ve větším apartmánu. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 osoby.'
   }
 };
 
@@ -694,7 +738,8 @@ var META_LABELS = {
   pl: { persons:['osoba','osoby','osób'], bedrooms:['sypialnia','sypialnie','sypialni'], bathroom:'łazienka', bathrooms:'łazienki', balcony:'balkon', terrace:'taras' },
   de: { persons:['Person','Personen','Personen'], bedrooms:['Schlafzimmer','Schlafzimmer','Schlafzimmer'], bathroom:'Bad', bathrooms:'Bäder', balcony:'Balkon', terrace:'Terrasse' },
   fr: { persons:['personne','personnes','personnes'], bedrooms:['chambre','chambres','chambres'], bathroom:'salle de bain', bathrooms:'salles de bain', balcony:'balcon', terrace:'terrasse' },
-  en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', bathrooms:'bathrooms', balcony:'balcony', terrace:'terrace' }
+  en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', bathrooms:'bathrooms', balcony:'balcony', terrace:'terrace' },
+  cs: { persons:['osoba','osoby','osob'], bedrooms:['ložnice','ložnice','ložnic'], bathroom:'koupelna', bathrooms:'koupelny', balcony:'balkon', terrace:'terasa' }
 };
 
 function metaLabel(item) {

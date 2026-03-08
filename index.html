@@ -1067,7 +1067,7 @@ function parseIcal(txt){
   return ev;
 }
 function detApt(s){var f=[];if(/1/.test(s))f.push(1);if(/2/.test(s))f.push(2);if(/3/.test(s))f.push(3);return f;}
-function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s);while(c<e){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
+function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;var sNext=new Date(s);sNext.setDate(sNext.getDate()+1);if(!e||e<=sNext)return r;var c=new Date(sNext);var ePrev=new Date(e);ePrev.setDate(ePrev.getDate()-1);while(c<=ePrev){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
 function pD(s){if(!s)return null;var y=+s.substr(0,4),mo=+s.substr(4,2)-1,d=+s.substr(6,2);return(isNaN(y)||isNaN(mo)||isNaN(d))?null:new Date(y,mo,d);}
 function pD4(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function dkey(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}

@@ -218,6 +218,7 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
   <button class="lang-btn" onclick="setLang('fr')">FR</button>
   <button class="lang-btn" onclick="setLang('en')">EN</button>
   <button class="lang-btn" onclick="setLang('cs')">CZ</button>
+  <button class="lang-btn" onclick="setLang('it')">IT</button>
 </div>
 
 <header>
@@ -622,6 +623,55 @@ var LANGS={
     mPrice:' Vypočtená cena za tento pobyt: ',
     errLoad:'Nepodařilo se načíst kalendář. Obnovte stránku a zkuste to znovu.',
     tipText:'Tip: cestujete jako 2+1? Zvolte 2 hosty a 1 přistýlku — výhodnější než větší apartmán pro 3. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 hosty.'
+  },
+  it:{
+    h1:'Verifica<br><em>disponibilità</em>',
+    tagline:'Scegli il tuo gruppo e le date del soggiorno',
+    step1:'Ospiti',step2:'Appartamento',step3:'Date',
+    s1label:'Passo 1 di 3',s1title:'Chi soggiorna?',
+    s1sub:'',
+    s2label:'Passo 2 di 3',s2title:'Scegli l\'appartamento',
+    s3label:'Passo 3 di 3',s3title:'Seleziona le date',
+    s3sub:'Scegli prima la data di check-in, poi la data di check-out.',
+    adultsLbl:'Numero di ospiti',kidsLbl:'Letto aggiunto',
+    adDescDef:'1–8 ospiti',kdDescDef:'Prima seleziona il numero di ospiti',
+    btn1:'Continua',back1:'Modifica il gruppo',back2:'Cambia appartamento',
+    loading:'Caricamento calendario...',
+    legFree:'Disponibile',legBusy:'Non disponibile',legSel:'Il tuo soggiorno',
+    minStay:'⚠ Luglio e agosto: soggiorno minimo 5 notti',
+    minWarn:'⚠ A luglio e agosto il soggiorno minimo è di 5 notti. Seleziona almeno 5 notti.',
+    hintArrival:'Seleziona la data di check-in',hintDepart:'Ora seleziona la data di check-out',
+    hintBusy:'Un giorno nell\'intervallo selezionato non è disponibile — scegli una nuova data di check-in.',
+    sumTitle:'Riepilogo prenotazione',sumDate:'Soggiorno',sumNights:'Notti',sumApt:'Appartamento',
+    sumKids:'Letti aggiunti',sumTotal:'Totale',sumDeposit:'+ Deposito cauzionale rimborsabile',
+    depositNote:'Il deposito cauzionale viene richiesto al check-in e restituito integralmente al check-out — non è incluso nel prezzo del soggiorno.',
+    inclTitle:'Cosa è incluso nel prezzo',incl1:'Asciugamani e biancheria da letto',incl2:'Pulizia finale',incl3:'Nessuna tassa di soggiorno',incl4:'Lavatrice a disposizione',
+    hlTitle:'Perché scegliere noi?',
+    hl1:'A 25 minuti dall\'aeroporto di Alghero (Porto Torres)',
+    hl2:'A 5 minuti a piedi dalla spiaggia',
+    hl3:'Nel cuore del centro — bar, ristoranti e negozi a portata di mano',
+    hl4:'Parcheggio gratuito in loco',
+    cinTitle:'Affitto breve ufficialmente registrato in Italia',
+    cinText:'La nostra struttura è regolarmente registrata e dispone del Codice Identificativo Nazionale (CIN), rilasciato dal Ministero del Turismo. Ogni ospite viene comunicato alle autorità competenti nel rispetto della normativa italiana — prenota in tutta tranquillità.',
+    btnMsg:'Scrivici su Messenger',btnWa:'Scrivici su WhatsApp',contactNote:'Ti risponderemo subito e definiremo insieme tutti i dettagli.',
+    optFor:'Opzioni disponibili per',adult1:' ospite',adults:' ospiti',kid1:' letto aggiunto',kids:' letti aggiunti',
+    calA1:' ospite',calAN:' ospiti',calK1:' letto aggiunto',calKN:' letti aggiunti',
+    apt1:'Appartamento n. 1',apt2:'Appartamento n. 2',apt3:'Appartamento n. 3',
+    apt13:'App. 1 + App. 3',apt23:'2 appartamenti — fino a 6 persone',aptL:'3 appartamenti — fino a 8 persone',
+    t1a:'per 2 persone',t1b:'senza balcone',t3a:'per 2 persone',t3b:'con terrazza',
+    t2a:'per 4 persone',t2b:'con balcone',t13a:'per 2+2 persone',t13b:'App. 3 con terrazza',
+    t23a:'App. 2 con balcone + App. 3 con terrazza',tL:'App. 1 + App. 2 + App. 3',
+    bed1:'+ 1 letto aggiunto',bedN:'+ {n} letti aggiunti',orLbl:'— oppure —',
+    months:['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+    wdays:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
+    adDesc1:' ospite',adDesc2:' ospiti',adDescN:' ospiti',
+    kdPre:'max. ',kdBed1:' letto aggiunto nell\'appartamento',kdBedN:' letti aggiunti nell\'appartamento',kdFor:'',
+    n1:' notte',n2:' notti',n5:' notti',
+    mHi:'Salve,',mInt:'sono interessato/a a ',mIn:' nel periodo ',
+    mFrom:' dal ',mG:', numero di ospiti: ',mAsk:'. Vorrei ricevere informazioni sulla prenotazione.',
+    mPrice:' Prezzo calcolato per questo soggiorno: ',
+    errLoad:'Impossibile caricare il calendario. Aggiorna la pagina e riprova.',
+    tipText:'Consiglio: viaggiate in 2+1? Seleziona 2 ospiti e 1 letto aggiunto — più conveniente che prenotare un appartamento più grande per 3. Se il bambino preferisce un letto tutto suo, seleziona semplicemente 3 ospiti.'
   }
 };
 
@@ -789,7 +839,8 @@ var META_LABELS = {
   de: { persons:['Person','Personen','Personen'], bedrooms:['Schlafzimmer','Schlafzimmer','Schlafzimmer'], bathroom:'Bad', bathrooms:'Bäder', balcony:'Balkon', terrace:'Terrasse' },
   fr: { persons:['personne','personnes','personnes'], bedrooms:['chambre','chambres','chambres'], bathroom:'salle de bain', bathrooms:'salles de bain', balcony:'balcon', terrace:'terrasse' },
   en: { persons:['person','people','people'], bedrooms:['bedroom','bedrooms','bedrooms'], bathroom:'bathroom', bathrooms:'bathrooms', balcony:'balcony', terrace:'terrace' },
-  cs: { persons:['osoba','osoby','osob'], bedrooms:['ložnice','ložnice','ložnic'], bathroom:'koupelna', bathrooms:'koupelny', balcony:'balkon', terrace:'terasa' }
+  cs: { persons:['osoba','osoby','osob'], bedrooms:['ložnice','ložnice','ložnic'], bathroom:'koupelna', bathrooms:'koupelny', balcony:'balkon', terrace:'terasa' },
+  it: { persons:['persona','persone','persone'], bedrooms:['camera','camere','camere'], bathroom:'bagno', bathrooms:'bagni', balcony:'balcone', terrace:'terrazza' }
 };
 
 function metaLabel(item) {

@@ -687,8 +687,8 @@ var PRICES={1:{4:70,5:80,6:90,7:100,8:120,9:90,10:70},2:{4:90,5:120,6:140,7:160,
 var KIDS_PRICE=5;
 var DEPOSIT={1:200,2:300,3:500};
 var MIN_STAY_NIGHTS=5;
-var ICAL_DIRECT="https://calendar.google.com/calendar/ical/azzurro.luxurybutique%40gmail.com/public/basic.ics";
-var _ts=Date.now();var ICAL_PROXIES=["https://corsproxy.io/?url="+encodeURIComponent(ICAL_DIRECT)+"&_="+_ts,"https://proxy.cors.sh/"+ICAL_DIRECT+"?_="+_ts,"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(ICAL_DIRECT)+"&_="+_ts];
+var GCAL_ID="azzurro.luxurybutique@gmail.com";
+var GCAL_KEY="AIzaSyCKBgPEZjqvwWDXKR__oc9rgLqX_YVndgM";
 
 /* ── language ── */
 function setLang(l){
@@ -1046,25 +1046,39 @@ function goStep3(){
 }
 
 /* ── iCal ── */
-function fetchIcal(){showSt(T.loading,false);tryProxy(0);}
-function tryProxy(i){
-  if(i>=ICAL_PROXIES.length){showSt(T.errLoad,true);return;}
+function fetchIcal(){
+  showSt(T.loading,false);
+  var now=new Date();
+  var tMin=new Date(now.getFullYear(),now.getMonth()-1,1).toISOString();
+  var tMax=new Date(now.getFullYear()+2,0,1).toISOString();
+  var url='https://www.googleapis.com/calendar/v3/calendars/'+encodeURIComponent(GCAL_ID)+'/events?key='+GCAL_KEY+'&singleEvents=true&maxResults=500&timeMin='+encodeURIComponent(tMin)+'&timeMax='+encodeURIComponent(tMax);
   var x=new XMLHttpRequest();
-  x.open('GET',ICAL_PROXIES[i],true);x.timeout=12000;
-  x.onload=function(){if(x.status===200&&x.responseText.indexOf('BEGIN:VCALENDAR')!==-1){cache=parseIcal(x.responseText);renderCal();}else tryProxy(i+1);};
-  x.onerror=function(){tryProxy(i+1);};x.ontimeout=function(){tryProxy(i+1);};
+  x.open('GET',url,true);x.timeout=12000;
+  x.onload=function(){
+    if(x.status===200){
+      try{cache=parseGcal(JSON.parse(x.responseText));renderCal();}
+      catch(e){showSt(T.errLoad,true);}
+    }else{showSt(T.errLoad,true);}
+  };
+  x.onerror=function(){showSt(T.errLoad,true);};
+  x.ontimeout=function(){showSt(T.errLoad,true);};
   x.send();
 }
-function parseIcal(txt){
+function parseGcal(data){
   var ev={};
-  txt=txt.replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\n[ \t]/g,'');
-  var ll=txt.split('\n'),inE=false,sum='',ds='',de='';
-  function flush(){if(!ds)return;var ap=detApt(sum);if(!ap.length)return;expandR(ds,de).forEach(function(d){if(!ev[d])ev[d]=[];ap.forEach(function(n){if(ev[d].indexOf(n)===-1)ev[d].push(n);});});}
-  ll.forEach(function(ln){ln=ln.trim();if(ln==='BEGIN:VEVENT'){inE=true;sum='';ds='';de='';}else if(ln==='END:VEVENT'){flush();inE=false;}else if(inE){if(ln.indexOf('SUMMARY')===0)sum=ln.replace(/^SUMMARY[^:]*:/,'').toLowerCase().trim();else if(ln.indexOf('DTSTART')===0)ds=ln.replace(/^DTSTART[^:]*:/,'').trim();else if(ln.indexOf('DTEND')===0)de=ln.replace(/^DTEND[^:]*:/,'').trim();}});
+  (data.items||[]).forEach(function(item){
+    var sum=(item.summary||'').toLowerCase();
+    var ap=detApt(sum);
+    if(!ap.length)return;
+    var ds,de;
+    if(item.start.date){ds=item.start.date.replace(/-/g,'');de=item.end.date.replace(/-/g,'');}
+    else{ds=item.start.dateTime.replace(/-/g,'').replace(/T.*/,'')+'T000000Z';de=item.end.dateTime.replace(/-/g,'').replace(/T.*/,'')+'T000000Z';}
+    expandR(ds,de).forEach(function(d){if(!ev[d])ev[d]=[];ap.forEach(function(n){if(ev[d].indexOf(n)===-1)ev[d].push(n);});});
+  });
   return ev;
 }
 function detApt(s){var f=[];if(/1/.test(s))f.push(1);if(/2/.test(s))f.push(2);if(/3/.test(s))f.push(3);return f;}
-function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s);c.setDate(c.getDate()+1);var last=new Date(e);last.setDate(last.getDate()-2);while(c<=last){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
+function expandR(ds,de){var r=[],s=pD(ds),e=pD(de);if(!s)return r;var allDay=ds.indexOf('T')===-1;if(!e||e<=s){r.push(dkey(s));return r;}var c=new Date(s);c.setDate(c.getDate()+1);var last=new Date(e);last.setDate(last.getDate()-(allDay?2:1));while(c<=last){r.push(dkey(c));c.setDate(c.getDate()+1);}return r;}
 function pD(s){if(!s)return null;var y=+s.substr(0,4),mo=+s.substr(4,2)-1,d=+s.substr(6,2);return(isNaN(y)||isNaN(mo)||isNaN(d))?null:new Date(y,mo,d);}
 function pD4(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function dkey(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}

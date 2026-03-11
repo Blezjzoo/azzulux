@@ -73,16 +73,37 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .aopt[data-t="2"].sel{border-color:var(--tom)}
 .aopt[data-t="3"].sel{border-color:var(--baz)}
 .aopt[data-t="13"].sel,.aopt[data-t="23"].sel,.aopt[data-t="L"].sel{border-color:var(--ocean)}
-.ainner{padding:14px 16px}
+.ainner{padding:10px 14px 14px}
 .arow{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .adots{display:flex;gap:4px}
 .adot{width:9px;height:9px;border-radius:50%}
 .adot.p{background:var(--paw)}.adot.t{background:var(--tom)}.adot.b{background:var(--baz)}
-.aname{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:600;color:var(--ocean)}
+.aname{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:600;color:var(--ocean);flex:1}
 .atags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
 .atag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;background:var(--sand);color:var(--muted)}
 .atag.kids{background:var(--baz-l);color:var(--baz)}
 .aor{text-align:center;font-size:11px;color:var(--muted);padding:2px 0;font-style:italic}
+
+/* ── SELECT BUTTON ── */
+.btn-select{
+  background:transparent;
+  border:2px solid var(--ocean);
+  color:var(--ocean);
+  border-radius:50px;
+  padding:8px 16px;
+  font-family:"DM Sans",sans-serif;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .22s;
+  white-space:nowrap;
+  touch-action:manipulation;
+  flex-shrink:0;
+  line-height:1;
+}
+.btn-select:hover{background:var(--ocean);color:#fff;}
+.aopt.sel .btn-select{background:var(--ocean);color:#fff;}
+
 .cal{background:var(--white);border-radius:18px;overflow:hidden;border:1.5px solid var(--sand2);box-shadow:0 2px 20px rgba(26,74,92,.06)}
 .cal-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
 .cal-hdr.c1{background:var(--paw)}.cal-hdr.c2{background:var(--tom)}.cal-hdr.c3{background:var(--baz)}.cal-hdr.cM{background:var(--ocean)}
@@ -196,7 +217,6 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .meta-zoom-btn{margin-left:auto;background:var(--foam);border:1.5px solid var(--wave);color:var(--ocean);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;touch-action:manipulation;transition:background .2s;flex-shrink:0}
 .meta-zoom-btn:hover{background:var(--wave);color:#fff}
 .meta-zoom-lbl{font-family:"DM Sans",sans-serif}
-.ainner{padding:10px 14px 14px}
 
 /* ── location highlights ── */
 .highlights{background:linear-gradient(135deg,#e8f4f8 0%,#f0f8e8 100%);border:1.5px solid #a8d4e0;border-radius:14px;padding:14px 16px;margin-top:12px}
@@ -425,7 +445,8 @@ var LANGS={
     mFrom:' od ',mG:' liczba gości: ',mAsk:'. Proszę o informacje dotyczące rezerwacji.',
     mPrice:' Wyliczona cena za ten pobyt: ',
     errLoad:'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
-    tipText:'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.'
+    tipText:'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.',
+    selectBtn:'Wybierz →'
   },
   de:{
     h1:'Verfügbarkeit<br><em>prüfen</em>',
@@ -475,7 +496,8 @@ var LANGS={
     mFrom:' ab dem ',mG:', Anzahl der Gäste: ',mAsk:'. Ich bitte um Informationen zur Buchung.',
     mPrice:' Berechneter Preis für diesen Aufenthalt: ',
     errLoad:'Kalender konnte nicht geladen werden. Bitte Seite neu laden und erneut versuchen.',
-    tipText:'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3 Personen. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.'
+    tipText:'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3 Personen. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.',
+    selectBtn:'Auswählen →'
   },
   fr:{
     h1:'Vérifier<br><em>les disponibilités</em>',
@@ -525,7 +547,8 @@ var LANGS={
     mFrom:' à partir du ',mG:', nombre de voyageurs : ',mAsk:'. Je souhaite recevoir des informations sur la réservation.',
     mPrice:' Prix calculé pour ce séjour : ',
     errLoad:'Impossible de charger le calendrier. Veuillez recharger la page et réessayer.',
-    tipText:'Astuce : famille 2+1 ? Choisissez 2 voyageurs et 1 lit supplémentaire — plus économique qu\'un grand appartement pour 3. Si votre enfant préfère son propre lit, sélectionnez simplement 3 voyageurs.'
+    tipText:'Astuce : famille 2+1 ? Choisissez 2 voyageurs et 1 lit supplémentaire — plus économique qu\'un grand appartement pour 3. Si votre enfant préfère son propre lit, sélectionnez simplement 3 voyageurs.',
+    selectBtn:'Choisir →'
   },
   en:{
     h1:'Check<br><em>availability</em>',
@@ -575,7 +598,8 @@ var LANGS={
     mFrom:' from ',mG:', number of guests: ',mAsk:'. Could you please send me booking details?',
     mPrice:' Estimated price for this stay: ',
     errLoad:'Could not load the calendar. Please refresh the page and try again.',
-    tipText:'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.'
+    tipText:'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.',
+    selectBtn:'Select →'
   },
   cs:{
     h1:'Zkontrolovat<br><em>dostupnost</em>',
@@ -625,7 +649,8 @@ var LANGS={
     mFrom:' od ',mG:', počet hostů: ',mAsk:'. Prosím o informace ohledně rezervace.',
     mPrice:' Vypočtená cena za tento pobyt: ',
     errLoad:'Nepodařilo se načíst kalendář. Obnovte stránku a zkuste to znovu.',
-    tipText:'Tip: cestujete jako 2+1? Zvolte 2 hosty a 1 přistýlku — výhodnější než větší apartmán pro 3. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 hosty.'
+    tipText:'Tip: cestujete jako 2+1? Zvolte 2 hosty a 1 přistýlku — výhodnější než větší apartmán pro 3. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 hosty.',
+    selectBtn:'Vybrat →'
   },
   it:{
     h1:'Verifica<br><em>disponibilità</em>',
@@ -675,7 +700,8 @@ var LANGS={
     mFrom:' dal ',mG:', numero di ospiti: ',mAsk:'. Vorrei ricevere informazioni sulla prenotazione.',
     mPrice:' Prezzo calcolato per questo soggiorno: ',
     errLoad:'Impossibile caricare il calendario. Aggiorna la pagina e riprova.',
-    tipText:'Consiglio: viaggiate in 2+1? Seleziona 2 ospiti e 1 letto aggiunto — più conveniente che prenotare un appartamento più grande per 3. Se il bambino preferisce un letto tutto suo, seleziona semplicemente 3 ospiti.'
+    tipText:'Consiglio: viaggiate in 2+1? Seleziona 2 ospiti e 1 letto aggiunto — più conveniente che prenotare un appartamento più grande per 3. Se il bambino preferisce un letto tutto suo, seleziona semplicemente 3 ospiti.',
+    selectBtn:'Scegli →'
   }
 };
 
@@ -801,7 +827,7 @@ function buildOpts(a,k){
   return opts;
 }
 
-/* ── apartment photos config ── easy to update: just change the URLs below ── */
+/* ── apartment photos config ── */
 var APT_PHOTOS = {
   1: [
     'https://drive.google.com/thumbnail?id=1H8naasUP5I3uojltPA-gppie17J3hVFy&sz=w800',
@@ -974,6 +1000,16 @@ function initGallery(gallery) {
   },{passive:true});
 }
 
+function selectOpt(o, div) {
+  if(o.unavail) return;
+  document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
+  div.classList.add('sel');
+  selOpt = o;
+  selStart = null;
+  selEnd = null;
+  setTimeout(goStep3, 240);
+}
+
 function makeCard(o){
   var div=document.createElement('div');
   div.className='aopt'+(o.unavail?' unavail':'');
@@ -991,16 +1027,26 @@ function makeCard(o){
     + galleryHtml
     + metaHtml
     + '<div class="ainner">'
-    +   '<div class="arow"><div class="adots">'+dots+'</div><div class="aname">'+o.name+'</div></div>'
+    +   '<div class="arow">'
+    +     '<div class="adots">'+dots+'</div>'
+    +     '<div class="aname">'+o.name+'</div>'
+    +     '<button class="btn-select" data-sel="1">'+T.selectBtn+'</button>'
+    +   '</div>'
     +   '<div class="atags">'+tags+'</div>'
     + '</div>';
 
+  /* click on the select button */
+  div.querySelector('.btn-select').addEventListener('click', function(e){
+    e.stopPropagation();
+    selectOpt(o, div);
+  });
+
+  /* click anywhere else on the card (but not gallery) */
   div.onclick=function(e){
     if(o.unavail)return;
     if(e.target.closest('.apt-gallery'))return;
-    document.querySelectorAll('.aopt').forEach(function(c){c.classList.remove('sel');});
-    div.classList.add('sel');selOpt=o;selStart=null;selEnd=null;
-    setTimeout(goStep3,240);
+    if(e.target.closest('.btn-select'))return;
+    selectOpt(o, div);
   };
 
   return div;

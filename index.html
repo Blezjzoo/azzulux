@@ -225,6 +225,22 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
 .hl-items{display:flex;flex-direction:column;gap:7px}
 .hl-item{font-size:12px;color:#1a3a48;display:flex;align-items:flex-start;gap:8px;line-height:1.45}
 .hl-icon{font-size:14px;flex-shrink:0;margin-top:-1px}
+
+/* ── sales section ── */
+.sales-section { margin-top: 48px; padding-top: 32px; border-top: 1.5px dashed var(--sand2); }
+.sales-title { font-family: "Cormorant Garamond", serif; font-size: 2rem; font-weight: 600; color: var(--ocean); text-align: center; margin-bottom: 32px; line-height: 1.15; }
+.sales-features { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; margin-bottom: 36px; }
+.sf-item { text-align: center; background: var(--white); padding: 16px 10px; border-radius: 14px; border: 1.5px solid var(--sand2); box-shadow: 0 4px 12px rgba(26, 74, 92, 0.03); }
+.sf-icon { font-size: 26px; margin-bottom: 8px; }
+.sf-title { font-size: 11px; font-weight: 600; color: var(--ocean); line-height: 1.4; }
+.sales-grid { display: flex; flex-direction: column; gap: 24px; }
+.sales-card { background: var(--white); border-radius: 16px; overflow: hidden; border: 1.5px solid var(--sand2); box-shadow: 0 6px 20px rgba(26, 74, 92, 0.05); }
+.sales-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.sales-card-body { padding: 20px; }
+.sales-card-title { font-family: "Cormorant Garamond", serif; font-size: 1.4rem; font-weight: 600; color: var(--ocean); margin-bottom: 6px; }
+.sales-card-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.btn-up { display: block; width: 100%; padding: 16px; margin-top: 36px; background: var(--ocean); border: none; color: #fff; border-radius: 14px; font-family: "DM Sans", sans-serif; font-size: 14px; font-weight: 500; text-align: center; cursor: pointer; transition: all 0.22s; box-shadow: 0 4px 12px rgba(26,74,92,0.15); }
+.btn-up:active { background: var(--ocean2); }
 </style>
 </head>
 <body>
@@ -290,6 +306,45 @@ main{max-width:480px;margin:0 auto;padding:32px 16px 60px}
       <span id="t-tip-text">Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.</span>
     </div>
     <button class="btn-main" id="btn1" onclick="goStep2()" disabled><span id="t-btn1">Dalej</span> &rarr;</button>
+
+    <div class="sales-section">
+      <h3 class="sales-title" id="t-sales-title">Poczuj prawdziwie włoski klimat</h3>
+      <div class="sales-features">
+        <div class="sf-item">
+          <div class="sf-icon">📍</div>
+          <div class="sf-title" id="t-sf1">Samo centrum Porto Torres</div>
+        </div>
+        <div class="sf-item">
+          <div class="sf-icon">🏛️</div>
+          <div class="sf-title" id="t-sf2">Starożytne wykopaliska i Bazylika</div>
+        </div>
+        <div class="sf-item">
+          <div class="sf-icon">🏖️</div>
+          <div class="sf-title" id="t-sf3">5 min do plaży Balai, blisko La Pelosa</div>
+        </div>
+        <div class="sf-item">
+          <div class="sf-icon">🍷</div>
+          <div class="sf-title" id="t-sf4">Mniej turystów, lokalna atmosfera</div>
+        </div>
+      </div>
+      <div class="sales-grid">
+        <div class="sales-card">
+          <img src="https://images.unsplash.com/photo-1533675080063-e45f91ebcc06?q=80&w=800&auto=format&fit=crop" alt="Plaża na Sardynii">
+          <div class="sales-card-body">
+            <div class="sales-card-title" id="t-sc1-t">Krystaliczna woda i rajskie plaże</div>
+            <div class="sales-card-text" id="t-sc1-d">Zaledwie 5 minut od apartamentów znajdziesz przepiękną plażę Balai. To również idealna baza wypadowa na słynną La Pelosa!</div>
+          </div>
+        </div>
+        <div class="sales-card">
+          <img src="https://images.unsplash.com/photo-1516483638261-f4085eeea493?q=80&w=800&auto=format&fit=crop" alt="Włoskie miasteczko">
+          <div class="sales-card-body">
+            <div class="sales-card-title" id="t-sc2-t">Odkryj prawdziwą Sardynię</div>
+            <div class="sales-card-text" id="t-sc2-d">Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-up" onclick="window.scrollTo({top:0, behavior:'smooth'})" id="t-btn-up">&uarr; Wróć na górę i sprawdź termin</button>
+    </div>
   </div>
 
   <!-- STEP 2 -->
@@ -756,6 +811,16 @@ function applyT(){
   setTxt('t-btn-msg',T.btnMsg);setTxt('t-btn-wa',T.btnWa||'WhatsApp');setTxt('t-contact-note',T.contactNote);
   if(adults===0){setTxt('ad-desc',T.adDescDef);setTxt('kd-desc',T.kdDescDef);}
   setTxt('t-tip-text',T.tipText);
+  setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
+  setTxt('t-sf1', T.sf1 || 'Samo centrum Porto Torres');
+  setTxt('t-sf2', T.sf2 || 'Starożytne wykopaliska i Bazylika');
+  setTxt('t-sf3', T.sf3 || '5 min do plaży Balai, blisko La Pelosa');
+  setTxt('t-sf4', T.sf4 || 'Mniej turystów, lokalna atmosfera');
+  setTxt('t-sc1-t', T.sc1t || 'Krystaliczna woda i rajskie plaże');
+  setTxt('t-sc1-d', T.sc1d || 'Zaledwie 5 minut od apartamentów znajdziesz przepiękną plażę Balai. To również idealna baza wypadowa na słynną La Pelosa!');
+  setTxt('t-sc2-t', T.sc2t || 'Odkryj prawdziwą Sardynię');
+  setTxt('t-sc2-d', T.sc2d || 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.');
+  setTxt('t-btn-up', T.btnUp || '\u2191 Wróć na górę i sprawdź termin');
   buildLegend();updateMinNote();
   var mw=$id('min-warn');if(mw)mw.textContent=T.minWarn;
   updateHint();

@@ -1452,6 +1452,16 @@ document.addEventListener('keydown',function(e){
 document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.textContent.toLowerCase()===lang);});
 applyT();
 </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c9e7dcbb68d54eadae341e6f1245bd19"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- Cloudflare Web Analytics -->
+<script>
+if (new URLSearchParams(window.location.search).get('test') !== '1') {
+  var cfScript = document.createElement('script');
+  cfScript.defer = true;
+  cfScript.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+  cfScript.setAttribute('data-cf-beacon', '{"token": "c9e7dcbb68d54eadae341e6f1245bd19"}');
+  document.body.appendChild(cfScript);
+}
+</script>
+<!-- End Cloudflare Web Analytics -->
 </body>
 </html>

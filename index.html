@@ -573,6 +573,31 @@
       margin-top: 2px
     }
 
+    .cal-features {
+      background: transparent;
+      padding: 12px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cal-feature {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--ocean);
+      font-weight: 500;
+    }
+
+    .cal-feature svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--wave);
+    }
+
     .cal-nav {
       display: flex;
       align-items: center;
@@ -614,6 +639,37 @@
       font-size: 11px;
       color: #7a6020;
       text-align: center
+    }
+
+    .cal-alert {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: var(--foam);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--wave);
+      font-size: 12px;
+      color: var(--ocean);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .btn-alert {
+      background: var(--ocean);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .btn-alert:hover {
+      background: var(--ocean2);
     }
 
     .cal-grid {
@@ -1663,6 +1719,10 @@
             <button class="cnav-btn" onclick="chMonth(1)">&#8250;</button>
           </div>
         </div>
+        <div id="cal-alert" class="cal-alert">
+          <span id="cal-alert-text"></span>
+          <button class="btn-alert" onclick="changeApt()" id="t-btnChangeApt">Zmień apartament</button>
+        </div>
         <div id="min-stay-note" class="min-stay"></div>
         <div id="cstatus" class="cal-status">
           <div class="spinner"></div>
@@ -1675,6 +1735,7 @@
         <div id="cal-hint" class="cal-hint"></div>
         <div class="cal-legend" id="cal-legend"></div>
       </div>
+      <div id="cal-features" class="cal-features"></div>
       <div id="min-warn" class="min-warn"></div>
       <div id="summary" class="summary hidden">
         <div class="sum-hdr">
@@ -1770,16 +1831,18 @@
         adultsLbl: 'Liczba gości', kidsLbl: 'Dostawka dla dziecka',
         adDescDef: '1–8 gości', kdDescDef: 'Najpierw podaj liczbę gości',
         btn1: 'Dalej', back1: 'Zmień skład grupy', back2: 'Zmień apartament',
-        loading: 'Ładowanie kalendarza...',
+        loading: 'Ładowanie...',
         legFree: 'Dostępny', legBusy: 'Zarezerwowany', legSel: 'Twój pobyt',
         minStay: '⚠ Lipiec i sierpień: minimalny pobyt 5 nocy',
         minWarn: '⚠ W lipcu i sierpniu minimalny pobyt wynosi 5 nocy. Wybierz co najmniej 5 nocy.',
-        hintArrival: 'Wybierz datę przyjazdu', hintDepart: 'Teraz wybierz datę wyjazdu',
-        hintBusy: 'Wybrany zakres zawiera zajęte dni — wybierz inną datę przyjazdu.',
+        hintArrival: 'Wybierz datę przyjazdu', hintDepart: 'Zaznacz datę wyjazdu.',
+        hintBusy: 'Wybrany termin jest zajęty we wszystkich apartamentach.',
         hintAlt: 'Zajęte. W tym dniu dostępne: ',
-        hintBusyDay: 'Wszystkie apartamenty są zajęte w tym dniu.',
+        hintBusyDay: 'Zajęte we wszystkich apartamentach.',
         hintAltRange: 'Wybrany termin jest zajęty. Dostępne w tym czasie: ',
         legHalf: 'Inne apartamenty dostępne',
+        btnChangeApt: 'Zmień apartament',
+        alertOtherApts: 'W tym terminie dostępne są inne apartamenty:',
         sumTitle: 'Podsumowanie rezerwacji', sumDate: 'Pobyt', sumNights: 'Liczba nocy', sumApt: 'Apartament',
         sumKids: 'Dostawki', sumTotal: 'Łącznie', sumDeposit: '+ Kaucja zwrotna',
         depositNote: 'Kaucja jest pobierana przy zameldowaniu i zwracana w całości po wymeldowaniu — nie jest wliczona w cenę pobytu.',
@@ -1835,16 +1898,18 @@
         adultsLbl: 'Anzahl der Gäste', kidsLbl: 'Zustellbett',
         adDescDef: '1–8 Gäste', kdDescDef: 'Bitte zuerst Gästeanzahl wählen',
         btn1: 'Weiter', back1: 'Gruppe ändern', back2: 'Apartment ändern',
-        loading: 'Kalender wird geladen...',
+        loading: 'Laden...',
         legFree: 'Verfügbar', legBusy: 'Bereits gebucht', legSel: 'Ihr Aufenthalt',
         minStay: '⚠ Juli & August: Mindestaufenthalt 5 Nächte',
         minWarn: '⚠ Im Juli und August gilt ein Mindestaufenthalt von 5 Nächten. Bitte mindestens 5 Nächte auswählen.',
-        hintArrival: 'Anreisedatum auswählen', hintDepart: 'Jetzt das Abreisedatum auswählen',
-        hintBusy: 'Im gewählten Zeitraum ist ein Tag bereits belegt — bitte neues Anreisedatum wählen.',
+        hintArrival: 'Anreisedatum auswählen', hintDepart: 'Wählen Sie das Abreisedatum.',
+        hintBusy: 'Der gewählte Zeitraum ist in allen Apartments belegt.',
         hintAlt: 'Belegt. An diesem Tag verfügbar: ',
-        hintBusyDay: 'Alle Apartments sind an diesem Tag ausgebucht.',
+        hintBusyDay: 'In allen Apartments belegt.',
         hintAltRange: 'Zeitraum belegt. In diesem Zeitraum verfügbar: ',
         legHalf: 'Andere Apartments verfügbar',
+        btnChangeApt: 'Apartment ändern',
+        alertOtherApts: 'In diesem Zeitraum sind andere Apartments verfügbar:',
         sumTitle: 'Buchungsübersicht', sumDate: 'Aufenthalt', sumNights: 'Nächte', sumApt: 'Apartment',
         sumKids: 'Zustellbetten', sumTotal: 'Gesamt', sumDeposit: '+ Rückerstattbare Kaution',
         depositNote: 'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Übernachtungspreis enthalten.',
@@ -1875,7 +1940,7 @@
         mFrom: ' ab dem ', mG: ', Anzahl der Gäste: ', mAsk: '. Ich bitte um Informationen zur Buchung.',
         mPrice: ' Berechneter Preis für diesen Aufenthalt: ',
         errLoad: 'Kalender konnte nicht geladen werden. Bitte Seite neu laden und erneut versuchen.',
-        tipText: 'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3 Personen. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.',
+        tipText: 'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.',
         selectBtn: 'Auswählen →',
         salesTitle: 'Erleben Sie echtes italienisches Flair',
         sf1: 'Im Herzen von Porto Torres',
@@ -1900,16 +1965,18 @@
         adultsLbl: 'Nombre de voyageurs', kidsLbl: 'Lit supplémentaire',
         adDescDef: '1–8 voyageurs', kdDescDef: "Sélectionnez d'abord le nombre de voyageurs",
         btn1: 'Continuer', back1: 'Modifier le groupe', back2: "Modifier l'appartement",
-        loading: 'Chargement du calendrier...',
+        loading: 'Chargement...',
         legFree: 'Disponible', legBusy: 'Déjà réservé', legSel: 'Votre séjour',
         minStay: '⚠ Juillet et août : séjour minimum de 5 nuits',
         minWarn: '⚠ En juillet et août, la durée minimale de séjour est de 5 nuits. Veuillez sélectionner au moins 5 nuits.',
-        hintArrival: "Sélectionnez votre date d'arrivée", hintDepart: 'Sélectionnez maintenant votre date de départ',
-        hintBusy: "Un jour dans la période choisie est déjà réservé — veuillez sélectionner une nouvelle date d'arrivée.",
+        hintArrival: "Sélectionnez votre date d'arrivée", hintDepart: 'Sélectionnez la date de départ.',
+        hintBusy: 'La période sélectionnée est occupée dans tous les appartements.',
         hintAlt: 'Occupé. Disponible à cette date : ',
-        hintBusyDay: 'Tous les appartements sont occupés à cette date.',
+        hintBusyDay: 'Occupé dans tous les appartements.',
         hintAltRange: 'Période occupée. Disponible sur ces dates : ',
         legHalf: 'Autres appartements disponibles',
+        btnChangeApt: 'Changer d\'appartement',
+        alertOtherApts: 'D\'autres appartements sont disponibles à ces dates :',
         sumTitle: 'Récapitulatif de la réservation', sumDate: 'Séjour', sumNights: 'Nuits', sumApt: 'Appartement',
         sumKids: 'Lits supplémentaires', sumTotal: 'Total', sumDeposit: '+ Caution remboursable',
         depositNote: "La caution est perçue à l'arrivée et intégralement remboursée au départ — elle n'est pas incluse dans le prix du séjour.",
@@ -1965,16 +2032,18 @@
         adultsLbl: 'Guests', kidsLbl: 'Extra bed',
         adDescDef: '1–8 guests', kdDescDef: 'Select the number of guests first',
         btn1: 'Continue', back1: 'Change guests', back2: 'Change apartment',
-        loading: 'Loading calendar...',
+        loading: 'Loading...',
         legFree: 'Available', legBusy: 'Already booked', legSel: 'Your stay',
         minStay: '⚠ July & August: minimum stay is 5 nights',
         minWarn: '⚠ A minimum stay of 5 nights applies in July and August. Please select at least 5 nights.',
-        hintArrival: 'Select your check-in date', hintDepart: 'Now select your check-out date',
-        hintBusy: "A day within your selected range is already booked — please pick a new check-in date.",
+        hintArrival: 'Select your check-in date', hintDepart: 'Select departure date.',
+        hintBusy: 'The selected period is booked in all apartments.',
         hintAlt: 'Booked. Available on this date: ',
-        hintBusyDay: 'All apartments are fully booked on this day.',
+        hintBusyDay: 'Fully booked in all apartments.',
         hintAltRange: 'Dates booked. Available for this period: ',
         legHalf: 'Other apartments available',
+        btnChangeApt: 'Change apartment',
+        alertOtherApts: 'Other apartments are available during this period:',
         sumTitle: 'Booking summary', sumDate: 'Stay', sumNights: 'Nights', sumApt: 'Apartment',
         sumKids: 'Extra beds', sumTotal: 'Total', sumDeposit: '+ Refundable security deposit',
         depositNote: 'The security deposit is collected at check-in and fully refunded at check-out — it is not included in the accommodation price.',
@@ -2021,7 +2090,7 @@
       cs: {
         h1: 'Zkontrolovat<br><em>dostupnost</em>',
         tagline: 'Zadejte počet hostů a data pobytu',
-        step1: 'Hosté', step2: 'Apartmán', step3: 'Data',
+        step1: 'Hosté', step2: 'Apartmán', step3: 'Daty',
         s1label: 'Krok 1 ze 3', s1title: 'Kdo přijíždí?',
         s1sub: '',
         s2label: 'Krok 2 ze 3', s2title: 'Vyberte apartmán',
@@ -2030,16 +2099,18 @@
         adultsLbl: 'Počet hostů', kidsLbl: 'Přistýlka',
         adDescDef: '1–8 hostů', kdDescDef: 'Nejprve zadejte počet hostů',
         btn1: 'Pokračovat', back1: 'Změnit hosty', back2: 'Změnit apartmán',
-        loading: 'Načítání kalendáře...',
+        loading: 'Načítání...',
         legFree: 'Dostupný', legBusy: 'Již rezervováno', legSel: 'Váš pobyt',
         minStay: '⚠ Červenec a srpen: minimální pobyt je 5 nocí',
         minWarn: '⚠ V červenci a srpnu platí minimální délka pobytu 5 nocí. Vyberte prosím alespoň 5 nocí.',
-        hintArrival: 'Vyberte datum příjezdu', hintDepart: 'Nyní vyberte datum odjezdu',
-        hintBusy: 'Ve vybraném rozmezí je obsazený den — vyberte prosím nové datum příjezdu.',
+        hintArrival: 'Vyberte datum příjezdu', hintDepart: 'Vyberte datum odjezdu.',
+        hintBusy: 'Vybraný termín je obsazen ve všech apartmánech.',
         hintAlt: 'Obsazeno. V tento den je volný: ',
-        hintBusyDay: 'Všechny apartmány jsou v tento den plně obsazeny.',
+        hintBusyDay: 'Ve všech apartmánech je obsazeno.',
         hintAltRange: 'Termín je obsazen. V tomto termínu volné: ',
         legHalf: 'Jiné apartmány k dispozici',
+        btnChangeApt: 'Změnit apartmán',
+        alertOtherApts: 'V tomto termínu jsou dostupné jiné apartmány:',
         sumTitle: 'Souhrn rezervace', sumDate: 'Pobyt', sumNights: 'Počet nocí', sumApt: 'Apartmán',
         sumKids: 'Přistýlky', sumTotal: 'Celkem', sumDeposit: '+ Vratná kauce',
         depositNote: 'Kauce je vybrána při příjezdu a po odjezdu plně vrácena — není součástí ceny pobytu.',
@@ -2083,6 +2154,73 @@
         sc2d: 'Bydlete přímo v centru Porto Torres. Prozkoumejte starověké římské vykopávky, monumentální Baziliku a vychutnejte si autentický italský život bez davů turistů.',
         btnUp: '↑ Zpět nahoru a zkontrolovat termín'
       },
+      es: {
+        h1: 'Comprobar<br><em>disponibilidad</em>',
+        tagline: 'Selecciona tu grupo y fechas de estancia',
+        step1: 'Huéspedes', step2: 'Apartamento', step3: 'Fechas',
+        s1label: 'Paso 1 de 3', s1title: '¿Quién viene?',
+        s1sub: '',
+        s2label: 'Paso 2 de 3', s2title: 'Elige tu apartamento',
+        s3label: 'Paso 3 de 3', s3title: 'Elige tus fechas',
+        s3sub: 'Selecciona primero la fecha de llegada, luego la fecha de salida.',
+        adultsLbl: 'Número de huéspedes', kidsLbl: 'Cama extra',
+        adDescDef: '1–8 huéspedes', kdDescDef: 'Selecciona primero el número de huéspedes',
+        btn1: 'Continuar', back1: 'Cambiar huéspedes', back2: 'Cambiar apartamento',
+        loading: 'Cargando...',
+        legFree: 'Disponible', legBusy: 'Ya reservado', legSel: 'Tu estancia',
+        minStay: '⚠ Julio y agosto: estancia mínima de 5 noches',
+        minWarn: '⚠ En julio y agosto, la estancia mínima es de 5 noches. Por favor, selecciona al menos 5 noches.',
+        hintArrival: 'Selecciona la fecha de llegada', hintDepart: 'Selecciona la fecha de salida.',
+        hintBusy: 'El período seleccionado está ocupado en todos los apartamentos.',
+        hintAlt: 'Reservado. Disponible en esta fecha: ',
+        hintBusyDay: 'Ocupado en todos los apartamentos.',
+        hintAltRange: 'Fechas ocupadas. Disponible en este período: ',
+        legHalf: 'Otros apartamentos disponibles',
+        btnChangeApt: 'Cambiar apartamento',
+        alertOtherApts: 'Otros apartamentos están disponibles en este período:',
+        sumTitle: 'Resumen de la reserva', sumDate: 'Estancia', sumNights: 'Noches', sumApt: 'Apartamento',
+        sumKids: 'Camas extras', sumTotal: 'Total', sumDeposit: '+ Depósito de seguridad reembolsable',
+        depositNote: 'El depósito de seguridad se cobra al hacer el check-in y se reembolsa íntegramente al hacer el check-out — no está incluido en el precio del alojamiento.',
+        inclTitle: 'Qué incluye', incl1: 'Toallas y ropa de cama', incl2: 'Limpieza final', incl3: 'Sin tasa turística', incl4: 'Lavadora disponible',
+        hlTitle: '¿Por qué alojarse con nosotros?',
+        hl1: 'A 25 minutos del aeropuerto de Alghero (Porto Torres)',
+        hl2: 'A 5 minutos a pie de la playa',
+        hl3: 'Justo en el corazón de la ciudad — cafeterías, restaurantes y tiendas a la vuelta de la esquina',
+        hl4: 'Aparcamiento gratuito en el lugar',
+        hl5: 'Traslados al aeropuerto disponibles — nuestro taxista de confianza te recogerá y te dejará bajo petición (55€ por trayecto, hasta 4 personas)',
+        cinTitle: 'Alquiler vacacional registrado oficialmente en Italia',
+        cinText: 'Nuestra propiedad está registrada oficialmente y posee el número de identificación italiano (CIN), emitido por el Ministerio de Turismo. Cada huésped es reportado a las autoridades pertinentes de acuerdo con la ley italiana — reserva con total confianza.',
+        btnMsg: 'Envíanos un mensaje por Messenger', btnWa: 'Envíanos un mensaje por WhatsApp', contactNote: 'Te responderemos rápidamente y resolveremos todos los detalles.',
+        optFor: 'Opciones disponibles para', adult1: ' huésped', adults: ' huéspedes', kid1: ' cama extra', kids: ' camas extras',
+        calA1: ' huésped', calAN: ' huéspedes', calK1: ' cama extra', calKN: ' camas extras',
+        apt1: 'Apartamento n.º 1', apt2: 'Apartamento n.º 2', apt3: 'Apartamento n.º 3',
+        apt13: 'Apt 1 + Apt 3', apt23: '2 apartamentos — hasta 6 huéspedes', aptL: '3 apartamentos — hasta 8 huéspedes',
+        t1a: 'para 2 huéspedes', t1b: 'sin balcón', t3a: 'para 2 huéspedes', t3b: 'con terraza',
+        t2a: 'para 4 huéspedes', t2b: 'con balcón', t13a: 'para 2+2 huéspedes', t13b: 'Apt 3 con terraza',
+        t23a: 'Apt 2 con balcón + Apt 3 con terraza', tL: 'Apt 1 + Apt 2 + Apt 3',
+        bed1: '+ 1 cama extra', bedN: '+ {n} camas extras', orLbl: '— o —',
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        wdays: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+        adDesc1: ' huésped', adDesc2: ' huéspedes', adDescN: ' huéspedes',
+        kdPre: 'máx. ', kdBed1: ' cama extra en el apartamento', kdBedN: ' camas extras en el apartamento', kdFor: '',
+        n1: ' noche', n2: ' noches', n5: ' noches',
+        mHi: 'Hola,', mInt: "Estoy interesado/a en ", mIn: ' del ',
+        mFrom: ' desde el ', mG: ', número de huéspedes: ', mAsk: '. ¿Podrían enviarme los detalles de la reserva?',
+        mPrice: ' Precio estimado para esta estancia: ',
+        errLoad: 'No se pudo cargar el calendario. Por favor, actualiza la página e inténtalo de nuevo.',
+        tipText: 'Consejo: ¿viajas con 2+1? Elige 2 huéspedes y 1 cama extra — mejor valor que un apartamento más grande para 3. Si tu hijo prefiere su propia cama, simplemente selecciona 3 huéspedes.',
+        selectBtn: 'Seleccionar →',
+        salesTitle: 'Experimenta el auténtico encanto italiano',
+        sf1: 'Justo en el corazón de Porto Torres',
+        sf2: 'Ruinas antiguas y la Basílica',
+        sf3: 'A 5 min de la playa de Balai, cerca de La Pelosa',
+        sf4: 'Menos turistas, ambiente local',
+        sc1t: 'Aguas cristalinas y playas paradisíacas',
+        sc1d: 'A solo 5 minutos de los apartamentos encontrarás la impresionante playa de Balai — ¡y también es la base perfecta para una excursión a la famosa La Pelosa!',
+        sc2t: 'Descubre la verdadera Cerdeña',
+        sc2d: 'Alójate en el centro de Porto Torres. Explora las antiguas ruinas romanas, la magnífica Basílica y disfruta de la auténtica vida italiana lejos de las multitudes de turistas.',
+        btnUp: '↑ Volver arriba y comprobar disponibilidad'
+      },
       it: {
         h1: 'Verifica<br><em>disponibilità</em>',
         tagline: 'Scegli il tuo gruppo e le date del soggiorno',
@@ -2095,7 +2233,7 @@
         adultsLbl: 'Numero di ospiti', kidsLbl: 'Letto aggiunto',
         adDescDef: '1–8 ospiti', kdDescDef: 'Prima seleziona il numero di ospiti',
         btn1: 'Continua', back1: 'Modifica il gruppo', back2: 'Cambia appartamento',
-        loading: 'Caricamento calendario...',
+        loading: 'Caricamento...',
         legFree: 'Disponibile', legBusy: 'Non disponibile', legSel: 'Il tuo soggiorno',
         minStay: '⚠ Luglio e agosto: soggiorno minimo 5 notti',
         minWarn: '⚠ A luglio e agosto il soggiorno minimo è di 5 notti. Seleziona almeno 5 notti.',
@@ -2160,6 +2298,7 @@
     var lang = (urlLang && LANGS[urlLang]) ? urlLang : 'pl';
     var T = LANGS[lang];
     var adults = 0, kids = 0, selOpt = null, cy, cm, cache = null, selStart = null, selEnd = null;
+    var calLoading = false; // Added calLoading state
 
     var PRICES = { 1: { 4: 70, 5: 80, 6: 90, 7: 100, 8: 120, 9: 90, 10: 70 }, 2: { 4: 90, 5: 120, 6: 140, 7: 160, 8: 175, 9: 120, 10: 90 }, 3: { 4: 80, 5: 90, 6: 100, 7: 110, 8: 130, 9: 100, 10: 80 } };
     var KIDS_PRICE = 5;
@@ -2202,18 +2341,21 @@
       if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
       setTxt('t-tip-text', T.tipText);
       setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
-      setTxt('t-sf1', T.sf1 || 'Samo centrum Porto Torres');
-      setTxt('t-sf2', T.sf2 || 'Starożytne wykopaliska i Bazylika');
-      setTxt('t-sf3', T.sf3 || '5 min do plaży Balai, blisko La Pelosa');
+      setTxt('t-sf1', T.sf1); setTxt('t-sf2', T.sf2); setTxt('t-sf3', T.sf3);
       setTxt('t-sf4', T.sf4 || 'Mniej turystów, lokalna atmosfera');
       setTxt('t-sc1-t', T.sc1t || 'Krystaliczna woda i rajskie plaże');
       setTxt('t-sc1-d', T.sc1d || 'Zaledwie 5 minut od apartamentów znajdziesz przepiękną plażę Balai. To również idealna baza wypadowa na słynną La Pelosa!');
       setTxt('t-sc2-t', T.sc2t || 'Odkryj prawdziwą Sardynię');
       setTxt('t-sc2-d', T.sc2d || 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.');
       setTxt('t-btn-up', T.btnUp || '\u2191 Wróć na górę i sprawdź termin');
+      setTxt('t-btnChangeApt', T.btnChangeApt);
       buildLegend(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       updateHint();
+      if (!calLoading && $id('cal-ml').textContent !== '-') {
+        renderCal();
+        var lh = $id('legHalf'); if (lh) lh.textContent = T.legHalf;
+      }
     }
 
     function buildLegend() {
@@ -2322,6 +2464,7 @@
       fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse' },
       en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace' },
       cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa' },
+      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza' },
       it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza' }
     };
 
@@ -2521,7 +2664,7 @@
       });
     }
 
-    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); mkDone(1); mkActive(2); initAllGalleries(); }
+    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); initAllGalleries(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
     function refreshS2() { renderOptList(); initAllGalleries(); }
     function initAllGalleries() {
       document.querySelectorAll('#apt-list .apt-gallery').forEach(function (g) { initGallery(g); });
@@ -2529,12 +2672,21 @@
 
     /* ── step 3 ── */
     function goStep3() {
-      show('s3'); hide('s2'); mkDone(2); mkActive(3);
+      show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); window.scrollTo({ top: 0, behavior: 'smooth' });
       var now = new Date(); cy = now.getFullYear(); cm = now.getMonth();
       var o = selOpt, isM = o.apts.length > 1;
       $id('cal-hdr').className = 'cal-hdr ' + (isM ? 'cM' : 'c' + o.apts[0]);
       setTxt('cal-name', o.name);
       setTxt('cal-desc', adults + (adults === 1 ? T.calA1 : T.calAN) + (kids > 0 ? ', ' + kids + (kids === 1 ? T.calK1 : T.calKN) : ''));
+      
+      var featHtml = '';
+      if (o.meta) {
+        o.meta.forEach(function (m) {
+          featHtml += '<div class="cal-feature">' + m.icon + '<span>' + m.text + '</span></div>';
+        });
+      }
+      $id('cal-features').innerHTML = featHtml;
+
       buildLegend(); updateHint(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       showSt(T.loading, false);
@@ -2543,6 +2695,7 @@
 
     /* ── iCal ── */
     function fetchIcal() {
+      calLoading = true;
       showSt(T.loading, false);
       var now = new Date();
       var tMin = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
@@ -2551,13 +2704,14 @@
       var x = new XMLHttpRequest();
       x.open('GET', url, true); x.timeout = 12000;
       x.onload = function () {
+        calLoading = false;
         if (x.status === 200) {
           try { cache = parseGcal(JSON.parse(x.responseText)); renderCal(); }
           catch (e) { showSt(T.errLoad, true); }
         } else { showSt(T.errLoad, true); }
       };
-      x.onerror = function () { showSt(T.errLoad, true); };
-      x.ontimeout = function () { showSt(T.errLoad, true); };
+      x.onerror = function () { calLoading = false; showSt(T.errLoad, true); };
+      x.ontimeout = function () { calLoading = false; showSt(T.errLoad, true); };
       x.send();
     }
     function parseGcal(data) {
@@ -2637,7 +2791,7 @@
               }
             });
             if (currNames.length > 0) {
-              updateHint((T.hintAlt || 'Zajęte. Dostępne: ') + currNames.join(', '));
+              showCalAlert(currNames);
             } else {
               updateHint(T.hintBusyDay || 'Zajęte we wszystkich apartamentach.');
             }
@@ -2650,7 +2804,28 @@
       updateSummary(); updateMinNote();
     }
 
+    function showCalAlert(aptsObj) {
+      var h = $id('cal-hint'); if (h) h.style.display = 'none';
+      var alertBox = $id('cal-alert');
+      var alertText = $id('cal-alert-text');
+      if (alertBox && alertText) {
+        alertText.innerHTML = (T.alertOtherApts || 'W tym terminie dostępne są inne apartamenty:') + '<br><b>' + aptsObj.join(', ') + '</b>';
+        alertBox.style.display = 'flex';
+      }
+    }
+
+    function hideCalAlert() {
+      var alertBox = $id('cal-alert');
+      if (alertBox) alertBox.style.display = 'none';
+    }
+
+    function changeApt() {
+      hideCalAlert();
+      goStep2();
+    }
+
     function dayClick(dk) {
+      hideCalAlert();
       if (!selStart || selEnd) { selStart = dk; selEnd = null; updateHint(T.hintDepart); }
       else {
         if (dk <= selStart) { selStart = dk; selEnd = null; updateHint(T.hintDepart); }
@@ -2677,8 +2852,7 @@
               if (isFreeSeq) freeNames.push(o.name);
             });
             if (freeNames.length > 0) {
-              updateHint((T.hintAltRange || 'Zajęte. W tym terminie dostępne: ') + freeNames.join(', '));
-              setTimeout(function () { if (!selEnd) updateHint(); }, 5000);
+              showCalAlert(freeNames);
             } else {
               updateHint(T.hintBusy);
             }

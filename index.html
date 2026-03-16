@@ -399,6 +399,10 @@
       background: var(--baz)
     }
 
+    .aopt[data-t="12"] .abar {
+      background: linear-gradient(90deg, var(--paw) 50%, var(--tom) 50%)
+    }
+
     .aopt[data-t="13"] .abar {
       background: linear-gradient(90deg, var(--paw) 50%, var(--baz) 50%)
     }
@@ -423,6 +427,7 @@
       border-color: var(--baz)
     }
 
+    .aopt[data-t="12"].sel,
     .aopt[data-t="13"].sel,
     .aopt[data-t="23"].sel,
     .aopt[data-t="L"].sel {
@@ -1859,9 +1864,9 @@
         optFor: 'Dostępne opcje dla', adult1: ' gościa', adults: ' gości', kid1: ' dostawka', kids: ' dostawki',
         calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
         apt1: 'Apartament nr 1', apt2: 'Apartament nr 2', apt3: 'Apartament nr 3',
-        apt13: 'Apt 1 + Apt 3', apt23: '2 apartamenty — do 6 osób', aptL: '3 apartamenty — do 8 osób',
+        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartamenty — do 6 osób', aptL: '3 apartamenty — do 8 osób',
         t1a: 'dla 2 osób', t1b: 'bez balkonu', t3a: 'dla 2 osób', t3b: 'z tarasem',
-        t2a: 'dla 4 osób', t2b: 'z balkonem', t13a: 'dla 2+2 osób', t13b: 'Apt 3 z tarasem',
+        t2a: 'dla 4 osób', t2b: 'z balkonem', t12a: 'dla 2+4 osób', t12b: 'Apt 2 z balkonem', t13a: 'dla 2+2 osób', t13b: 'Apt 3 z tarasem',
         t23a: 'Apt 2 z balkonem + Apt 3 z tarasem', tL: 'Apt 1 + Apt 2 + Apt 3',
         bed1: '+ 1 dostawka', bedN: '+ {n} dostawki', orLbl: '— lub —',
         months: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
@@ -1926,9 +1931,9 @@
         optFor: 'Verfügbare Optionen für', adult1: ' Gast', adults: ' Gäste', kid1: ' Zustellbett', kids: ' Zustellbetten',
         calA1: ' Gast', calAN: ' Gäste', calK1: ' Zustellbett', calKN: ' Zustellbetten',
         apt1: 'Apartment Nr. 1', apt2: 'Apartment Nr. 2', apt3: 'Apartment Nr. 3',
-        apt13: 'Apt 1 + Apt 3', apt23: '2 Apartments — bis 6 Personen', aptL: '3 Apartments — bis 8 Personen',
+        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 Apartments — bis 6 Personen', aptL: '3 Apartments — bis 8 Personen',
         t1a: 'für 2 Personen', t1b: 'ohne Balkon', t3a: 'für 2 Personen', t3b: 'mit Terrasse',
-        t2a: 'für 4 Personen', t2b: 'mit Balkon', t13a: 'für 2+2 Personen', t13b: 'Apt 3 mit Terrasse',
+        t2a: 'für 4 Personen', t2b: 'mit Balkon', t12a: 'für 2+4 Personen', t12b: 'Apt 2 mit Balkon', t13a: 'für 2+2 Personen', t13b: 'Apt 3 mit Terrasse',
         t23a: 'Apt 2 mit Balkon + Apt 3 mit Terrasse', tL: 'Apt 1 + Apt 2 + Apt 3',
         bed1: '+ 1 Zustellbett', bedN: '+ {n} Zustellbetten', orLbl: '— oder —',
         months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
@@ -1993,9 +1998,9 @@
         optFor: 'Options disponibles pour', adult1: ' voyageur', adults: ' voyageurs', kid1: ' lit suppl.', kids: ' lits suppl.',
         calA1: ' voyageur', calAN: ' voyageurs', calK1: ' lit suppl.', calKN: ' lits suppl.',
         apt1: 'Appartement n° 1', apt2: 'Appartement n° 2', apt3: 'Appartement n° 3',
-        apt13: 'App. 1 + App. 3', apt23: '2 appartements — jusqu\'à 6 personnes', aptL: '3 appartements — jusqu\'à 8 personnes',
+        apt12: 'App. 1 + App. 2', apt13: 'App. 1 + App. 3', apt23: '2 appartements — jusqu\'à 6 personnes', aptL: '3 appartements — jusqu\'à 8 personnes',
         t1a: 'pour 2 personnes', t1b: 'sans balcon', t3a: 'pour 2 personnes', t3b: 'avec terrasse',
-        t2a: 'pour 4 personnes', t2b: 'avec balcon', t13a: 'pour 2+2 personnes', t13b: 'App. 3 avec terrasse',
+        t2a: 'pour 4 personnes', t2b: 'avec balcon', t12a: 'pour 2+4 personnes', t12b: 'App. 2 avec balcon', t13a: 'pour 2+2 personnes', t13b: 'App. 3 avec terrasse',
         t23a: 'App. 2 avec balcon + App. 3 avec terrasse', tL: 'App. 1 + App. 2 + App. 3',
         bed1: '+ 1 lit suppl.', bedN: '+ {n} lits suppl.', orLbl: '— ou —',
         months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -2060,9 +2065,9 @@
         optFor: 'Available options for', adult1: ' guest', adults: ' guests', kid1: ' extra bed', kids: ' extra beds',
         calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
         apt1: 'Apartment No. 1', apt2: 'Apartment No. 2', apt3: 'Apartment No. 3',
-        apt13: 'Apt 1 + Apt 3', apt23: '2 apartments — up to 6 guests', aptL: '3 apartments — up to 8 guests',
+        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartments — up to 6 guests', aptL: '3 apartments — up to 8 guests',
         t1a: 'for 2 guests', t1b: 'no balcony', t3a: 'for 2 guests', t3b: 'with terrace',
-        t2a: 'for 4 guests', t2b: 'with balcony', t13a: 'for 2+2 guests', t13b: 'Apt 3 with terrace',
+        t2a: 'for 4 guests', t2b: 'with balcony', t12a: 'for 2+4 guests', t12b: 'Apt 2 with balcony', t13a: 'for 2+2 guests', t13b: 'Apt 3 with terrace',
         t23a: 'Apt 2 with balcony + Apt 3 with terrace', tL: 'Apt 1 + Apt 2 + Apt 3',
         bed1: '+ 1 extra bed', bedN: '+ {n} extra beds', orLbl: '— or —',
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -2127,9 +2132,9 @@
         optFor: 'Dostupné možnosti pro', adult1: ' hosta', adults: ' hostů', kid1: ' přistýlka', kids: ' přistýlky',
         calA1: ' host', calAN: ' hostů', calK1: ' přistýlka', calKN: ' přistýlky',
         apt1: 'Apartmán č. 1', apt2: 'Apartmán č. 2', apt3: 'Apartmán č. 3',
-        apt13: 'Apt 1 + Apt 3', apt23: '2 apartmány — až 6 hostů', aptL: '3 apartmány — až 8 hostů',
+        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartmány — až 6 hostů', aptL: '3 apartmány — až 8 hostů',
         t1a: 'pro 2 hosty', t1b: 'bez balkonu', t3a: 'pro 2 hosty', t3b: 's terasou',
-        t2a: 'pro 4 hosty', t2b: 's balkonem', t13a: 'pro 2+2 hosty', t13b: 'Apt 3 s terasou',
+        t2a: 'pro 4 hosty', t2b: 's balkonem', t12a: 'pro 2+4 hosty', t12b: 'Apt 2 s balkonem', t13a: 'pro 2+2 hosty', t13b: 'Apt 3 s terasou',
         t23a: 'Apt 2 s balkonem + Apt 3 s terasou', tL: 'Apt 1 + Apt 2 + Apt 3',
         bed1: '+ 1 přistýlka', bedN: '+ {n} přistýlky', orLbl: '— nebo —',
         months: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
@@ -2194,9 +2199,9 @@
         optFor: 'Opciones disponibles para', adult1: ' huésped', adults: ' huéspedes', kid1: ' cama extra', kids: ' camas extras',
         calA1: ' huésped', calAN: ' huéspedes', calK1: ' cama extra', calKN: ' camas extras',
         apt1: 'Apartamento n.º 1', apt2: 'Apartamento n.º 2', apt3: 'Apartamento n.º 3',
-        apt13: 'Apt 1 + Apt 3', apt23: '2 apartamentos — hasta 6 huéspedes', aptL: '3 apartamentos — hasta 8 huéspedes',
+        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartamentos — hasta 6 huéspedes', aptL: '3 apartamentos — hasta 8 huéspedes',
         t1a: 'para 2 huéspedes', t1b: 'sin balcón', t3a: 'para 2 huéspedes', t3b: 'con terraza',
-        t2a: 'para 4 huéspedes', t2b: 'con balcón', t13a: 'para 2+2 huéspedes', t13b: 'Apt 3 con terraza',
+        t2a: 'para 4 huéspedes', t2b: 'con balcón', t12a: 'para 2+4 huéspedes', t12b: 'Apt 2 con balcón', t13a: 'para 2+2 huéspedes', t13b: 'Apt 3 con terraza',
         t23a: 'Apt 2 con balcón + Apt 3 con terraza', tL: 'Apt 1 + Apt 2 + Apt 3',
         bed1: '+ 1 cama extra', bedN: '+ {n} camas extras', orLbl: '— o —',
         months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -2259,9 +2264,9 @@
         optFor: 'Opzioni disponibili per', adult1: ' ospite', adults: ' ospiti', kid1: ' letto aggiunto', kids: ' letti aggiunti',
         calA1: ' ospite', calAN: ' ospiti', calK1: ' letto aggiunto', calKN: ' letti aggiunti',
         apt1: 'Appartamento n. 1', apt2: 'Appartamento n. 2', apt3: 'Appartamento n. 3',
-        apt13: 'App. 1 + App. 3', apt23: '2 appartamenti — fino a 6 persone', aptL: '3 appartamenti — fino a 8 persone',
+        apt12: 'App. 1 + App. 2', apt13: 'App. 1 + App. 3', apt23: '2 appartamenti — fino a 6 persone', aptL: '3 appartamenti — fino a 8 persone',
         t1a: 'per 2 persone', t1b: 'senza balcone', t3a: 'per 2 persone', t3b: 'con terrazza',
-        t2a: 'per 4 persone', t2b: 'con balcone', t13a: 'per 2+2 persone', t13b: 'App. 3 con terrazza',
+        t2a: 'per 4 persone', t2b: 'con balcone', t12a: 'per 2+4 persone', t12b: 'App. 2 con balcone', t13a: 'per 2+2 persone', t13b: 'App. 3 con terrazza',
         t23a: 'App. 2 con balcone + App. 3 con terrazza', tL: 'App. 1 + App. 2 + App. 3',
         bed1: '+ 1 letto aggiunto', bedN: '+ {n} letti aggiunti', orLbl: '— oppure —',
         months: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
@@ -2414,7 +2419,8 @@
         opts.push({ id: '2', apts: [2], name: T.apt2, tags: [T.t2b], mk: 1, group: 1 });
         opts.push({ id: '13', apts: [1, 3], name: T.apt13, tags: [T.t13b], mk: 2, group: 2 });
       } else if (a <= 6) {
-        opts.push({ id: '23', apts: [2, 3], name: T.apt23, tags: [], mk: 2, group: 1 });
+        opts.push({ id: '12', apts: [1, 2], name: T.apt12, tags: [T.t12b], mk: 2, group: 1 });
+        opts.push({ id: '23', apts: [2, 3], name: T.apt23, tags: [], mk: 2, group: 2 });
       } else {
         opts.push({ id: 'L', apts: [1, 2, 3], name: T.aptL, tags: [], mk: 3, group: 1 });
       }
@@ -2678,7 +2684,7 @@
       $id('cal-hdr').className = 'cal-hdr ' + (isM ? 'cM' : 'c' + o.apts[0]);
       setTxt('cal-name', o.name);
       setTxt('cal-desc', adults + (adults === 1 ? T.calA1 : T.calAN) + (kids > 0 ? ', ' + kids + (kids === 1 ? T.calK1 : T.calKN) : ''));
-      
+
       var featHtml = '';
       if (o.meta) {
         o.meta.forEach(function (m) {

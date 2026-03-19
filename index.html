@@ -144,6 +144,64 @@
       position: relative
     }
 
+    .luxury-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      position: relative;
+      animation: luxuryFadeIn 1.4s ease forwards;
+      opacity: 0;
+      animation-delay: 0.4s;
+    }
+
+    .luxury-line {
+      flex: 0 0 32px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      animation: luxuryExpand 1.6s ease forwards;
+      animation-delay: 0.6s;
+      transform: scaleX(0);
+    }
+
+    .luxury-text {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 12px;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .luxury-text::before,
+    .luxury-text::after {
+      content: "✦";
+      font-size: 7px;
+      vertical-align: middle;
+      opacity: 0.6;
+      margin: 0 4px;
+      animation: luxuryPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes luxuryFadeIn {
+      0%   { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes luxuryExpand {
+      0%   { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+
+    @keyframes luxuryPulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
     main {
       max-width: 480px;
       margin: 0 auto;
@@ -1596,6 +1654,11 @@
     <span class="logo-tag">Azzurro Luxury Boutique</span>
     <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
     <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
+    <div class="luxury-badge">
+      <span class="luxury-line"></span>
+      <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
+      <span class="luxury-line"></span>
+    </div>
     <svg class="wave-svg" viewBox="0 0 1440 48" preserveAspectRatio="none">
       <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z" />
     </svg>

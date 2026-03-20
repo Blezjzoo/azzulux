@@ -1161,6 +1161,127 @@
       background: #1da851
     }
 
+    /* ── FAQ ── */
+    .faq-section {
+      margin-top: 28px;
+      border-top: 1px solid var(--sand2);
+      padding-top: 22px;
+    }
+
+    .faq-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--ocean);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .faq-title::before {
+      content: "";
+      display: inline-block;
+      width: 3px;
+      height: 18px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .faq-item {
+      background: var(--white);
+      border: 1.5px solid var(--sand2);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color .22s;
+    }
+
+    .faq-item.open {
+      border-color: var(--wave);
+    }
+
+    .faq-q {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ocean);
+      line-height: 1.4;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .faq-q:active {
+      background: var(--foam);
+    }
+
+    .faq-arrow {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--sand2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .25s, background .22s, border-color .22s;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+      background: var(--foam);
+      border-color: var(--wave);
+      color: var(--ocean);
+    }
+
+    .faq-a {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .28s ease;
+    }
+
+    .faq-item.open .faq-a {
+      grid-template-rows: 1fr;
+    }
+
+    .faq-a-inner {
+      overflow: hidden;
+    }
+
+    .faq-a-text {
+      padding: 0 16px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      border-top: 1px solid var(--sand2);
+      padding-top: 12px;
+    }
+
+    .faq-a-text a {
+      color: var(--ocean2);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      word-break: break-all;
+    }
+
     .contact-note {
       font-size: 11px;
       color: var(--muted);
@@ -1920,6 +2041,64 @@
           </button>
         </div>
         <p class="contact-note" id="t-contact-note">Odpiszemy szybko i ustalimy wszystkie szczegóły.</p>
+
+        <!-- FAQ -->
+        <div class="faq-section">
+          <div class="faq-title">Najczęstsze pytania</div>
+          <div class="faq-list">
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Polecamy stronę <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę kredytową/debetową, bo są różnice w cenie wynajmu ze względu na rodzaj posiadanej karty.</div></div></div>
+            </div>
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Czy jest możliwy transfer lotniskowy?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie 55 euro w jedną stronę do 4 osób.</div></div></div>
+            </div>
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Czy jest u Państwa żelazko? Pralka?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.</div></div></div>
+            </div>
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Czy jest parking w cenie?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Obok naszej kamienicy znajduje się duży, bezpłatny parking.</div></div></div>
+            </div>
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Na którym piętrze jest mieszkanie?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na górze nasze mieszkania. W kamienicy nie ma nikogo więcej poza naszymi gośćmi.</div></div></div>
+            </div>
+
+            <div class="faq-item" onclick="faqToggle(this)">
+              <button class="faq-q">
+                <span>Czy organizują Państwo wycieczki?</span>
+                <span class="faq-arrow">&#9660;</span>
+              </button>
+              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Polecamy stronę <a href="https://www.getyourguide.com" target="_blank" rel="noopener">getyourguide.com</a> — pośrednik wszystkich dostępnych wycieczek (coś jak Booking dla noclegów) na Sardynii. Można tam obejrzeć dokładny plan, terminy i ceny wycieczek odbywających się na całej wyspie.</div></div></div>
+            </div>
+
+          </div>
+        </div>
+        <!-- /FAQ -->
+
       </div>
       <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień apartament</span></button>
     </div>
@@ -3135,6 +3314,14 @@
         if (Math.abs(dx) > 40) lbMove(dx < 0 ? 1 : -1);
       }, { passive: true });
     })();
+
+    /* ── FAQ ── */
+    function faqToggle(item) {
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) { if (el !== item) el.classList.remove('open'); });
+      if (isOpen) item.classList.remove('open');
+      else item.classList.add('open');
+    }
 
     /* ── init ── */
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });

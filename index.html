@@ -1531,6 +1531,62 @@
       margin-top: -1px
     }
 
+    /* ── emoji animations ── */
+
+    /* ✈️ samolot — odlatuje w górę-prawo i wraca */
+    @keyframes fly-away {
+      0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
+      40%  { transform: translate(18px,-14px) rotate(-20deg); opacity: 0; }
+      41%  { transform: translate(-18px,10px) rotate(-20deg); opacity: 0; }
+      100% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+    }
+    .anim-plane { display: inline-block; animation: fly-away 3.2s ease-in-out infinite; animation-delay: 0.8s; }
+
+    /* 🏖️ parasol — kołysze się na wietrze */
+    @keyframes beach-sway {
+      0%,100% { transform: rotate(0deg); }
+      20%     { transform: rotate(-12deg); }
+      50%     { transform: rotate(10deg); }
+      70%     { transform: rotate(-8deg); }
+    }
+    .anim-beach { display: inline-block; transform-origin: bottom center; animation: beach-sway 2.4s ease-in-out infinite; }
+
+    /* 🥂 kieliszki — stukają się o siebie */
+    @keyframes clink {
+      0%,100% { transform: rotate(0deg) scale(1); }
+      15%     { transform: rotate(-15deg) scale(1.15); }
+      30%     { transform: rotate(15deg) scale(1.15); }
+      45%     { transform: rotate(-8deg) scale(1.05); }
+      60%     { transform: rotate(0deg) scale(1); }
+    }
+    .anim-clink { display: inline-block; animation: clink 2.8s ease-in-out infinite; animation-delay: 0.4s; }
+
+    /* 🅿️ parking — pulsuje niebieski blask */
+    @keyframes parking-pulse {
+      0%,100% { transform: scale(1); filter: drop-shadow(0 0 0px #3b82f6); }
+      50%     { transform: scale(1.2); filter: drop-shadow(0 0 5px #3b82f680); }
+    }
+    .anim-parking { display: inline-block; animation: parking-pulse 2s ease-in-out infinite; }
+
+    /* 🚕 taksówka — jedzie w prawo i wraca */
+    @keyframes taxi-drive {
+      0%   { transform: translateX(0); }
+      30%  { transform: translateX(12px); }
+      31%  { transform: translateX(12px) scaleX(-1); }
+      60%  { transform: translateX(0) scaleX(-1); }
+      61%  { transform: translateX(0) scaleX(1); }
+      100% { transform: translateX(0); }
+    }
+    .anim-taxi { display: inline-block; animation: taxi-drive 2.6s ease-in-out infinite; animation-delay: 0.2s; }
+
+    /* 🛡️ tarcza — obrys świetlny */
+    @keyframes shield-glow {
+      0%,100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+      40%     { filter: drop-shadow(0 0 6px rgba(26,74,92,0.6)); transform: scale(1.18); }
+      70%     { filter: drop-shadow(0 0 3px rgba(26,74,92,0.3)); transform: scale(1.05); }
+    }
+    .anim-shield { display: inline-block; animation: shield-glow 3s ease-in-out infinite; }
+
     /* ── sales section ── */
     .sales-section {
       margin-top: 48px;
@@ -1665,7 +1721,7 @@
   </header>
 
   <main>
-    <div class="steps">
+    <div class="steps" id="steps">
       <div class="step active" id="i1">
         <div class="snum" id="sn1">1</div><span id="t-step1">Goście</span>
       </div>
@@ -1823,19 +1879,19 @@
       <div class="highlights">
         <div class="hl-title" id="t-hl-title">Dlaczego warto wybrać nas?</div>
         <div class="hl-items">
-          <div class="hl-item"><span class="hl-icon">✈️</span><span id="t-hl1">25 minut od lotniska Alghero (Porto
+          <div class="hl-item"><span class="hl-icon"><span class="anim-plane">✈️</span></span><span id="t-hl1">25 minut od lotniska Alghero (Porto
               Torres)</span></div>
-          <div class="hl-item"><span class="hl-icon">🏖️</span><span id="t-hl2">5 minut spacerem do plaży</span></div>
-          <div class="hl-item"><span class="hl-icon">🥂</span><span id="t-hl3">Centrum miasta — kawiarnie, restauracje i
+          <div class="hl-item"><span class="hl-icon"><span class="anim-beach">🏖️</span></span><span id="t-hl2">5 minut spacerem do plaży</span></div>
+          <div class="hl-item"><span class="hl-icon"><span class="anim-clink">🥂</span></span><span id="t-hl3">Centrum miasta — kawiarnie, restauracje i
               sklepy tuż pod ręką</span></div>
-          <div class="hl-item"><span class="hl-icon">🅿️</span><span id="t-hl4">Bezpłatny parking przy obiekcie</span>
+          <div class="hl-item"><span class="hl-icon"><span class="anim-parking">🅿️</span></span><span id="t-hl4">Bezpłatny parking przy obiekcie</span>
           </div>
-          <div class="hl-item"><span class="hl-icon">🚕</span><span id="t-hl5">Transfer z/na lotnisko — zaprzyjaźniony
+          <div class="hl-item"><span class="hl-icon"><span class="anim-taxi">🚕</span></span><span id="t-hl5">Transfer z/na lotnisko — zaprzyjaźniony
               taksówkarz odbierze i odwiezie gości na życzenie</span></div>
         </div>
       </div>
       <div class="cin-badge">
-        <div class="cin-icon">&#128737;</div>
+        <div class="cin-icon"><span class="anim-shield">&#128737;</span></div>
         <div>
           <div class="cin-title" id="t-cin-title">Legalny wynajem krótkoterminowy we Włoszech</div>
           <div class="cin-text" id="t-cin-text">Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN
@@ -2522,19 +2578,19 @@
     };
 
     var APT_META = {
-      1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🚿', key: 'bathroom' }],
-      2: [{ icon: '👥', key: 'persons', n: 4 }, { icon: '🛏️', key: 'bedrooms', n: 2 }, { icon: '🏖️', key: 'balcony' }, { icon: '🚿', key: 'bathroom' }],
-      3: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🌿', key: 'terrace' }, { icon: '🚿', key: 'bathroom' }]
+      1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
+      2: [{ icon: '👥', key: 'persons', n: 4 }, { icon: '🛏️', key: 'bedrooms', n: 2 }, { icon: '🏖️', key: 'balcony' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
+      3: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🌿', key: 'terrace' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }]
     };
 
     var META_LABELS = {
-      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras' },
-      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse' },
-      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse' },
-      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace' },
-      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa' },
-      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza' },
-      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza' }
+      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja' },
+      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage' },
+      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation' },
+      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning' },
+      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace' },
+      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado' },
+      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata' }
     };
 
     function metaLabel(item) {
@@ -2733,7 +2789,7 @@
       });
     }
 
-    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); initAllGalleries(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); initAllGalleries(); scrollToSteps(); }
     function refreshS2() { renderOptList(); initAllGalleries(); }
     function initAllGalleries() {
       document.querySelectorAll('#apt-list .apt-gallery').forEach(function (g) { initGallery(g); });
@@ -2741,7 +2797,7 @@
 
     /* ── step 3 ── */
     function goStep3() {
-      show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); window.scrollTo({ top: 0, behavior: 'smooth' });
+      show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); scrollToSteps();
       var now = new Date(); cy = now.getFullYear(); cm = now.getMonth();
       var o = selOpt, isM = o.apts.length > 1;
       $id('cal-hdr').className = 'cal-hdr ' + (isM ? 'cM' : 'c' + o.apts[0]);
@@ -2982,9 +3038,10 @@
     function mkActive(n) { var e = $id('i' + n); e.classList.remove('done'); e.classList.add('active'); }
     function mkDone(n) { var e = $id('i' + n); e.classList.remove('active'); e.classList.add('done'); $id('sn' + n).textContent = '\u2713'; }
     function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }
+    function scrollToSteps() { var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'smooth' }); } }
     function goBack(step) {
-      if (step === 1) { show('s1'); hide('s2'); mkActive(1); resetI(2); resetI(3); }
-      else if (step === 2) { show('s2'); hide('s3'); mkActive(2); resetI(3); selStart = null; selEnd = null; initAllGalleries(); }
+      if (step === 1) { show('s1'); hide('s2'); mkActive(1); resetI(2); resetI(3); scrollToSteps(); }
+      else if (step === 2) { show('s2'); hide('s3'); mkActive(2); resetI(3); selStart = null; selEnd = null; initAllGalleries(); scrollToSteps(); }
     }
 
     /* ── messenger ── */

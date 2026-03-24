@@ -2876,26 +2876,36 @@
       ]
     };
 
+    /* responsive image size based on screen width */
+    var _heroSz = window.innerWidth > 1400 ? 'w1920' : window.innerWidth > 768 ? 'w1200' : 'w800';
     var HERO_PHOTO_URLS = [
-      'https://drive.google.com/thumbnail?id=1tGG4kPtK7qYzrJJuqBEHfYBam3nsI2zU&sz=w800',
-      'https://drive.google.com/thumbnail?id=1KoGmPJSmGjhjee00obOpHdJqv0xCW-46&sz=w800',
-      'https://drive.google.com/thumbnail?id=1K9vMryWD0UZyHicludF8WwnNDMP3XoCQ&sz=w800',
-      'https://drive.google.com/thumbnail?id=1ouIv_FlTiJCVG9SN3e17lTdtSmz0Z90Z&sz=w800',
-      'https://drive.google.com/thumbnail?id=181s3Kd5UKGRXcnrvU0VLN1Wu1hLpZl98&sz=w800',
-      'https://drive.google.com/thumbnail?id=1Rl9PfX6c4qiE9ZZwIvI5ZU5w1j1evmUB&sz=w800',
-      'https://drive.google.com/thumbnail?id=1KOtqwuUxcl22Jmw75vDBcjnlWT8FvyKi&sz=w800',
+      'https://drive.google.com/thumbnail?id=1tGG4kPtK7qYzrJJuqBEHfYBam3nsI2zU&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=1KoGmPJSmGjhjee00obOpHdJqv0xCW-46&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=1K9vMryWD0UZyHicludF8WwnNDMP3XoCQ&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=1ouIv_FlTiJCVG9SN3e17lTdtSmz0Z90Z&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=181s3Kd5UKGRXcnrvU0VLN1Wu1hLpZl98&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=1Rl9PfX6c4qiE9ZZwIvI5ZU5w1j1evmUB&sz=' + _heroSz,
+      'https://drive.google.com/thumbnail?id=1KOtqwuUxcl22Jmw75vDBcjnlWT8FvyKi&sz=' + _heroSz,
     ];
 
     /* ── hero slideshow ── */
     (function () {
-      var shuffledPhotos = HERO_PHOTO_URLS.slice();
-      // shuffle for variety
-      for (var i = shuffledPhotos.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = shuffledPhotos[i]; shuffledPhotos[i] = shuffledPhotos[j]; shuffledPhotos[j] = tmp;
+      function shuffle(arr, avoidFirst) {
+        for (var i = arr.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+        }
+        // jeśli pierwsze zdjęcie nowego cyklu = ostatnie poprzedniego, zamień z drugim
+        if (avoidFirst && arr[0] === avoidFirst && arr.length > 1) {
+          var tmp2 = arr[0]; arr[0] = arr[1]; arr[1] = tmp2;
+        }
+        return arr;
       }
+
+      var shuffledPhotos = shuffle(HERO_PHOTO_URLS.slice());
       var container = document.getElementById('hero-slideshow');
       if (!container || !shuffledPhotos.length) return;
+
       var slides = [];
       shuffledPhotos.forEach(function (url, idx) {
         var div = document.createElement('div');
@@ -2904,13 +2914,24 @@
         container.appendChild(div);
         slides.push(div);
       });
-      // preload next image
+
       var current = 0;
       function next() {
+        var lastPhoto = shuffledPhotos[current];
         slides[current].classList.remove('active');
         current = (current + 1) % slides.length;
+
+        // koniec cyklu — re-shuffle unikając powtórzenia z ostatnim
+        if (current === 0) {
+          shuffle(shuffledPhotos, lastPhoto);
+          slides.forEach(function (s, i) {
+            s.style.backgroundImage = 'url(' + shuffledPhotos[i] + ')';
+          });
+        }
+
         slides[current].classList.add('active');
-        // preload the one after
+
+        // preload kolejnego
         var nextIdx = (current + 1) % slides.length;
         var img = new Image();
         img.src = shuffledPhotos[nextIdx];

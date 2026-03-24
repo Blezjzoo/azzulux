@@ -87,19 +87,65 @@
       font-weight: 600
     }
 
+    /* ── HERO / SLIDESHOW ── */
     header {
-      background: var(--ocean);
-      padding: 44px 20px 60px;
-      text-align: center;
       position: relative;
-      overflow: hidden
+      width: 100%;
+      height: 100svh;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
-    header::before {
-      content: "";
+    /* Slideshow background */
+    .hero-slideshow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 70% 0%, rgba(42, 106, 128, .6), transparent 60%)
+      z-index: 0;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.6s ease-in-out;
+      will-change: opacity;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+    }
+
+    /* Dark overlay for text readability */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 28, 40, 0.55) 0%,
+        rgba(10, 28, 40, 0.40) 50%,
+        rgba(10, 28, 40, 0.72) 100%
+      );
+    }
+
+    /* Hero foreground content */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 24px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
     }
 
     .wave-svg {
@@ -108,7 +154,8 @@
       left: 0;
       right: 0;
       height: 48px;
-      fill: var(--sand)
+      fill: var(--sand);
+      z-index: 3;
     }
 
     .logo-tag {
@@ -118,30 +165,31 @@
       letter-spacing: .3em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 10px;
-      position: relative
+      margin-bottom: 12px;
+      text-shadow: 0 1px 6px rgba(0,0,0,.6);
     }
 
     header h1 {
       font-family: "Cormorant Garamond", serif;
-      font-size: 2.6rem;
+      font-size: clamp(2.6rem, 8vw, 3.8rem);
       font-weight: 300;
       color: #fff;
       line-height: 1.1;
-      position: relative
+      text-shadow: 0 2px 16px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.7);
     }
 
     header h1 em {
       font-style: italic;
-      color: #b8dce8
+      color: #b8dce8;
     }
 
     header .tagline {
-      font-size: 13px;
-      color: rgba(255, 255, 255, .6);
-      margin-top: 8px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, .85);
+      margin-top: 10px;
       font-weight: 300;
-      position: relative
+      text-shadow: 0 1px 8px rgba(0,0,0,.7);
+      letter-spacing: .02em;
     }
 
     .luxury-badge {
@@ -150,7 +198,6 @@
       justify-content: center;
       gap: 12px;
       margin-top: 18px;
-      position: relative;
       animation: luxuryFadeIn 1.4s ease forwards;
       opacity: 0;
       animation-delay: 0.4s;
@@ -174,7 +221,7 @@
       color: var(--gold);
       text-transform: uppercase;
       white-space: nowrap;
-      position: relative;
+      text-shadow: 0 1px 6px rgba(0,0,0,.6);
     }
 
     .luxury-text::before,
@@ -182,9 +229,73 @@
       content: "✦";
       font-size: 7px;
       vertical-align: middle;
-      opacity: 0.6;
+      opacity: 0.7;
       margin: 0 4px;
       animation: luxuryPulse 3s ease-in-out infinite;
+    }
+
+    /* CTA scroll button */
+    .hero-cta {
+      position: absolute;
+      bottom: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      padding: 0;
+      text-decoration: none;
+    }
+
+    .hero-cta-label {
+      font-family: "DM Sans", sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.9);
+      text-shadow: 0 1px 6px rgba(0,0,0,.6);
+      white-space: nowrap;
+    }
+
+    .hero-cta-pill {
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,.35);
+      color: #fff;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      padding: 13px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all .25s;
+      text-shadow: 0 1px 4px rgba(0,0,0,.4);
+      white-space: nowrap;
+    }
+
+    .hero-cta-pill:hover, .hero-cta-pill:active {
+      background: rgba(255,255,255,.22);
+      border-color: rgba(255,255,255,.7);
+    }
+
+    .hero-cta-arrow {
+      animation: heroBounce 2s ease-in-out infinite;
+      font-size: 20px;
+      color: rgba(255,255,255,.7);
+      line-height: 1;
+    }
+
+    @keyframes heroBounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
     }
 
     @keyframes luxuryFadeIn {
@@ -1828,14 +1939,22 @@
   </div>
 
   <header>
-    <span class="logo-tag">Azzurro Luxury Boutique</span>
-    <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
-    <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
-    <div class="luxury-badge">
-      <span class="luxury-line"></span>
-      <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
-      <span class="luxury-line"></span>
+    <div class="hero-slideshow" id="hero-slideshow" aria-hidden="true"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="logo-tag">Azzurro Luxury Boutique</span>
+      <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
+      <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
+      <div class="luxury-badge">
+        <span class="luxury-line"></span>
+        <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
+        <span class="luxury-line"></span>
+      </div>
     </div>
+    <button class="hero-cta" onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})">
+      <span class="hero-cta-pill" id="t-hero-cta">Sprawdź dostępność</span>
+      <span class="hero-cta-arrow">↓</span>
+    </button>
     <svg class="wave-svg" viewBox="0 0 1440 48" preserveAspectRatio="none">
       <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z" />
     </svg>
@@ -1843,15 +1962,15 @@
 
   <main>
     <div class="steps" id="steps">
-      <div class="step active" id="i1">
+      <div class="step active" id="i1" onclick="stepClick(1)" style="cursor:pointer">
         <div class="snum" id="sn1">1</div><span id="t-step1">Goście</span>
       </div>
       <div class="sline"></div>
-      <div class="step" id="i2">
+      <div class="step" id="i2" onclick="stepClick(2)" style="cursor:pointer">
         <div class="snum" id="sn2">2</div><span id="t-step2">Apartament</span>
       </div>
       <div class="sline"></div>
-      <div class="step" id="i3">
+      <div class="step" id="i3" onclick="stepClick(3)" style="cursor:pointer">
         <div class="snum" id="sn3">3</div><span id="t-step3">Daty</span>
       </div>
     </div>
@@ -2652,6 +2771,7 @@
       setTxt('t-sc2-d', T.sc2d || 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.');
       setTxt('t-btn-up', T.btnUp || '\u2191 Wróć na górę i sprawdź termin');
       setTxt('t-btnChangeApt', T.btnChangeApt);
+      setTxt('t-hero-cta', T.heroCta || 'Sprawdź dostępność');
       buildLegend(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       updateHint();
@@ -2755,6 +2875,70 @@
         'https://drive.google.com/thumbnail?id=15ZWlbDN9w5Rlqgq_4rIGLbIR-0WBYka4&sz=w800'
       ]
     };
+
+    var HERO_PHOTO_URLS = [
+      'https://drive.google.com/thumbnail?id=136Z3z_QuBU9wrGfYHFoZNHIGVChR67tU&sz=w800',
+      'https://drive.google.com/thumbnail?id=1XP3aMJ6FHWVS6_MEczNChdPLJPp9vIsU&sz=w800',
+      'https://drive.google.com/thumbnail?id=1K9vMryWD0UZyHicludF8WwnNDMP3XoCQ&sz=w800',
+      'https://drive.google.com/thumbnail?id=1UPSPExOdzetLNqA1NT8OrIM4cP1Bs5Y0&sz=w800',
+      'https://drive.google.com/thumbnail?id=1659MygYLnaXac2d5kKgtG3Wqc3nCVl2S&sz=w800',
+      'https://drive.google.com/thumbnail?id=10CQrDls2BGj-LHu7861xMnu2Y6odM-MI&sz=w800',
+      'https://drive.google.com/thumbnail?id=1g9RpgaIIeC18wvqGvBE3uB-Py9GEfDiT&sz=w800'
+    ];
+
+    /* ── hero slideshow ── */
+    (function () {
+      var shuffledPhotos = HERO_PHOTO_URLS.slice();
+      // shuffle for variety
+      for (var i = shuffledPhotos.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffledPhotos[i]; shuffledPhotos[i] = shuffledPhotos[j]; shuffledPhotos[j] = tmp;
+      }
+      var container = document.getElementById('hero-slideshow');
+      if (!container || !shuffledPhotos.length) return;
+      var slides = [];
+      shuffledPhotos.forEach(function (url, idx) {
+        var div = document.createElement('div');
+        div.className = 'hero-slide' + (idx === 0 ? ' active' : '');
+        div.style.backgroundImage = 'url(' + url + ')';
+        container.appendChild(div);
+        slides.push(div);
+      });
+      // preload next image
+      var current = 0;
+      function next() {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+        // preload the one after
+        var nextIdx = (current + 1) % slides.length;
+        var img = new Image();
+        img.src = shuffledPhotos[nextIdx];
+      }
+      setInterval(next, 4500);
+    })();
+
+    /* ── step click navigation ── */
+    function stepClick(n) {
+      var s1done = $id('i1') && $id('i1').classList.contains('done');
+      var s2done = $id('i2') && $id('i2').classList.contains('done');
+      scrollToSteps();
+      if (n === 1) {
+        // always can go back to step 1
+        if (!$id('s1').classList.contains('hidden')) return;
+        goBack(1);
+      } else if (n === 2) {
+        if (s1done) {
+          if (!$id('s2').classList.contains('hidden')) return;
+          goBack(2);
+        }
+      } else if (n === 3) {
+        if (s2done) {
+          if (!$id('s3').classList.contains('hidden')) return;
+          // already on step 3, just scroll
+        }
+      }
+    }
 
     var APT_META = {
       1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],

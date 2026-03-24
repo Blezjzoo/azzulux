@@ -313,117 +313,6 @@
       50%       { opacity: 1; }
     }
 
-    /* ── Porto Torres story section ── */
-    .pt-section {
-      background: var(--white);
-      border-bottom: 1px solid var(--sand2);
-    }
-
-    .pt-inner {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 48px 20px 44px;
-    }
-
-    .pt-eyebrow {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pt-eyebrow::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--gold), transparent);
-      opacity: .4;
-    }
-
-    .pt-heading {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.7rem, 6vw, 2.2rem);
-      font-weight: 300;
-      color: var(--ocean);
-      line-height: 1.2;
-      margin-bottom: 24px;
-    }
-
-    .pt-heading em {
-      font-style: italic;
-      color: var(--wave);
-    }
-
-    .pt-body {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .pt-p {
-      font-size: 14.5px;
-      line-height: 1.72;
-      color: var(--text);
-      font-weight: 300;
-    }
-
-    .pt-p strong {
-      font-weight: 500;
-      color: var(--ocean);
-    }
-
-    .pt-divider {
-      width: 40px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), var(--wave));
-      border-radius: 2px;
-      margin: 6px 0;
-    }
-
-    .pt-highlights {
-      background: var(--sand);
-      border: 1.5px solid var(--sand2);
-      border-radius: 16px;
-      padding: 20px 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .pt-hi-row {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--text);
-      font-weight: 300;
-      line-height: 1.5;
-    }
-
-    .pt-hi-icon {
-      font-size: 16px;
-      flex-shrink: 0;
-      width: 22px;
-      text-align: center;
-    }
-
-    .pt-closing {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.15rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--ocean);
-      text-align: center;
-      padding: 6px 0 0;
-      line-height: 1.5;
-    }
-
     main {
       max-width: 480px;
       margin: 0 auto;
@@ -661,6 +550,88 @@
     .aopt.unavail {
       opacity: .2;
       pointer-events: none
+    }
+
+    /* ── accordion header ── */
+    .aopt-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px 12px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .aopt-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .aopt-name-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .aopt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .aopt-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--sand);
+      border-radius: 20px;
+      padding: 2px 7px 2px 5px;
+      white-space: nowrap;
+    }
+
+    .aopt-chip-icon {
+      font-size: 11px;
+    }
+
+    .aopt-chevron {
+      font-size: 18px;
+      color: var(--muted);
+      transition: transform .28s ease;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .aopt.open .aopt-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* ── accordion body ── */
+    .aopt-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .38s ease;
+    }
+
+    .aopt.open .aopt-body {
+      max-height: 1200px;
+    }
+
+    .aopt-body-inner {
+      border-top: 1px solid var(--sand2);
+    }
+
+    /* select button inside accordion */
+    .aopt-body .ainner {
+      padding: 10px 14px 14px;
     }
 
     .abar {
@@ -2071,30 +2042,6 @@
     </svg>
   </header>
 
-  <!-- Porto Torres story -->
-  <section class="pt-section">
-    <div class="pt-inner">
-      <div class="pt-eyebrow">Sardynia bez retuszu</div>
-      <h2 class="pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
-      <div class="pt-body">
-        <p class="pt-p">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong></p>
-        <p class="pt-p">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.</p>
-        <p class="pt-p">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.</p>
-        <div class="pt-divider"></div>
-        <p class="pt-p">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii. 🌊</p>
-        <p class="pt-p"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.</p>
-        <div class="pt-highlights">
-          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span>Lidl — <strong>2 minuty</strong> spacerem</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span>Kawiarnie, bary, restauracje — dosłownie <strong>50 metrów</strong></span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span>Plaża — <strong>500 metrów</strong> i jesteś nad wodą</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span>Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span>Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
-        </div>
-        <p class="pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia. 🌿</p>
-      </div>
-    </div>
-  </section>
-
   <main>
     <div class="steps" id="steps">
       <div class="step active" id="i1" onclick="stepClick(1)" style="cursor:pointer">
@@ -3097,19 +3044,19 @@
     }
 
     var APT_META = {
-      1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
-      2: [{ icon: '👥', key: 'persons', n: 4 }, { icon: '🛏️', key: 'bedrooms', n: 2 }, { icon: '🏖️', key: 'balcony' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
-      3: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🌿', key: 'terrace' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }]
+      1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🍳', key: 'kitchen' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
+      2: [{ icon: '👥', key: 'persons', n: 4 }, { icon: '🛏️', key: 'bedrooms', n: 2 }, { icon: '🍳', key: 'kitchen' }, { icon: '🏖️', key: 'balcony' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
+      3: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🍳', key: 'kitchen' }, { icon: '🌿', key: 'terrace' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }]
     };
 
     var META_LABELS = {
-      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja' },
-      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage' },
-      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation' },
-      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning' },
-      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace' },
-      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado' },
-      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata' }
+      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja', kitchen: 'aneks kuchenny' },
+      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage', kitchen: 'Küchenzeile' },
+      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation', kitchen: 'coin cuisine' },
+      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning', kitchen: 'kitchenette' },
+      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace', kitchen: 'kuchyňský kout' },
+      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado', kitchen: 'cocina americana' },
+      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata', kitchen: 'angolo cottura' }
     };
 
     function metaLabel(item) {
@@ -3253,11 +3200,56 @@
       setTimeout(goStep3, 240);
     }
 
+    function buildChips(aptIds) {
+      var meta = [];
+      if (aptIds.length === 1) {
+        meta = APT_META[aptIds[0]] || [];
+      } else {
+        var totalPpl = 0, totalBed = 0, totalBath = 0;
+        var extras = {};
+        aptIds.forEach(function (id) {
+          var m = APT_META[id] || [];
+          m.forEach(function (item) {
+            if (item.key === 'persons') totalPpl += item.n;
+            else if (item.key === 'bedrooms') totalBed += item.n;
+            else if (item.key === 'bathroom') totalBath++;
+            else extras[item.key] = item;
+          });
+        });
+        meta.push({ icon: '👥', key: 'persons', n: totalPpl });
+        if (totalBed > 0) meta.push({ icon: '🛏️', key: 'bedrooms', n: totalBed });
+        if (totalBath > 0) meta.push({ icon: '🚿', key: 'bathroom', n: totalBath });
+        Object.keys(extras).forEach(function (k) { meta.push(extras[k]); });
+      }
+      return meta.map(function (m) {
+        return '<span class="aopt-chip"><span class="aopt-chip-icon">' + m.icon + '</span>' + metaLabel(m) + '</span>';
+      }).join('');
+    }
+
+    function toggleApt(div) {
+      var wasOpen = div.classList.contains('open');
+      // close all
+      document.querySelectorAll('#apt-list .aopt.open').forEach(function (d) {
+        d.classList.remove('open');
+      });
+      if (!wasOpen) {
+        div.classList.add('open');
+        // init gallery when first opened
+        var gallery = div.querySelector('.apt-gallery');
+        if (gallery && !gallery.dataset.inited) {
+          initGallery(gallery);
+          gallery.dataset.inited = '1';
+        }
+      }
+    }
+
     function makeCard(o) {
       var div = document.createElement('div');
       div.className = 'aopt' + (o.unavail ? ' unavail' : '');
       div.setAttribute('data-t', o.id);
+
       var dots = o.apts.map(function (n) { return '<span class="adot ' + dotCls[n] + '"></span>'; }).join('');
+      var chips = buildChips(o.apts);
       var tags = o.tags.map(function (t) {
         var isK = t.indexOf('dostawka') !== -1 || t.indexOf('dostawki') !== -1 || t.indexOf('extra bed') !== -1 || t.indexOf('Zustellbett') !== -1 || t.indexOf('lit suppl') !== -1;
         return '<span class="atag' + (isK ? ' kids' : '') + '">' + t + '</span>';
@@ -3266,31 +3258,44 @@
       var galleryHtml = buildGallery(o.apts);
       var metaHtml = buildMeta(o.apts);
 
-      div.innerHTML = '<div class="abar"></div>'
-        + galleryHtml
-        + metaHtml
-        + '<div class="ainner">'
-        + '<div class="arow">'
-        + '<div class="adots">' + dots + '</div>'
-        + '<div class="aname">' + o.name + '</div>'
-        + '<button class="btn-select" data-sel="1">' + T.selectBtn + '</button>'
+      div.innerHTML =
+        '<div class="abar"></div>'
+        + '<div class="aopt-header">'
+        +   '<div class="aopt-header-left">'
+        +     '<div class="adots">' + dots + '</div>'
+        +     '<div class="aopt-name-wrap">'
+        +       '<div class="aname">' + o.name + '</div>'
+        +       '<div class="aopt-chips">' + chips + '</div>'
+        +     '</div>'
+        +   '</div>'
+        +   '<span class="aopt-chevron">&#8964;</span>'
         + '</div>'
-        + '<div class="atags">' + tags + '</div>'
+        + '<div class="aopt-body">'
+        +   '<div class="aopt-body-inner">'
+        +     galleryHtml
+        +     metaHtml
+        +     '<div class="ainner">'
+        +       '<div class="arow">'
+        +         '<div class="adots">' + dots + '</div>'
+        +         '<div class="aname">' + o.name + '</div>'
+        +         '<button class="btn-select" data-sel="1">' + T.selectBtn + '</button>'
+        +       '</div>'
+        +       (tags ? '<div class="atags">' + tags + '</div>' : '')
+        +     '</div>'
+        +   '</div>'
         + '</div>';
 
-      /* click on the select button */
+      /* header click = toggle */
+      div.querySelector('.aopt-header').addEventListener('click', function (e) {
+        if (o.unavail) return;
+        toggleApt(div);
+      });
+
+      /* select button */
       div.querySelector('.btn-select').addEventListener('click', function (e) {
         e.stopPropagation();
         selectOpt(o, div);
       });
-
-      /* click anywhere else on the card (but not gallery) */
-      div.onclick = function (e) {
-        if (o.unavail) return;
-        if (e.target.closest('.apt-gallery')) return;
-        if (e.target.closest('.btn-select')) return;
-        selectOpt(o, div);
-      };
 
       return div;
     }
@@ -3302,16 +3307,26 @@
       setTxt('s2sub', sub + ':');
       var list = $id('apt-list'); list.innerHTML = '';
       var lastG = null;
+      var cards = [];
       opts.forEach(function (o) {
         if (lastG !== null && lastG !== o.group) { var or = document.createElement('div'); or.className = 'aor'; or.textContent = T.orLbl; list.appendChild(or); }
-        list.appendChild(makeCard(o)); lastG = o.group;
+        var card = makeCard(o);
+        list.appendChild(card);
+        if (!o.unavail) cards.push(card);
+        lastG = o.group;
       });
+      /* auto-open first available card */
+      if (cards.length === 1) {
+        toggleApt(cards[0]);
+      }
     }
 
-    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); initAllGalleries(); scrollToSteps(); }
+    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); setTimeout(initAllGalleries, 10); scrollToSteps(); }
     function refreshS2() { renderOptList(); initAllGalleries(); }
     function initAllGalleries() {
-      document.querySelectorAll('#apt-list .apt-gallery').forEach(function (g) { initGallery(g); });
+      document.querySelectorAll('#apt-list .aopt.open .apt-gallery').forEach(function (g) {
+        if (!g.dataset.inited) { initGallery(g); g.dataset.inited = '1'; }
+      });
     }
 
     /* ── step 3 ── */

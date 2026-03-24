@@ -313,6 +313,117 @@
       50%       { opacity: 1; }
     }
 
+    /* ── Porto Torres story section ── */
+    .pt-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--sand2);
+    }
+
+    .pt-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 48px 20px 44px;
+    }
+
+    .pt-eyebrow {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pt-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: .4;
+    }
+
+    .pt-heading {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.7rem, 6vw, 2.2rem);
+      font-weight: 300;
+      color: var(--ocean);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .pt-heading em {
+      font-style: italic;
+      color: var(--wave);
+    }
+
+    .pt-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pt-p {
+      font-size: 14.5px;
+      line-height: 1.72;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    .pt-p strong {
+      font-weight: 500;
+      color: var(--ocean);
+    }
+
+    .pt-divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--wave));
+      border-radius: 2px;
+      margin: 6px 0;
+    }
+
+    .pt-highlights {
+      background: var(--sand);
+      border: 1.5px solid var(--sand2);
+      border-radius: 16px;
+      padding: 20px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .pt-hi-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .pt-hi-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      width: 22px;
+      text-align: center;
+    }
+
+    .pt-closing {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ocean);
+      text-align: center;
+      padding: 6px 0 0;
+      line-height: 1.5;
+    }
+
     main {
       max-width: 480px;
       margin: 0 auto;
@@ -1959,6 +2070,30 @@
       <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z" />
     </svg>
   </header>
+
+  <!-- Porto Torres story -->
+  <section class="pt-section">
+    <div class="pt-inner">
+      <div class="pt-eyebrow">Sardynia bez retuszu</div>
+      <h2 class="pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
+      <div class="pt-body">
+        <p class="pt-p">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong></p>
+        <p class="pt-p">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.</p>
+        <p class="pt-p">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.</p>
+        <div class="pt-divider"></div>
+        <p class="pt-p">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii. 🌊</p>
+        <p class="pt-p"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.</p>
+        <div class="pt-highlights">
+          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span>Lidl — <strong>2 minuty</strong> spacerem</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span>Kawiarnie, bary, restauracje — dosłownie <strong>50 metrów</strong></span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span>Plaża — <strong>100 metrów</strong> i jesteś nad wodą</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span>Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span>Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
+        </div>
+        <p class="pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia. 🌿</p>
+      </div>
+    </div>
+  </section>
 
   <main>
     <div class="steps" id="steps">

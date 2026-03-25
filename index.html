@@ -713,6 +713,29 @@
       font-size: 11px;
     }
 
+    .aopt-chip.extra-bed {
+      color: var(--ocean);
+      background: var(--foam);
+      font-weight: 600;
+    }
+
+    .apt-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: #7a5800;
+      background: linear-gradient(135deg, #fff8e1, #ffeaa0);
+      border: 1px solid #f0c040;
+      border-radius: 20px;
+      padding: 2px 8px 2px 6px;
+      white-space: nowrap;
+      margin-top: 2px;
+      align-self: flex-start;
+    }
+
     .aopt-chevron {
       font-size: 18px;
       color: var(--muted);
@@ -2523,7 +2546,8 @@
         sc1d: 'Zaledwie 5 minut od apartamentów znajdziesz przepiękną plażę Balai. To również idealna baza wypadowa na słynną La Pelosa!',
         sc2t: 'Odkryj prawdziwą Sardynię',
         sc2d: 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.',
-        btnUp: '↑ Wróć na górę i sprawdź termin'
+        btnUp: '↑ Wróć na górę i sprawdź termin',
+        bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa'
       },
       de: {
         h1: 'Verfügbarkeit<br><em>prüfen</em>',
@@ -2590,7 +2614,8 @@
         sc1d: 'Nur 5 Minuten von den Apartments entfernt erwartet Sie der wunderschöne Strand Balai — und La Pelosa ist ebenfalls leicht erreichbar!',
         sc2t: 'Entdecken Sie das echte Sardinien',
         sc2d: 'Wohnen Sie mitten im Zentrum von Porto Torres. Erkunden Sie antike römische Ausgrabungen, die prächtige Basilika und genießen Sie authentisches italienisches Leben fernab der Touristenmassen.',
-        btnUp: '↑ Zurück nach oben und Termin prüfen'
+        btnUp: '↑ Zurück nach oben und Termin prüfen',
+        bestValue: 'Bestes Preis-Leistungs-Verhältnis', sofa: 'Schlafsofa'
       },
       fr: {
         h1: 'Vérifier<br><em>les disponibilités</em>',
@@ -2657,7 +2682,8 @@
         sc1d: 'À seulement 5 minutes des appartements, découvrez la magnifique plage de Balai — et La Pelosa est également à portée de main !',
         sc2t: 'Découvrez la vraie Sardaigne',
         sc2d: 'Séjournez en plein centre de Porto Torres. Explorez les anciennes ruines romaines, la majestueuse Basilique et profitez de l\'authentique art de vivre italien loin des foules touristiques.',
-        btnUp: '↑ Revenir en haut et vérifier les dates'
+        btnUp: '↑ Revenir en haut et vérifier les dates',
+        bestValue: 'Meilleur rapport qualité-prix', sofa: 'canapé-lit'
       },
       en: {
         h1: 'Check<br><em>availability</em>',
@@ -2724,7 +2750,8 @@
         sc1d: 'Just 5 minutes from the apartments you\'ll find the stunning Balai beach — and it\'s also the perfect base for a trip to the famous La Pelosa!',
         sc2t: 'Discover the real Sardinia',
         sc2d: 'Stay right in the centre of Porto Torres. Explore ancient Roman ruins, the magnificent Basilica, and enjoy authentic Italian life away from the tourist crowds.',
-        btnUp: '↑ Back to top — check availability'
+        btnUp: '↑ Back to top — check availability',
+        bestValue: 'Best value', sofa: 'sofa bed'
       },
       cs: {
         h1: 'Zkontrolovat<br><em>dostupnost</em>',
@@ -2791,7 +2818,8 @@
         sc1d: 'Pouhých 5 minut od apartmánů najdete překrásnou pláž Balai. Je to také ideální základna pro výlet na slavnou La Pelosa!',
         sc2t: 'Objevte pravé Sardinie',
         sc2d: 'Bydlete přímo v centru Porto Torres. Prozkoumejte starověké římské vykopávky, monumentální Baziliku a vychutnejte si autentický italský život bez davů turistů.',
-        btnUp: '↑ Zpět nahoru a zkontrolovat termín'
+        btnUp: '↑ Zpět nahoru a zkontrolovat termín',
+        bestValue: 'Nejlepší hodnota', sofa: 'pohovka'
       },
       es: {
         h1: 'Comprobar<br><em>disponibilidad</em>',
@@ -2858,7 +2886,8 @@
         sc1d: 'A solo 5 minutos de los apartamentos encontrarás la impresionante playa de Balai — ¡y también es la base perfecta para una excursión a la famosa La Pelosa!',
         sc2t: 'Descubre la verdadera Cerdeña',
         sc2d: 'Alójate en el centro de Porto Torres. Explora las antiguas ruinas romanas, la magnífica Basílica y disfruta de la auténtica vida italiana lejos de las multitudes de turistas.',
-        btnUp: '↑ Volver arriba y comprobar disponibilidad'
+        btnUp: '↑ Volver arriba y comprobar disponibilidad',
+        bestValue: 'Mejor relación calidad-precio', sofa: 'sofá cama'
       },
       it: {
         h1: 'Verifica<br><em>disponibilità</em>',
@@ -2923,7 +2952,8 @@
         sc1d: 'A soli 5 minuti dagli appartamenti troverai la splendida spiaggia di Balai — è anche la base ideale per raggiungere la famosa La Pelosa!',
         sc2t: 'Scopri la vera Sardegna',
         sc2d: 'Soggiorna nel cuore di Porto Torres. Esplora gli antichi scavi romani, la maestosa Basilica e goditi l\'autentica vita italiana lontano dalla folla turistica.',
-        btnUp: '↑ Torna su e controlla le date'
+        btnUp: '↑ Torna su e controlla le date',
+        bestValue: 'Miglior rapporto qualità-prezzo', sofa: 'divano letto'
       }
     };
 
@@ -3050,6 +3080,10 @@
       if (a <= 2) {
         opts.push({ id: '1', apts: [1], name: T.apt1, tags: [T.t1b], mk: 1, group: 1 });
         opts.push({ id: '3', apts: [3], name: T.apt3, tags: [T.t3b], mk: 1, group: 2 });
+      } else if (a === 3 && k === 0) {
+        opts.push({ id: '1', apts: [1], name: T.apt1, tags: [T.t1b], mk: 0, group: 1, silentBed: true, overridePersons: 3, hasSofa: true, badge: T.bestValue });
+        opts.push({ id: '2', apts: [2], name: T.apt2, tags: [T.t2b], mk: 1, group: 2 });
+        opts.push({ id: '13', apts: [1, 3], name: T.apt13, tags: [T.t13b], mk: 2, group: 2 });
       } else if (a <= 4) {
         opts.push({ id: '2', apts: [2], name: T.apt2, tags: [T.t2b], mk: 1, group: 1 });
         opts.push({ id: '13', apts: [1, 3], name: T.apt13, tags: [T.t13b], mk: 2, group: 2 });
@@ -3185,13 +3219,13 @@
     };
 
     var META_LABELS = {
-      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja', kitchen: 'aneks kuchenny' },
-      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage', kitchen: 'Küchenzeile' },
-      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation', kitchen: 'coin cuisine' },
-      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning', kitchen: 'kitchenette' },
-      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace', kitchen: 'kuchyňský kout' },
-      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado', kitchen: 'cocina americana' },
-      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata', kitchen: 'angolo cottura' }
+      pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja', kitchen: 'aneks kuchenny', sofa: 'kanapa', extrabed: 'dostawka' },
+      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage', kitchen: 'Küchenzeile', sofa: 'Schlafsofa', extrabed: 'Zustellbett' },
+      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation', kitchen: 'coin cuisine', sofa: 'canapé-lit', extrabed: 'lit suppl.' },
+      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning', kitchen: 'kitchenette', sofa: 'sofa bed', extrabed: 'extra bed' },
+      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace', kitchen: 'kuchyňský kout', sofa: 'pohovka', extrabed: 'přistýlka' },
+      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado', kitchen: 'cocina americana', sofa: 'sofá cama', extrabed: 'cama extra' },
+      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata', kitchen: 'angolo cottura', sofa: 'divano letto', extrabed: 'letto aggiunto' }
     };
 
     function metaLabel(item) {
@@ -3205,6 +3239,11 @@
         var n2 = item.n || 1;
         if (n2 > 1) return n2 + ' ' + ml.bathrooms;
         return ml[item.key] || item.key;
+      }
+      if (item.key === 'sofa') return ml.sofa || 'sofa';
+      if (item.key === 'extrabed') {
+        var ml2 = META_LABELS[lang] || META_LABELS['pl'];
+        return (item.n > 1 ? item.n + ' ' : '+ ') + (ml2.extrabed || 'extra bed');
       }
       return ml[item.key] || item.key;
     }
@@ -3335,10 +3374,10 @@
       setTimeout(goStep3, 240);
     }
 
-    function buildChips(aptIds) {
+    function buildChips(aptIds, opt) {
       var meta = [];
       if (aptIds.length === 1) {
-        meta = APT_META[aptIds[0]] || [];
+        meta = (APT_META[aptIds[0]] || []).slice();
       } else {
         var totalPpl = 0, totalBed = 0, totalBath = 0;
         var extras = {};
@@ -3356,8 +3395,24 @@
         if (totalBath > 0) meta.push({ icon: '🚿', key: 'bathroom', n: totalBath });
         Object.keys(extras).forEach(function (k) { meta.push(extras[k]); });
       }
+      /* override person count (e.g. apt1 shown for 3 guests) */
+      if (opt && opt.overridePersons) {
+        meta = meta.map(function(item) {
+          return item.key === 'persons' ? { icon: item.icon, key: 'persons', n: opt.overridePersons } : item;
+        });
+      }
+      /* add sofa chip */
+      if (opt && opt.hasSofa) {
+        meta.push({ icon: '🛋️', key: 'sofa' });
+      }
+      /* add extra-bed chip only when real kids > 0 (silentBed shows sofa instead, no dostawka chip) */
+      var kidsCount = (typeof kids !== 'undefined' && adults > 0) ? kids : 0;
+      if (kidsCount > 0) {
+        meta.push({ icon: '🛏️', key: 'extrabed', n: kidsCount, extraBedChip: true });
+      }
       return meta.map(function (m) {
-        return '<span class="aopt-chip"><span class="aopt-chip-icon">' + m.icon + '</span>' + metaLabel(m) + '</span>';
+        var cls = m.extraBedChip ? ' extra-bed' : '';
+        return '<span class="aopt-chip' + cls + '"><span class="aopt-chip-icon">' + m.icon + '</span>' + metaLabel(m) + '</span>';
       }).join('');
     }
 
@@ -3384,7 +3439,8 @@
       div.setAttribute('data-t', o.id);
 
       var dots = o.apts.map(function (n) { return '<span class="adot ' + dotCls[n] + '"></span>'; }).join('');
-      var chips = buildChips(o.apts);
+      var chips = buildChips(o.apts, o);
+      var badgeHtml = o.badge ? '<span class="apt-badge">&#11088; ' + o.badge + '</span>' : '';
       var tags = o.tags.map(function (t) {
         var isK = t.indexOf('dostawka') !== -1 || t.indexOf('dostawki') !== -1 || t.indexOf('extra bed') !== -1 || t.indexOf('Zustellbett') !== -1 || t.indexOf('lit suppl') !== -1;
         return '<span class="atag' + (isK ? ' kids' : '') + '">' + t + '</span>';
@@ -3400,6 +3456,7 @@
         +     '<div class="aopt-name-wrap">'
         +       '<div class="aname">' + o.name + '</div>'
         +       '<div class="aopt-chips">' + chips + '</div>'
+        +       (badgeHtml ? '<div>' + badgeHtml + '</div>' : '')
         +     '</div>'
         +   '</div>'
         +   '<span class="aopt-chevron">&#8964;</span>'
@@ -3548,7 +3605,7 @@
         cell.className = 'day' + (past ? ' past' : isBusy ? ' busy' : ' free');
         if (!past && dk === tk) cell.classList.add('today');
         var numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
-        if (!past && !isBusy) { var dayP = getDayPrice(sApts, moNum) + (kids * KIDS_PRICE); var prEl = document.createElement('div'); prEl.className = 'day-price'; prEl.textContent = dayP + '€'; cell.appendChild(prEl); }
+        if (!past && !isBusy) { var silentK = (selOpt && selOpt.silentBed) ? 1 : 0; var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE); var prEl = document.createElement('div'); prEl.className = 'day-price'; prEl.textContent = dayP + '€'; cell.appendChild(prEl); }
         if (!past && !isBusy) {
           if (dk === selStart && dk === selEnd) cell.classList.add('sel-start', 'sel-end');
           else if (dk === selStart) cell.classList.add('sel-start');
@@ -3682,7 +3739,8 @@
       var sApts = selOpt.apts, totalApt = 0;
       var c = new Date(s);
       for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
-      var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids, kaucja = DEPOSIT[sApts.length] || 200;
+      var silentBedNights = (selOpt && selOpt.silentBed) ? KIDS_PRICE * nights : 0;
+      var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids + silentBedNights, kaucja = DEPOSIT[sApts.length] || 200;
       var rows = '';
       rows += '<div class="sum-row"><span class="sum-label">' + T.sumDate + '</span><span class="sum-val">' + fmtDate(s) + ' → ' + fmtDate(e) + '</span></div>';
       rows += '<div class="sum-row"><span class="sum-label">' + T.sumNights + '</span><span class="sum-val">' + nights + '</span></div>';
@@ -3716,7 +3774,8 @@
       var sApts = selOpt.apts, totalApt = 0;
       var c = new Date(s);
       for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
-      var totalKids = kids * KIDS_PRICE * nights;
+      var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
+      var totalKids = (kids + silentK) * KIDS_PRICE * nights;
       return totalApt + totalKids;
     }
     function openMessenger() {

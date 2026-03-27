@@ -48,7 +48,7 @@
       font-family: "DM Sans", sans-serif;
       background: var(--sand);
       color: var(--text);
-      min-height: 100vh;
+      min-height: 100svh;
       overflow-x: hidden
     }
 
@@ -4395,7 +4395,6 @@
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    window.scrollTo(0, 0);
 
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });
     applyT();

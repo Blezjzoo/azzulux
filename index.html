@@ -2389,11 +2389,24 @@
         <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
         <span class="luxury-line"></span>
       </div>
-      <button class="hero-cta"
-        onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})">
-        <span class="hero-cta-pill" id="t-hero-cta">Sprawdź dostępność</span>
-        <span class="hero-cta-arrow">↓</span>
-      </button>
+      <div class="hero-cta-group"
+        style="display:flex; flex-direction:column; gap:16px; margin-top:20px; z-index:3; align-items:center;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <button class="hero-cta"
+            onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})"
+            style="margin-top:0;">
+            <span class="hero-cta-pill" id="t-hero-cta">Sprawdź dostępność</span>
+          </button>
+          <button class="hero-cta"
+            onclick="document.querySelector('.pt-section').scrollIntoView({behavior:'smooth',block:'start'})"
+            style="margin-top:0;">
+            <span class="hero-cta-pill hero-cta-secondary" id="t-hero-why"
+              style="background:rgba(0,0,0,0.2); border-color:rgba(255,255,255,0.4);">Dlaczego u nas?</span>
+          </button>
+        </div>
+        <span class="hero-cta-arrow"
+          style="animation: heroBounce 2s ease-in-out infinite; font-size: 20px; color: rgba(255,255,255,.7); line-height: 1;">↓</span>
+      </div>
 
 
     </div>
@@ -4379,6 +4392,11 @@
     }
 
     /* ── init ── */
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });
     applyT();
   </script>

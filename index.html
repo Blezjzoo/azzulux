@@ -91,13 +91,14 @@
     header {
       position: relative;
       width: 100%;
-      height: 100svh;
-      min-height: 520px;
+      min-height: 100svh;
+      height: auto;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: max(52px, 11vh);
       text-align: center;
     }
 
@@ -127,12 +128,10 @@
       position: absolute;
       inset: 0;
       z-index: 1;
-      background: linear-gradient(
-        to bottom,
-        rgba(10, 28, 40, 0.55) 0%,
-        rgba(10, 28, 40, 0.40) 50%,
-        rgba(10, 28, 40, 0.72) 100%
-      );
+      background: linear-gradient(to bottom,
+          rgba(10, 28, 40, 0.55) 0%,
+          rgba(10, 28, 40, 0.40) 50%,
+          rgba(10, 28, 40, 0.72) 100%);
     }
 
     /* Hero foreground content */
@@ -166,7 +165,7 @@
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 12px;
-      text-shadow: 0 1px 6px rgba(0,0,0,.6);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .6);
     }
 
     header h1 {
@@ -175,7 +174,7 @@
       font-weight: 300;
       color: #fff;
       line-height: 1.1;
-      text-shadow: 0 2px 16px rgba(0,0,0,.55), 0 1px 4px rgba(0,0,0,.7);
+      text-shadow: 0 2px 16px rgba(0, 0, 0, .55), 0 1px 4px rgba(0, 0, 0, .7);
     }
 
     header h1 em {
@@ -188,7 +187,7 @@
       color: rgba(255, 255, 255, .85);
       margin-top: 10px;
       font-weight: 300;
-      text-shadow: 0 1px 8px rgba(0,0,0,.7);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, .7);
       letter-spacing: .02em;
     }
 
@@ -221,7 +220,7 @@
       color: var(--gold);
       text-transform: uppercase;
       white-space: nowrap;
-      text-shadow: 0 1px 6px rgba(0,0,0,.6);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .6);
     }
 
     .luxury-text::before,
@@ -236,10 +235,8 @@
 
     /* CTA scroll button */
     .hero-cta {
-      position: absolute;
-      bottom: 68px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: static;
+      margin-top: 20px;
       z-index: 3;
       display: flex;
       flex-direction: column;
@@ -258,16 +255,16 @@
       font-weight: 500;
       letter-spacing: .2em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.9);
-      text-shadow: 0 1px 6px rgba(0,0,0,.6);
+      color: rgba(255, 255, 255, .9);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .6);
       white-space: nowrap;
     }
 
     .hero-cta-pill {
-      background: rgba(255,255,255,.12);
+      background: rgba(255, 255, 255, .12);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1.5px solid rgba(255,255,255,.35);
+      border: 1.5px solid rgba(255, 255, 255, .35);
       color: #fff;
       font-family: "DM Sans", sans-serif;
       font-size: 14px;
@@ -277,40 +274,67 @@
       border-radius: 50px;
       cursor: pointer;
       transition: all .25s;
-      text-shadow: 0 1px 4px rgba(0,0,0,.4);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .4);
       white-space: nowrap;
     }
 
-    .hero-cta-pill:hover, .hero-cta-pill:active {
-      background: rgba(255,255,255,.22);
-      border-color: rgba(255,255,255,.7);
+    .hero-cta-pill:hover,
+    .hero-cta-pill:active {
+      background: rgba(255, 255, 255, .22);
+      border-color: rgba(255, 255, 255, .7);
     }
 
     .hero-cta-arrow {
       animation: heroBounce 2s ease-in-out infinite;
       font-size: 20px;
-      color: rgba(255,255,255,.7);
+      color: rgba(255, 255, 255, .7);
       line-height: 1;
     }
 
     @keyframes heroBounce {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(5px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(5px);
+      }
     }
 
     @keyframes luxuryFadeIn {
-      0%   { opacity: 0; transform: translateY(8px); }
-      100% { opacity: 1; transform: translateY(0); }
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes luxuryExpand {
-      0%   { transform: scaleX(0); }
-      100% { transform: scaleX(1); }
+      0% {
+        transform: scaleX(0);
+      }
+
+      100% {
+        transform: scaleX(1);
+      }
     }
 
     @keyframes luxuryPulse {
-      0%, 100% { opacity: 0.5; }
-      50%       { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     /* ── Porto Torres story section ── */
@@ -1064,6 +1088,29 @@
 
     .cal-grid {
       padding: 10px 8px 8px
+    }
+
+    .day-last-minute {
+      font-size: 8px;
+      color: var(--busy);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: -2px;
+      line-height: 1;
+      text-align: center;
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+    }
+
+    .day-price {
+      margin-bottom: 8px;
+    }
+
+    .day {
+      position: relative;
     }
 
     .wdays {
@@ -1983,57 +2030,168 @@
 
     /* ✈️ samolot — odlatuje w górę-prawo i wraca */
     @keyframes fly-away {
-      0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
-      40%  { transform: translate(18px,-14px) rotate(-20deg); opacity: 0; }
-      41%  { transform: translate(-18px,10px) rotate(-20deg); opacity: 0; }
-      100% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+
+      40% {
+        transform: translate(18px, -14px) rotate(-20deg);
+        opacity: 0;
+      }
+
+      41% {
+        transform: translate(-18px, 10px) rotate(-20deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
     }
-    .anim-plane { display: inline-block; animation: fly-away 3.2s ease-in-out infinite; animation-delay: 0.8s; }
+
+    .anim-plane {
+      display: inline-block;
+      animation: fly-away 3.2s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
 
     /* 🏖️ parasol — kołysze się na wietrze */
     @keyframes beach-sway {
-      0%,100% { transform: rotate(0deg); }
-      20%     { transform: rotate(-12deg); }
-      50%     { transform: rotate(10deg); }
-      70%     { transform: rotate(-8deg); }
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      20% {
+        transform: rotate(-12deg);
+      }
+
+      50% {
+        transform: rotate(10deg);
+      }
+
+      70% {
+        transform: rotate(-8deg);
+      }
     }
-    .anim-beach { display: inline-block; transform-origin: bottom center; animation: beach-sway 2.4s ease-in-out infinite; }
+
+    .anim-beach {
+      display: inline-block;
+      transform-origin: bottom center;
+      animation: beach-sway 2.4s ease-in-out infinite;
+    }
 
     /* 🥂 kieliszki — stukają się o siebie */
     @keyframes clink {
-      0%,100% { transform: rotate(0deg) scale(1); }
-      15%     { transform: rotate(-15deg) scale(1.15); }
-      30%     { transform: rotate(15deg) scale(1.15); }
-      45%     { transform: rotate(-8deg) scale(1.05); }
-      60%     { transform: rotate(0deg) scale(1); }
+
+      0%,
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      15% {
+        transform: rotate(-15deg) scale(1.15);
+      }
+
+      30% {
+        transform: rotate(15deg) scale(1.15);
+      }
+
+      45% {
+        transform: rotate(-8deg) scale(1.05);
+      }
+
+      60% {
+        transform: rotate(0deg) scale(1);
+      }
     }
-    .anim-clink { display: inline-block; animation: clink 2.8s ease-in-out infinite; animation-delay: 0.4s; }
+
+    .anim-clink {
+      display: inline-block;
+      animation: clink 2.8s ease-in-out infinite;
+      animation-delay: 0.4s;
+    }
 
     /* 🅿️ parking — pulsuje niebieski blask */
     @keyframes parking-pulse {
-      0%,100% { transform: scale(1); filter: drop-shadow(0 0 0px #3b82f6); }
-      50%     { transform: scale(1.2); filter: drop-shadow(0 0 5px #3b82f680); }
+
+      0%,
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0px #3b82f6);
+      }
+
+      50% {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 5px #3b82f680);
+      }
     }
-    .anim-parking { display: inline-block; animation: parking-pulse 2s ease-in-out infinite; }
+
+    .anim-parking {
+      display: inline-block;
+      animation: parking-pulse 2s ease-in-out infinite;
+    }
 
     /* 🚕 taksówka — jedzie w prawo i wraca */
     @keyframes taxi-drive {
-      0%   { transform: translateX(0); }
-      30%  { transform: translateX(12px); }
-      31%  { transform: translateX(12px) scaleX(-1); }
-      60%  { transform: translateX(0) scaleX(-1); }
-      61%  { transform: translateX(0) scaleX(1); }
-      100% { transform: translateX(0); }
+      0% {
+        transform: translateX(0);
+      }
+
+      30% {
+        transform: translateX(12px);
+      }
+
+      31% {
+        transform: translateX(12px) scaleX(-1);
+      }
+
+      60% {
+        transform: translateX(0) scaleX(-1);
+      }
+
+      61% {
+        transform: translateX(0) scaleX(1);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
     }
-    .anim-taxi { display: inline-block; animation: taxi-drive 2.6s ease-in-out infinite; animation-delay: 0.2s; }
+
+    .anim-taxi {
+      display: inline-block;
+      animation: taxi-drive 2.6s ease-in-out infinite;
+      animation-delay: 0.2s;
+    }
 
     /* 🛡️ tarcza — obrys świetlny */
     @keyframes shield-glow {
-      0%,100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
-      40%     { filter: drop-shadow(0 0 6px rgba(26,74,92,0.6)); transform: scale(1.18); }
-      70%     { filter: drop-shadow(0 0 3px rgba(26,74,92,0.3)); transform: scale(1.05); }
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 0px transparent);
+        transform: scale(1);
+      }
+
+      40% {
+        filter: drop-shadow(0 0 6px rgba(26, 74, 92, 0.6));
+        transform: scale(1.18);
+      }
+
+      70% {
+        filter: drop-shadow(0 0 3px rgba(26, 74, 92, 0.3));
+        transform: scale(1.05);
+      }
     }
-    .anim-shield { display: inline-block; animation: shield-glow 3s ease-in-out infinite; }
+
+    .anim-shield {
+      display: inline-block;
+      animation: shield-glow 3s ease-in-out infinite;
+    }
 
     /* ── sales section ── */
     .sales-section {
@@ -2140,6 +2298,71 @@
     .btn-up:active {
       background: var(--ocean2);
     }
+
+    /* ── Hero Map (now in pt-section) ── */
+    .hero-content {
+      padding-bottom: 20px;
+    }
+
+    .hero-map-wrap {
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .map-eyebrow {
+      text-align: center;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+      font-family: 'DM Sans', sans-serif;
+      opacity: 0.85;
+    }
+
+    .map-card {
+      width: 100%;
+      background: rgba(6, 15, 22, 0.80);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(201, 168, 76, 0.22);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .45), 0 0 0 0.5px rgba(201, 168, 76, 0.1) inset;
+    }
+
+    .map-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .map-card .map-foot {
+      padding: 8px 14px 10px;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      align-items: center;
+      border-top: 1px solid rgba(201, 168, 76, 0.1);
+    }
+
+    .map-foot-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .map-foot-text {
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      font-family: 'DM Sans', sans-serif;
+    }
   </style>
 </head>
 
@@ -2166,11 +2389,14 @@
         <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
         <span class="luxury-line"></span>
       </div>
+      <button class="hero-cta"
+        onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})">
+        <span class="hero-cta-pill" id="t-hero-cta">Sprawdź dostępność</span>
+        <span class="hero-cta-arrow">↓</span>
+      </button>
+
+
     </div>
-    <button class="hero-cta" onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})">
-      <span class="hero-cta-pill" id="t-hero-cta">Sprawdź dostępność</span>
-      <span class="hero-cta-arrow">↓</span>
-    </button>
     <svg class="wave-svg" viewBox="0 0 1440 48" preserveAspectRatio="none">
       <path d="M0,32 C360,64 1080,0 1440,32 L1440,48 L0,48 Z" />
     </svg>
@@ -2182,21 +2408,38 @@
       <div class="pt-eyebrow">Sardynia bez retuszu</div>
       <h2 class="pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
       <div class="pt-body">
-        <p class="pt-p">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong></p>
-        <p class="pt-p">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.</p>
-        <p class="pt-p">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.</p>
+        <p class="pt-p">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko
+            zależy od tego, na czym Ci zależy.</strong></p>
+        <p class="pt-p">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte —
+          sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość
+          często słabsza… bo jesteś turystą.</p>
+        <p class="pt-p">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero,
+            Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.</p>
         <div class="pt-divider"></div>
-        <p class="pt-p">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii. 🌊</p>
-        <p class="pt-p"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.</p>
+        <p class="pt-p">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam
+          możesz poczuć prawdziwą magię Sardynii. 🌊</p>
+        <p class="pt-p"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz
+          dostęp do wszystkiego, co potrzebne.</p>
         <div class="pt-highlights">
-          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span>Lidl — <strong>2 minuty</strong> spacerem</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span>Kawiarnie, bary, restauracje — dosłownie <strong>50 metrów</strong></span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span>Plaża — <strong>5 minut</strong> i jesteś nad wodą</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span>Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span>Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🍝</span><span>Restauracje — <strong>1 minuta</strong>
+              spacerem</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span>Lidl — <strong>3 minuty</strong>
+              spacerem</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span>Kawiarnie, bary, restauracje — dosłownie
+              <strong>50 metrów</strong></span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span>Plaża — <strong>5 minut</strong> i jesteś nad
+              wodą</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span>Port, darmowe plaże i <strong>piękny
+                deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span>Prawdziwe, rodzinne restauracje — ceny dla
+              lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
         </div>
-        <p class="pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia. 🌿</p>
+        <p class="pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński
+          klimat życia. 🌿</p>
       </div>
+
+      <!-- Proximity map moved here, below pt-closing -->
+
     </div>
   </section>
 
@@ -2359,14 +2602,19 @@
       <div class="highlights">
         <div class="hl-title" id="t-hl-title">Dlaczego warto wybrać nas?</div>
         <div class="hl-items">
-          <div class="hl-item"><span class="hl-icon"><span class="anim-plane">✈️</span></span><span id="t-hl1">25 minut od lotniska Alghero (Porto
+          <div class="hl-item"><span class="hl-icon"><span class="anim-plane">✈️</span></span><span id="t-hl1">25 minut
+              od lotniska Alghero (Porto
               Torres)</span></div>
-          <div class="hl-item"><span class="hl-icon"><span class="anim-beach">🏖️</span></span><span id="t-hl2">5 minut spacerem do plaży</span></div>
-          <div class="hl-item"><span class="hl-icon"><span class="anim-clink">🥂</span></span><span id="t-hl3">Centrum miasta — kawiarnie, restauracje i
+          <div class="hl-item"><span class="hl-icon"><span class="anim-beach">🏖️</span></span><span id="t-hl2">5 minut
+              spacerem do plaży</span></div>
+          <div class="hl-item"><span class="hl-icon"><span class="anim-clink">🥂</span></span><span id="t-hl3">Centrum
+              miasta — kawiarnie, restauracje i
               sklepy tuż pod ręką</span></div>
-          <div class="hl-item"><span class="hl-icon"><span class="anim-parking">🅿️</span></span><span id="t-hl4">Bezpłatny parking przy obiekcie</span>
+          <div class="hl-item"><span class="hl-icon"><span class="anim-parking">🅿️</span></span><span
+              id="t-hl4">Bezpłatny parking przy obiekcie</span>
           </div>
-          <div class="hl-item"><span class="hl-icon"><span class="anim-taxi">🚕</span></span><span id="t-hl5">Transfer z/na lotnisko — zaprzyjaźniony
+          <div class="hl-item"><span class="hl-icon"><span class="anim-taxi">🚕</span></span><span id="t-hl5">Transfer
+              z/na lotnisko — zaprzyjaźniony
               taksówkarz odbierze i odwiezie gości na życzenie</span></div>
         </div>
       </div>
@@ -2378,6 +2626,212 @@
             nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim
             prawem — rezerwuj bez obaw.</div>
           <span class="cin-code">CIN IT090058C2000T3650</span>
+        </div>
+      </div>
+
+      <div class="hero-map-wrap" style="margin-top:28px;">
+        <div class="map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
+        <div class="map-card" id="heroMapCard">
+          <svg class="map-svg" viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mapSeaG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#050f1c" />
+                <stop offset="100%" stop-color="#0a2840" />
+              </linearGradient>
+              <linearGradient id="mapLandG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0d2030" />
+                <stop offset="100%" stop-color="#091620" />
+              </linearGradient>
+              <marker id="mapArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+                <polygon points="0,0 7,3.5 0,7" fill="#c9a84c" />
+              </marker>
+              <filter id="mapGlow">
+                <feGaussianBlur stdDeviation="2.5" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Sea background -->
+            <rect width="380" height="210" fill="url(#mapSeaG)" />
+
+            <!-- 
+              Porto Torres topography:
+              - Port juts out to the left/top (northwest)
+              - Coastline runs roughly W→E
+              - City land mass below the coast
+              - Beaches to the east (right side) of Via Petronia
+            -->
+
+            <!-- Main land mass -->
+            <path d="
+              M0,95
+              C10,88 20,80 30,75
+              C45,68 58,65 72,63
+              C88,60 104,62 118,60
+              C134,58 150,56 168,55
+              C186,54 205,54 224,53
+              C244,52 262,52 280,52
+              C300,51 320,52 340,53
+              C358,54 370,55 380,56
+              L380,210 L0,210 Z
+            " fill="url(#mapLandG)" />
+
+            <!-- PORT / HARBOUR — northwest peninsula jutting out -->
+            <!-- Outer breakwater -->
+            <path d="M0,85 Q18,60 38,40 Q52,24 60,12 L74,14 Q62,28 50,46 Q32,66 16,88 Z" fill="rgba(10,30,48,0.9)"
+              stroke="rgba(255,255,255,0.07)" stroke-width="0.5" />
+            <!-- Inner dock platform -->
+            <path d="M0,90 Q14,72 28,56 Q38,44 46,34 L62,36 Q52,50 40,62 Q26,76 12,94 Z" fill="rgba(8,24,40,0.95)"
+              stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+            <!-- Ferry pier extending into sea -->
+            <rect x="30" y="8" width="38" height="10" rx="2" fill="rgba(13,42,62,0.95)" stroke="rgba(255,255,255,0.06)"
+              stroke-width="0.5" />
+            <!-- Boat masts in harbour -->
+            <line x1="10" y1="72" x2="10" y2="92" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+            <line x1="22" y1="66" x2="22" y2="86" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+            <line x1="34" y1="60" x2="34" y2="78" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+
+            <!-- Sea wave texture -->
+            <path d="M90,28 Q112,24 136,28" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+            <path d="M170,22 Q196,18 220,22" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+            <path d="M258,20 Q282,16 306,20" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+            <path d="M330,26 Q352,22 374,26" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none" />
+
+            <!-- Main coastal road (Lungomare) -->
+            <path d="M72,67 Q110,63 152,60 Q194,57 234,56 Q272,55 312,55 Q344,55 380,56" stroke="rgba(255,255,255,0.16)"
+              stroke-width="2.5" fill="none" />
+
+            <!-- Via Petronia — the N-S dividing street (apartments are just left of this) -->
+            <!-- This is at ~x=148 -->
+            <line x1="148" y1="62" x2="148" y2="210" stroke="rgba(255,255,255,0.18)" stroke-width="2" />
+            <!-- Label Via Petronia -->
+            <text x="144" y="210" font-size="6" fill="rgba(255,255,255,0.25)" font-family="DM Sans,sans-serif"
+              transform="rotate(-90,144,190)" text-anchor="middle">Via Petronia</text>
+
+            <!-- Other N-S streets -->
+            <line x1="112" y1="65" x2="112" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="184" y1="59" x2="184" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="220" y1="57" x2="220" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="258" y1="55" x2="258" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="296" y1="54" x2="296" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+
+            <!-- E-W streets -->
+            <line x1="72" y1="90" x2="380" y2="87" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="72" y1="115" x2="380" y2="113" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="72" y1="142" x2="380" y2="141" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+            <line x1="72" y1="170" x2="380" y2="170" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+
+            <!-- START POINT: Azzurro — just left of Via Petronia (~x=120, y=155) -->
+            <circle cx="120" cy="158" r="9" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.45)"
+              stroke-width="1.5" />
+            <circle cx="120" cy="158" r="4.5" fill="#c9a84c" />
+            <circle cx="120" cy="158" r="2" fill="rgba(255,255,255,0.95)" />
+            <!-- Start label — to the left of the dot so it doesn't overlap Via Petronia -->
+            <text x="108" y="152" text-anchor="end" font-size="7" fill="rgba(255,255,255,0.75)"
+              font-family="DM Sans,sans-serif" font-weight="600">Azzurro</text>
+            <text x="108" y="162" text-anchor="end" font-size="6.5" fill="rgba(255,255,255,0.55)"
+              font-family="DM Sans,sans-serif">Luxury Boutique</text>
+
+            <!-- Destination dots (dim before reveal) — all to the RIGHT of Via Petronia -->
+            <!-- Rest dot -->
+            <circle id="mapDotRest" cx="120" cy="135" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+              stroke-width="1" />
+            <!-- Lidl: just right of Via Petronia, near coast road (~x=170, y=80) -->
+            <circle id="mapDotLidl" cx="135" cy="115" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+              stroke-width="1" />
+            <!-- Scoglio Lungo beach: ~x=210, y=57 (on coastline) -->
+            <circle id="mapDotScoglio" cx="214" cy="57" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+              stroke-width="1" />
+            <!-- Acque Dolci: ~x=258, y=55 -->
+            <circle id="mapDotDolci" cx="260" cy="55" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+              stroke-width="1" />
+            <!-- Spiaggia Balai: far right ~x=340, y=54 -->
+            <circle id="mapDotBalai" cx="342" cy="54" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+              stroke-width="1" />
+
+            <!-- Animated route paths from Azzurro (120,158) -->
+            <path id="mapPathRest" d="M120,158 L120,135" stroke="#c9a84c" stroke-width="2.2" fill="none"
+              stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+
+            <path id="mapPathLidl" d="M120,158 L128,138 L135,115" stroke="#c9a84c" stroke-width="2.2" fill="none"
+              stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+
+            <path id="mapPathScoglio" d="M120,158 Q155,120 184,90 Q200,72 214,57" stroke="#c9a84c" stroke-width="2.2"
+              fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
+              filter="url(#mapGlow)" />
+
+            <path id="mapPathDolci" d="M120,158 Q165,118 208,88 Q234,70 260,55" stroke="#c9a84c" stroke-width="2.2"
+              fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
+              filter="url(#mapGlow)" />
+
+            <path id="mapPathBalai" d="M120,158 Q175,118 230,90 Q278,68 312,58 Q328,55 342,54" stroke="#c9a84c"
+              stroke-width="2.2" fill="none" stroke-dasharray="9999" stroke-dashoffset="9999"
+              marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+
+            <!-- BADGES (revealed after each path finishes) -->
+
+            <!-- Rest badge -->
+            <g id="mapBadgeRest" style="opacity:0;transition:opacity 0.5s ease">
+              <rect x="30" y="116" width="84" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+              <text x="72" y="128" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
+                font-weight="600">🍝 Restauracje</text>
+              <text x="72" y="139" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                font-family="DM Sans,sans-serif">1 min</text>
+            </g>
+
+            <!-- Lidl badge — above and right of dot -->
+            <g id="mapBadgeLidl" style="opacity:0;transition:opacity 0.5s ease">
+              <rect x="112" y="80" width="58" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+              <text x="141" y="92" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
+                font-weight="600">🛒 Lidl</text>
+              <text x="141" y="103" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                font-family="DM Sans,sans-serif">3 min</text>
+            </g>
+
+            <!-- Scoglio Lungo badge -->
+            <g id="mapBadgeScoglio" style="opacity:0;transition:opacity 0.5s ease">
+              <rect x="144" y="15" width="80" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+              <text x="184" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
+                font-weight="600">🏖 Scoglio Lungo</text>
+              <text x="184" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                font-family="DM Sans,sans-serif">5 min spaceru</text>
+            </g>
+
+            <!-- Acque Dolci badge -->
+            <g id="mapBadgeDolci" style="opacity:0;transition:opacity 0.5s ease">
+              <rect x="226" y="26" width="74" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+              <text x="263" y="38" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
+                font-weight="600">🏖 Acque Dolci</text>
+              <text x="263" y="49" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                font-family="DM Sans,sans-serif">8 min spaceru</text>
+            </g>
+
+            <!-- Balai badge -->
+            <g id="mapBadgeBalai" style="opacity:0;transition:opacity 0.5s ease">
+              <rect x="302" y="15" width="76" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+              <text x="340" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
+                font-weight="600">🏖 Spiaggia Balai</text>
+              <text x="340" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                font-family="DM Sans,sans-serif">20 min spaceru</text>
+            </g>
+
+            <!-- Sea label -->
+            <text x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
+              font-family="Cormorant Garamond,serif" font-style="italic" letter-spacing="5">M A R E</text>
+          </svg>
+          <div class="map-foot">
+            <div class="map-foot-dot"></div>
+            <span class="map-foot-text">Porto Torres · Sardegna</span>
+            <div class="map-foot-dot"></div>
+          </div>
         </div>
       </div>
       <div class="contact">
@@ -2411,7 +2865,15 @@
                 <span>Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Polecamy stronę <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę kredytową/debetową, bo są różnice w cenie wynajmu ze względu na rodzaj posiadanej karty.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Polecamy stronę <a href="https://discovercars.com" target="_blank"
+                      rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta
+                    można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w
+                    wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę
+                    kredytową/debetową, bo są różnice w cenie wynajmu ze względu na rodzaj posiadanej karty.</div>
+                </div>
+              </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
@@ -2419,7 +2881,12 @@
                 <span>Czy jest możliwy transfer lotniskowy?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie 55 euro w jedną stronę do 4 osób.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie
+                    55 euro w jedną stronę do 4 osób.</div>
+                </div>
+              </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
@@ -2427,7 +2894,11 @@
                 <span>Czy jest u Państwa żelazko? Pralka?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.</div>
+                </div>
+              </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
@@ -2435,7 +2906,11 @@
                 <span>Czy jest parking w cenie?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Obok naszej kamienicy znajduje się duży, bezpłatny parking.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Obok naszej kamienicy znajduje się duży, bezpłatny parking.</div>
+                </div>
+              </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
@@ -2443,7 +2918,12 @@
                 <span>Na którym piętrze jest mieszkanie?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na górze nasze mieszkania. W kamienicy nie ma nikogo więcej poza naszymi gośćmi.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na
+                    górze nasze mieszkania. W kamienicy nie ma nikogo więcej poza naszymi gośćmi.</div>
+                </div>
+              </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
@@ -2451,7 +2931,14 @@
                 <span>Czy organizują Państwo wycieczki?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
-              <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-text">Polecamy stronę <a href="https://www.getyourguide.com" target="_blank" rel="noopener">getyourguide.com</a> — pośrednik wszystkich dostępnych wycieczek (coś jak Booking dla noclegów) na Sardynii. Można tam obejrzeć dokładny plan, terminy i ceny wycieczek odbywających się na całej wyspie.</div></div></div>
+              <div class="faq-a">
+                <div class="faq-a-inner">
+                  <div class="faq-a-text">Polecamy stronę <a href="https://www.getyourguide.com" target="_blank"
+                      rel="noopener">getyourguide.com</a> — pośrednik wszystkich dostępnych wycieczek (coś jak Booking
+                    dla noclegów) na Sardynii. Można tam obejrzeć dokładny plan, terminy i ceny wycieczek odbywających
+                    się na całej wyspie.</div>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -3120,7 +3607,7 @@
       3: [
         'https://drive.google.com/thumbnail?id=1x8T4_235RouMhz1S_iOWX3BKznIXdkSX&sz=w800',
         'https://drive.google.com/thumbnail?id=1k2D5KeR1Xo2k9C0fTbMm9OW9oXATyf7x&sz=w800',
-        'https://drive.google.com/thumbnail?id=1K9vMryWD0UZyHicludF8WwnNDMP3XoCQ&sz=w800',
+        'https://drive.google.com/thumbnail?id=1d0Yr-cdyKSRE594UHSl2G1svemfstN0W&sz=w800',
         'https://drive.google.com/thumbnail?id=1tKXyjwTulcg2wI_DscRdoJfDtYEzLSyh&sz=w800',
         'https://drive.google.com/thumbnail?id=1tiDsEr2JbPUE4tE8Txw3uTWh22LiGl7N&sz=w800',
         'https://drive.google.com/thumbnail?id=15ZWlbDN9w5Rlqgq_4rIGLbIR-0WBYka4&sz=w800'
@@ -3397,7 +3884,7 @@
       }
       /* override person count (e.g. apt1 shown for 3 guests) */
       if (opt && opt.overridePersons) {
-        meta = meta.map(function(item) {
+        meta = meta.map(function (item) {
           return item.key === 'persons' ? { icon: item.icon, key: 'persons', n: opt.overridePersons } : item;
         });
       }
@@ -3451,28 +3938,28 @@
       div.innerHTML =
         '<div class="abar"></div>'
         + '<div class="aopt-header">'
-        +   '<div class="aopt-header-left">'
-        +     '<div class="adots">' + dots + '</div>'
-        +     '<div class="aopt-name-wrap">'
-        +       '<div class="aname">' + o.name + '</div>'
-        +       '<div class="aopt-chips">' + chips + '</div>'
-        +       (badgeHtml ? '<div>' + badgeHtml + '</div>' : '')
-        +     '</div>'
-        +   '</div>'
-        +   '<span class="aopt-chevron">&#8964;</span>'
+        + '<div class="aopt-header-left">'
+        + '<div class="adots">' + dots + '</div>'
+        + '<div class="aopt-name-wrap">'
+        + '<div class="aname">' + o.name + '</div>'
+        + '<div class="aopt-chips">' + chips + '</div>'
+        + (badgeHtml ? '<div>' + badgeHtml + '</div>' : '')
+        + '</div>'
+        + '</div>'
+        + '<span class="aopt-chevron">&#8964;</span>'
         + '</div>'
         + '<div class="aopt-body">'
-        +   '<div class="aopt-body-inner">'
-        +     galleryHtml
-        +     '<div class="ainner">'
-        +       '<div class="arow">'
-        +         '<div class="adots">' + dots + '</div>'
-        +         '<div class="aname">' + o.name + '</div>'
-        +         '<button class="btn-select" data-sel="1">' + T.selectBtn + '</button>'
-        +       '</div>'
-        +       (tags ? '<div class="atags">' + tags + '</div>' : '')
-        +     '</div>'
-        +   '</div>'
+        + '<div class="aopt-body-inner">'
+        + galleryHtml
+        + '<div class="ainner">'
+        + '<div class="arow">'
+        + '<div class="adots">' + dots + '</div>'
+        + '<div class="aname">' + o.name + '</div>'
+        + '<button class="btn-select" data-sel="1">' + T.selectBtn + '</button>'
+        + '</div>'
+        + (tags ? '<div class="atags">' + tags + '</div>' : '')
+        + '</div>'
+        + '</div>'
         + '</div>';
 
       /* header click = toggle */
@@ -3605,7 +4092,28 @@
         cell.className = 'day' + (past ? ' past' : isBusy ? ' busy' : ' free');
         if (!past && dk === tk) cell.classList.add('today');
         var numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
-        if (!past && !isBusy) { var silentK = (selOpt && selOpt.silentBed) ? 1 : 0; var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE); var prEl = document.createElement('div'); prEl.className = 'day-price'; prEl.textContent = dayP + '€'; cell.appendChild(prEl); }
+        if (!past && !isBusy) {
+          var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
+          var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE);
+          var prEl = document.createElement('div');
+          prEl.className = 'day-price';
+          prEl.textContent = dayP + '€';
+          cell.appendChild(prEl);
+
+          // Last minute logic
+          var tkTime = new Date();
+          tkTime.setHours(0, 0, 0, 0);
+
+          var isSameMonth = (dt.getMonth() === tkTime.getMonth() && dt.getFullYear() === tkTime.getFullYear());
+          var isLastMinute = isSameMonth && (tkTime.getDate() >= 14) && (dt.getDate() >= tkTime.getDate());
+
+          if (isLastMinute) {
+            var lmEl = document.createElement('div');
+            lmEl.className = 'day-last-minute';
+            lmEl.textContent = 'Last Minute';
+            cell.appendChild(lmEl);
+          }
+        }
         if (!past && !isBusy) {
           if (dk === selStart && dk === selEnd) cell.classList.add('sel-start', 'sel-end');
           else if (dk === selStart) cell.classList.add('sel-start');
@@ -3763,7 +4271,7 @@
     function mkActive(n) { var e = $id('i' + n); e.classList.remove('done'); e.classList.add('active'); }
     function mkDone(n) { var e = $id('i' + n); e.classList.remove('active'); e.classList.add('done'); $id('sn' + n).textContent = '\u2713'; }
     function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }
-    function scrollToSteps() { var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'smooth' }); } }
+    function scrollToSteps() { var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'auto' }); } }
     function goBack(step) {
       if (step === 1) { show('s1'); hide('s2'); mkActive(1); resetI(2); resetI(3); scrollToSteps(); }
       else if (step === 2) { show('s2'); hide('s3'); mkActive(2); resetI(3); selStart = null; selEnd = null; initAllGalleries(); scrollToSteps(); }
@@ -3865,7 +4373,7 @@
     /* ── FAQ ── */
     function faqToggle(item) {
       var isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(el) { if (el !== item) el.classList.remove('open'); });
+      document.querySelectorAll('.faq-item.open').forEach(function (el) { if (el !== item) el.classList.remove('open'); });
       if (isOpen) item.classList.remove('open');
       else item.classList.add('open');
     }
@@ -3874,6 +4382,61 @@
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });
     applyT();
   </script>
+  <!-- Hero Map Animation -->
+  <script>
+    (function () {
+      var done = false;
+
+      function runMapAnim() {
+        if (done) return;
+        done = true;
+
+        var steps = [
+          { path: 'mapPathRest', badge: 'mapBadgeRest', dot: 'mapDotRest', delay: 250, dur: 450 },
+          { path: 'mapPathLidl', badge: 'mapBadgeLidl', dot: 'mapDotLidl', delay: 800, dur: 550 },
+          { path: 'mapPathScoglio', badge: 'mapBadgeScoglio', dot: 'mapDotScoglio', delay: 1450, dur: 780 },
+          { path: 'mapPathDolci', badge: 'mapBadgeDolci', dot: 'mapDotDolci', delay: 2330, dur: 880 },
+          { path: 'mapPathBalai', badge: 'mapBadgeBalai', dot: 'mapDotBalai', delay: 3310, dur: 1150 }
+        ];
+
+        steps.forEach(function (s) {
+          var p = document.getElementById(s.path);
+          var b = document.getElementById(s.badge);
+          var d = document.getElementById(s.dot);
+          if (!p) return;
+
+          var len = p.getTotalLength ? p.getTotalLength() : 300;
+          p.style.strokeDasharray = len;
+          p.style.strokeDashoffset = len;
+
+          setTimeout(function () {
+            p.style.transition = 'stroke-dashoffset ' + s.dur + 'ms cubic-bezier(0.35, 0, 0.3, 1)';
+            p.style.strokeDashoffset = '0';
+
+            setTimeout(function () {
+              if (b) b.style.opacity = '1';
+              if (d) {
+                d.style.transition = 'fill 0.3s, stroke 0.3s';
+                d.setAttribute('fill', 'rgba(201,168,76,0.4)');
+                d.setAttribute('stroke', '#c9a84c');
+              }
+            }, s.dur + 80);
+          }, s.delay);
+        });
+      }
+
+      var card = document.getElementById('heroMapCard');
+      if (card && 'IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) { runMapAnim(); obs.disconnect(); }
+        }, { threshold: 0.6 });
+        obs.observe(card);
+      } else if (card) {
+        setTimeout(runMapAnim, 900);
+      }
+    })();
+  </script>
+
   <!-- Cloudflare Web Analytics -->
   <script>
     if (new URLSearchParams(window.location.search).get('test') !== '1') {

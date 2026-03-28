@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Azzurro Luxury Boutique</title>
+  <script>
+    // Lock viewport height before FB WebView collapses its chrome on first touch.
+    // svh/vh change causes a full-screen jump when FB hides its navigation bar.
+    (function () {
+      var vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--locked-vh', vh + 'px');
+    })();
+  </script>
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
@@ -48,7 +56,7 @@
       font-family: "DM Sans", sans-serif;
       background: var(--sand);
       color: var(--text);
-      min-height: 100svh;
+      min-height: calc(var(--locked-vh, 1vh) * 100);
       overflow-x: hidden
     }
 
@@ -91,7 +99,7 @@
     header {
       position: relative;
       width: 100%;
-      min-height: 100svh;
+      min-height: calc(var(--locked-vh, 1vh) * 100);
       height: auto;
       overflow: hidden;
       display: flex;
@@ -4397,9 +4405,6 @@
     }
 
     /* ── init ── */
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
 
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });
     applyT();

@@ -664,6 +664,40 @@
       cursor: not-allowed
     }
 
+    .btn-luxury {
+      width: 100%;
+      border-radius: 14px;
+      font-weight: 600;
+      font-family: "DM Sans", sans-serif;
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 16px;
+      color: #fff;
+      background: linear-gradient(110deg, #c9a84c 0%, #d8b95d 40%, #fff0b3 50%, #d8b95d 60%, #c9a84c 100%);
+      background-size: 200% auto;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 6px 20px rgba(201, 168, 76, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: shimmerBtn 4s linear infinite;
+    }
+
+    .btn-luxury:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 10px rgba(201, 168, 76, 0.3);
+    }
+
+    @keyframes shimmerBtn {
+      0% {
+        background-position: -200% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
     .apt-list {
       display: flex;
       flex-direction: column;
@@ -2612,7 +2646,8 @@
         <div class="sum-body" id="sum-body"></div>
       </div>
       <div id="rezerwuj-wrap" class="hidden" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
-        <button id="btn-rezerwuj" class="btn-main" style="width: 100%; border-radius: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid rgba(255, 255, 255, 1); color: var(--ocean); padding: 18px; font-size: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.8);" onclick="document.querySelector('.btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
+        <button id="btn-rezerwuj" class="btn-luxury"
+          onclick="document.querySelector('.btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
           <span id="t-btn-reserve">Rezerwuj</span>
         </button>
       </div>
@@ -2680,11 +2715,12 @@
               </filter>
             </defs>
 
-            <g id="mapZoomWrapper" style="transform-origin: 120px 158px; transform: scale(0.42); transition: transform 2.5s cubic-bezier(0.65, 0, 0.1, 1);">
+            <g id="mapZoomWrapper"
+              style="transform-origin: 120px 158px; transform: scale(0.42); transition: transform 2.5s cubic-bezier(0.65, 0, 0.1, 1);">
               <!-- Sea background -->
               <rect x="-400" y="-150" width="1200" height="700" fill="url(#mapSeaG)" />
 
-            <!-- 
+              <!-- 
               Porto Torres topography:
               - Port juts out to the left/top (northwest)
               - Coastline runs roughly W→E
@@ -2692,8 +2728,8 @@
               - Beaches to the east (right side) of Via Petronia
             -->
 
-            <!-- Main land mass -->
-            <path d="
+              <!-- Main land mass -->
+              <path d="
               M-400,95
               L0,95
               C10,88 20,80 30,75
@@ -2707,177 +2743,185 @@
               L800,56 L800,450 L-400,450 Z
             " fill="url(#mapLandG)" />
 
-            <!-- PORT / HARBOUR — northwest peninsula jutting out -->
-            <!-- Outer breakwater -->
-            <path d="M0,85 Q18,60 38,40 Q52,24 60,12 L74,14 Q62,28 50,46 Q32,66 16,88 Z" fill="rgba(10,30,48,0.9)"
-              stroke="rgba(255,255,255,0.07)" stroke-width="0.5" />
-            <!-- Inner dock platform -->
-            <path d="M0,90 Q14,72 28,56 Q38,44 46,34 L62,36 Q52,50 40,62 Q26,76 12,94 Z" fill="rgba(8,24,40,0.95)"
-              stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
-            <!-- Ferry pier extending into sea -->
-            <rect x="30" y="8" width="38" height="10" rx="2" fill="rgba(13,42,62,0.95)" stroke="rgba(255,255,255,0.06)"
-              stroke-width="0.5" />
-            <!-- Boat masts in harbour -->
-            <line x1="10" y1="72" x2="10" y2="92" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
-            <line x1="22" y1="66" x2="22" y2="86" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
-            <line x1="34" y1="60" x2="34" y2="78" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+              <!-- PORT / HARBOUR — northwest peninsula jutting out -->
+              <!-- Outer breakwater -->
+              <path d="M0,85 Q18,60 38,40 Q52,24 60,12 L74,14 Q62,28 50,46 Q32,66 16,88 Z" fill="rgba(10,30,48,0.9)"
+                stroke="rgba(255,255,255,0.07)" stroke-width="0.5" />
+              <!-- Inner dock platform -->
+              <path d="M0,90 Q14,72 28,56 Q38,44 46,34 L62,36 Q52,50 40,62 Q26,76 12,94 Z" fill="rgba(8,24,40,0.95)"
+                stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+              <!-- Ferry pier extending into sea -->
+              <rect x="30" y="8" width="38" height="10" rx="2" fill="rgba(13,42,62,0.95)"
+                stroke="rgba(255,255,255,0.06)" stroke-width="0.5" />
+              <!-- Boat masts in harbour -->
+              <line x1="10" y1="72" x2="10" y2="92" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+              <line x1="22" y1="66" x2="22" y2="86" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+              <line x1="34" y1="60" x2="34" y2="78" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
 
-            <!-- Sea wave texture -->
-            <path d="M90,28 Q112,24 136,28" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
-            <path d="M170,22 Q196,18 220,22" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
-            <path d="M258,20 Q282,16 306,20" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
-            <path d="M330,26 Q352,22 374,26" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none" />
+              <!-- Sea wave texture -->
+              <path d="M90,28 Q112,24 136,28" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+              <path d="M170,22 Q196,18 220,22" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+              <path d="M258,20 Q282,16 306,20" stroke="rgba(255,255,255,0.05)" stroke-width="1" fill="none" />
+              <path d="M330,26 Q352,22 374,26" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none" />
 
-            <!-- Main coastal road (Lungomare) -->
-            <path d="M72,67 Q110,63 152,60 Q194,57 234,56 Q272,55 312,55 Q344,55 380,56" stroke="rgba(255,255,255,0.16)"
-              stroke-width="2.5" fill="none" />
+              <!-- Main coastal road (Lungomare) -->
+              <path d="M72,67 Q110,63 152,60 Q194,57 234,56 Q272,55 312,55 Q344,55 380,56"
+                stroke="rgba(255,255,255,0.16)" stroke-width="2.5" fill="none" />
 
-            <!-- Via Petronia — the N-S dividing street (apartments are just left of this) -->
-            <!-- This is at ~x=148 -->
-            <line x1="148" y1="62" x2="148" y2="210" stroke="rgba(255,255,255,0.18)" stroke-width="2" />
-            <!-- Label Via Petronia -->
-            <text x="144" y="210" font-size="6" fill="rgba(255,255,255,0.25)" font-family="DM Sans,sans-serif"
-              transform="rotate(-90,144,190)" text-anchor="middle">Via Petronia</text>
+              <!-- Via Petronia — the N-S dividing street (apartments are just left of this) -->
+              <!-- This is at ~x=148 -->
+              <line x1="148" y1="62" x2="148" y2="210" stroke="rgba(255,255,255,0.18)" stroke-width="2" />
+              <!-- Label Via Petronia -->
+              <text x="144" y="210" font-size="6" fill="rgba(255,255,255,0.25)" font-family="DM Sans,sans-serif"
+                transform="rotate(-90,144,190)" text-anchor="middle">Via Petronia</text>
 
-            <!-- Other N-S streets -->
-            <line x1="112" y1="65" x2="112" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="184" y1="59" x2="184" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="220" y1="57" x2="220" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="258" y1="55" x2="258" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="296" y1="54" x2="296" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <!-- Other N-S streets -->
+              <line x1="112" y1="65" x2="112" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="184" y1="59" x2="184" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="220" y1="57" x2="220" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="258" y1="55" x2="258" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="296" y1="54" x2="296" y2="210" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
 
-            <!-- E-W streets -->
-            <line x1="72" y1="90" x2="380" y2="87" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="72" y1="115" x2="380" y2="113" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="72" y1="142" x2="380" y2="141" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
-            <line x1="72" y1="170" x2="380" y2="170" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <!-- E-W streets -->
+              <line x1="72" y1="90" x2="380" y2="87" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="72" y1="115" x2="380" y2="113" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="72" y1="142" x2="380" y2="141" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
+              <line x1="72" y1="170" x2="380" y2="170" stroke="rgba(255,255,255,0.055)" stroke-width="1.2" />
 
-            <!-- START POINT: Azzurro — just left of Via Petronia (~x=120, y=155) -->
-            <circle cx="120" cy="158" r="9" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.45)"
-              stroke-width="1.5" />
-            <circle cx="120" cy="158" r="4.5" fill="#c9a84c" />
-            <circle cx="120" cy="158" r="2" fill="rgba(255,255,255,0.95)" />
-            <!-- Start label — to the left of the dot so it doesn't overlap Via Petronia -->
-            <text x="108" y="152" text-anchor="end" font-size="7" fill="rgba(255,255,255,0.75)"
-              font-family="DM Sans,sans-serif" font-weight="600">Azzurro</text>
-            <text x="108" y="162" text-anchor="end" font-size="6.5" fill="rgba(255,255,255,0.55)"
-              font-family="DM Sans,sans-serif">Luxury Boutique</text>
+              <!-- START POINT: Azzurro — just left of Via Petronia (~x=120, y=155) -->
+              <circle cx="120" cy="158" r="9" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.45)"
+                stroke-width="1.5" />
+              <circle cx="120" cy="158" r="4.5" fill="#c9a84c" />
+              <circle cx="120" cy="158" r="2" fill="rgba(255,255,255,0.95)" />
+              <!-- Start label — to the left of the dot so it doesn't overlap Via Petronia -->
+              <text x="108" y="152" text-anchor="end" font-size="7" fill="rgba(255,255,255,0.75)"
+                font-family="DM Sans,sans-serif" font-weight="600">Azzurro</text>
+              <text x="108" y="162" text-anchor="end" font-size="6.5" fill="rgba(255,255,255,0.55)"
+                font-family="DM Sans,sans-serif">Luxury Boutique</text>
 
-            <!-- Destination dots (dim before reveal) — all to the RIGHT of Via Petronia -->
-            <!-- Rest dot -->
-            <circle id="mapDotRest" cx="120" cy="135" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
-              stroke-width="1" />
-            <!-- Lidl: just right of Via Petronia, near coast road (~x=170, y=80) -->
-            <circle id="mapDotLidl" cx="135" cy="115" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
-              stroke-width="1" />
-            <!-- Scoglio Lungo beach: ~x=210, y=57 (on coastline) -->
-            <circle id="mapDotScoglio" cx="214" cy="57" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
-              stroke-width="1" />
-            <!-- Acque Dolci: ~x=258, y=55 -->
-            <circle id="mapDotDolci" cx="260" cy="55" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
-              stroke-width="1" />
-            <!-- Spiaggia Balai: far right ~x=340, y=54 -->
-            <circle id="mapDotBalai" cx="342" cy="54" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
-              stroke-width="1" />
+              <!-- Destination dots (dim before reveal) — all to the RIGHT of Via Petronia -->
+              <!-- Rest dot -->
+              <circle id="mapDotRest" cx="120" cy="135" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+                stroke-width="1" />
+              <!-- Lidl: just right of Via Petronia, near coast road (~x=170, y=80) -->
+              <circle id="mapDotLidl" cx="135" cy="115" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+                stroke-width="1" />
+              <!-- Scoglio Lungo beach: ~x=210, y=57 (on coastline) -->
+              <circle id="mapDotScoglio" cx="214" cy="57" r="4" fill="rgba(201,168,76,0.15)"
+                stroke="rgba(201,168,76,0.3)" stroke-width="1" />
+              <!-- Acque Dolci: ~x=258, y=55 -->
+              <circle id="mapDotDolci" cx="260" cy="55" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+                stroke-width="1" />
+              <!-- Spiaggia Balai: far right ~x=340, y=54 -->
+              <circle id="mapDotBalai" cx="342" cy="54" r="4" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)"
+                stroke-width="1" />
 
-            <!-- Animated route paths from Azzurro (120,158) -->
-            <path id="mapPathRest" d="M120,158 L120,135" stroke="#c9a84c" stroke-width="2.2" fill="none"
-              stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+              <!-- Animated route paths from Azzurro (120,158) -->
+              <path id="mapPathRest" d="M120,158 L120,135" stroke="#c9a84c" stroke-width="2.2" fill="none"
+                stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
 
-            <path id="mapPathLidl" d="M120,158 L128,138 L135,115" stroke="#c9a84c" stroke-width="2.2" fill="none"
-              stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+              <path id="mapPathLidl" d="M120,158 L128,138 L135,115" stroke="#c9a84c" stroke-width="2.2" fill="none"
+                stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
 
-            <path id="mapPathScoglio" d="M120,158 Q155,120 184,90 Q200,72 214,57" stroke="#c9a84c" stroke-width="2.2"
-              fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
-              filter="url(#mapGlow)" />
+              <path id="mapPathScoglio" d="M120,158 Q155,120 184,90 Q200,72 214,57" stroke="#c9a84c" stroke-width="2.2"
+                fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
+                filter="url(#mapGlow)" />
 
-            <path id="mapPathDolci" d="M120,158 Q165,118 208,88 Q234,70 260,55" stroke="#c9a84c" stroke-width="2.2"
-              fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
-              filter="url(#mapGlow)" />
+              <path id="mapPathDolci" d="M120,158 Q165,118 208,88 Q234,70 260,55" stroke="#c9a84c" stroke-width="2.2"
+                fill="none" stroke-dasharray="9999" stroke-dashoffset="9999" marker-end="url(#mapArrow)"
+                filter="url(#mapGlow)" />
 
-            <path id="mapPathBalai" d="M120,158 Q175,118 230,90 Q278,68 312,58 Q328,55 342,54" stroke="#c9a84c"
-              stroke-width="2.2" fill="none" stroke-dasharray="9999" stroke-dashoffset="9999"
-              marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+              <path id="mapPathBalai" d="M120,158 Q175,118 230,90 Q278,68 312,58 Q328,55 342,54" stroke="#c9a84c"
+                stroke-width="2.2" fill="none" stroke-dasharray="9999" stroke-dashoffset="9999"
+                marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
 
-            <!-- BADGES (revealed after each path finishes) -->
+              <!-- BADGES (revealed after each path finishes) -->
 
-            <!-- Rest badge -->
-            <g id="mapBadgeRest" style="opacity:0;transition:opacity 0.5s ease">
-              <rect x="30" y="116" width="84" height="28" rx="7" fill="rgba(5,14,22,0.93)"
-                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-              <text x="72" y="128" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
-                font-weight="600">🍝 Restauracje</text>
-              <text x="72" y="139" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
-                font-family="DM Sans,sans-serif">1 min</text>
-            </g>
-
-            <!-- Lidl badge — above and right of dot -->
-            <g id="mapBadgeLidl" style="opacity:0;transition:opacity 0.5s ease">
-              <rect x="112" y="80" width="58" height="28" rx="7" fill="rgba(5,14,22,0.93)"
-                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-              <text x="141" y="92" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
-                font-weight="600">🛒 Lidl</text>
-              <text x="141" y="103" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
-                font-family="DM Sans,sans-serif">3 min</text>
-            </g>
-
-            <!-- Scoglio Lungo badge -->
-            <g id="mapBadgeScoglio" style="opacity:0;transition:opacity 0.5s ease">
-              <rect x="144" y="15" width="80" height="28" rx="7" fill="rgba(5,14,22,0.93)"
-                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-              <text x="184" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
-                font-weight="600">🏖 Scoglio Lungo</text>
-              <text x="184" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
-                font-family="DM Sans,sans-serif">5 min spaceru</text>
-            </g>
-
-            <!-- Acque Dolci badge -->
-            <g id="mapBadgeDolci" style="opacity:0;transition:opacity 0.5s ease">
-              <rect x="226" y="26" width="74" height="28" rx="7" fill="rgba(5,14,22,0.93)"
-                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-              <text x="263" y="38" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
-                font-weight="600">🏖 Acque Dolci</text>
-              <text x="263" y="49" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
-                font-family="DM Sans,sans-serif">8 min spaceru</text>
-            </g>
-
-            <!-- Balai badge -->
-            <g id="mapBadgeBalai" style="opacity:0;transition:opacity 0.5s ease">
-              <rect x="302" y="15" width="76" height="28" rx="7" fill="rgba(5,14,22,0.93)"
-                stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-              <text x="340" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c" font-family="DM Sans,sans-serif"
-                font-weight="600">🏖 Spiaggia Balai</text>
-              <text x="340" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
-                font-family="DM Sans,sans-serif">20 min spaceru</text>
-            </g>
-
-            <!-- Sea label -->
-            <text x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
-              font-family="Cormorant Garamond,serif" font-style="italic" letter-spacing="5">M A R E</text>
-
-            <!-- WIDE MAP ELEMENTS -->
-            <g id="wideGroup" style="opacity: 1; transition: opacity 1.5s ease;">
-              <!-- Alghero -> Azzurro -->
-              <path id="mapPathAlghero" d="M-50,230 Q20,220 100,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
-                stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
-              <circle id="mapDotAlghero" cx="-50" cy="230" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c" stroke-width="4" />
-              <g id="mapBadgeAlghero" style="opacity:0;transition:opacity 0.6s ease">
-                <rect x="-160" y="145" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="4" />
-                <text x="-50" y="175" text-anchor="middle" font-size="24" fill="#c9a84c" font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Alghero</text>
-                <text x="-50" y="202" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)" font-family="DM Sans,sans-serif">25 min jazdy</text>
+              <!-- Rest badge -->
+              <g id="mapBadgeRest" style="opacity:0;transition:opacity 0.5s ease">
+                <rect x="30" y="116" width="84" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                  stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+                <text x="72" y="128" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                  font-family="DM Sans,sans-serif" font-weight="600">🍝 Restauracje</text>
+                <text x="72" y="139" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                  font-family="DM Sans,sans-serif">1 min</text>
               </g>
 
-              <!-- Olbia -> Azzurro -->
-              <path id="mapPathOlbia" d="M550,180 Q350,260 140,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
-                stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
-              <circle id="mapDotOlbia" cx="550" cy="180" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c" stroke-width="4" />
-              <g id="mapBadgeOlbia" style="opacity:0;transition:opacity 0.6s ease">
-                <rect x="440" y="205" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="4" />
-                <text x="550" y="235" text-anchor="middle" font-size="24" fill="#c9a84c" font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Olbia</text>
-                <text x="550" y="262" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)" font-family="DM Sans,sans-serif">1h 15m jazdy</text>
+              <!-- Lidl badge — above and right of dot -->
+              <g id="mapBadgeLidl" style="opacity:0;transition:opacity 0.5s ease">
+                <rect x="112" y="80" width="58" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                  stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+                <text x="141" y="92" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                  font-family="DM Sans,sans-serif" font-weight="600">🛒 Lidl</text>
+                <text x="141" y="103" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                  font-family="DM Sans,sans-serif">3 min</text>
               </g>
-            </g>
-            <!-- End of zoom wrapper -->
+
+              <!-- Scoglio Lungo badge -->
+              <g id="mapBadgeScoglio" style="opacity:0;transition:opacity 0.5s ease">
+                <rect x="144" y="15" width="80" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                  stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+                <text x="184" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                  font-family="DM Sans,sans-serif" font-weight="600">🏖 Scoglio Lungo</text>
+                <text x="184" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                  font-family="DM Sans,sans-serif">5 min spaceru</text>
+              </g>
+
+              <!-- Acque Dolci badge -->
+              <g id="mapBadgeDolci" style="opacity:0;transition:opacity 0.5s ease">
+                <rect x="226" y="26" width="74" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                  stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+                <text x="263" y="38" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                  font-family="DM Sans,sans-serif" font-weight="600">🏖 Acque Dolci</text>
+                <text x="263" y="49" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                  font-family="DM Sans,sans-serif">8 min spaceru</text>
+              </g>
+
+              <!-- Balai badge -->
+              <g id="mapBadgeBalai" style="opacity:0;transition:opacity 0.5s ease">
+                <rect x="302" y="15" width="76" height="28" rx="7" fill="rgba(5,14,22,0.93)"
+                  stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
+                <text x="340" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                  font-family="DM Sans,sans-serif" font-weight="600">🏖 Spiaggia Balai</text>
+                <text x="340" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                  font-family="DM Sans,sans-serif">20 min spaceru</text>
+              </g>
+
+              <!-- Sea label -->
+              <text x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
+                font-family="Cormorant Garamond,serif" font-style="italic" letter-spacing="5">M A R E</text>
+
+              <!-- WIDE MAP ELEMENTS -->
+              <g id="wideGroup" style="opacity: 1; transition: opacity 1.5s ease;">
+                <!-- Alghero -> Azzurro -->
+                <path id="mapPathAlghero" d="M-50,230 Q20,220 100,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
+                  stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+                <circle id="mapDotAlghero" cx="-50" cy="230" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c"
+                  stroke-width="4" />
+                <g id="mapBadgeAlghero" style="opacity:0;transition:opacity 0.6s ease">
+                  <rect x="-160" y="145" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)"
+                    stroke="rgba(201,168,76,0.6)" stroke-width="4" />
+                  <text x="-50" y="175" text-anchor="middle" font-size="24" fill="#c9a84c"
+                    font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Alghero</text>
+                  <text x="-50" y="202" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
+                    font-family="DM Sans,sans-serif">25 min jazdy</text>
+                </g>
+
+                <!-- Olbia -> Azzurro -->
+                <path id="mapPathOlbia" d="M550,180 Q350,260 140,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
+                  stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+                <circle id="mapDotOlbia" cx="550" cy="180" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c"
+                  stroke-width="4" />
+                <g id="mapBadgeOlbia" style="opacity:0;transition:opacity 0.6s ease">
+                  <rect x="440" y="205" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)"
+                    stroke="rgba(201,168,76,0.6)" stroke-width="4" />
+                  <text x="550" y="235" text-anchor="middle" font-size="24" fill="#c9a84c"
+                    font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Olbia</text>
+                  <text x="550" y="262" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
+                    font-family="DM Sans,sans-serif">1h 15m jazdy</text>
+                </g>
+              </g>
+              <!-- End of zoom wrapper -->
             </g>
           </svg>
           <div class="map-foot">
@@ -3975,7 +4019,7 @@
           initGallery(gallery);
           gallery.dataset.inited = '1';
         }
-        setTimeout(function() {
+        setTimeout(function () {
           div.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 300);
       }
@@ -4298,12 +4342,12 @@
     /* ── summary ── */
     function updateSummary() {
       var sum = $id('summary'), warn = $id('min-warn'), rzw = $id('rezerwuj-wrap'); if (!sum) return;
-      if (!selStart || !selEnd) { sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); if (warn) warn.style.display = 'none'; return; }
+      if (!selStart || !selEnd) { sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); if (warn) warn.style.display = 'none'; return; }
       var s = pD4(selStart), e = pD4(selEnd);
       var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
-      if (nights <= 0) { sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); return; }
+      if (nights <= 0) { sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); return; }
       var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
-      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); return; }
+      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); return; }
       if (warn) warn.style.display = 'none';
       var sApts = selOpt.apts, totalApt = 0;
       var c = new Date(s);
@@ -4321,8 +4365,12 @@
       $id('sum-body').innerHTML = rows;
       sum.classList.remove('hidden');
       if (rzw) rzw.classList.remove('hidden');
-      setTimeout(function() {
-        sum.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(function () {
+        if (rzw) {
+          rzw.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        } else {
+          sum.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }, 100);
     }
 
@@ -4500,14 +4548,14 @@
         wideSteps.forEach(runStep);
 
         // 2. Schedule zoom and local animation after wide elements finish and are read
-        setTimeout(function() {
+        setTimeout(function () {
           var wideGroup = document.getElementById('wideGroup');
           if (wideGroup) wideGroup.style.opacity = '0';
-          
+
           var wrapper = document.getElementById('mapZoomWrapper');
           if (wrapper) wrapper.style.transform = 'scale(1)';
-          
-          setTimeout(function() {
+
+          setTimeout(function () {
             localSteps.forEach(runStep);
           }, 1500);
         }, 5500);

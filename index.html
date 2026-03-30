@@ -2611,6 +2611,11 @@
         </div>
         <div class="sum-body" id="sum-body"></div>
       </div>
+      <div id="rezerwuj-wrap" class="hidden" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
+        <button id="btn-rezerwuj" class="btn-main" style="width: 100%; border-radius: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid rgba(255, 255, 255, 1); color: var(--ocean); padding: 18px; font-size: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.8);" onclick="document.querySelector('.btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
+          <span id="t-btn-reserve">Rezerwuj</span>
+        </button>
+      </div>
       <div class="inclusions">
         <div class="incl-title" id="t-incl-title">Co zawiera cena?</div>
         <div class="incl-items">
@@ -2653,7 +2658,7 @@
       <div class="hero-map-wrap" style="margin-top:28px;">
         <div class="map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
         <div class="map-card" id="heroMapCard">
-          <svg class="map-svg" viewBox="0 0 380 210" xmlns="http://www.w3.org/2000/svg">
+          <svg class="map-svg" viewBox="0 0 380 210" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="mapSeaG" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#050f1c" />
@@ -2675,8 +2680,9 @@
               </filter>
             </defs>
 
-            <!-- Sea background -->
-            <rect width="380" height="210" fill="url(#mapSeaG)" />
+            <g id="mapZoomWrapper" style="transform-origin: 120px 158px; transform: scale(0.42); transition: transform 2.5s cubic-bezier(0.65, 0, 0.1, 1);">
+              <!-- Sea background -->
+              <rect x="-400" y="-150" width="1200" height="700" fill="url(#mapSeaG)" />
 
             <!-- 
               Porto Torres topography:
@@ -2688,7 +2694,8 @@
 
             <!-- Main land mass -->
             <path d="
-              M0,95
+              M-400,95
+              L0,95
               C10,88 20,80 30,75
               C45,68 58,65 72,63
               C88,60 104,62 118,60
@@ -2697,7 +2704,7 @@
               C244,52 262,52 280,52
               C300,51 320,52 340,53
               C358,54 370,55 380,56
-              L380,210 L0,210 Z
+              L800,56 L800,450 L-400,450 Z
             " fill="url(#mapLandG)" />
 
             <!-- PORT / HARBOUR — northwest peninsula jutting out -->
@@ -2847,6 +2854,31 @@
             <!-- Sea label -->
             <text x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
               font-family="Cormorant Garamond,serif" font-style="italic" letter-spacing="5">M A R E</text>
+
+            <!-- WIDE MAP ELEMENTS -->
+            <g id="wideGroup" style="opacity: 1; transition: opacity 1.5s ease;">
+              <!-- Alghero -> Azzurro -->
+              <path id="mapPathAlghero" d="M-50,230 Q20,220 100,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
+                stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+              <circle id="mapDotAlghero" cx="-50" cy="230" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c" stroke-width="4" />
+              <g id="mapBadgeAlghero" style="opacity:0;transition:opacity 0.6s ease">
+                <rect x="-160" y="145" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="4" />
+                <text x="-50" y="175" text-anchor="middle" font-size="24" fill="#c9a84c" font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Alghero</text>
+                <text x="-50" y="202" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)" font-family="DM Sans,sans-serif">25 min jazdy</text>
+              </g>
+
+              <!-- Olbia -> Azzurro -->
+              <path id="mapPathOlbia" d="M550,180 Q350,260 140,165" stroke="#c9a84c" stroke-width="5.5" fill="none"
+                stroke-dasharray="1000" stroke-dashoffset="1000" marker-end="url(#mapArrow)" filter="url(#mapGlow)" />
+              <circle id="mapDotOlbia" cx="550" cy="180" r="14" fill="rgba(201,168,76,0.15)" stroke="#c9a84c" stroke-width="4" />
+              <g id="mapBadgeOlbia" style="opacity:0;transition:opacity 0.6s ease">
+                <rect x="440" y="205" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)" stroke="rgba(201,168,76,0.6)" stroke-width="4" />
+                <text x="550" y="235" text-anchor="middle" font-size="24" fill="#c9a84c" font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Olbia</text>
+                <text x="550" y="262" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)" font-family="DM Sans,sans-serif">1h 15m jazdy</text>
+              </g>
+            </g>
+            <!-- End of zoom wrapper -->
+            </g>
           </svg>
           <div class="map-foot">
             <div class="map-foot-dot"></div>
@@ -2862,7 +2894,7 @@
               <path
                 d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z" />
             </svg>
-            <span id="t-btn-msg">Napisz na Messenger</span>
+            <span id="t-btn-msg">Rezerwuj przez Messenger</span>
           </button>
           <button class="btn-whatsapp" id="btn-whatsapp" onclick="openWhatsApp()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
@@ -2871,10 +2903,10 @@
               <path
                 d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z" />
             </svg>
-            <span id="t-btn-wa">Napisz na WhatsApp</span>
+            <span id="t-btn-wa">Rezerwuj przez WhatsApp</span>
           </button>
         </div>
-        <p class="contact-note" id="t-contact-note">Odpiszemy szybko i ustalimy wszystkie szczegóły.</p>
+        <p class="contact-note" id="t-contact-note">Odpiszemy szybko i ustalimy wszystkie szczegóły rezerwacji.</p>
 
         <!-- FAQ -->
         <div class="faq-section">
@@ -3025,7 +3057,7 @@
         hl5: 'Transfer z/na lotnisko — zaprzyjaźniony taksówkarz odbierze i odwiezie gości na życzenie (55€ w jedną stronę, do 4 osób)',
         cinTitle: 'Legalny wynajem krótkoterminowy we Włoszech',
         cinText: 'Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.',
-        btnMsg: 'Napisz na Messenger', btnWa: 'Napisz na WhatsApp', contactNote: 'Odpiszemy szybko i ustalimy wszystkie szczegóły.',
+        btnReserve: 'Rezerwuj', btnMsg: 'Rezerwuj przez Messenger', btnWa: 'Rezerwuj przez WhatsApp', contactNote: 'Odpiszemy szybko i ustalimy wszystkie szczegóły rezerwacji.',
         optFor: 'Dostępne opcje dla', adult1: ' gościa', adults: ' gości', kid1: ' dostawka', kids: ' dostawki',
         calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
         apt1: 'Apartament nr 1', apt2: 'Apartament nr 2', apt3: 'Apartament nr 3',
@@ -3514,7 +3546,7 @@
       setTxt('t-hl-title', T.hlTitle);
       setTxt('t-hl1', T.hl1); setTxt('t-hl2', T.hl2); setTxt('t-hl3', T.hl3); setTxt('t-hl4', T.hl4); setTxt('t-hl5', T.hl5);
       setTxt('t-cin-title', T.cinTitle); setTxt('t-cin-text', T.cinText);
-      setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
+      setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
       if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
       setTxt('t-tip-text', T.tipText);
       setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
@@ -3943,6 +3975,9 @@
           initGallery(gallery);
           gallery.dataset.inited = '1';
         }
+        setTimeout(function() {
+          div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
       }
     }
 
@@ -4262,13 +4297,13 @@
 
     /* ── summary ── */
     function updateSummary() {
-      var sum = $id('summary'), warn = $id('min-warn'); if (!sum) return;
-      if (!selStart || !selEnd) { sum.classList.add('hidden'); if (warn) warn.style.display = 'none'; return; }
+      var sum = $id('summary'), warn = $id('min-warn'), rzw = $id('rezerwuj-wrap'); if (!sum) return;
+      if (!selStart || !selEnd) { sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); if (warn) warn.style.display = 'none'; return; }
       var s = pD4(selStart), e = pD4(selEnd);
       var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
-      if (nights <= 0) { sum.classList.add('hidden'); return; }
+      if (nights <= 0) { sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); return; }
       var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
-      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } sum.classList.add('hidden'); return; }
+      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } sum.classList.add('hidden'); if(rzw) rzw.classList.add('hidden'); return; }
       if (warn) warn.style.display = 'none';
       var sApts = selOpt.apts, totalApt = 0;
       var c = new Date(s);
@@ -4285,6 +4320,10 @@
       rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
       $id('sum-body').innerHTML = rows;
       sum.classList.remove('hidden');
+      if (rzw) rzw.classList.remove('hidden');
+      setTimeout(function() {
+        sum.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     }
 
     function fmtDate(d) { return p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear(); }
@@ -4418,21 +4457,27 @@
         if (done) return;
         done = true;
 
-        var steps = [
-          { path: 'mapPathRest', badge: 'mapBadgeRest', dot: 'mapDotRest', delay: 250, dur: 450 },
-          { path: 'mapPathLidl', badge: 'mapBadgeLidl', dot: 'mapDotLidl', delay: 800, dur: 550 },
-          { path: 'mapPathScoglio', badge: 'mapBadgeScoglio', dot: 'mapDotScoglio', delay: 1450, dur: 780 },
-          { path: 'mapPathDolci', badge: 'mapBadgeDolci', dot: 'mapDotDolci', delay: 2330, dur: 880 },
-          { path: 'mapPathBalai', badge: 'mapBadgeBalai', dot: 'mapDotBalai', delay: 3310, dur: 1150 }
+        var wideSteps = [
+          { path: 'mapPathAlghero', badge: 'mapBadgeAlghero', dot: 'mapDotAlghero', delay: 100, dur: 1200 },
+          { path: 'mapPathOlbia', badge: 'mapBadgeOlbia', dot: 'mapDotOlbia', delay: 300, dur: 2000 }
         ];
 
-        steps.forEach(function (s) {
+        var localSteps = [
+          { path: 'mapPathRest', badge: 'mapBadgeRest', dot: 'mapDotRest', delay: 100, dur: 450 },
+          { path: 'mapPathLidl', badge: 'mapBadgeLidl', dot: 'mapDotLidl', delay: 700, dur: 550 },
+          { path: 'mapPathScoglio', badge: 'mapBadgeScoglio', dot: 'mapDotScoglio', delay: 1350, dur: 780 },
+          { path: 'mapPathDolci', badge: 'mapBadgeDolci', dot: 'mapDotDolci', delay: 2230, dur: 880 },
+          { path: 'mapPathBalai', badge: 'mapBadgeBalai', dot: 'mapDotBalai', delay: 3210, dur: 1150 }
+        ];
+
+        function runStep(s) {
           var p = document.getElementById(s.path);
           var b = document.getElementById(s.badge);
           var d = document.getElementById(s.dot);
           if (!p) return;
 
-          var len = p.getTotalLength ? p.getTotalLength() : 300;
+          var len = p.getTotalLength ? p.getTotalLength() : 600;
+          if (s.path === 'mapPathAlghero' || s.path === 'mapPathOlbia') len = 1000;
           p.style.strokeDasharray = len;
           p.style.strokeDashoffset = len;
 
@@ -4449,7 +4494,23 @@
               }
             }, s.dur + 80);
           }, s.delay);
-        });
+        }
+
+        // 1. Start wide animation
+        wideSteps.forEach(runStep);
+
+        // 2. Schedule zoom and local animation after wide elements finish and are read
+        setTimeout(function() {
+          var wideGroup = document.getElementById('wideGroup');
+          if (wideGroup) wideGroup.style.opacity = '0';
+          
+          var wrapper = document.getElementById('mapZoomWrapper');
+          if (wrapper) wrapper.style.transform = 'scale(1)';
+          
+          setTimeout(function() {
+            localSteps.forEach(runStep);
+          }, 1500);
+        }, 5500);
       }
 
       var card = document.getElementById('heroMapCard');

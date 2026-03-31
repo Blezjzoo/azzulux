@@ -2412,11 +2412,7 @@
 
   <div class="lang-bar">
     <button class="lang-btn active" onclick="setLang('pl')">PL</button>
-    <button class="lang-btn" onclick="setLang('de')">DE</button>
-    <button class="lang-btn" onclick="setLang('fr')">FR</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('cs')">CZ</button>
-    <button class="lang-btn" onclick="setLang('it')">IT</button>
   </div>
 
   <header>
@@ -2428,7 +2424,7 @@
       <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
       <div class="luxury-badge">
         <span class="luxury-line"></span>
-        <span class="luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
+        <span class="luxury-text" id="t-luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
         <span class="luxury-line"></span>
       </div>
       <div class="hero-cta-group"
@@ -2460,36 +2456,36 @@
   <!-- Porto Torres story -->
   <section class="pt-section">
     <div class="pt-inner">
-      <div class="pt-eyebrow">Sardynia bez retuszu</div>
-      <h2 class="pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
+      <div class="pt-eyebrow" id="t-pt-eyebrow">Sardynia bez retuszu</div>
+      <h2 class="pt-heading" id="t-pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
       <div class="pt-body">
-        <p class="pt-p">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko
+        <p class="pt-p" id="t-pt-p1">Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko
             zależy od tego, na czym Ci zależy.</strong></p>
-        <p class="pt-p">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte —
+        <p class="pt-p" id="t-pt-p2">Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte —
           sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość
           często słabsza… bo jesteś turystą.</p>
-        <p class="pt-p">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero,
+        <p class="pt-p" id="t-pt-p3">Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero,
             Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.</p>
         <div class="pt-divider"></div>
-        <p class="pt-p">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam
+        <p class="pt-p" id="t-pt-p4">Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam
           możesz poczuć prawdziwą magię Sardynii. 🌊</p>
-        <p class="pt-p"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz
+        <p class="pt-p" id="t-pt-p5"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz
           dostęp do wszystkiego, co potrzebne.</p>
         <div class="pt-highlights">
-          <div class="pt-hi-row"><span class="pt-hi-icon">🍝</span><span>Restauracje — <strong>1 minuta</strong>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🍝</span><span id="t-pt-hi1">Restauracje — <strong>1 minuta</strong>
               spacerem</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span>Lidl — <strong>3 minuty</strong>
+          <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span id="t-pt-hi2">Lidl — <strong>3 minuty</strong>
               spacerem</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span>Kawiarnie, bary, restauracje — dosłownie
+          <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span id="t-pt-hi3">Kawiarnie, bary, restauracje — dosłownie
               <strong>50 metrów</strong></span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span>Plaża — <strong>5 minut</strong> i jesteś nad
+          <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span id="t-pt-hi4">Plaża — <strong>5 minut</strong> i jesteś nad
               wodą</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span>Port, darmowe plaże i <strong>piękny
+          <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span id="t-pt-hi5">Port, darmowe plaże i <strong>piękny
                 deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
-          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span>Prawdziwe, rodzinne restauracje — ceny dla
+          <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span id="t-pt-hi6">Prawdziwe, rodzinne restauracje — ceny dla
               lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
         </div>
-        <p class="pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński
+        <p class="pt-closing" id="t-pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński
           klimat życia. 🌿</p>
       </div>
 
@@ -2571,7 +2567,7 @@
         </div>
         <div class="sales-grid">
           <div class="sales-card">
-            <img src="https://lh3.googleusercontent.com/d/1y13OER_gW51WmYJR3mcfV6eR6waIQtJL=w800"
+            <img id="t-sc1-img" src="https://lh3.googleusercontent.com/d/1y13OER_gW51WmYJR3mcfV6eR6waIQtJL=w800"
               alt="Plaża na Sardynii">
             <div class="sales-card-body">
               <div class="sales-card-title" id="t-sc1-t">Krystaliczna woda i rajskie plaże</div>
@@ -2580,7 +2576,7 @@
             </div>
           </div>
           <div class="sales-card">
-            <img src="https://lh3.googleusercontent.com/d/1jk3xzYf7JCbmpwAOU2CJ8E4FIU_0ltL0=w800"
+            <img id="t-sc2-img" src="https://lh3.googleusercontent.com/d/1jk3xzYf7JCbmpwAOU2CJ8E4FIU_0ltL0=w800"
               alt="Włoskie miasteczko">
             <div class="sales-card-body">
               <div class="sales-card-title" id="t-sc2-t">Odkryj prawdziwą Sardynię</div>
@@ -2691,7 +2687,7 @@
       </div>
 
       <div class="hero-map-wrap" style="margin-top:28px;">
-        <div class="map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
+        <div class="map-eyebrow" id="t-map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
         <div class="map-card" id="heroMapCard">
           <svg class="map-svg" viewBox="0 0 380 210" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -2841,9 +2837,9 @@
               <g id="mapBadgeRest" style="opacity:0;transition:opacity 0.5s ease">
                 <rect x="30" y="116" width="84" height="28" rx="7" fill="rgba(5,14,22,0.93)"
                   stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
-                <text x="72" y="128" text-anchor="middle" font-size="7.5" fill="#c9a84c"
+                <text id="t-map-rest-title" x="72" y="128" text-anchor="middle" font-size="7.5" fill="#c9a84c"
                   font-family="DM Sans,sans-serif" font-weight="600">🍝 Restauracje</text>
-                <text x="72" y="139" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                <text id="t-map-rest-time" x="72" y="139" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
                   font-family="DM Sans,sans-serif">1 min</text>
               </g>
 
@@ -2853,7 +2849,7 @@
                   stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
                 <text x="141" y="92" text-anchor="middle" font-size="7.5" fill="#c9a84c"
                   font-family="DM Sans,sans-serif" font-weight="600">🛒 Lidl</text>
-                <text x="141" y="103" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                <text id="t-map-lidl-time" x="141" y="103" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
                   font-family="DM Sans,sans-serif">3 min</text>
               </g>
 
@@ -2863,7 +2859,7 @@
                   stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
                 <text x="184" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c"
                   font-family="DM Sans,sans-serif" font-weight="600">🏖 Scoglio Lungo</text>
-                <text x="184" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                <text id="t-map-scoglio-time" x="184" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
                   font-family="DM Sans,sans-serif">5 min spaceru</text>
               </g>
 
@@ -2873,7 +2869,7 @@
                   stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
                 <text x="263" y="38" text-anchor="middle" font-size="7.5" fill="#c9a84c"
                   font-family="DM Sans,sans-serif" font-weight="600">🏖 Acque Dolci</text>
-                <text x="263" y="49" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                <text id="t-map-dolci-time" x="263" y="49" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
                   font-family="DM Sans,sans-serif">8 min spaceru</text>
               </g>
 
@@ -2883,12 +2879,12 @@
                   stroke="rgba(201,168,76,0.55)" stroke-width="0.8" />
                 <text x="340" y="27" text-anchor="middle" font-size="7.5" fill="#c9a84c"
                   font-family="DM Sans,sans-serif" font-weight="600">🏖 Spiaggia Balai</text>
-                <text x="340" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
+                <text id="t-map-balai-time" x="340" y="38" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.6)"
                   font-family="DM Sans,sans-serif">20 min spaceru</text>
               </g>
 
               <!-- Sea label -->
-              <text x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
+              <text id="t-map-sea-label" x="240" y="34" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.08)"
                 font-family="Cormorant Garamond,serif" font-style="italic" letter-spacing="5">M A R E</text>
 
               <!-- WIDE MAP ELEMENTS -->
@@ -2901,9 +2897,9 @@
                 <g id="mapBadgeAlghero" style="opacity:0;transition:opacity 0.6s ease">
                   <rect x="-160" y="145" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)"
                     stroke="rgba(201,168,76,0.6)" stroke-width="4" />
-                  <text x="-50" y="175" text-anchor="middle" font-size="24" fill="#c9a84c"
+                  <text id="t-map-alghero-title" x="-50" y="175" text-anchor="middle" font-size="24" fill="#c9a84c"
                     font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Alghero</text>
-                  <text x="-50" y="202" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
+                  <text id="t-map-alghero-time" x="-50" y="202" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
                     font-family="DM Sans,sans-serif">25 min jazdy</text>
                 </g>
 
@@ -2915,9 +2911,9 @@
                 <g id="mapBadgeOlbia" style="opacity:0;transition:opacity 0.6s ease">
                   <rect x="440" y="205" width="220" height="70" rx="16" fill="rgba(5,14,22,0.95)"
                     stroke="rgba(201,168,76,0.6)" stroke-width="4" />
-                  <text x="550" y="235" text-anchor="middle" font-size="24" fill="#c9a84c"
+                  <text id="t-map-olbia-title" x="550" y="235" text-anchor="middle" font-size="24" fill="#c9a84c"
                     font-family="DM Sans,sans-serif" font-weight="600">✈️ Lotnisko Olbia</text>
-                  <text x="550" y="262" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
+                  <text id="t-map-olbia-time" x="550" y="262" text-anchor="middle" font-size="20" fill="rgba(255,255,255,0.7)"
                     font-family="DM Sans,sans-serif">1h 15m jazdy</text>
                 </g>
               </g>
@@ -2926,7 +2922,7 @@
           </svg>
           <div class="map-foot">
             <div class="map-foot-dot"></div>
-            <span class="map-foot-text">Porto Torres · Sardegna</span>
+            <span class="map-foot-text" id="t-map-foot-text">Porto Torres · Sardegna</span>
             <div class="map-foot-dot"></div>
           </div>
         </div>
@@ -2954,17 +2950,17 @@
 
         <!-- FAQ -->
         <div class="faq-section">
-          <div class="faq-title">Najczęstsze pytania</div>
+          <div class="faq-title" id="t-faq-title">Najczęstsze pytania</div>
           <div class="faq-list">
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?</span>
+                <span id="t-faq-q1">Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Polecamy stronę <a href="https://discovercars.com" target="_blank"
+                  <div class="faq-a-text" id="t-faq-a1">Polecamy stronę <a href="https://discovercars.com" target="_blank"
                       rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta
                     można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w
                     wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę
@@ -2975,12 +2971,12 @@
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Czy jest możliwy transfer lotniskowy?</span>
+                <span id="t-faq-q2">Czy jest możliwy transfer lotniskowy?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie
+                  <div class="faq-a-text" id="t-faq-a2">Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie
                     55 euro w jedną stronę do 4 osób.</div>
                 </div>
               </div>
@@ -2988,36 +2984,36 @@
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Czy jest u Państwa żelazko? Pralka?</span>
+                <span id="t-faq-q3">Czy jest u Państwa żelazko? Pralka?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.</div>
+                  <div class="faq-a-text" id="t-faq-a3">Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.</div>
                 </div>
               </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Czy jest parking w cenie?</span>
+                <span id="t-faq-q4">Czy jest parking w cenie?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Obok naszej kamienicy znajduje się duży, bezpłatny parking.</div>
+                  <div class="faq-a-text" id="t-faq-a4">Obok naszej kamienicy znajduje się duży, bezpłatny parking.</div>
                 </div>
               </div>
             </div>
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Na którym piętrze jest mieszkanie?</span>
+                <span id="t-faq-q5">Na którym piętrze jest mieszkanie?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na
+                  <div class="faq-a-text" id="t-faq-a5">Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na
                     górze nasze mieszkania. W kamienicy nie ma nikogo więcej poza naszymi gośćmi.</div>
                 </div>
               </div>
@@ -3025,12 +3021,12 @@
 
             <div class="faq-item" onclick="faqToggle(this)">
               <button class="faq-q">
-                <span>Czy organizują Państwo wycieczki?</span>
+                <span id="t-faq-q6">Czy organizują Państwo wycieczki?</span>
                 <span class="faq-arrow">&#9660;</span>
               </button>
               <div class="faq-a">
                 <div class="faq-a-inner">
-                  <div class="faq-a-text">Polecamy stronę <a href="https://www.getyourguide.com" target="_blank"
+                  <div class="faq-a-text" id="t-faq-a6">Polecamy stronę <a href="https://www.getyourguide.com" target="_blank"
                       rel="noopener">getyourguide.com</a> — pośrednik wszystkich dostępnych wycieczek (coś jak Booking
                     dla noclegów) na Sardynii. Można tam obejrzeć dokładny plan, terminy i ceny wycieczek odbywających
                     się na całej wyspie.</div>
@@ -3133,142 +3129,6 @@
         btnUp: '↑ Wróć na górę i sprawdź termin',
         bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa'
       },
-      de: {
-        h1: 'Verfügbarkeit<br><em>prüfen</em>',
-        tagline: 'Reisegruppe und Reisedaten auswählen',
-        step1: 'Gäste', step2: 'Apartment', step3: 'Daten',
-        s1label: 'Schritt 1 von 3', s1title: 'Wer reist mit?',
-        s1sub: '',
-        s2label: 'Schritt 2 von 3', s2title: 'Apartment wählen',
-        s3label: 'Schritt 3 von 3', s3title: 'Reisedaten wählen',
-        s3sub: 'Wählen Sie zuerst das Anreisedatum, dann das Abreisedatum.',
-        adultsLbl: 'Anzahl der Gäste', kidsLbl: 'Zustellbett',
-        adDescDef: '1–8 Gäste', kdDescDef: 'Bitte zuerst Gästeanzahl wählen',
-        btn1: 'Weiter', back1: 'Gruppe ändern', back2: 'Apartment ändern',
-        loading: 'Laden...',
-        legFree: 'Verfügbar', legBusy: 'Bereits gebucht', legSel: 'Ihr Aufenthalt',
-        minStay: '⚠ Juli & August: Mindestaufenthalt 5 Nächte',
-        minWarn: '⚠ Im Juli und August gilt ein Mindestaufenthalt von 5 Nächten. Bitte mindestens 5 Nächte auswählen.',
-        hintArrival: 'Anreisedatum auswählen', hintDepart: 'Wählen Sie das Abreisedatum.',
-        hintBusy: 'Der gewählte Zeitraum ist in allen Apartments belegt.',
-        hintAlt: 'Belegt. An diesem Tag verfügbar: ',
-        hintBusyDay: 'In allen Apartments belegt.',
-        hintAltRange: 'Zeitraum belegt. In diesem Zeitraum verfügbar: ',
-        legHalf: 'Andere Apartments verfügbar',
-        btnChangeApt: 'Apartment ändern',
-        alertOtherApts: 'In diesem Zeitraum sind andere Apartments verfügbar:',
-        sumTitle: 'Buchungsübersicht', sumDate: 'Aufenthalt', sumNights: 'Nächte', sumApt: 'Apartment',
-        sumKids: 'Zustellbetten', sumTotal: 'Gesamt', sumDeposit: '+ Rückerstattbare Kaution',
-        depositNote: 'Die Kaution wird bei der Ankunft als Sicherheitsleistung erhoben und nach dem Auschecken vollständig zurückerstattet — sie ist nicht im Übernachtungspreis enthalten.',
-        inclTitle: 'Im Preis inbegriffen', incl1: 'Handtücher und Bettwäsche', incl2: 'Endreinigung', incl3: 'Keine Kurtaxe', incl4: 'Waschmaschine zur freien Nutzung',
-        hlTitle: 'Warum bei uns übernachten?',
-        hl1: '25 Minuten vom Flughafen Alghero (Porto Torres)',
-        hl2: '5 Minuten zu Fuß zum Strand',
-        hl3: 'Direkt im Stadtzentrum — Cafés, Restaurants und Geschäfte vor der Tür',
-        hl4: 'Kostenloser Parkplatz direkt am Haus',
-        hl5: 'Transfer zum/vom Flughafen — auf Wunsch holt und bringt unser Partnertaxifahrer die Gäste (55€ pro Strecke, bis 4 Personen)',
-        cinTitle: 'Offiziell registrierte Ferienvermietung in Italien',
-        cinText: 'Unser Objekt verfügt über die offizielle italienische Identifikationsnummer (CIN), ausgestellt vom Ministerium für Tourismus. Jeder Gast wird gemäß italienischem Recht bei den zuständigen Behörden gemeldet — buchen Sie sorglos und mit vollem Vertrauen.',
-        btnMsg: 'Über Messenger schreiben', btnWa: 'Über WhatsApp schreiben', contactNote: 'Wir antworten schnell und klären alle Details.',
-        optFor: 'Verfügbare Optionen für', adult1: ' Gast', adults: ' Gäste', kid1: ' Zustellbett', kids: ' Zustellbetten',
-        calA1: ' Gast', calAN: ' Gäste', calK1: ' Zustellbett', calKN: ' Zustellbetten',
-        apt1: 'Apartment Nr. 1', apt2: 'Apartment Nr. 2', apt3: 'Apartment Nr. 3',
-        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 Apartments — bis 6 Personen', aptL: '3 Apartments — bis 8 Personen',
-        t1a: 'für 2 Personen', t1b: 'ohne Balkon', t3a: 'für 2 Personen', t3b: 'mit Terrasse',
-        t2a: 'für 4 Personen', t2b: 'mit Balkon', t12a: 'für 2+4 Personen', t12b: 'Apt 2 mit Balkon', t13a: 'für 2+2 Personen', t13b: 'Apt 3 mit Terrasse',
-        t23a: 'Apt 2 mit Balkon + Apt 3 mit Terrasse', tL: 'Apt 1 + Apt 2 + Apt 3',
-        bed1: '+ 1 Zustellbett', bedN: '+ {n} Zustellbetten', orLbl: '— oder —',
-        months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-        wdays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-        adDesc1: ' Gast', adDesc2: ' Gäste', adDescN: ' Gäste',
-        kdPre: 'max. ', kdBed1: ' Zustellbett im Apartment', kdBedN: ' Zustellbetten im Apartment', kdFor: '',
-        n1: ' Nacht', n2: ' Nächte', n5: ' Nächte',
-        mHi: 'Guten Tag,', mInt: 'ich interessiere mich für ', mIn: ' im Zeitraum ',
-        mFrom: ' ab dem ', mG: ', Anzahl der Gäste: ', mAsk: '. Ich bitte um Informationen zur Buchung.',
-        mPrice: ' Berechneter Preis für diesen Aufenthalt: ',
-        errLoad: 'Kalender konnte nicht geladen werden. Bitte Seite neu laden und erneut versuchen.',
-        tipText: 'Tipp: Familie 2+1? Wählen Sie 2 Gäste und 1 Zustellbett — günstiger als ein größeres Apartment für 3. Wenn das Kind lieber ein eigenes Bett hat, einfach 3 Gäste auswählen.',
-        selectBtn: 'Auswählen →',
-        salesTitle: 'Erleben Sie echtes italienisches Flair',
-        sf1: 'Im Herzen von Porto Torres',
-        sf2: 'Antike Ausgrabungen und Basilika',
-        sf3: '5 Min. zum Strand Balai, nahe La Pelosa',
-        sf4: 'Weniger Touristen, lokale Atmosphäre',
-        sc1t: 'Kristallklares Wasser und traumhafte Strände',
-        sc1d: 'Nur 5 Minuten von den Apartments entfernt erwartet Sie der wunderschöne Strand Balai — und La Pelosa ist ebenfalls leicht erreichbar!',
-        sc2t: 'Entdecken Sie das echte Sardinien',
-        sc2d: 'Wohnen Sie mitten im Zentrum von Porto Torres. Erkunden Sie antike römische Ausgrabungen, die prächtige Basilika und genießen Sie authentisches italienisches Leben fernab der Touristenmassen.',
-        btnUp: '↑ Zurück nach oben und Termin prüfen',
-        bestValue: 'Bestes Preis-Leistungs-Verhältnis', sofa: 'Schlafsofa'
-      },
-      fr: {
-        h1: 'Vérifier<br><em>les disponibilités</em>',
-        tagline: 'Indiquez votre groupe et vos dates de séjour',
-        step1: 'Voyageurs', step2: 'Appartement', step3: 'Dates',
-        s1label: 'Étape 1 sur 3', s1title: 'Qui voyage ?',
-        s1sub: '',
-        s2label: 'Étape 2 sur 3', s2title: 'Choisir un appartement',
-        s3label: 'Étape 3 sur 3', s3title: 'Choisir vos dates de séjour',
-        s3sub: "Sélectionnez d'abord la date d'arrivée, puis la date de départ.",
-        adultsLbl: 'Nombre de voyageurs', kidsLbl: 'Lit supplémentaire',
-        adDescDef: '1–8 voyageurs', kdDescDef: "Sélectionnez d'abord le nombre de voyageurs",
-        btn1: 'Continuer', back1: 'Modifier le groupe', back2: "Modifier l'appartement",
-        loading: 'Chargement...',
-        legFree: 'Disponible', legBusy: 'Déjà réservé', legSel: 'Votre séjour',
-        minStay: '⚠ Juillet et août : séjour minimum de 5 nuits',
-        minWarn: '⚠ En juillet et août, la durée minimale de séjour est de 5 nuits. Veuillez sélectionner au moins 5 nuits.',
-        hintArrival: "Sélectionnez votre date d'arrivée", hintDepart: 'Sélectionnez la date de départ.',
-        hintBusy: 'La période sélectionnée est occupée dans tous les appartements.',
-        hintAlt: 'Occupé. Disponible à cette date : ',
-        hintBusyDay: 'Occupé dans tous les appartements.',
-        hintAltRange: 'Période occupée. Disponible sur ces dates : ',
-        legHalf: 'Autres appartements disponibles',
-        btnChangeApt: 'Changer d\'appartement',
-        alertOtherApts: 'D\'autres appartements sont disponibles à ces dates :',
-        sumTitle: 'Récapitulatif de la réservation', sumDate: 'Séjour', sumNights: 'Nuits', sumApt: 'Appartement',
-        sumKids: 'Lits supplémentaires', sumTotal: 'Total', sumDeposit: '+ Caution remboursable',
-        depositNote: "La caution est perçue à l'arrivée et intégralement remboursée au départ — elle n'est pas incluse dans le prix du séjour.",
-        inclTitle: 'Ce qui est inclus', incl1: 'Serviettes et literie', incl2: 'Ménage de fin de séjour', incl3: 'Taxe de séjour offerte', incl4: 'Machine à laver à disposition',
-        hlTitle: 'Pourquoi choisir notre logement ?',
-        hl1: "À 25 minutes de l'aéroport d'Alghero (Porto Torres)",
-        hl2: 'À 5 minutes à pied de la plage',
-        hl3: 'En plein centre-ville — cafés, restaurants et boutiques à deux pas',
-        hl4: 'Parking gratuit sur place',
-        hl5: 'Transfert aéroport — notre chauffeur partenaire assure les navettes à la demande (55€ par trajet, jusqu\'à 4 personnes)',
-        cinTitle: 'Location de vacances officiellement enregistrée en Italie',
-        cinText: "Notre logement possède le numéro d'identification officiel italien (CIN), délivré par le Ministère du Tourisme. Chaque voyageur est déclaré auprès des autorités compétentes conformément à la législation italienne — réservez en toute confiance.",
-        btnMsg: 'Écrire sur Messenger', btnWa: 'Écrire sur WhatsApp', contactNote: 'Nous répondons rapidement et réglons tous les détails ensemble.',
-        optFor: 'Options disponibles pour', adult1: ' voyageur', adults: ' voyageurs', kid1: ' lit suppl.', kids: ' lits suppl.',
-        calA1: ' voyageur', calAN: ' voyageurs', calK1: ' lit suppl.', calKN: ' lits suppl.',
-        apt1: 'Appartement n° 1', apt2: 'Appartement n° 2', apt3: 'Appartement n° 3',
-        apt12: 'App. 1 + App. 2', apt13: 'App. 1 + App. 3', apt23: '2 appartements — jusqu\'à 6 personnes', aptL: '3 appartements — jusqu\'à 8 personnes',
-        t1a: 'pour 2 personnes', t1b: 'sans balcon', t3a: 'pour 2 personnes', t3b: 'avec terrasse',
-        t2a: 'pour 4 personnes', t2b: 'avec balcon', t12a: 'pour 2+4 personnes', t12b: 'App. 2 avec balcon', t13a: 'pour 2+2 personnes', t13b: 'App. 3 avec terrasse',
-        t23a: 'App. 2 avec balcon + App. 3 avec terrasse', tL: 'App. 1 + App. 2 + App. 3',
-        bed1: '+ 1 lit suppl.', bedN: '+ {n} lits suppl.', orLbl: '— ou —',
-        months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-        wdays: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-        adDesc1: ' voyageur', adDesc2: ' voyageurs', adDescN: ' voyageurs',
-        kdPre: 'max. ', kdBed1: ' lit supplémentaire dans l\'appartement', kdBedN: ' lits supplémentaires dans l\'appartement', kdFor: '',
-        n1: ' nuit', n2: ' nuits', n5: ' nuits',
-        mHi: 'Bonjour,', mInt: "je suis intéressé(e) par ", mIn: ' du ',
-        mFrom: ' à partir du ', mG: ', nombre de voyageurs : ', mAsk: '. Je souhaite recevoir des informations sur la réservation.',
-        mPrice: ' Prix calculé pour ce séjour : ',
-        errLoad: 'Impossible de charger le calendrier. Veuillez recharger la page et réessayer.',
-        tipText: 'Astuce : famille 2+1 ? Choisissez 2 voyageurs et 1 lit supplémentaire — plus économique qu\'un grand appartement pour 3. Si votre enfant préfère son propre lit, sélectionnez simplement 3 voyageurs.',
-        selectBtn: 'Choisir →',
-        salesTitle: 'Vivez l\'atmosphère italienne authentique',
-        sf1: 'En plein cœur de Porto Torres',
-        sf2: 'Vestiges antiques et Basilique',
-        sf3: '5 min de la plage Balai, proche de La Pelosa',
-        sf4: 'Moins de touristes, ambiance locale',
-        sc1t: 'Eaux cristallines et plages de rêve',
-        sc1d: 'À seulement 5 minutes des appartements, découvrez la magnifique plage de Balai — et La Pelosa est également à portée de main !',
-        sc2t: 'Découvrez la vraie Sardaigne',
-        sc2d: 'Séjournez en plein centre de Porto Torres. Explorez les anciennes ruines romaines, la majestueuse Basilique et profitez de l\'authentique art de vivre italien loin des foules touristiques.',
-        btnUp: '↑ Revenir en haut et vérifier les dates',
-        bestValue: 'Meilleur rapport qualité-prix', sofa: 'canapé-lit'
-      },
       en: {
         h1: 'Check<br><em>availability</em>',
         tagline: 'Tell us who\'s coming and when',
@@ -3305,7 +3165,7 @@
         hl5: 'Airport transfers available — our trusted taxi driver will pick you up and drop you off on request (55€ one way, up to 4 people)',
         cinTitle: 'Officially registered holiday rental in Italy',
         cinText: 'Our property is officially registered and holds the Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is reported to the relevant authorities in accordance with Italian law — book with complete confidence.',
-        btnMsg: 'Message us on Messenger', btnWa: 'Message us on WhatsApp', contactNote: "We'll get back to you quickly and sort out all the details.",
+        btnReserve: 'Book now', btnMsg: 'Message us on Messenger', btnWa: 'Message us on WhatsApp', contactNote: "We'll get back to you quickly and sort out all the details.",
         optFor: 'Available options for', adult1: ' guest', adults: ' guests', kid1: ' extra bed', kids: ' extra beds',
         calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
         apt1: 'Apartment No. 1', apt2: 'Apartment No. 2', apt3: 'Apartment No. 3',
@@ -3335,209 +3195,44 @@
         sc2t: 'Discover the real Sardinia',
         sc2d: 'Stay right in the centre of Porto Torres. Explore ancient Roman ruins, the magnificent Basilica, and enjoy authentic Italian life away from the tourist crowds.',
         btnUp: '↑ Back to top — check availability',
-        bestValue: 'Best value', sofa: 'sofa bed'
-      },
-      cs: {
-        h1: 'Zkontrolovat<br><em>dostupnost</em>',
-        tagline: 'Zadejte počet hostů a data pobytu',
-        step1: 'Hosté', step2: 'Apartmán', step3: 'Daty',
-        s1label: 'Krok 1 ze 3', s1title: 'Kdo přijíždí?',
-        s1sub: '',
-        s2label: 'Krok 2 ze 3', s2title: 'Vyberte apartmán',
-        s3label: 'Krok 3 ze 3', s3title: 'Vyberte data pobytu',
-        s3sub: 'Nejprve klikněte na datum příjezdu, poté na datum odjezdu.',
-        adultsLbl: 'Počet hostů', kidsLbl: 'Přistýlka',
-        adDescDef: '1–8 hostů', kdDescDef: 'Nejprve zadejte počet hostů',
-        btn1: 'Pokračovat', back1: 'Změnit hosty', back2: 'Změnit apartmán',
-        loading: 'Načítání...',
-        legFree: 'Dostupný', legBusy: 'Již rezervováno', legSel: 'Váš pobyt',
-        minStay: '⚠ Červenec a srpen: minimální pobyt je 5 nocí',
-        minWarn: '⚠ V červenci a srpnu platí minimální délka pobytu 5 nocí. Vyberte prosím alespoň 5 nocí.',
-        hintArrival: 'Vyberte datum příjezdu', hintDepart: 'Vyberte datum odjezdu.',
-        hintBusy: 'Vybraný termín je obsazen ve všech apartmánech.',
-        hintAlt: 'Obsazeno. V tento den je volný: ',
-        hintBusyDay: 'Ve všech apartmánech je obsazeno.',
-        hintAltRange: 'Termín je obsazen. V tomto termínu volné: ',
-        legHalf: 'Jiné apartmány k dispozici',
-        btnChangeApt: 'Změnit apartmán',
-        alertOtherApts: 'V tomto termínu jsou dostupné jiné apartmány:',
-        sumTitle: 'Souhrn rezervace', sumDate: 'Pobyt', sumNights: 'Počet nocí', sumApt: 'Apartmán',
-        sumKids: 'Přistýlky', sumTotal: 'Celkem', sumDeposit: '+ Vratná kauce',
-        depositNote: 'Kauce je vybrána při příjezdu a po odjezdu plně vrácena — není součástí ceny pobytu.',
-        inclTitle: 'Co je zahrnuto v ceně', incl1: 'Ručníky a ložní prádlo', incl2: 'Úklid po odjezdu', incl3: 'Bez turistického poplatku', incl4: 'Pračka k dispozici',
-        hlTitle: 'Proč zvolit nás?',
-        hl1: '25 minut od letiště Alghero (Porto Torres)',
-        hl2: '5 minut pěšky na pláž',
-        hl3: 'Přímo v centru města — kavárny, restaurace a obchody za rohem',
-        hl4: 'Bezplatné parkoviště u objektu',
-        hl5: 'Transfer na letiště a zpět — náš partnerský taxikář přiveze a odveze hosty na přání (55€ jedním směrem, až 4 osoby)',
-        cinTitle: 'Oficiálně registrovaný pronájem v Itálii',
-        cinText: 'Náš objekt je oficiálně registrován a disponuje italským identifikačním číslem (CIN) vydaným Ministerstvem cestovního ruchu. Každý host je v souladu s italskými předpisy nahlášen příslušným orgánům — rezervujte bez starostí.',
-        btnMsg: 'Napsat na Messenger', btnWa: 'Napsat na WhatsApp', contactNote: 'Odpovíme rychle a dohodneme vše potřebné.',
-        optFor: 'Dostupné možnosti pro', adult1: ' hosta', adults: ' hostů', kid1: ' přistýlka', kids: ' přistýlky',
-        calA1: ' host', calAN: ' hostů', calK1: ' přistýlka', calKN: ' přistýlky',
-        apt1: 'Apartmán č. 1', apt2: 'Apartmán č. 2', apt3: 'Apartmán č. 3',
-        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartmány — až 6 hostů', aptL: '3 apartmány — až 8 hostů',
-        t1a: 'pro 2 hosty', t1b: 'bez balkonu', t3a: 'pro 2 hosty', t3b: 's terasou',
-        t2a: 'pro 4 hosty', t2b: 's balkonem', t12a: 'pro 2+4 hosty', t12b: 'Apt 2 s balkonem', t13a: 'pro 2+2 hosty', t13b: 'Apt 3 s terasou',
-        t23a: 'Apt 2 s balkonem + Apt 3 s terasou', tL: 'Apt 1 + Apt 2 + Apt 3',
-        bed1: '+ 1 přistýlka', bedN: '+ {n} přistýlky', orLbl: '— nebo —',
-        months: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
-        wdays: ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'],
-        adDesc1: ' host', adDesc2: ' hosté', adDescN: ' hostů',
-        kdPre: 'max. ', kdBed1: ' přistýlka v apartmánu', kdBedN: ' přistýlky v apartmánu', kdFor: '',
-        n1: ' noc', n2: ' noci', n5: ' nocí',
-        mHi: 'Dobrý den,', mInt: 'mám zájem o ', mIn: ' v termínu ',
-        mFrom: ' od ', mG: ', počet hostů: ', mAsk: '. Prosím o informace ohledně rezervace.',
-        mPrice: ' Vypočtená cena za tento pobyt: ',
-        errLoad: 'Nepodařilo se načíst kalendář. Obnovte stránku a zkuste to znovu.',
-        tipText: 'Tip: cestujete jako 2+1? Zvolte 2 hosty a 1 přistýlku — výhodnější než větší apartmán pro 3. Pokud starší dítě preferuje vlastní postel, jednoduše vyberte 3 hosty.',
-        selectBtn: 'Vybrat →',
-        salesTitle: 'Zažijte pravou italskou atmosféru',
-        sf1: 'Přímo v centru Porto Torres',
-        sf2: 'Antické vykopávky a Bazilika',
-        sf3: '5 min na pláž Balai, blízko La Pelosa',
-        sf4: 'Méně turistů, místní atmosféra',
-        sc1t: 'Křišťálová voda a rajské pláže',
-        sc1d: 'Pouhých 5 minut od apartmánů najdete překrásnou pláž Balai. Je to také ideální základna pro výlet na slavnou La Pelosa!',
-        sc2t: 'Objevte pravé Sardinie',
-        sc2d: 'Bydlete přímo v centru Porto Torres. Prozkoumejte starověké římské vykopávky, monumentální Baziliku a vychutnejte si autentický italský život bez davů turistů.',
-        btnUp: '↑ Zpět nahoru a zkontrolovat termín',
-        bestValue: 'Nejlepší hodnota', sofa: 'pohovka'
-      },
-      es: {
-        h1: 'Comprobar<br><em>disponibilidad</em>',
-        tagline: 'Selecciona tu grupo y fechas de estancia',
-        step1: 'Huéspedes', step2: 'Apartamento', step3: 'Fechas',
-        s1label: 'Paso 1 de 3', s1title: '¿Quién viene?',
-        s1sub: '',
-        s2label: 'Paso 2 de 3', s2title: 'Elige tu apartamento',
-        s3label: 'Paso 3 de 3', s3title: 'Elige tus fechas',
-        s3sub: 'Selecciona primero la fecha de llegada, luego la fecha de salida.',
-        adultsLbl: 'Número de huéspedes', kidsLbl: 'Cama extra',
-        adDescDef: '1–8 huéspedes', kdDescDef: 'Selecciona primero el número de huéspedes',
-        btn1: 'Continuar', back1: 'Cambiar huéspedes', back2: 'Cambiar apartamento',
-        loading: 'Cargando...',
-        legFree: 'Disponible', legBusy: 'Ya reservado', legSel: 'Tu estancia',
-        minStay: '⚠ Julio y agosto: estancia mínima de 5 noches',
-        minWarn: '⚠ En julio y agosto, la estancia mínima es de 5 noches. Por favor, selecciona al menos 5 noches.',
-        hintArrival: 'Selecciona la fecha de llegada', hintDepart: 'Selecciona la fecha de salida.',
-        hintBusy: 'El período seleccionado está ocupado en todos los apartamentos.',
-        hintAlt: 'Reservado. Disponible en esta fecha: ',
-        hintBusyDay: 'Ocupado en todos los apartamentos.',
-        hintAltRange: 'Fechas ocupadas. Disponible en este período: ',
-        legHalf: 'Otros apartamentos disponibles',
-        btnChangeApt: 'Cambiar apartamento',
-        alertOtherApts: 'Otros apartamentos están disponibles en este período:',
-        sumTitle: 'Resumen de la reserva', sumDate: 'Estancia', sumNights: 'Noches', sumApt: 'Apartamento',
-        sumKids: 'Camas extras', sumTotal: 'Total', sumDeposit: '+ Depósito de seguridad reembolsable',
-        depositNote: 'El depósito de seguridad se cobra al hacer el check-in y se reembolsa íntegramente al hacer el check-out — no está incluido en el precio del alojamiento.',
-        inclTitle: 'Qué incluye', incl1: 'Toallas y ropa de cama', incl2: 'Limpieza final', incl3: 'Sin tasa turística', incl4: 'Lavadora disponible',
-        hlTitle: '¿Por qué alojarse con nosotros?',
-        hl1: 'A 25 minutos del aeropuerto de Alghero (Porto Torres)',
-        hl2: 'A 5 minutos a pie de la playa',
-        hl3: 'Justo en el corazón de la ciudad — cafeterías, restaurantes y tiendas a la vuelta de la esquina',
-        hl4: 'Aparcamiento gratuito en el lugar',
-        hl5: 'Traslados al aeropuerto disponibles — nuestro taxista de confianza te recogerá y te dejará bajo petición (55€ por trayecto, hasta 4 personas)',
-        cinTitle: 'Alquiler vacacional registrado oficialmente en Italia',
-        cinText: 'Nuestra propiedad está registrada oficialmente y posee el número de identificación italiano (CIN), emitido por el Ministerio de Turismo. Cada huésped es reportado a las autoridades pertinentes de acuerdo con la ley italiana — reserva con total confianza.',
-        btnMsg: 'Envíanos un mensaje por Messenger', btnWa: 'Envíanos un mensaje por WhatsApp', contactNote: 'Te responderemos rápidamente y resolveremos todos los detalles.',
-        optFor: 'Opciones disponibles para', adult1: ' huésped', adults: ' huéspedes', kid1: ' cama extra', kids: ' camas extras',
-        calA1: ' huésped', calAN: ' huéspedes', calK1: ' cama extra', calKN: ' camas extras',
-        apt1: 'Apartamento n.º 1', apt2: 'Apartamento n.º 2', apt3: 'Apartamento n.º 3',
-        apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartamentos — hasta 6 huéspedes', aptL: '3 apartamentos — hasta 8 huéspedes',
-        t1a: 'para 2 huéspedes', t1b: 'sin balcón', t3a: 'para 2 huéspedes', t3b: 'con terraza',
-        t2a: 'para 4 huéspedes', t2b: 'con balcón', t12a: 'para 2+4 huéspedes', t12b: 'Apt 2 con balcón', t13a: 'para 2+2 huéspedes', t13b: 'Apt 3 con terraza',
-        t23a: 'Apt 2 con balcón + Apt 3 con terraza', tL: 'Apt 1 + Apt 2 + Apt 3',
-        bed1: '+ 1 cama extra', bedN: '+ {n} camas extras', orLbl: '— o —',
-        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        wdays: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-        adDesc1: ' huésped', adDesc2: ' huéspedes', adDescN: ' huéspedes',
-        kdPre: 'máx. ', kdBed1: ' cama extra en el apartamento', kdBedN: ' camas extras en el apartamento', kdFor: '',
-        n1: ' noche', n2: ' noches', n5: ' noches',
-        mHi: 'Hola,', mInt: "Estoy interesado/a en ", mIn: ' del ',
-        mFrom: ' desde el ', mG: ', número de huéspedes: ', mAsk: '. ¿Podrían enviarme los detalles de la reserva?',
-        mPrice: ' Precio estimado para esta estancia: ',
-        errLoad: 'No se pudo cargar el calendario. Por favor, actualiza la página e inténtalo de nuevo.',
-        tipText: 'Consejo: ¿viajas con 2+1? Elige 2 huéspedes y 1 cama extra — mejor valor que un apartamento más grande para 3. Si tu hijo prefiere su propia cama, simplemente selecciona 3 huéspedes.',
-        selectBtn: 'Seleccionar →',
-        salesTitle: 'Experimenta el auténtico encanto italiano',
-        sf1: 'Justo en el corazón de Porto Torres',
-        sf2: 'Ruinas antiguas y la Basílica',
-        sf3: 'A 5 min de la playa de Balai, cerca de La Pelosa',
-        sf4: 'Menos turistas, ambiente local',
-        sc1t: 'Aguas cristalinas y playas paradisíacas',
-        sc1d: 'A solo 5 minutos de los apartamentos encontrarás la impresionante playa de Balai — ¡y también es la base perfecta para una excursión a la famosa La Pelosa!',
-        sc2t: 'Descubre la verdadera Cerdeña',
-        sc2d: 'Alójate en el centro de Porto Torres. Explora las antiguas ruinas romanas, la magnífica Basílica y disfruta de la auténtica vida italiana lejos de las multitudes de turistas.',
-        btnUp: '↑ Volver arriba y comprobar disponibilidad',
-        bestValue: 'Mejor relación calidad-precio', sofa: 'sofá cama'
-      },
-      it: {
-        h1: 'Verifica<br><em>disponibilità</em>',
-        tagline: 'Scegli il tuo gruppo e le date del soggiorno',
-        step1: 'Ospiti', step2: 'Appartamento', step3: 'Date',
-        s1label: 'Passo 1 di 3', s1title: 'Chi soggiorna?',
-        s1sub: '',
-        s2label: 'Passo 2 di 3', s2title: 'Scegli l\'appartamento',
-        s3label: 'Passo 3 di 3', s3title: 'Seleziona le date',
-        s3sub: 'Scegli prima la data di check-in, poi la data di check-out.',
-        adultsLbl: 'Numero di ospiti', kidsLbl: 'Letto aggiunto',
-        adDescDef: '1–8 ospiti', kdDescDef: 'Prima seleziona il numero di ospiti',
-        btn1: 'Continua', back1: 'Modifica il gruppo', back2: 'Cambia appartamento',
-        loading: 'Caricamento...',
-        legFree: 'Disponibile', legBusy: 'Non disponibile', legSel: 'Il tuo soggiorno',
-        minStay: '⚠ Luglio e agosto: soggiorno minimo 5 notti',
-        minWarn: '⚠ A luglio e agosto il soggiorno minimo è di 5 notti. Seleziona almeno 5 notti.',
-        hintArrival: 'Seleziona la data di check-in', hintDepart: 'Ora seleziona la data di check-out',
-        hintBusy: 'Un giorno nell\'intervallo selezionato non è disponibile — scegli una nuova data di check-in.',
-        hintAlt: 'Prenotato. Disponibile in questa data: ',
-        hintBusyDay: 'Tutti gli appartamenti sono al completo in questa data.',
-        hintAltRange: 'Date occupate. Disponibile in questo periodo: ',
-        legHalf: 'Altri appartamenti disponibili',
-        sumTitle: 'Riepilogo prenotazione', sumDate: 'Soggiorno', sumNights: 'Notti', sumApt: 'Appartamento',
-        sumKids: 'Letti aggiunti', sumTotal: 'Totale', sumDeposit: '+ Deposito cauzionale rimborsabile',
-        depositNote: 'Il deposito cauzionale viene richiesto al check-in e restituito integralmente al check-out — non è incluso nel prezzo del soggiorno.',
-        inclTitle: 'Cosa è incluso nel prezzo', incl1: 'Asciugamani e biancheria da letto', incl2: 'Pulizia finale', incl3: 'Nessuna tassa di soggiorno', incl4: 'Lavatrice a disposizione',
-        hlTitle: 'Perché scegliere noi?',
-        hl1: 'A 25 minuti dall\'aeroporto di Alghero (Porto Torres)',
-        hl2: 'A 5 minuti a piedi dalla spiaggia',
-        hl3: 'Nel cuore del centro — bar, ristoranti e negozi a portata di mano',
-        hl4: 'Parcheggio gratuito in loco',
-        hl5: 'Transfer aeroportuale — il nostro tassista di fiducia accompagna gli ospiti su richiesta (55€ a tratta, fino a 4 persone)',
-        cinTitle: 'Affitto breve ufficialmente registrato in Italia',
-        cinText: 'La nostra struttura è regolarmente registrata e dispone del Codice Identificativo Nazionale (CIN), rilasciato dal Ministero del Turismo. Ogni ospite viene comunicato alle autorità competenti nel rispetto della normativa italiana — prenota in tutta tranquillità.',
-        btnMsg: 'Scrivici su Messenger', btnWa: 'Scrivici su WhatsApp', contactNote: 'Ti risponderemo subito e definiremo insieme tutti i dettagli.',
-        optFor: 'Opzioni disponibili per', adult1: ' ospite', adults: ' ospiti', kid1: ' letto aggiunto', kids: ' letti aggiunti',
-        calA1: ' ospite', calAN: ' ospiti', calK1: ' letto aggiunto', calKN: ' letti aggiunti',
-        apt1: 'Appartamento n. 1', apt2: 'Appartamento n. 2', apt3: 'Appartamento n. 3',
-        apt12: 'App. 1 + App. 2', apt13: 'App. 1 + App. 3', apt23: '2 appartamenti — fino a 6 persone', aptL: '3 appartamenti — fino a 8 persone',
-        t1a: 'per 2 persone', t1b: 'senza balcone', t3a: 'per 2 persone', t3b: 'con terrazza',
-        t2a: 'per 4 persone', t2b: 'con balcone', t12a: 'per 2+4 persone', t12b: 'App. 2 con balcone', t13a: 'per 2+2 persone', t13b: 'App. 3 con terrazza',
-        t23a: 'App. 2 con balcone + App. 3 con terrazza', tL: 'App. 1 + App. 2 + App. 3',
-        bed1: '+ 1 letto aggiunto', bedN: '+ {n} letti aggiunti', orLbl: '— oppure —',
-        months: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
-        wdays: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-        adDesc1: ' ospite', adDesc2: ' ospiti', adDescN: ' ospiti',
-        kdPre: 'max. ', kdBed1: ' letto aggiunto nell\'appartamento', kdBedN: ' letti aggiunti nell\'appartamento', kdFor: '',
-        n1: ' notte', n2: ' notti', n5: ' notti',
-        mHi: 'Salve,', mInt: 'sono interessato/a a ', mIn: ' nel periodo ',
-        mFrom: ' dal ', mG: ', numero di ospiti: ', mAsk: '. Vorrei ricevere informazioni sulla prenotazione.',
-        mPrice: ' Prezzo calcolato per questo soggiorno: ',
-        errLoad: 'Impossibile caricare il calendario. Aggiorna la pagina e riprova.',
-        tipText: 'Consiglio: viaggiate in 2+1? Seleziona 2 ospiti e 1 letto aggiunto — più conveniente che prenotare un appartamento più grande per 3. Se il bambino preferisce un letto tutto suo, seleziona semplicemente 3 ospiti.',
-        selectBtn: 'Scegli →',
-        salesTitle: 'Scopri il vero clima italiano',
-        sf1: 'Nel cuore di Porto Torres',
-        sf2: 'Scavi antichi e Basilica',
-        sf3: '5 min dalla spiaggia di Balai, vicino a La Pelosa',
-        sf4: 'Meno turisti, atmosfera locale',
-        sc1t: 'Acque cristalline e spiagge da sogno',
-        sc1d: 'A soli 5 minuti dagli appartamenti troverai la splendida spiaggia di Balai — è anche la base ideale per raggiungere la famosa La Pelosa!',
-        sc2t: 'Scopri la vera Sardegna',
-        sc2d: 'Soggiorna nel cuore di Porto Torres. Esplora gli antichi scavi romani, la maestosa Basilica e goditi l\'autentica vita italiana lontano dalla folla turistica.',
-        btnUp: '↑ Torna su e controlla le date',
-        bestValue: 'Miglior rapporto qualità-prezzo', sofa: 'divano letto'
+        bestValue: 'Best value', sofa: 'sofa bed',
+        heroWhy: 'Why us?', luxuryText: 'High standard · Close to the beach',
+        ptEyebrow: 'Sardinia, unfiltered',
+        ptHeading: 'Which location<br>in Sardinia is<br><em>best?</em>',
+        ptP1: 'Everyone will naturally promote their own place... But the truth is that <strong>it all depends on what matters most to you.</strong>',
+        ptP2: "Many towns in northern Sardinia are typical tourist resorts. In winter everything is closed — shops, restaurants, bars. They open only in summer, specifically for tourists. Prices are higher, quality is often lower... because you're a tourist.",
+        ptP3: "No car? Sometimes you can't even buy bread without driving to a shop. <strong>Alghero, Olbia?</strong> Great — if you enjoy crowds and inflated prices.",
+        ptP4: "That's why <strong>the best places are the ones nobody talks about.</strong> That's where you can feel the real magic of Sardinia. 🌊",
+        ptP5: '<strong>Porto Torres</strong> is the perfect example. Life goes on here all year round, so you have access to everything you need.',
+        ptHi1: 'Restaurants — <strong>1 minute</strong> walk',
+        ptHi2: 'Lidl — <strong>3 minutes</strong> walk',
+        ptHi3: 'Cafes, bars and restaurants — literally <strong>50 metres</strong>',
+        ptHi4: 'Beach — <strong>5 minutes</strong> and you are by the water',
+        ptHi5: 'Harbour, free beaches and a <strong>beautiful promenade</strong> along the coast — cliffs and charming coves',
+        ptHi6: 'Real family-run restaurants — local prices, not tourist prices. From just <strong>4.5€</strong>',
+        ptClosing: 'Porto Torres is the perfect place if you want to relax<br>and feel the real Sardinian way of life. 🌿',
+        sc1Alt: 'Beach in Sardinia', sc2Alt: 'Italian town',
+        mapEyebrow: '✦ &nbsp; nearby attractions &nbsp; ✦',
+        mapRestTitle: '🍝 Restaurants', mapRestTime: '1 min',
+        mapLidlTime: '3 min', mapScoglioTime: '5 min walk', mapDolciTime: '8 min walk', mapBalaiTime: '20 min walk',
+        mapSeaLabel: 'S E A',
+        mapAlgheroTitle: '✈️ Alghero Airport', mapAlgheroTime: '25 min drive',
+        mapOlbiaTitle: '✈️ Olbia Airport', mapOlbiaTime: '1h 15m drive',
+        mapFoot: 'Porto Torres · Sardinia',
+        faqTitle: 'Frequently asked questions',
+        faqQ1: 'Do you rent cars? Can you recommend any car rental companies?',
+        faqA1: 'We recommend <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — a comparison site for all available rental companies. You can pick up the car straight at the airport, so it is very convenient. We have used this site in many countries across Europe and Asia and everything has always gone smoothly. It is worth checking the credit/debit card requirements, because rental prices can vary depending on the type of card you have.',
+        faqQ2: 'Is airport transfer available?',
+        faqA2: 'Our trusted taxi driver offers transfers from Alghero Airport for 55 euro one way for up to 4 people.',
+        faqQ3: 'Do you have an iron? A washing machine?',
+        faqA3: 'Yes — all guests have access to a shared washing machine and iron.',
+        faqQ4: 'Is parking included?',
+        faqA4: 'There is a large free parking area right next to our building.',
+        faqQ5: 'Which floor is the apartment on?',
+        faqA5: 'Our building has one upper floor. There are commercial premises on the ground floor and our apartments upstairs. There is nobody else in the building apart from our guests.',
+        faqQ6: 'Do you organise tours?',
+        faqA6: 'We recommend <a href="https://www.getyourguide.com" target="_blank" rel="noopener">getyourguide.com</a> — a marketplace for tours across Sardinia, a bit like Booking for activities. You can check the detailed itinerary, dates and prices for trips all over the island there.',
+        photo: 'Photo'
       }
     };
 
@@ -3545,6 +3240,7 @@
     function $id(id) { return document.getElementById(id); }
     function setTxt(id, v) { var e = $id(id); if (e) e.textContent = v; }
     function setHtml(id, v) { var e = $id(id); if (e) e.innerHTML = v; }
+    function setAttr(id, attr, v) { var e = $id(id); if (e) e.setAttribute(attr, v); }
 
     /* ── state ── */
     var urlLang = new URLSearchParams(window.location.search).get('lang');
@@ -3600,9 +3296,53 @@
       setTxt('t-sc1-d', T.sc1d || 'Zaledwie 5 minut od apartamentów znajdziesz przepiękną plażę Balai. To również idealna baza wypadowa na słynną La Pelosa!');
       setTxt('t-sc2-t', T.sc2t || 'Odkryj prawdziwą Sardynię');
       setTxt('t-sc2-d', T.sc2d || 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.');
+      setAttr('t-sc1-img', 'alt', T.sc1Alt || 'Plaża na Sardynii');
+      setAttr('t-sc2-img', 'alt', T.sc2Alt || 'Włoskie miasteczko');
       setTxt('t-btn-up', T.btnUp || '\u2191 Wróć na górę i sprawdź termin');
       setTxt('t-btnChangeApt', T.btnChangeApt);
       setTxt('t-hero-cta', T.heroCta || 'Sprawdź dostępność');
+      setTxt('t-hero-why', T.heroWhy || 'Dlaczego u nas?');
+      setTxt('t-luxury-text', T.luxuryText || 'Wysoki standard · Blisko plaży');
+      setTxt('t-pt-eyebrow', T.ptEyebrow || 'Sardynia bez retuszu');
+      setHtml('t-pt-heading', T.ptHeading || 'Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em>');
+      setHtml('t-pt-p1', T.ptP1 || 'Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong>');
+      setHtml('t-pt-p2', T.ptP2 || 'Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.');
+      setHtml('t-pt-p3', T.ptP3 || 'Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.');
+      setHtml('t-pt-p4', T.ptP4 || 'Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii. 🌊');
+      setHtml('t-pt-p5', T.ptP5 || '<strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.');
+      setHtml('t-pt-hi1', T.ptHi1 || 'Restauracje — <strong>1 minuta</strong> spacerem');
+      setHtml('t-pt-hi2', T.ptHi2 || 'Lidl — <strong>3 minuty</strong> spacerem');
+      setHtml('t-pt-hi3', T.ptHi3 || 'Kawiarnie, bary, restauracje — dosłownie <strong>50 metrów</strong>');
+      setHtml('t-pt-hi4', T.ptHi4 || 'Plaża — <strong>5 minut</strong> i jesteś nad wodą');
+      setHtml('t-pt-hi5', T.ptHi5 || 'Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki');
+      setHtml('t-pt-hi6', T.ptHi6 || 'Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong>');
+      setHtml('t-pt-closing', T.ptClosing || 'Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia. 🌿');
+      setHtml('t-map-eyebrow', T.mapEyebrow || '✦ &nbsp; bliskość atrakcji &nbsp; ✦');
+      setTxt('t-map-rest-title', T.mapRestTitle || '🍝 Restauracje');
+      setTxt('t-map-rest-time', T.mapRestTime || '1 min');
+      setTxt('t-map-lidl-time', T.mapLidlTime || '3 min');
+      setTxt('t-map-scoglio-time', T.mapScoglioTime || '5 min spaceru');
+      setTxt('t-map-dolci-time', T.mapDolciTime || '8 min spaceru');
+      setTxt('t-map-balai-time', T.mapBalaiTime || '20 min spaceru');
+      setTxt('t-map-sea-label', T.mapSeaLabel || 'M A R E');
+      setTxt('t-map-alghero-title', T.mapAlgheroTitle || '✈️ Lotnisko Alghero');
+      setTxt('t-map-alghero-time', T.mapAlgheroTime || '25 min jazdy');
+      setTxt('t-map-olbia-title', T.mapOlbiaTitle || '✈️ Lotnisko Olbia');
+      setTxt('t-map-olbia-time', T.mapOlbiaTime || '1h 15m jazdy');
+      setTxt('t-map-foot-text', T.mapFoot || 'Porto Torres · Sardegna');
+      setTxt('t-faq-title', T.faqTitle || 'Najczęstsze pytania');
+      setTxt('t-faq-q1', T.faqQ1 || 'Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?');
+      setHtml('t-faq-a1', T.faqA1 || 'Polecamy stronę <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę kredytową/debetową, bo są różnice w cenie wynajmu ze względu na rodzaj posiadanej karty.');
+      setTxt('t-faq-q2', T.faqQ2 || 'Czy jest możliwy transfer lotniskowy?');
+      setHtml('t-faq-a2', T.faqA2 || 'Nasz zaprzyjaźniony taksówkarz wykonuje transfery z lotniska Alghero w cenie 55 euro w jedną stronę do 4 osób.');
+      setTxt('t-faq-q3', T.faqQ3 || 'Czy jest u Państwa żelazko? Pralka?');
+      setHtml('t-faq-a3', T.faqA3 || 'Tak — dla wszystkich gości dostępna jest wspólna pralka i żelazko.');
+      setTxt('t-faq-q4', T.faqQ4 || 'Czy jest parking w cenie?');
+      setHtml('t-faq-a4', T.faqA4 || 'Obok naszej kamienicy znajduje się duży, bezpłatny parking.');
+      setTxt('t-faq-q5', T.faqQ5 || 'Na którym piętrze jest mieszkanie?');
+      setHtml('t-faq-a5', T.faqA5 || 'Nasza kamienica składa się z jednego piętra. Na dole są lokale usługowe, a na górze nasze mieszkania. W kamienicy nie ma nikogo więcej poza naszymi gośćmi.');
+      setTxt('t-faq-q6', T.faqQ6 || 'Czy organizują Państwo wycieczki?');
+      setHtml('t-faq-a6', T.faqA6 || 'Polecamy stronę <a href="https://www.getyourguide.com" target="_blank" rel="noopener">getyourguide.com</a> — pośrednik wszystkich dostępnych wycieczek (coś jak Booking dla noclegów) na Sardynii. Można tam obejrzeć dokładny plan, terminy i ceny wycieczek odbywających się na całej wyspie.');
       buildLegend(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       updateHint();
@@ -3804,12 +3544,7 @@
 
     var META_LABELS = {
       pl: { persons: ['osoba', 'osoby', 'osób'], bedrooms: ['sypialnia', 'sypialnie', 'sypialni'], bathroom: 'łazienka', bathrooms: 'łazienki', balcony: 'balkon', terrace: 'taras', aircon: 'klimatyzacja', kitchen: 'aneks kuchenny', sofa: 'kanapa', extrabed: 'dostawka' },
-      de: { persons: ['Person', 'Personen', 'Personen'], bedrooms: ['Schlafzimmer', 'Schlafzimmer', 'Schlafzimmer'], bathroom: 'Bad', bathrooms: 'Bäder', balcony: 'Balkon', terrace: 'Terrasse', aircon: 'Klimaanlage', kitchen: 'Küchenzeile', sofa: 'Schlafsofa', extrabed: 'Zustellbett' },
-      fr: { persons: ['personne', 'personnes', 'personnes'], bedrooms: ['chambre', 'chambres', 'chambres'], bathroom: 'salle de bain', bathrooms: 'salles de bain', balcony: 'balcon', terrace: 'terrasse', aircon: 'climatisation', kitchen: 'coin cuisine', sofa: 'canapé-lit', extrabed: 'lit suppl.' },
-      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning', kitchen: 'kitchenette', sofa: 'sofa bed', extrabed: 'extra bed' },
-      cs: { persons: ['osoba', 'osoby', 'osob'], bedrooms: ['ložnice', 'ložnice', 'ložnic'], bathroom: 'koupelna', bathrooms: 'koupelny', balcony: 'balkon', terrace: 'terasa', aircon: 'klimatizace', kitchen: 'kuchyňský kout', sofa: 'pohovka', extrabed: 'přistýlka' },
-      es: { persons: ['persona', 'personas', 'personas'], bedrooms: ['dormitorio', 'dormitorios', 'dormitorios'], bathroom: 'baño', bathrooms: 'baños', balcony: 'balcón', terrace: 'terraza', aircon: 'aire acondicionado', kitchen: 'cocina americana', sofa: 'sofá cama', extrabed: 'cama extra' },
-      it: { persons: ['persona', 'persone', 'persone'], bedrooms: ['camera', 'camere', 'camere'], bathroom: 'bagno', bathrooms: 'bagni', balcony: 'balcone', terrace: 'terrazza', aircon: 'aria condizionata', kitchen: 'angolo cottura', sofa: 'divano letto', extrabed: 'letto aggiunto' }
+      en: { persons: ['person', 'people', 'people'], bedrooms: ['bedroom', 'bedrooms', 'bedrooms'], bathroom: 'bathroom', bathrooms: 'bathrooms', balcony: 'balcony', terrace: 'terrace', aircon: 'air conditioning', kitchen: 'kitchenette', sofa: 'sofa bed', extrabed: 'extra bed' }
     };
 
     function metaLabel(item) {
@@ -3847,7 +3582,7 @@
       _galReg[rk] = photos;
 
       var slides = photos.map(function (url, i) {
-        return '<div class="apt-gallery-slide"><img data-src="' + url + '" alt="Foto ' + (i + 1) + '" loading="lazy"></div>';
+        return '<div class="apt-gallery-slide"><img data-src="' + url + '" alt="' + (T.photo || 'Zdjęcie') + ' ' + (i + 1) + '" loading="lazy"></div>';
       }).join('');
 
       var dots = photos.length > 1 ? photos.map(function (_, i) {

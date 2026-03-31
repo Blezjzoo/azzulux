@@ -4330,7 +4330,7 @@
     }
 
     function copyCin(btn) {
-      var fullCin = 'CIN ' + CIN_CODE;
+      var fullCin = CIN_CODE;
       var lbl = btn.querySelector('#t-cin-copy-lbl') || btn.querySelector('span');
       var okText = (lang === 'en') ? 'Copied!' : 'Skopiowano!';
       if (navigator.clipboard && window.isSecureContext) {

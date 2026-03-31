@@ -1520,6 +1520,87 @@
       letter-spacing: .04em
     }
 
+    .cin-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-top: 4px;
+      margin-left: 6px;
+      padding: 3px 8px;
+      background: transparent;
+      border: 1.2px solid var(--sand2);
+      border-radius: 6px;
+      color: var(--muted);
+      font-family: "DM Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .18s;
+      vertical-align: middle;
+      touch-action: manipulation;
+    }
+
+    .cin-copy-btn svg {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+    }
+
+    .cin-copy-btn:hover {
+      background: var(--foam);
+      border-color: var(--wave);
+      color: var(--ocean);
+    }
+
+    .cin-copy-btn.copied {
+      background: var(--baz-l);
+      border-color: var(--baz);
+      color: var(--baz);
+    }
+
+    .cin-verify-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      padding: 5px 11px;
+      background: var(--ocean);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      text-decoration: none;
+      touch-action: manipulation;
+    }
+
+    .cin-verify-btn:hover {
+      background: var(--ocean2);
+    }
+
+    .cin-verify-btn:active {
+      transform: scale(.97);
+    }
+
+    .cin-verify-btn svg {
+      width: 11px;
+      height: 11px;
+      flex-shrink: 0;
+    }
+
+    .cin-popup-note {
+      padding: 8px 14px;
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--sand2);
+      flex-shrink: 0;
+    }
+
     .min-warn {
       background: #fff8e1;
       border: 1.5px solid #ffe082;
@@ -2683,8 +2764,25 @@
             nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim
             prawem — rezerwuj bez obaw.</div>
           <span class="cin-code">CIN IT090058C2000T3650</span>
+          <button class="cin-copy-btn" onclick="copyCin(this)" title="Kopiuj CIN">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="1.5" width="6.5" height="8" rx="1.2" stroke="currentColor" stroke-width="1.1"/>
+              <path d="M1.5 3.5H3V9.5C3 10.05 3.45 10.5 4 10.5H8.5V11C8.5 11.28 8.28 11.5 8 11.5H1.5C1.22 11.5 1 11.28 1 11V4C1 3.72 1.22 3.5 1.5 3.5Z" fill="currentColor"/>
+            </svg>
+            <span id="t-cin-copy-lbl">Kopiuj</span>
+          </button>
+          <br>
+          <button class="cin-verify-btn" onclick="openCinPopup()">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 1.5L1.5 3.5V6.5C1.5 8.8 3.5 10.9 6 11.5C8.5 10.9 10.5 8.8 10.5 6.5V3.5L6 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M4 6L5.5 7.5L8 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="t-cin-btn">Sprawdź CIN</span>
+          </button>
         </div>
       </div>
+
+      <!-- CIN popup overlay -->
 
       <div class="hero-map-wrap" style="margin-top:28px;">
         <div class="map-eyebrow" id="t-map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
@@ -3097,6 +3195,7 @@
         hl5: 'Transfer z/na lotnisko — zaprzyjaźniony taksówkarz odbierze i odwiezie gości na życzenie (55€ w jedną stronę, do 4 osób)',
         cinTitle: 'Legalny wynajem krótkoterminowy we Włoszech',
         cinText: 'Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.',
+        cinBtn: 'Sprawdź CIN', cinCopy: 'Kopiuj',
         btnReserve: 'Rezerwuj', btnMsg: 'Rezerwuj przez Messenger', btnWa: 'Rezerwuj przez WhatsApp', contactNote: 'Odpiszemy szybko i ustalimy wszystkie szczegóły rezerwacji.',
         optFor: 'Dostępne opcje dla', adult1: ' gościa', adults: ' gości', kid1: ' dostawka', kids: ' dostawki',
         calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
@@ -3165,6 +3264,7 @@
         hl5: 'Airport transfers available — our trusted taxi driver will pick you up and drop you off on request (55€ one way, up to 4 people)',
         cinTitle: 'Officially registered holiday rental in Italy',
         cinText: 'Our property is officially registered and holds the Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is reported to the relevant authorities in accordance with Italian law — book with complete confidence.',
+        cinBtn: 'Verify CIN', cinCopy: 'Copy',
         btnReserve: 'Book now', btnMsg: 'Message us on Messenger', btnWa: 'Message us on WhatsApp', contactNote: "We'll get back to you quickly and sort out all the details.",
         optFor: 'Available options for', adult1: ' guest', adults: ' guests', kid1: ' extra bed', kids: ' extra beds',
         calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
@@ -3286,6 +3386,8 @@
       setTxt('t-hl-title', T.hlTitle);
       setTxt('t-hl1', T.hl1); setTxt('t-hl2', T.hl2); setTxt('t-hl3', T.hl3); setTxt('t-hl4', T.hl4); setTxt('t-hl5', T.hl5);
       setTxt('t-cin-title', T.cinTitle); setTxt('t-cin-text', T.cinText);
+      setTxt('t-cin-btn', T.cinBtn || 'Sprawdź CIN');
+      setTxt('t-cin-copy-lbl', T.cinCopy || 'Kopiuj');
       setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
       if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
       setTxt('t-tip-text', T.tipText);
@@ -4217,6 +4319,47 @@
         if (Math.abs(dx) > 40) lbMove(dx < 0 ? 1 : -1);
       }, { passive: true });
     })();
+
+    /* ── CIN popup ── */
+    var CIN_CODE = 'IT090058C2000T3650';
+    var CIN_URL = 'https://bdsr.ministeroturismo.gov.it/ricerca-cin';
+
+    function openCinPopup() {
+      var url = CIN_URL + '?cin=' + encodeURIComponent(CIN_CODE);
+      window.open(url, '_blank', 'noopener');
+    }
+
+    function copyCin(btn) {
+      var fullCin = 'CIN ' + CIN_CODE;
+      var lbl = btn.querySelector('#t-cin-copy-lbl') || btn.querySelector('span');
+      var okText = (lang === 'en') ? 'Copied!' : 'Skopiowano!';
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(fullCin).then(function() {
+          btn.classList.add('copied');
+          if (lbl) lbl.textContent = okText;
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            if (lbl) lbl.textContent = (lang === 'en') ? 'Copy' : 'Kopiuj';
+          }, 2000);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = fullCin;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try { document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        if (lbl) lbl.textContent = okText;
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          if (lbl) lbl.textContent = (lang === 'en') ? 'Copy' : 'Kopiuj';
+        }, 2000);
+      }
+    }
+
+    function closeCinPopup() {}
+    function cinBgClick() {}
 
     /* ── FAQ ── */
     function faqToggle(item) {

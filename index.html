@@ -2582,17 +2582,21 @@
       </div>
       <div class="sline"></div>
       <div class="step" id="i2" onclick="stepClick(2)" style="cursor:pointer">
-        <div class="snum" id="sn2">2</div><span id="t-step2">Apartament</span>
+        <div class="snum" id="sn2">2</div><span id="t-step2">Daty</span>
       </div>
       <div class="sline"></div>
       <div class="step" id="i3" onclick="stepClick(3)" style="cursor:pointer">
-        <div class="snum" id="sn3">3</div><span id="t-step3">Daty</span>
+        <div class="snum" id="sn3">3</div><span id="t-step3">Apartament</span>
+      </div>
+      <div class="sline"></div>
+      <div class="step" id="i4">
+        <div class="snum" id="sn4">4</div><span id="t-step4" data-pl="Podsumowanie" data-en="Summary">Podsumowanie</span>
       </div>
     </div>
 
     <!-- STEP 1 -->
     <div id="s1" class="ss">
-      <p class="slabel" id="t-s1label">Krok 1 z 3</p>
+      <p class="slabel" id="t-s1label">Krok 1 z 4</p>
       <h2 class="stitle" id="t-s1title">Kto przyjeżdża?</h2>
       <p class="ssub" id="t-s1sub"></p>
       <div class="counters">
@@ -2672,20 +2676,11 @@
       </div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2 — DATY -->
     <div id="s2" class="ss hidden">
-      <p class="slabel" id="t-s2label">Krok 2 z 3</p>
-      <h2 class="stitle" id="t-s2title">Wybierz apartament</h2>
-      <p class="ssub" id="s2sub"></p>
-      <div class="apt-list" id="apt-list"></div>
-      <button class="btn-back" onclick="goBack(1)">&#8592; <span id="t-back1">Zmień skład grupy</span></button>
-    </div>
-
-    <!-- STEP 3 -->
-    <div id="s3" class="ss hidden">
-      <p class="slabel" id="t-s3label">Krok 3 z 3</p>
-      <h2 class="stitle" id="t-s3title">Wybierz daty pobytu</h2>
-      <p class="ssub" id="t-s3sub">Zaznacz datę przyjazdu, a następnie datę wyjazdu.</p>
+      <p class="slabel" id="t-s2label">Krok 2 z 4</p>
+      <h2 class="stitle" id="t-s2title">Kiedy przyjeżdżacie?</h2>
+      <p class="ssub" id="t-s2sub">Zaznacz datę przyjazdu, a następnie datę wyjazdu.</p>
       <div class="cal" id="cal">
         <div class="cal-hdr cM" id="cal-hdr">
           <div class="cal-hdr-info">
@@ -2716,15 +2711,32 @@
       </div>
       <div id="cal-features" class="cal-features"></div>
       <div id="min-warn" class="min-warn"></div>
-      <div id="summary" class="summary hidden">
+      <div id="cal-go-s4-trigger"></div>
+      <button class="btn-back" onclick="goBack(1)">&#8592; <span id="t-back1">Zmień skład grupy</span></button>
+    </div>
+
+    <!-- STEP 3 — APARTAMENT -->
+    <div id="s3" class="ss hidden">
+      <p class="slabel" id="t-s3label">Krok 3 z 4</p>
+      <h2 class="stitle" id="t-s3title">Wybierz apartament</h2>
+      <p class="ssub" id="s3sub"></p>
+      <div class="apt-list" id="apt-list"></div>
+      <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień daty</span></button>
+    </div>
+    <!-- STEP 4 — PODSUMOWANIE -->
+    <div id="s4" class="ss hidden">
+      <p class="slabel" id="t-s4label">Krok 4 z 4</p>
+      <h2 class="stitle" id="t-s4title">Podsumowanie rezerwacji</h2>
+      <p class="ssub" id="t-s4sub"></p>
+      <div id="summary" class="summary">
         <div class="sum-hdr">
           <h4 id="t-sum-title">Podsumowanie</h4>
         </div>
         <div class="sum-body" id="sum-body"></div>
       </div>
-      <div id="rezerwuj-wrap" class="hidden" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
+      <div id="rezerwuj-wrap" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
         <button id="btn-rezerwuj" class="btn-luxury"
-          onclick="document.querySelector('.btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
+          onclick="document.querySelector('#s4 .btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
           <span id="t-btn-reserve">Rezerwuj</span>
         </button>
       </div>
@@ -3136,9 +3148,9 @@
         </div>
         <!-- /FAQ -->
 
-      </div>
-      <button class="btn-back" onclick="goBack(2)">&#8592; <span id="t-back2">Zmień apartament</span></button>
+      <button class="btn-back" onclick="goBack(3)">&#8592; <span id="t-back3">Zmień apartament</span></button>
     </div>
+
   </main>
 
   <!-- LIGHTBOX -->
@@ -3162,15 +3174,16 @@
       pl: {
         h1: 'Sprawdź<br><em>dostępność</em>',
         tagline: 'Wybierz skład grupy i daty pobytu',
-        step1: 'Goście', step2: 'Apartament', step3: 'Daty',
-        s1label: 'Krok 1 z 3', s1title: 'Kto przyjeżdża?',
+        step1: 'Goście', step2: 'Daty', step3: 'Apartament', step4: 'Podsumowanie',
+        s1label: 'Krok 1 z 4', s1title: 'Kto przyjeżdża?',
         s1sub: '',
-        s2label: 'Krok 2 z 3', s2title: 'Wybierz apartament',
-        s3label: 'Krok 3 z 3', s3title: 'Wybierz daty pobytu',
-        s3sub: 'Zaznacz datę przyjazdu, a następnie datę wyjazdu.',
+        s2label: 'Krok 2 z 4', s2title: 'Kiedy przyjeżdżacie?',
+        s2sub: 'Zaznacz datę przyjazdu, a następnie datę wyjazdu.',
+        s3label: 'Krok 3 z 4', s3title: 'Wybierz apartament', s4label: 'Krok 4 z 4', s4title: 'Podsumowanie rezerwacji',
+        s3sub: '',
         adultsLbl: 'Liczba gości', kidsLbl: 'Dostawka dla dziecka',
         adDescDef: '1–8 gości', kdDescDef: 'Najpierw podaj liczbę gości',
-        btn1: 'Dalej', back1: 'Zmień skład grupy', back2: 'Zmień apartament',
+        btn1: 'Dalej', back1: 'Zmień skład grupy', back2: 'Zmień daty', back3: 'Zmień apartament',
         loading: 'Ładowanie...',
         legFree: 'Dostępny', legBusy: 'Zarezerwowany', legSel: 'Twój pobyt',
         minStay: '⚠ Lipiec i sierpień: minimalny pobyt 5 nocy',
@@ -3231,15 +3244,16 @@
       en: {
         h1: 'Check<br><em>availability</em>',
         tagline: 'Tell us who\'s coming and when',
-        step1: 'Guests', step2: 'Apartment', step3: 'Dates',
-        s1label: 'Step 1 of 3', s1title: 'Who\'s coming?',
+        step1: 'Guests', step2: 'Dates', step3: 'Apartment', step4: 'Summary',
+        s1label: 'Step 1 of 4', s1title: 'Who\'s coming?',
         s1sub: '',
-        s2label: 'Step 2 of 3', s2title: 'Choose your apartment',
-        s3label: 'Step 3 of 3', s3title: 'Pick your dates',
-        s3sub: 'Select your check-in date, then your check-out date.',
+        s2label: 'Step 2 of 4', s2title: 'When are you coming?',
+        s2sub: 'Select your check-in date, then your check-out date.',
+        s3label: 'Step 3 of 4', s3title: 'Choose your apartment', s4label: 'Step 4 of 4', s4title: 'Booking summary',
+        s3sub: '',
         adultsLbl: 'Guests', kidsLbl: 'Extra bed',
         adDescDef: '1–8 guests', kdDescDef: 'Select the number of guests first',
-        btn1: 'Continue', back1: 'Change guests', back2: 'Change apartment',
+        btn1: 'Continue', back1: 'Change guests', back2: 'Change dates', back3: 'Change apartment',
         loading: 'Loading...',
         legFree: 'Available', legBusy: 'Already booked', legSel: 'Your stay',
         minStay: '⚠ July & August: minimum stay is 5 nights',
@@ -3371,14 +3385,14 @@
     function applyT() {
       setHtml('hdr-h1', T.h1);
       setTxt('hdr-tagline', T.tagline);
-      setTxt('t-step1', T.step1); setTxt('t-step2', T.step2); setTxt('t-step3', T.step3);
+      setTxt('t-step1', T.step1); setTxt('t-step2', T.step2); setTxt('t-step3', T.step3); setTxt('t-step4', T.step4||'');
       setTxt('t-s1label', T.s1label); setTxt('t-s1title', T.s1title); setTxt('t-s1sub', T.s1sub);
       setTxt('t-adults-lbl', T.adultsLbl); setTxt('t-kids-lbl', T.kidsLbl);
       setTxt('t-btn1', T.btn1);
-      setTxt('t-s2label', T.s2label); setTxt('t-s2title', T.s2title);
+      setTxt('t-s2label', T.s2label); setTxt('t-s2title', T.s2title); setTxt('t-s2sub', T.s2sub);
       setTxt('t-back1', T.back1);
-      setTxt('t-s3label', T.s3label); setTxt('t-s3title', T.s3title); setTxt('t-s3sub', T.s3sub);
-      setTxt('t-back2', T.back2);
+      setTxt('t-s3label', T.s3label); setTxt('t-s3title', T.s3title); setTxt('t-s4label', T.s4label||''); setTxt('t-s4title', T.s4title||'');
+      setTxt('t-back2', T.back2); setTxt('t-back3', T.back3||'');
       setTxt('t-loading', T.loading);
       setTxt('t-sum-title', T.sumTitle);
       setTxt('t-incl-title', T.inclTitle);
@@ -3617,12 +3631,11 @@
     })();
 
     /* ── step click navigation ── */
-    function stepClick(n) {
+    function stepClick(n) { /* step 4 not clickable */
       var s1done = $id('i1') && $id('i1').classList.contains('done');
       var s2done = $id('i2') && $id('i2').classList.contains('done');
       scrollToSteps();
       if (n === 1) {
-        // always can go back to step 1
         if (!$id('s1').classList.contains('hidden')) return;
         goBack(1);
       } else if (n === 2) {
@@ -3633,7 +3646,6 @@
       } else if (n === 3) {
         if (s2done) {
           if (!$id('s3').classList.contains('hidden')) return;
-          // already on step 3, just scroll
         }
       }
     }
@@ -3795,9 +3807,7 @@
       document.querySelectorAll('.aopt').forEach(function (c) { c.classList.remove('sel'); });
       div.classList.add('sel');
       selOpt = o;
-      selStart = null;
-      selEnd = null;
-      setTimeout(goStep3, 240);
+      setTimeout(goStep4, 240);
     }
 
     function buildChips(aptIds, opt) {
@@ -3921,9 +3931,25 @@
 
     function renderOptList() {
       var opts = buildOpts(adults, kids);
+      /* Oznacz zajęte w wybranych datach */
+      if (selStart && selEnd && cache) {
+        var sDate = pD4(selStart), eDate = pD4(selEnd);
+        opts.forEach(function(o) {
+          if (o.unavail) return;
+          var cur = new Date(sDate);
+          while (cur <= eDate) {
+            var bl = cache[dkey(cur)] || [];
+            if (o.apts.some(function(a) { return bl.indexOf(a) !== -1; })) { o.unavail = true; break; }
+            cur.setDate(cur.getDate() + 1);
+          }
+        });
+      }
       var sub = T.optFor + ' ' + adults + (adults === 1 ? T.adult1 : T.adults);
       if (kids > 0) sub += ' + ' + kids + (kids === 1 ? T.kid1 : T.kids);
-      setTxt('s2sub', sub + ':');
+      if (selStart && selEnd) {
+        sub += ' · ' + fmtDate(pD4(selStart)) + ' – ' + fmtDate(pD4(selEnd));
+      }
+      setTxt('s3sub', sub + ':');
       var list = $id('apt-list'); list.innerHTML = '';
       var lastG = null;
       var cards = [];
@@ -3940,7 +3966,68 @@
       }
     }
 
-    function goStep2() { if (!adults) return; renderOptList(); show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); setTimeout(initAllGalleries, 10); scrollToSteps(); }
+    function goStep2() {
+      if (!adults) return;
+      show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); scrollToSteps();
+      var now = new Date(); cy = now.getFullYear(); cm = now.getMonth();
+      /* W kroku 2 nie ma jeszcze wybranego apartamentu — pokazujemy ogólną zajętość:
+         dzień jest zajęty tylko jeśli zajęty we WSZYSTKICH opcjach dostępnych dla tej grupy */
+      var previewOpt = buildPreviewOpt();
+      selOpt = previewOpt;
+      $id('cal-hdr').className = 'cal-hdr cM';
+      setTxt('cal-name', T.s2title);
+      setTxt('cal-desc', adults + (adults === 1 ? T.calA1 : T.calAN) + (kids > 0 ? ', ' + kids + (kids === 1 ? T.calK1 : T.calKN) : ''));
+      $id('cal-features').innerHTML = '';
+      buildLegend(); updateHint(); updateMinNote();
+      var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
+      showSt(T.loading, false);
+      if (cache !== null) renderCal(); else fetchIcal();
+    }
+
+    /* Tworzy wirtualną opcję obejmującą WSZYSTKIE apartamenty dostępne dla tej grupy.
+       Dzień jest "zajęty" tylko gdy zajęty we wszystkich z nich. */
+    function buildPreviewOpt() {
+      var opts = buildOpts(adults, kids);
+      var allApts = [];
+      opts.forEach(function(o) {
+        if (!o.unavail) o.apts.forEach(function(a) { if (allApts.indexOf(a) === -1) allApts.push(a); });
+      });
+      if (!allApts.length) allApts = [1, 2, 3];
+      return { id: '_preview', apts: allApts, name: T.s2title, tags: [], mk: 0 };
+    }
+
+    function goStep3() {
+      renderOptList(); show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); setTimeout(initAllGalleries, 10); scrollToSteps();
+    }
+    function goStep4() {
+      if (!selOpt) return;
+      show('s4'); hide('s3'); hide('s2'); hide('s1'); mkDone(3); mkActive(4); scrollToSteps();
+      renderSummaryS4();
+    }
+    function renderSummaryS4() {
+      var sumDiv = document.getElementById('summary');
+      var sumBody = document.getElementById('sum-body');
+      if (!sumDiv || !sumBody || !selOpt || !selStart || !selEnd) return;
+      var s = pD4(selStart), e = pD4(selEnd);
+      var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
+      if (nights <= 0) return;
+      var sApts = selOpt.apts, totalApt = 0;
+      var c = new Date(s);
+      for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
+      var silentBedNights = (selOpt && selOpt.silentBed) ? KIDS_PRICE * nights : 0;
+      var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids + silentBedNights, kaucja = DEPOSIT[sApts.length] || 200;
+      var rows = '';
+      rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + '</span><span class="sum-val">' + selOpt.name + '</span></div>';
+      rows += '<div class="sum-row"><span class="sum-label">' + T.sumDate + '</span><span class="sum-val">' + fmtDate(s) + ' → ' + fmtDate(e) + '</span></div>';
+      rows += '<div class="sum-row"><span class="sum-label">' + T.sumNights + '</span><span class="sum-val">' + nights + '</span></div>';
+      rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + ' (' + T.sumNights.toLowerCase() + ': ' + nights + ')</span><span class="sum-val">' + totalApt + '€</span></div>';
+      if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + kids + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
+      rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
+      rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
+      rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
+      sumBody.innerHTML = rows;
+      sumDiv.classList.remove('hidden');
+    }
     function refreshS2() { renderOptList(); initAllGalleries(); }
     function initAllGalleries() {
       document.querySelectorAll('#apt-list .aopt.open .apt-gallery').forEach(function (g) {
@@ -3948,28 +4035,7 @@
       });
     }
 
-    /* ── step 3 ── */
-    function goStep3() {
-      show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); scrollToSteps();
-      var now = new Date(); cy = now.getFullYear(); cm = now.getMonth();
-      var o = selOpt, isM = o.apts.length > 1;
-      $id('cal-hdr').className = 'cal-hdr ' + (isM ? 'cM' : 'c' + o.apts[0]);
-      setTxt('cal-name', o.name);
-      setTxt('cal-desc', adults + (adults === 1 ? T.calA1 : T.calAN) + (kids > 0 ? ', ' + kids + (kids === 1 ? T.calK1 : T.calKN) : ''));
-
-      var featHtml = '';
-      if (o.meta) {
-        o.meta.forEach(function (m) {
-          featHtml += '<div class="cal-feature">' + m.icon + '<span>' + m.text + '</span></div>';
-        });
-      }
-      $id('cal-features').innerHTML = featHtml;
-
-      buildLegend(); updateHint(); updateMinNote();
-      var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
-      showSt(T.loading, false);
-      if (cache !== null) renderCal(); else fetchIcal();
-    }
+    /* goStep3 — lista apartamentów (po wyborze dat) */
 
     /* ── iCal ── */
     function fetchIcal() {
@@ -4022,6 +4088,7 @@
       var first = new Date(cy, cm, 1), last = new Date(cy, cm + 1, 0);
       var off = (first.getDay() + 6) % 7;
       for (var e = 0; e < off; e++) { var emp = document.createElement('div'); emp.className = 'day'; container.appendChild(emp); }
+      var isPreviewMode = (selOpt.id === '_preview');
       var sApts = selOpt.apts, moNum = cm + 1;
       var hasHalf = false;
       for (var d = 1; d <= last.getDate(); d++) {
@@ -4029,18 +4096,28 @@
         var dt = new Date(cy, cm, d);
         var past = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
         var busyList = cache[dk] || [];
-        var isBusy = sApts.some(function (n) { return busyList.indexOf(n) !== -1; });
+        var isBusy;
+        if (isPreviewMode) {
+          var avOpts = buildOpts(adults, kids).filter(function(o) { return !o.unavail; });
+          isBusy = avOpts.length > 0 && avOpts.every(function(o) {
+            return o.apts.some(function(n) { return busyList.indexOf(n) !== -1; });
+          });
+        } else {
+          isBusy = sApts.some(function (n) { return busyList.indexOf(n) !== -1; });
+        }
         var cell = document.createElement('div');
         cell.className = 'day' + (past ? ' past' : isBusy ? ' busy' : ' free');
         if (!past && dk === tk) cell.classList.add('today');
         var numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
         if (!past && !isBusy) {
-          var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
-          var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE);
-          var prEl = document.createElement('div');
-          prEl.className = 'day-price';
-          prEl.textContent = dayP + '€';
-          cell.appendChild(prEl);
+          if (!isPreviewMode) {
+            var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
+            var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE);
+            var prEl = document.createElement('div');
+            prEl.className = 'day-price';
+            prEl.textContent = dayP + '€';
+            cell.appendChild(prEl);
+          }
 
           // Last minute logic
           var tkTime = new Date();
@@ -4120,7 +4197,7 @@
 
     function changeApt() {
       hideCalAlert();
-      goStep2();
+      goBack(2);
     }
 
     function dayClick(dk) {
@@ -4129,18 +4206,37 @@
       else {
         if (dk <= selStart) { selStart = dk; selEnd = null; updateHint(T.hintDepart); }
         else {
-          var sApts = selOpt.apts, ok = true;
-          var c = new Date(pD4(selStart)); c.setDate(c.getDate() + 1);
-          var eD = pD4(dk);
-          while (c < eD) { var bl = cache[dkey(c)] || []; if (sApts.some(function (n) { return bl.indexOf(n) !== -1; })) { ok = false; break; } c.setDate(c.getDate() + 1); }
+          var sApts = selOpt.apts;
+          var isPreview = (selOpt.id === '_preview');
+          var ok;
+          if (isPreview) {
+            /* W trybie podglądu: zakres OK jeśli JAKIKOLWIEK apt jest w całości wolny */
+            var opts = buildOpts(adults, kids);
+            ok = opts.some(function(o) {
+              if (o.unavail) return false;
+              var c2 = new Date(pD4(selStart)); c2.setDate(c2.getDate() + 1);
+              var eD2 = pD4(dk);
+              while (c2 < eD2) {
+                var bl2 = cache[dkey(c2)] || [];
+                if (o.apts.some(function(n) { return bl2.indexOf(n) !== -1; })) return false;
+                c2.setDate(c2.getDate() + 1);
+              }
+              return true;
+            });
+          } else {
+            ok = true;
+            var c = new Date(pD4(selStart)); c.setDate(c.getDate() + 1);
+            var eD = pD4(dk);
+            while (c < eD) { var bl = cache[dkey(c)] || []; if (sApts.some(function (n) { return bl.indexOf(n) !== -1; })) { ok = false; break; } c.setDate(c.getDate() + 1); }
+          }
           if (!ok) {
             var origStart = selStart;
             selStart = dk; selEnd = null;
             var sDate = pD4(origStart), eDate = pD4(dk);
-            var opts = buildOpts(adults, kids);
+            var opts2 = buildOpts(adults, kids);
             var freeNames = [];
-            opts.forEach(function (o) {
-              if (o.unavail || o.id === selOpt.id) return;
+            opts2.forEach(function (o) {
+              if (o.unavail) return;
               var isFreeSeq = true;
               var cur = new Date(sDate);
               while (cur <= eDate) {
@@ -4156,7 +4252,13 @@
               updateHint(T.hintBusy);
             }
           }
-          else { selEnd = dk; updateHint(''); }
+          else {
+            selEnd = dk; updateHint('');
+            renderCal();
+            /* Obie daty wybrane — przejdź do wyboru apartamentu */
+            setTimeout(goStep3, 400);
+            return;
+          }
         }
       }
       renderCal();
@@ -4176,40 +4278,18 @@
       else n.style.display = 'none';
     }
 
-    /* ── summary ── */
+    /* ── summary ── (summary rendering moved to step 4 / renderSummaryS4) */
     function updateSummary() {
-      var sum = $id('summary'), warn = $id('min-warn'), rzw = $id('rezerwuj-wrap'); if (!sum) return;
-      if (!selStart || !selEnd) { sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); if (warn) warn.style.display = 'none'; return; }
+      var warn = $id('min-warn');
+      if (!selStart || !selEnd || !selOpt || selOpt.id === '_preview') { if (warn) warn.style.display = 'none'; return; }
       var s = pD4(selStart), e = pD4(selEnd);
       var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
-      if (nights <= 0) { sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); return; }
+      if (nights <= 0) { if (warn) warn.style.display = 'none'; return; }
       var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
-      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } sum.classList.add('hidden'); if (rzw) rzw.classList.add('hidden'); return; }
+      if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } return; }
       if (warn) warn.style.display = 'none';
-      var sApts = selOpt.apts, totalApt = 0;
-      var c = new Date(s);
-      for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
-      var silentBedNights = (selOpt && selOpt.silentBed) ? KIDS_PRICE * nights : 0;
-      var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids + silentBedNights, kaucja = DEPOSIT[sApts.length] || 200;
-      var rows = '';
-      rows += '<div class="sum-row"><span class="sum-label">' + T.sumDate + '</span><span class="sum-val">' + fmtDate(s) + ' → ' + fmtDate(e) + '</span></div>';
-      rows += '<div class="sum-row"><span class="sum-label">' + T.sumNights + '</span><span class="sum-val">' + nights + '</span></div>';
-      rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + '</span><span class="sum-val">' + totalApt + '€</span></div>';
-      if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + kids + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
-      rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
-      rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
-      rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
-      $id('sum-body').innerHTML = rows;
-      sum.classList.remove('hidden');
-      if (rzw) rzw.classList.remove('hidden');
-      setTimeout(function () {
-        if (rzw) {
-          rzw.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        } else {
-          sum.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }, 100);
     }
+
 
     function fmtDate(d) { return p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear(); }
     function chMonth(d) { cm += d; if (cm > 11) { cm = 0; cy++; } if (cm < 0) { cm = 11; cy--; } if (cache) renderCal(); updateMinNote(); }
@@ -4223,8 +4303,15 @@
     function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }
     function scrollToSteps() { var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'auto' }); } }
     function goBack(step) {
-      if (step === 1) { show('s1'); hide('s2'); mkActive(1); resetI(2); resetI(3); scrollToSteps(); }
-      else if (step === 2) { show('s2'); hide('s3'); mkActive(2); resetI(3); selStart = null; selEnd = null; initAllGalleries(); scrollToSteps(); }
+      if (step === 1) { show('s1'); hide('s2'); hide('s3'); hide('s4'); mkActive(1); resetI(2); resetI(3); resetI(4); scrollToSteps(); }
+      else if (step === 2) {
+        /* Wróć do kalendarza (krok 2) — zachowaj wybrane daty, zresetuj selOpt do podglądu */
+        selOpt = buildPreviewOpt();
+        show('s2'); hide('s3'); hide('s4'); mkActive(2); resetI(3); resetI(4);
+        if (cache !== null) renderCal(); else fetchIcal();
+        initAllGalleries(); scrollToSteps();
+      }
+      else if (step === 3) { show('s3'); hide('s4'); mkActive(3); resetI(4); refreshS2(); scrollToSteps(); }
     }
 
     /* ── messenger ── */

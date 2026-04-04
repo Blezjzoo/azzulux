@@ -4100,7 +4100,7 @@
         if (isPreviewMode) {
           var avOpts = buildOpts(adults, kids).filter(function(o) { return !o.unavail; });
           isBusy = avOpts.length > 0 && avOpts.every(function(o) {
-            return o.apts.some(function(n) { return busyList.indexOf(n) !== -1; });
+            return o.apts.every(function(n) { return busyList.indexOf(n) !== -1; });
           });
         } else {
           isBusy = sApts.some(function (n) { return busyList.indexOf(n) !== -1; });

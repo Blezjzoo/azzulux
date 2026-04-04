@@ -4099,9 +4099,25 @@
         var isBusy;
         if (isPreviewMode) {
           var avOpts = buildOpts(adults, kids).filter(function(o) { return !o.unavail; });
-          isBusy = avOpts.length > 0 && avOpts.every(function(o) {
-            return o.apts.some(function(n) { return busyList.indexOf(n) !== -1; });
-          });
+          if (selStart && !selEnd && dk > selStart) {
+            // Po wyborze daty przyjazdu: dzień jest zajęty jeśli żadna opcja
+            // nie jest w pełni wolna przez cały zakres selStart → ten dzień
+            isBusy = !avOpts.some(function(o) {
+              var cur = new Date(pD4(selStart));
+              cur.setDate(cur.getDate() + 1);
+              var endD = pD4(dk);
+              while (cur < endD) {
+                var dayBl = cache[dkey(cur)] || [];
+                if (o.apts.some(function(n) { return dayBl.indexOf(n) !== -1; })) return false;
+                cur.setDate(cur.getDate() + 1);
+              }
+              return true;
+            });
+          } else {
+            isBusy = avOpts.length > 0 && avOpts.every(function(o) {
+              return o.apts.some(function(n) { return busyList.indexOf(n) !== -1; });
+            });
+          }
         } else {
           isBusy = sApts.some(function (n) { return busyList.indexOf(n) !== -1; });
         }

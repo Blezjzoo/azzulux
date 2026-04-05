@@ -1133,18 +1133,101 @@
     }
 
     .day-last-minute {
-      font-size: 8px;
-      color: var(--busy);
+      font-size: 7px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: -2px;
+      letter-spacing: 0.02em;
       line-height: 1;
       text-align: center;
       position: absolute;
-      bottom: 2px;
+      bottom: 3px;
       left: 0;
       width: 100%;
+      color: #d45f00;
+    }
+
+    .day.lm-day {
+      background: #fff8f0;
+      border: 1px solid #ffd49a;
+    }
+
+    .day.lm-day:hover {
+      background: #ffebd4 !important;
+    }
+
+    .day.lm-day .day-num {
+      color: #a03500;
+    }
+
+    .day.lm-day .day-price {
+      color: #c05000;
+      font-weight: 500;
+    }
+
+    /* Zachowaj kolory selekcji nad last-minute */
+    .day.lm-day.sel-start,
+    .day.lm-day.sel-end {
+      background: var(--sel) !important;
+      border-color: var(--sel) !important;
+    }
+    .day.lm-day.sel-start .day-num,
+    .day.lm-day.sel-end .day-num { color: #fff !important; }
+    .day.lm-day.in-range {
+      background: #ffe5c8 !important;
+      border-color: #ffd49a !important;
+    }
+
+    /* ── Last Minute banner (krok 2) ── */
+    .lm-banner {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      background: linear-gradient(135deg, #fff8ee, #fff0d8);
+      border: 1.5px solid #f5a623;
+      border-radius: 14px;
+      padding: 13px 15px;
+      margin-bottom: 16px;
+      line-height: 1.45;
+      box-shadow: 0 2px 10px rgba(245,166,35,.12);
+    }
+    .lm-banner.visible { display: flex; }
+    .lm-banner-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .lm-banner-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7a3f00;
+      margin-bottom: 3px;
+      letter-spacing: .01em;
+    }
+    .lm-banner-sub {
+      font-size: 12px;
+      color: #a05010;
+      font-weight: 400;
+    }
+
+    /* ── Last Minute badge (krok 4 – podsumowanie) ── */
+    .sum-lm-badge {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: linear-gradient(135deg, #fff8ee, #fff0d8);
+      border: 1.5px solid #f5a623;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      line-height: 1.45;
+      box-shadow: 0 2px 8px rgba(245,166,35,.12);
+    }
+    .sum-lm-badge-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .sum-lm-badge-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7a3f00;
+      margin-bottom: 2px;
+    }
+    .sum-lm-badge-sub {
+      font-size: 12px;
+      color: #a05010;
+      font-weight: 400;
     }
 
     .day-price {
@@ -3276,7 +3359,11 @@
         mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
         mixBtnMsg: 'Napisz na Messenger',
         mixBtnWa: 'Napisz na WhatsApp',
-        mMixTxt: ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.'
+        mMixTxt: ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.',
+        lmTitle: 'Oferta Last Minute!',
+        lmSub: 'Wolne terminy w bieżącym miesiącu dostępne od zaraz — rezerwuj szybko i skorzystaj z tych dat!',
+        lmSumTitle: '⚡ Oferta Last Minute!',
+        lmSumSub: 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko — te daty mogą zniknąć w każdej chwili!'
       },
       en: {
         h1: 'Check<br><em>availability</em>',
@@ -3387,7 +3474,11 @@
         faqA5: 'Our building has one upper floor. There are commercial premises on the ground floor and our apartments upstairs. There is nobody else in the building apart from our guests.',
         faqQ6: 'Do you organise tours?',
         faqA6: 'We recommend <a href="https://www.getyourguide.com" target="_blank" rel="noopener">getyourguide.com</a> — a marketplace for tours across Sardinia, a bit like Booking for activities. You can check the detailed itinerary, dates and prices for trips all over the island there.',
-        photo: 'Photo'
+        photo: 'Photo',
+        lmTitle: 'Last Minute offer!',
+        lmSub: 'Dates available this month — book now before they are gone!',
+        lmSumTitle: '⚡ Last Minute offer!',
+        lmSumSub: 'Your selected dates are available right now. Book quickly — these dates could go at any time!'
       }
     };
 
@@ -3506,6 +3597,8 @@
       buildLegend(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       updateHint();
+      setTxt('t-lm-title', T.lmTitle || 'Oferta Last Minute!');
+      setTxt('t-lm-sub', T.lmSub || 'Wolne terminy w bieżącym miesiącu dostępne od zaraz!');
       if (!calLoading && $id('cal-ml').textContent !== '-') {
         renderCal();
         var lh = $id('legHalf'); if (lh) lh.textContent = T.legHalf;
@@ -4025,7 +4118,7 @@
       buildLegend(); updateHint(); updateMinNote();
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       showSt(T.loading, false);
-      if (cache !== null) renderCal(); else fetchIcal();
+      if (cache !== null) { renderCal(); updateLmBanner(); } else fetchIcal();
     }
 
     /* Tworzy wirtualną opcję obejmującą WSZYSTKIE apartamenty dostępne dla tej grupy.
@@ -4069,6 +4162,11 @@
       rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
       rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
       rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
+      var now2 = new Date(); now2.setHours(0, 0, 0, 0);
+      var isLm = (s.getFullYear() === now2.getFullYear() && s.getMonth() === now2.getMonth());
+      if (isLm) {
+        rows += '<div class="sum-lm-badge"><span class="sum-lm-badge-icon">⚡</span><div><div class="sum-lm-badge-title">' + (T.lmSumTitle || '⚡ Oferta Last Minute!') + '</div><div class="sum-lm-badge-sub">' + (T.lmSumSub || 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko!') + '</div></div></div>';
+      }
       sumBody.innerHTML = rows;
       sumDiv.classList.remove('hidden');
     }
@@ -4163,17 +4261,15 @@
             cell.appendChild(prEl);
           }
 
-          // Last minute logic
+          // Last minute — wszystkie wolne daty bieżącego miesiąca
           var tkTime = new Date();
           tkTime.setHours(0, 0, 0, 0);
-
           var isSameMonth = (dt.getMonth() === tkTime.getMonth() && dt.getFullYear() === tkTime.getFullYear());
-          var isLastMinute = isSameMonth && (tkTime.getDate() >= 14) && (dt.getDate() >= tkTime.getDate());
-
-          if (isLastMinute) {
+          if (isSameMonth) {
+            cell.classList.add('lm-day');
             var lmEl = document.createElement('div');
             lmEl.className = 'day-last-minute';
-            lmEl.textContent = 'Last Minute';
+            lmEl.textContent = '⚡ last minute';
             cell.appendChild(lmEl);
           }
         }
@@ -4221,7 +4317,7 @@
         container.appendChild(cell);
       }
       var lh = $id('legHalf'); if (lh) lh.style.display = hasHalf ? 'flex' : 'none';
-      updateSummary(); updateMinNote();
+      updateSummary(); updateMinNote(); updateLmBanner();
     }
 
     function showCalAlert(aptsObj) {
@@ -4363,7 +4459,15 @@
 
 
     function fmtDate(d) { return p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear(); }
-    function chMonth(d) { cm += d; if (cm > 11) { cm = 0; cy++; } if (cm < 0) { cm = 11; cy--; } if (cache) renderCal(); updateMinNote(); }
+    function chMonth(d) { cm += d; if (cm > 11) { cm = 0; cy++; } if (cm < 0) { cm = 11; cy--; } if (cache) renderCal(); updateMinNote(); updateLmBanner(); }
+
+    function updateLmBanner() {
+      var banner = $id('lm-banner'); if (!banner) return;
+      var now = new Date();
+      var isCurrentMonth = (cy === now.getFullYear() && cm === now.getMonth());
+      if (isCurrentMonth) banner.classList.add('visible');
+      else banner.classList.remove('visible');
+    }
     function showSt(msg, err) { $id('cgrid').style.display = 'none'; var se = $id('cstatus'); se.style.display = 'block'; se.innerHTML = err ? '<p class="err">&#9888; ' + msg + '</p>' : '<div class="spinner"></div>' + msg; }
 
     /* ── navigation ── */

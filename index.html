@@ -1133,34 +1133,28 @@
     }
 
     .day-last-minute {
-      font-size: 7px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      font-size: 6px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
       line-height: 1;
       text-align: center;
       position: absolute;
       bottom: 3px;
       left: 0;
       width: 100%;
-      color: #d45f00;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
     }
 
+    /* lm-day: bez kolorowego tla – wyglada jak zwykly wolny dzien */
     .day.lm-day {
-      background: #fff8f0;
-      border: 1px solid #ffd49a;
-    }
-
-    .day.lm-day:hover {
-      background: #ffebd4 !important;
+      background: inherit;
+      border: inherit;
     }
 
     .day.lm-day .day-num {
-      color: #a03500;
-    }
-
-    .day.lm-day .day-price {
-      color: #c05000;
-      font-weight: 500;
+      margin-top: -2px;
     }
 
     /* Zachowaj kolory selekcji nad last-minute */
@@ -1171,10 +1165,12 @@
     }
     .day.lm-day.sel-start .day-num,
     .day.lm-day.sel-end .day-num { color: #fff !important; }
+    .day.lm-day.sel-start .day-last-minute,
+    .day.lm-day.sel-end .day-last-minute { color: rgba(255,255,255,.7); }
     .day.lm-day.in-range {
-      background: #ffe5c8 !important;
-      border-color: #ffd49a !important;
+      background: var(--range) !important;
     }
+    .day.lm-day.in-range .day-last-minute { color: var(--ocean); }
 
     /* ── Last Minute banner (krok 2) ── */
     .lm-banner {
@@ -4103,12 +4099,33 @@
       }
     }
 
-    function goStep2() {
-      if (!adults) return;
-      show('s2'); hide('s1'); hide('s3'); mkDone(1); mkActive(2); scrollToSteps();
+    /* ── Historia kroków – Android "wstecz" ── */
+    var _currentStep = 1;
+
+    function _pushStepState(step) {
+      if (history.pushState) {
+        history.pushState({ step: step }, '', '');
+      }
+      _currentStep = step;
+    }
+
+    window.addEventListener('popstate', function (e) {
+      var step = (e.state && e.state.step) ? e.state.step : 1;
+      _currentStep = step;
+      if (step === 1) { _showStep1(); }
+      else if (step === 2) { _showStep2(); }
+      else if (step === 3) { _showStep3(); }
+      else if (step === 4) { _showStep4(); }
+    });
+
+    /* Wewnętrzne funkcje wyświetlające kroki BEZ pushState (używane przez popstate) */
+    function _showStep1() {
+      show('s1'); hide('s2'); hide('s3'); hide('s4'); mkActive(1);
+      scrollToSteps();
+    }
+    function _showStep2() {
+      show('s2'); hide('s1'); hide('s3'); hide('s4'); mkDone(1); mkActive(2); scrollToSteps();
       var now = new Date(); cy = now.getFullYear(); cm = now.getMonth();
-      /* W kroku 2 nie ma jeszcze wybranego apartamentu — pokazujemy ogólną zajętość:
-         dzień jest zajęty tylko jeśli zajęty we WSZYSTKICH opcjach dostępnych dla tej grupy */
       var previewOpt = buildPreviewOpt();
       selOpt = previewOpt;
       $id('cal-hdr').className = 'cal-hdr cM';
@@ -4119,6 +4136,20 @@
       var mw = $id('min-warn'); if (mw) mw.textContent = T.minWarn;
       showSt(T.loading, false);
       if (cache !== null) { renderCal(); updateLmBanner(); } else fetchIcal();
+    }
+    function _showStep3() {
+      renderOptList(); show('s3'); hide('s2'); hide('s1'); hide('s4'); mkDone(2); mkActive(3); setTimeout(initAllGalleries, 10); scrollToSteps();
+    }
+    function _showStep4() {
+      if (!selOpt) { _showStep3(); return; }
+      show('s4'); hide('s3'); hide('s2'); hide('s1'); mkDone(3); mkActive(4); scrollToSteps();
+      renderSummaryS4();
+    }
+
+    function goStep2() {
+      if (!adults) return;
+      _pushStepState(2);
+      _showStep2();
     }
 
     /* Tworzy wirtualną opcję obejmującą WSZYSTKIE apartamenty dostępne dla tej grupy.
@@ -4134,12 +4165,13 @@
     }
 
     function goStep3() {
-      renderOptList(); show('s3'); hide('s2'); hide('s1'); mkDone(2); mkActive(3); setTimeout(initAllGalleries, 10); scrollToSteps();
+      _pushStepState(3);
+      _showStep3();
     }
     function goStep4() {
       if (!selOpt) return;
-      show('s4'); hide('s3'); hide('s2'); hide('s1'); mkDone(3); mkActive(4); scrollToSteps();
-      renderSummaryS4();
+      _pushStepState(4);
+      _showStep4();
     }
     function renderSummaryS4() {
       var sumDiv = document.getElementById('summary');
@@ -4269,7 +4301,7 @@
             cell.classList.add('lm-day');
             var lmEl = document.createElement('div');
             lmEl.className = 'day-last-minute';
-            lmEl.textContent = '⚡ last minute';
+            lmEl.textContent = 'oferta last minute';
             cell.appendChild(lmEl);
           }
         }
@@ -4645,6 +4677,12 @@
 
     document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === lang); });
     applyT();
+
+    /* Zapisz bazowy stan kroku 1 w historii – "wstecz" na kroku 1 opuści stronę,
+       na każdym kolejnym kroku cofnie o jeden krok */
+    if (history.replaceState) {
+      history.replaceState({ step: 1 }, '');
+    }
   </script>
   <!-- Hero Map Animation -->
   <script>

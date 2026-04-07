@@ -13,9 +13,24 @@
             document.documentElement.style.setProperty('--locked-vh', vh + 'px');
         })();
     </script>
-    <link
+    <!-- Preconnect do zewnętrznych hostów -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://drive.google.com">
+    <link rel="preconnect" href="https://lh3.googleusercontent.com">
+    <!-- Preload pierwszego zdjęcia hero (przed wykonaniem JS) -->
+    <link rel="preload" as="image"
+        href="https://drive.google.com/thumbnail?id=1d0Yr-cdyKSRE594UHSl2G1svemfstN0W&sz=w800"
+        fetchpriority="high">
+    <!-- Google Fonts ładowane asynchronicznie — nie blokuje renderowania -->
+    <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap"
-        rel="stylesheet">
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap"
+            rel="stylesheet">
+    </noscript>
     <style>
         *,
         *::before,
@@ -124,11 +139,11 @@
             background-position: center;
             opacity: 0;
             transition: opacity 1.6s ease-in-out;
-            will-change: opacity;
         }
 
         .hero-slide.active {
             opacity: 1;
+            will-change: opacity;
         }
 
         /* Dark overlay for text readability */
@@ -3842,7 +3857,8 @@
             shuffledPhotos.forEach(function (url, idx) {
                 var div = document.createElement('div');
                 div.className = 'hero-slide' + (idx === 0 ? ' active' : '');
-                div.style.backgroundImage = 'url(' + url + ')';
+                // Tylko pierwsze zdjecie ladowane od razu - reszta lazily przed pokazaniem
+                if (idx === 0) div.style.backgroundImage = 'url(' + url + ')';
                 container.appendChild(div);
                 slides.push(div);
             });
@@ -3853,14 +3869,20 @@
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;
 
-                // koniec cyklu — re-shuffle unikając powtórzenia z ostatnim
+                // koniec cyklu - re-shuffle unikajac powtorzenia z ostatnim
                 if (current === 0) {
                     shuffle(shuffledPhotos, lastPhoto);
                     slides.forEach(function (s, i) {
-                        s.style.backgroundImage = 'url(' + shuffledPhotos[i] + ')';
+                        if (s.style.backgroundImage) {
+                            s.style.backgroundImage = 'url(' + shuffledPhotos[i] + ')';
+                        }
                     });
                 }
 
+                // Zaladuj tlo slajdu dopiero gdy ma byc pokazany
+                if (!slides[current].style.backgroundImage) {
+                    slides[current].style.backgroundImage = 'url(' + shuffledPhotos[current] + ')';
+                }
                 slides[current].classList.add('active');
 
                 // preload kolejnego

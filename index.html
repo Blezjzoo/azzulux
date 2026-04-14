@@ -4320,15 +4320,10 @@
         function _showStep3() {
             renderOptList(); show('s3'); hide('s2'); hide('s1'); hide('s4'); mkDone(2); mkActive(3); setTimeout(initAllGalleries, 10); scrollToSteps();
         }
-        var _fbStep4Fired = false;
         function _showStep4() {
             if (!selOpt) { _showStep3(); return; }
             show('s4'); hide('s3'); hide('s2'); hide('s1'); mkDone(3); mkActive(4); scrollToSteps();
             renderSummaryS4();
-            if (!_fbStep4Fired && typeof fbq === 'function') {
-                fbq('track', 'InitiateCheckout');
-                _fbStep4Fired = true;
-            }
         }
 
         function goStep2() {
@@ -4733,6 +4728,7 @@
                     msg = T.mHi + ' ' + T.mInt + aptName + ',' + T.mG + osoby + T.mAsk;
                 }
             }
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
             window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
@@ -4755,16 +4751,19 @@
                     msg = T.mHi + ' ' + T.mInt + aptName + ',' + T.mG + osoby + T.mAsk;
                 }
             }
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
             window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
         /* ── messenger & whatsapp for mixed availability ── */
         function openMessengerMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
             window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
             window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 

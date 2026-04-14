@@ -5,6 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Azzurro Luxury Boutique</title>
+    <!-- Facebook Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '794338596767404');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=794338596767404&ev=PageView&noscript=1"/></noscript>
+    <!-- End Facebook Pixel -->
     <script>
         // Lock viewport height before FB WebView collapses its chrome on first touch.
         // svh/vh change causes a full-screen jump when FB hides its navigation bar.
@@ -4307,10 +4320,15 @@
         function _showStep3() {
             renderOptList(); show('s3'); hide('s2'); hide('s1'); hide('s4'); mkDone(2); mkActive(3); setTimeout(initAllGalleries, 10); scrollToSteps();
         }
+        var _fbStep4Fired = false;
         function _showStep4() {
             if (!selOpt) { _showStep3(); return; }
             show('s4'); hide('s3'); hide('s2'); hide('s1'); mkDone(3); mkActive(4); scrollToSteps();
             renderSummaryS4();
+            if (!_fbStep4Fired && typeof fbq === 'function') {
+                fbq('track', 'InitiateCheckout');
+                _fbStep4Fired = true;
+            }
         }
 
         function goStep2() {

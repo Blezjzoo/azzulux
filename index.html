@@ -1012,12 +1012,99 @@
             color: #fff;
         }
 
+        /* ── widen calendar section for dual-month ── */
+        #s2 .cal {
+            max-width: 100%;
+        }
+        @media (min-width: 600px) {
+            #s2 {
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* ── price check hint ── */
+        .price-check-hint {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #e8f4f8, #f0fdf4);
+            border: 1.5px solid var(--wave);
+            border-radius: 14px;
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ocean);
+            line-height: 1.4;
+            box-shadow: 0 2px 10px rgba(74, 154, 181, .12);
+        }
+        .price-check-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        /* ── dual-month calendar (Booking-style) ── */
         .cal {
             background: var(--white);
             border-radius: 18px;
             overflow: hidden;
             border: 1.5px solid var(--sand2);
             box-shadow: 0 2px 20px rgba(26, 74, 92, .06)
+        }
+
+        /* dual months wrapper */
+        .cal-months-wrap {
+            display: flex;
+            gap: 0;
+        }
+
+        .cal-month-panel {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cal-month-panel + .cal-month-panel {
+            border-left: 1px solid var(--sand2);
+        }
+
+        .cal-month-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ocean);
+            text-align: center;
+            padding: 10px 4px 6px;
+            letter-spacing: .03em;
+        }
+
+        /* On mobile: show only 1 month stacked, keep readable */
+        @media (max-width: 480px) {
+            .cal-months-wrap {
+                flex-direction: column;
+            }
+            .cal-month-panel + .cal-month-panel {
+                border-left: none;
+                border-top: 1px solid var(--sand2);
+            }
+        }
+
+        /* On medium screens (tablets/small desktop) — side-by-side, compact */
+        @media (min-width: 481px) {
+            .cal-month-panel .wday {
+                font-size: 8px;
+                padding: 2px 0;
+            }
+            .cal-month-panel .day {
+                min-height: 38px;
+                font-size: 10px;
+            }
+            .cal-month-panel .day-num {
+                font-size: 11px;
+            }
+            .cal-month-panel .day-price {
+                font-size: 7px;
+            }
         }
 
         .cal-hdr {
@@ -2758,6 +2845,10 @@
             <p class="slabel" id="t-s1label">Krok 1 z 4</p>
             <h2 class="stitle" id="t-s1title">Kto przyjeżdża?</h2>
             <p class="ssub" id="t-s1sub"></p>
+            <div class="price-check-hint" id="t-price-check-hint">
+                <span class="price-check-icon">💰</span>
+                <span id="t-price-check-text">Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu</span>
+            </div>
             <div class="counters">
                 <div class="crow">
                     <div>
@@ -2880,9 +2971,25 @@
                     <div class="spinner"></div>
                     <span id="t-loading">Ładowanie...</span>
                 </div>
-                <div id="cgrid" class="cal-grid" style="display:none">
-                    <div class="wdays" id="wdays-row"></div>
-                    <div class="days" id="cdays"></div>
+                <div id="cgrid" class="cal-grid" style="display:none; padding:0 0 8px;">
+                    <div class="cal-months-wrap">
+                        <!-- Month 1 -->
+                        <div class="cal-month-panel" id="cal-panel-1">
+                            <div class="cal-month-title" id="cal-month-title-1"></div>
+                            <div style="padding: 0 6px 6px;">
+                                <div class="wdays" id="wdays-row-1"></div>
+                                <div class="days" id="cdays-1"></div>
+                            </div>
+                        </div>
+                        <!-- Month 2 -->
+                        <div class="cal-month-panel" id="cal-panel-2">
+                            <div class="cal-month-title" id="cal-month-title-2"></div>
+                            <div style="padding: 0 6px 6px;">
+                                <div class="wdays" id="wdays-row-2"></div>
+                                <div class="days" id="cdays-2"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="cal-hint" class="cal-hint"></div>
                 <div class="cal-legend" id="cal-legend"></div>
@@ -3481,7 +3588,8 @@
                 lmTitle: 'Oferta Last Minute!',
                 lmSub: 'Wolne terminy w bieżącym miesiącu dostępne od zaraz — rezerwuj szybko i skorzystaj z tych dat!',
                 lmSumTitle: '⚡ Oferta Last Minute!',
-                lmSumSub: 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko — te daty mogą zniknąć w każdej chwili!'
+                lmSumSub: 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko — te daty mogą zniknąć w każdej chwili!',
+                priceCheckHint: 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu'
             },
             en: {
                 h1: 'Check<br><em>availability</em>',
@@ -3596,7 +3704,8 @@
                 lmTitle: 'Last Minute offer!',
                 lmSub: 'Dates available this month — book now before they are gone!',
                 lmSumTitle: '⚡ Last Minute offer!',
-                lmSumSub: 'Your selected dates are available right now. Book quickly — these dates could go at any time!'
+                lmSumSub: 'Your selected dates are available right now. Book quickly — these dates could go at any time!',
+                priceCheckHint: 'To check the price — select the number of guests and your dates'
             }
         };
 
@@ -3638,6 +3747,7 @@
             setTxt('t-step1', T.step1); setTxt('t-step2', T.step2); setTxt('t-step3', T.step3); setTxt('t-step4', T.step4 || '');
             setTxt('t-s1label', T.s1label); setTxt('t-s1title', T.s1title); setTxt('t-s1sub', T.s1sub);
             setTxt('t-adults-lbl', T.adultsLbl); setTxt('t-kids-lbl', T.kidsLbl);
+            setTxt('t-price-check-text', T.priceCheckHint || 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu');
             setTxt('t-btn1', T.btn1);
             setTxt('t-s2label', T.s2label); setTxt('t-s2title', T.s2title); setTxt('t-s2sub', T.s2sub);
             setTxt('t-back1', T.back1);
@@ -3732,9 +3842,8 @@
         }
 
         function buildWdays() {
-            var w = $id('wdays-row'); if (!w) return;
-            w.innerHTML = '';
-            T.wdays.forEach(function (d) { var e = document.createElement('div'); e.className = 'wday'; e.textContent = d; w.appendChild(e); });
+            buildWdaysInto('wdays-row-1');
+            buildWdaysInto('wdays-row-2');
         }
 
         /* ── counter descs ── */
@@ -4433,21 +4542,25 @@
         function p2(n) { return n < 10 ? '0' + n : '' + n; }
 
         /* ── render calendar ── */
-        function renderCal() {
-            $id('cstatus').style.display = 'none'; $id('cgrid').style.display = 'block';
-            setTxt('cal-ml', T.months[cm] + ' ' + cy);
-            buildWdays();
-            var container = $id('cdays'); container.innerHTML = '';
+        function buildWdaysInto(containerId) {
+            var w = $id(containerId); if (!w) return;
+            w.innerHTML = '';
+            T.wdays.forEach(function (d) { var e = document.createElement('div'); e.className = 'wday'; e.textContent = d; w.appendChild(e); });
+        }
+
+        function renderMonthInto(year, month, containerId) {
+            var container = $id(containerId); if (!container) return;
+            container.innerHTML = '';
             var today = new Date(), tk = dkey(today);
-            var first = new Date(cy, cm, 1), last = new Date(cy, cm + 1, 0);
+            var first = new Date(year, month, 1), last = new Date(year, month + 1, 0);
             var off = (first.getDay() + 6) % 7;
             for (var e = 0; e < off; e++) { var emp = document.createElement('div'); emp.className = 'day'; container.appendChild(emp); }
             var isPreviewMode = (selOpt.id === '_preview');
-            var sApts = selOpt.apts, moNum = cm + 1;
+            var sApts = selOpt.apts, moNum = month + 1;
             var hasHalf = false;
             for (var d = 1; d <= last.getDate(); d++) {
-                var dk = cy + '-' + p2(cm + 1) + '-' + p2(d);
-                var dt = new Date(cy, cm, d);
+                var dk = year + '-' + p2(month + 1) + '-' + p2(d);
+                var dt = new Date(year, month, d);
                 var past = dt < new Date(today.getFullYear(), today.getMonth(), today.getDate());
                 var busyList = cache[dk] || [];
                 var isBusy;
@@ -4472,8 +4585,6 @@
                         prEl.textContent = dayP + '€';
                         cell.appendChild(prEl);
                     }
-
-                    // Last minute — wszystkie wolne daty bieżącego miesiąca
                     var tkTime = new Date();
                     tkTime.setHours(0, 0, 0, 0);
                     var isSameMonth = (dt.getMonth() === tkTime.getMonth() && dt.getFullYear() === tkTime.getFullYear());
@@ -4528,6 +4639,27 @@
                 }
                 container.appendChild(cell);
             }
+            return hasHalf;
+        }
+
+        function renderCal() {
+            $id('cstatus').style.display = 'none'; $id('cgrid').style.display = 'block';
+
+            // Month 1 = cy/cm, Month 2 = next month
+            var cy2 = cm === 11 ? cy + 1 : cy;
+            var cm2 = cm === 11 ? 0 : cm + 1;
+
+            setTxt('cal-ml', T.months[cm] + ' ' + cy + ' – ' + T.months[cm2] + ' ' + cy2);
+            setTxt('cal-month-title-1', T.months[cm] + ' ' + cy);
+            setTxt('cal-month-title-2', T.months[cm2] + ' ' + cy2);
+
+            buildWdaysInto('wdays-row-1');
+            buildWdaysInto('wdays-row-2');
+
+            var h1 = renderMonthInto(cy, cm, 'cdays-1');
+            var h2 = renderMonthInto(cy2, cm2, 'cdays-2');
+            var hasHalf = h1 || h2;
+
             var lh = $id('legHalf'); if (lh) lh.style.display = hasHalf ? 'flex' : 'none';
             updateSummary(); updateMinNote(); updateLmBanner();
         }
@@ -4653,7 +4785,8 @@
 
         function updateMinNote() {
             var n = $id('min-stay-note'); if (!n) return;
-            if (cm + 1 === 7 || cm + 1 === 8) { n.textContent = T.minStay; n.style.display = 'block'; }
+            var cm2 = (cm + 1) % 12;
+            if (cm + 1 === 7 || cm + 1 === 8 || cm2 + 1 === 7 || cm2 + 1 === 8) { n.textContent = T.minStay; n.style.display = 'block'; }
             else n.style.display = 'none';
         }
 
@@ -4671,7 +4804,12 @@
 
 
         function fmtDate(d) { return p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear(); }
-        function chMonth(d) { cm += d; if (cm > 11) { cm = 0; cy++; } if (cm < 0) { cm = 11; cy--; } if (cache) renderCal(); updateMinNote(); updateLmBanner(); }
+        function chMonth(d) {
+            cm += d;
+            while (cm > 11) { cm -= 12; cy++; }
+            while (cm < 0) { cm += 12; cy--; }
+            if (cache) renderCal(); updateMinNote(); updateLmBanner();
+        }
 
         function updateLmBanner() {
             var banner = $id('lm-banner'); if (!banner) return;

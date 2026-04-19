@@ -4772,8 +4772,8 @@
                         var sD = pD4(selStart), eD2 = pD4(dk);
                         var nightsChk = Math.round((eD2 - sD) / (1000 * 60 * 60 * 24));
                         var sMo = sD.getMonth() + 1, eMo = eD2.getMonth() + 1;
-                        /* min-stay dotyczy TYLKO gdy cały pobyt mieści się w lipcu LUB w sierpniu */
-                        var isMinMoStrict = (sMo === 7 && eMo === 7) || (sMo === 8 && eMo === 8);
+                        /* min-stay: jeśli start LUB koniec pobytu w lipcu/sierpniu → min 5 nocy */
+                        var isMinMoStrict = (sMo === 7 || sMo === 8 || eMo === 7 || eMo === 8);
                         if (isMinMoStrict && nightsChk < MIN_STAY_NIGHTS) {
                             var warn2 = $id('min-warn');
                             if (warn2) { warn2.textContent = T.minWarn; warn2.style.display = 'block'; }
@@ -4810,7 +4810,7 @@
             var s = pD4(selStart), e = pD4(selEnd);
             var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
             if (nights <= 0) { if (warn) warn.style.display = 'none'; return; }
-            var isMinMo = (s.getMonth() + 1 === 7 && e.getMonth() + 1 === 7) || (s.getMonth() + 1 === 8 && e.getMonth() + 1 === 8);
+            var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
             if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } return; }
             if (warn) warn.style.display = 'none';
         }

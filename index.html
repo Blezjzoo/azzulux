@@ -4017,6 +4017,7 @@
 
         /* ── step click navigation ── */
         function stepClick(n) { /* step 4 not clickable */
+            _userInteracted = true;
             var s1done = $id('i1') && $id('i1').classList.contains('done');
             var s2done = $id('i2') && $id('i2').classList.contains('done');
             scrollToSteps();
@@ -4437,6 +4438,7 @@
 
         function goStep2() {
             if (!adults) return;
+            _userInteracted = true;
             _pushStepState(2);
             _showStep2();
         }
@@ -4766,6 +4768,17 @@
                     else {
                         selEnd = dk; updateHint('');
                         renderCal();
+                        /* Sprawdź minimum pobytu PRZED przejściem do apartamentów */
+                        var sD = pD4(selStart), eD2 = pD4(dk);
+                        var nightsChk = Math.round((eD2 - sD) / (1000 * 60 * 60 * 24));
+                        var sMo = sD.getMonth() + 1, eMo = eD2.getMonth() + 1;
+                        /* min-stay dotyczy TYLKO gdy cały pobyt mieści się w lipcu LUB w sierpniu */
+                        var isMinMoStrict = (sMo === 7 && eMo === 7) || (sMo === 8 && eMo === 8);
+                        if (isMinMoStrict && nightsChk < MIN_STAY_NIGHTS) {
+                            var warn2 = $id('min-warn');
+                            if (warn2) { warn2.textContent = T.minWarn; warn2.style.display = 'block'; }
+                            return; /* NIE przechodź dalej */
+                        }
                         /* Obie daty wybrane — przejdź do wyboru apartamentu */
                         setTimeout(goStep3, 400);
                         return;
@@ -4797,7 +4810,7 @@
             var s = pD4(selStart), e = pD4(selEnd);
             var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
             if (nights <= 0) { if (warn) warn.style.display = 'none'; return; }
-            var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
+            var isMinMo = (s.getMonth() + 1 === 7 && e.getMonth() + 1 === 7) || (s.getMonth() + 1 === 8 && e.getMonth() + 1 === 8);
             if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } return; }
             if (warn) warn.style.display = 'none';
         }
@@ -4821,13 +4834,18 @@
         function showSt(msg, err) { $id('cgrid').style.display = 'none'; var se = $id('cstatus'); se.style.display = 'block'; se.innerHTML = err ? '<p class="err">&#9888; ' + msg + '</p>' : '<div class="spinner"></div>' + msg; }
 
         /* ── navigation ── */
+        var _userInteracted = false; /* guard – nie scrolluj przy pierwszym ładowaniu strony */
         function show(id) { $id(id).classList.remove('hidden'); }
         function hide(id) { $id(id).classList.add('hidden'); }
         function mkActive(n) { var e = $id('i' + n); e.classList.remove('done'); e.classList.add('active'); }
         function mkDone(n) { var e = $id('i' + n); e.classList.remove('active'); e.classList.add('done'); $id('sn' + n).textContent = '\u2713'; }
         function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }
-        function scrollToSteps() { var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'auto' }); } }
+        function scrollToSteps() {
+            if (!_userInteracted) return; /* nie scrolluj przy pierwszym renderze */
+            var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'auto' }); }
+        }
         function goBack(step) {
+            _userInteracted = true;
             if (step === 1) { show('s1'); hide('s2'); hide('s3'); hide('s4'); mkActive(1); resetI(2); resetI(3); resetI(4); scrollToSteps(); }
             else if (step === 2) {
                 /* Wróć do kalendarza (krok 2) — zachowaj wybrane daty, zresetuj selOpt do podglądu */

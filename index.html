@@ -5113,386 +5113,365 @@
     </script>
     <!-- End Cloudflare Web Analytics -->
 <script>
-     /**
- * AZZURRO ANALYTICS TRACKER v1.0
- * ────────────────────────────────────────────────────────────
- * Wklej ten kod BEZPOŚREDNIO PRZED </body> w pliku index.html
- * Po wdrożeniu GAS zastąp GAS_ENDPOINT prawdziwym URL-em.
- * ────────────────────────────────────────────────────────────
- */
+<!-- ═══════════════════════════════════════════════════════════════
+     AZZURRO TRACKING SNIPPET — wklej przed </body> w index.html
+     Zastąp APPS_SCRIPT_URL swoim URL wdrożenia Apps Script
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
 (function () {
   'use strict';
 
-  /* ── KONFIGURACJA ─────────────────────────────────────────── */
-  var GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyC0y08S1_FeEymOSI6BGuVOjTaFa8Rg_6I3pS3bz6DdikbU2CCwQbR5MjBKhUnx8Zv/exec'; // ← zmień po deployu
+  // ── CONFIG ──────────────────────────────────────────────────────
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyG7Pse6dossDGUmpDHXUBHJatt7JtQeBDxduBDa2ORn-qE60E0OM98mYPFynMwSDPB/exec';
+  var MAX_BATCH = 20;   // max events per batch send
+  var SEND_INTERVAL = 8000; // ms between sends
 
-  /* ── GENEROWANIE ID ──────────────────────────────────────── */
-  function uuid() {
-    return 'xxxx-4xxx-yxxx'.replace(/[xy]/g, function (c) {
-      var r = Math.random() * 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    }) + '-' + Date.now().toString(36);
+  // ── IDENTIFY USER & SESSION ─────────────────────────────────────
+  // One persistent UID per browser (localStorage), new sessionId each visit
+
+  function getOrCreateUID() {
+    try {
+      var uid = localStorage.getItem('az_uid');
+      if (!uid) {
+        uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('az_uid', uid);
+      }
+      return uid;
+    } catch (e) { return 'u_anon_' + Math.random().toString(36).slice(2); }
   }
 
-  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
-  function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
-  function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { } }
+  var uid = getOrCreateUID();
+  var sessionId = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  var sessionStart = Date.now();
 
-  /* Persistent user ID (cross-session fingerprint) */
-  var userId = lsGet('_az_uid');
-  if (!userId) { userId = uuid(); lsSet('_az_uid', userId); }
-  var isReturning = lsGet('_az_ret') === '1';
-  lsSet('_az_ret', '1');
+  // ── DETECT SOURCE ───────────────────────────────────────────────
+  // Rozróżnia FB Ads (utm params) od FB Grupy (referrer z facebook.com bez utms)
 
-  /* Session ID (per page load) */
-  var sessionId = ssGet('_az_sid');
-  if (!sessionId) { sessionId = uuid(); ssSet('_az_sid', sessionId); }
-
-  /* ── WYKRYWANIE ŹRÓDŁA RUCHU ─────────────────────────────── */
   function detectSource() {
-    var p = {};
-    try { p = Object.fromEntries(new URLSearchParams(window.location.search)); } catch (e) { }
-    var utmSrc = (p.utm_source || '').toLowerCase();
-    var utmMed = (p.utm_medium || '').toLowerCase();
-    var utmCam = (p.utm_campaign || '').toLowerCase();
+    var params = new URLSearchParams(window.location.search);
+    // FB Ads — campaign params
+    if (params.get('utm_source') === 'facebook' || params.get('fbclid')) {
+      var medium = params.get('utm_medium') || '';
+      if (medium === 'paid' || medium === 'cpc' || params.get('utm_campaign')) {
+        return 'FB Ads|' + (params.get('utm_campaign') || '');
+      }
+    }
+    // Custom label dla grup
+    if (params.get('src') === 'fbgroup' || params.get('ref') === 'fbgroup') return 'FB Grupy';
+    if (params.get('src') === 'fbad') return 'FB Ads';
+
+    // Referrer-based detection
     var ref = document.referrer || '';
-    var refL = ref.toLowerCase();
+    if (ref.includes('facebook.com') || ref.includes('fb.com')) {
+      // FB without ad params = organic / group
+      if (params.get('fbclid')) return 'FB Ads';
+      return 'FB Grupy';
+    }
+    if (ref.includes('google.')) return 'Organic';
+    if (ref.includes('l.facebook.com')) return 'FB Grupy'; // mobile FB link shim
+    if (!ref && !params.get('utm_source')) return 'Direct / inne';
+    return params.get('utm_source') || 'Direct / inne';
+  }
 
-    var source = 'direct';
-    var fbType = '';
+  var source = detectSource();
+  var lang = (typeof window.lang !== 'undefined' ? window.lang : 'pl');
+  var device = window.innerWidth <= 480 ? 'mobile' : window.innerWidth <= 900 ? 'tablet' : 'desktop';
 
-    /* 1. UTM obecny → reklama / post / FB ogólnie */
-    if (utmSrc.includes('facebook') || utmSrc === 'fb') {
-      if (utmMed === 'cpc' || utmMed === 'paid' || utmMed === 'paid_social' || utmMed === 'ppc') {
-        source = 'fb_ads'; fbType = 'ads';
-      } else if (utmCam.includes('group') || utmCam.includes('grupa') || utmMed === 'group') {
-        source = 'fb_group'; fbType = 'group';
-      } else {
-        source = 'fb_organic'; fbType = 'post';
-      }
-    }
-    /* 2. Referrer z Facebook bez UTM → grupy lub post organiczny */
-    else if (refL.includes('facebook.com') || refL.includes('l.facebook.com') || refL.includes('m.facebook.com')) {
-      if (refL.includes('/groups/') || refL.includes('groups%2F')) {
-        source = 'fb_group'; fbType = 'group';
-      } else {
-        source = 'fb_organic'; fbType = 'post';
-      }
-    }
-    /* 3. Instagram */
-    else if (utmSrc.includes('instagram') || refL.includes('instagram.com')) {
-      source = 'instagram';
-    }
-    /* 4. Google */
-    else if (utmSrc.includes('google') || refL.includes('google.com')) {
-      source = 'google';
-    }
-    /* 5. Inny referrer */
-    else if (ref && ref !== window.location.href) {
-      source = 'referral';
-    }
+  // ── EVENT QUEUE ─────────────────────────────────────────────────
+  var eventQueue = [];
+  var sending = false;
 
-    return {
+  function pushEvent(eventName, meta) {
+    eventQueue.push({
+      action: 'track',
+      uid: uid,
+      sessionId: sessionId,
       source: source,
-      fbType: fbType,
-      utmCampaign: p.utm_campaign || '',
-      utmMedium: p.utm_medium || '',
-      utmContent: p.utm_content || '',
-      referrer: ref.substring(0, 200)
-    };
-  }
-
-  var src = detectSource();
-  var device = window.innerWidth < 768 ? 'mobile' : 'desktop';
-  var t0 = Date.now();
-
-  /* ── STAN SESJI ──────────────────────────────────────────── */
-  var S = {
-    maxStep: 1,
-    converted: false,
-    adults: 0, kids: 0,
-    aptSelected: null,
-    calNavigations: 0,
-    datesTried: 0,
-    dateRangeStart: null, dateRangeEnd: null,
-    maxScroll: 0,
-    faqOpened: 0,
-    photosViewed: 0
-  };
-
-  /* ── KOLEJKA ZDARZEŃ ─────────────────────────────────────── */
-  var queue = [];
-  var flushTimer = null;
-
-  function track(evType, data) {
-    var ev = {
-      sid: sessionId, uid: userId,
-      ev: evType, step: curStep(),
-      d: data || {},
-      src: src.source, fb: src.fbType,
-      camp: src.utmCampaign, med: src.utmMedium,
-      ref: src.referrer, lang: window.lang || 'pl',
-      dev: device, ret: isReturning ? 1 : 0,
-      t: Math.round((Date.now() - t0) / 1000),
-      ts: new Date().toISOString()
-    };
-    queue.push(ev);
-    clearTimeout(flushTimer);
-    flushTimer = setTimeout(flush, 500);
-  }
-
-  function curStep() {
-    for (var s = 4; s >= 1; s--) {
-      var el = document.getElementById('step' + s);
-      if (el && !el.classList.contains('hidden')) return s;
-    }
-    return 1;
-  }
-
-  function flush(sync) {
-    if (!queue.length) return;
-    var batch = queue.slice(); queue = [];
-    if (!GAS_ENDPOINT || GAS_ENDPOINT.includes('WSTAW')) return;
-
-    var payload = JSON.stringify({ ev: batch });
-
-    if (sync && navigator.sendBeacon) {
-      navigator.sendBeacon(GAS_ENDPOINT + '?action=track', new Blob([payload], { type: 'text/plain' }));
-    } else {
-      /* GET z base64 – unika CORS preflight */
-      var b64 = btoa(unescape(encodeURIComponent(payload)));
-      var url = GAS_ENDPOINT + '?action=track&d=' + encodeURIComponent(b64);
-      var img = new Image(); img.src = url; /* fire & forget */
-    }
-  }
-
-  /* ── SCROLL DEPTH ────────────────────────────────────────── */
-  var scrollMarks = { 25: 0, 50: 0, 75: 0, 100: 0 };
-  window.addEventListener('scroll', function () {
-    var pct = Math.round(window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight) * 100);
-    if (pct > S.maxScroll) S.maxScroll = pct;
-    [25, 50, 75, 100].forEach(function (m) {
-      if (!scrollMarks[m] && pct >= m) { scrollMarks[m] = 1; track('scroll', { depth: m }); }
-    });
-  }, { passive: true });
-
-  /* ── PAGE EXIT ───────────────────────────────────────────── */
-  function onExit() {
-    var cs = curStep();
-    queue.push({
-      sid: sessionId, uid: userId,
-      ev: 'exit', step: cs,
-      d: {
-        dur: Math.round((Date.now() - t0) / 1000),
-        maxStep: S.maxStep, conv: S.converted,
-        scroll: S.maxScroll, adults: S.adults, kids: S.kids,
-        apt: S.aptSelected, calNav: S.calNavigations,
-        datesTried: S.datesTried,
-        drStart: S.dateRangeStart, drEnd: S.dateRangeEnd,
-        exitStep: cs, faq: S.faqOpened, photos: S.photosViewed
-      },
-      src: src.source, fb: src.fbType,
-      camp: src.utmCampaign, med: src.utmMedium,
-      ref: src.referrer, lang: window.lang || 'pl',
-      dev: device, ret: isReturning ? 1 : 0,
-      t: Math.round((Date.now() - t0) / 1000),
-      ts: new Date().toISOString()
-    });
-    flush(true);
-  }
-  window.addEventListener('pagehide', onExit);
-  window.addEventListener('beforeunload', onExit);
-
-  /* ── HOOK: KROKI LEJKA ───────────────────────────────────── */
-  function hookSteps() {
-    /* Step 2: wybranie liczby gości */
-    if (window.goStep2 && !window._az2) {
-      window._az2 = 1;
-      var g2 = window.goStep2;
-      window.goStep2 = function () {
-        S.adults = window.adults || 0; S.kids = window.kids || 0;
-        S.maxStep = Math.max(S.maxStep, 2);
-        track('step', { to: 2, adults: S.adults, kids: S.kids });
-        return g2.apply(this, arguments);
-      };
-    }
-    /* Step 3: wybranie opcji apartamentu */
-    if (window.goStep3 && !window._az3) {
-      window._az3 = 1;
-      var g3 = window.goStep3;
-      window.goStep3 = function () {
-        var o = window.selOpt;
-        if (o) S.aptSelected = o.id;
-        S.maxStep = Math.max(S.maxStep, 3);
-        track('step', { to: 3, aptId: o ? o.id : null, aptName: o ? (o.name || '') : '' });
-        return g3.apply(this, arguments);
-      };
-    }
-    /* Step 4: zatwierdzenie dat */
-    if (window.goStep4 && !window._az4) {
-      window._az4 = 1;
-      var g4 = window.goStep4;
-      window.goStep4 = function () {
-        S.maxStep = Math.max(S.maxStep, 4);
-        var ss = window.selStart, se = window.selEnd;
-        if (ss) { S.datesTried++; S.dateRangeStart = ss; S.dateRangeEnd = se; }
-        var nights = (ss && se) ? Math.round((se - ss) / 86400000) : null;
-        track('step', { to: 4, dsStart: ss, dsEnd: se, nights: nights, apt: S.aptSelected });
-        return g4.apply(this, arguments);
-      };
-    }
-    /* Cofanie do kroku */
-    if (window.goStep1 && !window._azBack1) {
-      window._azBack1 = 1;
-      var b1 = window.goStep1;
-      window.goStep1 = function () {
-        track('back', { from: curStep(), to: 1 });
-        return b1.apply(this, arguments);
-      };
-    }
-    if (window.goStep2back && !window._azBack2) {
-      window._azBack2 = 1;
-      var b2 = window.goStep2back;
-      window.goStep2back = function () {
-        track('back', { from: curStep(), to: 2 });
-        return b2.apply(this, arguments);
-      };
-    }
-  }
-
-  /* ── HOOK: KONWERSJA ─────────────────────────────────────── */
-  function hookContact() {
-    ['openWhatsApp', 'openMessenger', 'openWhatsAppMix', 'openMessengerMix'].forEach(function (fn) {
-      if (window[fn] && !window['_azC_' + fn]) {
-        window['_azC_' + fn] = 1;
-        var orig = window[fn];
-        window[fn] = function () {
-          S.converted = true;
-          track('conversion', {
-            ch: fn.includes('WhatsApp') ? 'whatsapp' : 'messenger',
-            mix: fn.includes('Mix') ? 1 : 0,
-            adults: S.adults, kids: S.kids, apt: S.aptSelected,
-            nights: (S.dateRangeStart && S.dateRangeEnd)
-              ? Math.round((S.dateRangeEnd - S.dateRangeStart) / 86400000) : null,
-            drStart: S.dateRangeStart, drEnd: S.dateRangeEnd
-          });
-          /* flush natychmiast przed otwarciem WA/Messenger */
-          flush(false);
-          return orig.apply(this, arguments);
-        };
-      }
+      event: eventName,
+      meta: meta || {},
+      url: window.location.href.split('?')[0], // no params in URL
+      lang: lang,
+      device: device,
+      ts: Date.now()
     });
   }
 
-  /* ── HOOK: KALENDARZ ─────────────────────────────────────── */
-  function hookCalendar() {
-    /* Nawigacja miesiącami */
-    ['cal-prev', 'cal-next'].forEach(function (id) {
-      var btn = document.getElementById(id);
-      if (btn && !btn._azHk) {
-        btn._azHk = 1;
-        var orig = btn.onclick;
-        btn.onclick = function (e) {
-          S.calNavigations++;
-          var ml = document.getElementById('cal-ml');
-          track('cal_nav', { dir: id === 'cal-next' ? 'next' : 'prev', month: ml ? ml.textContent : '', navCount: S.calNavigations });
-          return orig ? orig.call(this, e) : undefined;
-        };
-      }
+  function flushEvents() {
+    if (sending || !eventQueue.length) return;
+    var batch = eventQueue.splice(0, MAX_BATCH);
+    sending = true;
+    // Send each event individually (Apps Script doesn't batch natively)
+    var remaining = batch.length;
+    if (remaining === 0) { sending = false; return; }
+    batch.forEach(function (ev) {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(ev),
+        headers: { 'Content-Type': 'text/plain' }, // avoids CORS preflight
+        keepalive: true
+      }).catch(function () {}).finally(function () {
+        remaining--;
+        if (remaining === 0) { sending = false; }
+      });
     });
-
-    /* Wybranie zakresu dat */
-    if (window.renderSummary && !window._azRS) {
-      window._azRS = 1;
-      var origRS = window.renderSummary;
-      window.renderSummary = function () {
-        var result = origRS.apply(this, arguments);
-        var ss = window.selStart, se = window.selEnd;
-        if (ss && se) {
-          S.datesTried++; S.dateRangeStart = ss; S.dateRangeEnd = se;
-          track('date_select', {
-            dsStart: ss, dsEnd: se,
-            nights: Math.round((se - ss) / 86400000),
-            calNav: S.calNavigations, apt: S.aptSelected
-          });
-        }
-        return result;
-      };
-    }
   }
 
-  /* ── HOOK: FAQ ───────────────────────────────────────────── */
-  function hookFAQ() {
-    if (window.faqToggle && !window._azFaq) {
-      window._azFaq = 1;
-      var of = window.faqToggle;
-      window.faqToggle = function (item) {
-        if (!item.classList.contains('open')) {
-          S.faqOpened++;
-          var q = item.querySelector('.faq-q');
-          track('faq', { q: q ? q.textContent.substring(0, 100) : '' });
-        }
-        return of.call(this, item);
-      };
-    }
+  setInterval(flushEvents, SEND_INTERVAL);
+
+  // ── SEND ON UNLOAD ───────────────────────────────────────────────
+  function sendClose() {
+    var timeOnSite = Math.round((Date.now() - sessionStart) / 1000);
+    navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify({
+      action: 'closeSession',
+      uid: uid,
+      sessionId: sessionId,
+      timeOnSite: timeOnSite
+    }));
+    // Also flush any remaining events
+    eventQueue.forEach(function (ev) {
+      navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify(ev));
+    });
   }
 
-  /* ── HOOK: ZDJĘCIA ───────────────────────────────────────── */
-  function hookGallery() {
-    if (window.galMove && !window._azGal) {
-      window._azGal = 1;
-      var og = window.galMove;
-      window.galMove = function (btn, dir, e) {
-        S.photosViewed++;
-        return og.call(this, btn, dir, e);
-      };
-    }
-  }
+  window.addEventListener('pagehide', sendClose);
+  window.addEventListener('beforeunload', sendClose);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') sendClose();
+  });
 
-  /* ── HOOK: JĘZYK ─────────────────────────────────────────── */
-  function hookLang() {
-    document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      if (!btn._azL) {
-        btn._azL = 1;
+  // ── TRACK PAGE VIEW ─────────────────────────────────────────────
+  pushEvent('page_view', {});
+
+  // ── TRACK HERO CTA ───────────────────────────────────────────────
+  // Przycisk "Sprawdź dostępność" na hero
+  (function () {
+    var heroCta = document.querySelector('.hero-cta, [onclick*="scrollTo"], [onclick*="scroll"]');
+    if (heroCta) {
+      heroCta.addEventListener('click', function () {
+        pushEvent('hero_cta', {});
+      });
+    }
+  })();
+
+  // ── TRACK STEP 1 — GUEST SELECTION ──────────────────────────────
+  // Przyciski +/- przy gościach i dzieciach
+  (function () {
+    function patchCounter(btnSelector, type) {
+      document.querySelectorAll(btnSelector).forEach(function (btn) {
         btn.addEventListener('click', function () {
-          track('lang', { to: btn.textContent.trim().toLowerCase() });
+          var av = document.getElementById('av');
+          var kv = document.getElementById('kv');
+          pushEvent('guest_change', {
+            type: type,
+            adults: av ? parseInt(av.textContent) : 0,
+            kids: kv ? parseInt(kv.textContent) : 0
+          });
         });
-      }
-    });
-  }
+      });
+    }
+    patchCounter('.cbtn', 'counter');
 
-  /* ── SELECT OPT: hook bezpośredni ───────────────────────── */
-  function hookSelectOpt() {
-    if (window.selectOpt && !window._azSO) {
-      window._azSO = 1;
-      var oso = window.selectOpt;
-      window.selectOpt = function (o, div) {
-        track('apt_click', { aptId: o ? o.id : null, aptName: o ? (o.name || '') : '', adults: S.adults, kids: S.kids });
-        return oso.call(this, o, div);
+    // Przycisk dalej (krok 1 → 2)
+    var btn1 = document.getElementById('btn1');
+    if (btn1) {
+      btn1.addEventListener('click', function () {
+        var av = document.getElementById('av');
+        var kv = document.getElementById('kv');
+        pushEvent('step1_next', {
+          adults: av ? parseInt(av.textContent) : 0,
+          kids: kv ? parseInt(kv.textContent) : 0
+        });
+      });
+    }
+  })();
+
+  // ── TRACK STEP 2 — CALENDAR ─────────────────────────────────────
+  // Patch goStep2 aby rejestrował otwarcie kalendarza
+  (function () {
+    var origGoStep2 = window.goStep2;
+    if (typeof origGoStep2 === 'function') {
+      window.goStep2 = function () {
+        pushEvent('cal_open', {});
+        return origGoStep2.apply(this, arguments);
       };
     }
-  }
 
-  /* ── INIT ────────────────────────────────────────────────── */
-  function init() {
-    hookSteps(); hookContact(); hookCalendar();
-    hookFAQ(); hookGallery(); hookLang(); hookSelectOpt();
+    // Patch calClick / pickDate aby śledzić każde kliknięcie daty
+    var origCalClick = window.calClick;
+    if (typeof origCalClick === 'function') {
+      window.calClick = function (y, m, d) {
+        var dateStr = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+        pushEvent('cal_date_change', { date: dateStr });
+        return origCalClick.apply(this, arguments);
+      };
+    }
 
-    track('pageview', {
-      url: window.location.href.substring(0, 200),
-      screen: window.innerWidth + 'x' + window.innerHeight,
-      ret: isReturning ? 1 : 0
+    // Śledzenie wyboru zakresu dat (selStart/selEnd)
+    var origGoStep3 = window.goStep3;
+    if (typeof origGoStep3 === 'function') {
+      window.goStep3 = function () {
+        var s = window.selStart || '';
+        var e = window.selEnd || '';
+        if (s && e) {
+          pushEvent('cal_date_select', { dates: s + ' – ' + e });
+        }
+        return origGoStep3.apply(this, arguments);
+      };
+    }
+  })();
+
+  // ── TRACK STEP 3 — APARTMENT VIEW ───────────────────────────────
+  (function () {
+    var origGoStep3 = window.goStep3;
+    if (typeof origGoStep3 === 'function') {
+      window.goStep3 = function () {
+        pushEvent('step3_apts', {});
+        var ret = origGoStep3.apply(this, arguments);
+        // After render, track which apartments are shown
+        setTimeout(function () {
+          document.querySelectorAll('.aopt').forEach(function (el) {
+            var rk = el.querySelector('.apt-gallery') && el.querySelector('.apt-gallery').dataset.rk;
+            if (!el.classList.contains('unavail')) {
+              pushEvent('apt_view', { apt: rk || el.dataset.apt || 'unknown' });
+            }
+          });
+        }, 300);
+        return ret;
+      };
+    }
+
+    // Patch selectOpt to track apartment selection
+    var origSelectOpt = window.selectOpt;
+    if (typeof origSelectOpt === 'function') {
+      window.selectOpt = function (o, div) {
+        pushEvent('apt_expand', { apt: o ? (o.apts || []).join('+') : 'unknown' });
+        return origSelectOpt.apply(this, arguments);
+      };
+    }
+
+    // Track price view (step 4)
+    var origGoStep4 = window.goStep4;
+    if (typeof origGoStep4 === 'function') {
+      window.goStep4 = function () {
+        var selOpt = window.selOpt;
+        pushEvent('price_view', {
+          apt: selOpt ? (selOpt.apts || []).join('+') : 'unknown'
+        });
+        return origGoStep4.apply(this, arguments);
+      };
+    }
+  })();
+
+  // ── TRACK CTAs — WHATSAPP & MESSENGER ───────────────────────────
+  (function () {
+    var origOpenWA = window.openWhatsApp;
+    if (typeof origOpenWA === 'function') {
+      window.openWhatsApp = function () {
+        var selOpt = window.selOpt;
+        pushEvent('cta_wa', {
+          apt: selOpt ? (selOpt.apts || []).join('+') : '',
+          dates: (window.selStart || '') + ' – ' + (window.selEnd || '')
+        });
+        flushEvents(); // flush immediately on conversion
+        return origOpenWA.apply(this, arguments);
+      };
+    }
+
+    var origOpenWAMix = window.openWhatsAppMix;
+    if (typeof origOpenWAMix === 'function') {
+      window.openWhatsAppMix = function () {
+        pushEvent('cta_wa', { type: 'mix' });
+        flushEvents();
+        return origOpenWAMix.apply(this, arguments);
+      };
+    }
+
+    var origOpenMsg = window.openMessenger;
+    if (typeof origOpenMsg === 'function') {
+      window.openMessenger = function () {
+        var selOpt = window.selOpt;
+        pushEvent('cta_msg', {
+          apt: selOpt ? (selOpt.apts || []).join('+') : '',
+          dates: (window.selStart || '') + ' – ' + (window.selEnd || '')
+        });
+        flushEvents();
+        return origOpenMsg.apply(this, arguments);
+      };
+    }
+
+    // Also catch by button click (fallback)
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('#btn-wa, #btn-msg, [id*="btn-wa"], [id*="btn-msg"]');
+      if (!btn) return;
+      if (btn.id && btn.id.includes('wa')) pushEvent('cta_wa', {});
+      else if (btn.id && btn.id.includes('msg')) pushEvent('cta_msg', {});
+      flushEvents();
     });
-  }
+  })();
 
-  /* Uruchom po załadowaniu DOM i jeszcze raz po 2s (async scripts) */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 100); });
-  } else { setTimeout(init, 100); }
-  setTimeout(function () { hookSteps(); hookContact(); hookCalendar(); hookSelectOpt(); }, 2500);
+  // ── TRACK SCROLL DEPTH ───────────────────────────────────────────
+  (function () {
+    var scrollMilestones = [25, 50, 75, 100];
+    var reached = {};
+    function checkScroll() {
+      var scrolled = window.scrollY + window.innerHeight;
+      var total = document.body.scrollHeight;
+      var pct = Math.round(scrolled / total * 100);
+      scrollMilestones.forEach(function (m) {
+        if (!reached[m] && pct >= m) {
+          reached[m] = true;
+          pushEvent('scroll_depth', { depth: m });
+        }
+      });
+    }
+    window.addEventListener('scroll', checkScroll, { passive: true });
+  })();
+
+  // ── TRACK FAQ OPEN ───────────────────────────────────────────────
+  (function () {
+    var origFaqToggle = window.faqToggle;
+    if (typeof origFaqToggle === 'function') {
+      window.faqToggle = function (item) {
+        var q = item && item.querySelector('.faq-q');
+        pushEvent('faq_open', { question: q ? q.textContent.slice(0, 60) : 'unknown' });
+        return origFaqToggle.apply(this, arguments);
+      };
+    }
+  })();
+
+  // ── TRACK LANG SWITCH ────────────────────────────────────────────
+  (function () {
+    var origSetLang = window.setLang;
+    if (typeof origSetLang === 'function') {
+      window.setLang = function (l) {
+        pushEvent('lang_switch', { to: l });
+        lang = l;
+        return origSetLang.apply(this, arguments);
+      };
+    }
+  })();
+
+  // ── TRACK LIGHTBOX ───────────────────────────────────────────────
+  (function () {
+    var origLbOpen = window.lbOpen;
+    if (typeof origLbOpen === 'function') {
+      window.lbOpen = function (photos, idx) {
+        pushEvent('lightbox_open', { idx: idx });
+        return origLbOpen.apply(this, arguments);
+      };
+    }
+  })();
+
+  // ── TRACK "BACK" BUTTON ──────────────────────────────────────────
+  window.addEventListener('popstate', function (e) {
+    pushEvent('back_button', { step: e.state && e.state.step });
+  });
+
+  // Expose for debugging
+  window._azTrack = { push: pushEvent, flush: flushEvents, uid: uid, sessionId: sessionId };
 
 })();
-    </script>
+</script>
+<!-- ═══════════════════════════════════════════════════════════════ END TRACKING
   </body>
 </html>

@@ -5113,402 +5113,385 @@
     </script>
     <!-- End Cloudflare Web Analytics -->
 <script>
-      /* ================================================================
-   AZZURRO ANALYTICS TRACKER v2
-   Wklej całą zawartość tego pliku bezpośrednio przed </body>
-   w pliku index.html, w nowym tagu <script>.
-   Uzupełnij ENDPOINT po wdrożeniu Google Apps Script.
-   ================================================================ */
-
+    var GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyC0y08S1_FeEymOSI6BGuVOjTaFa8Rg_6I3pS3bz6DdikbU2CCwQbR5MjBKhUnx8Zv/exec';
+     /**
+ * AZZURRO ANALYTICS TRACKER v1.0
+ * ────────────────────────────────────────────────────────────
+ * Wklej ten kod BEZPOŚREDNIO PRZED </body> w pliku index.html
+ * Po wdrożeniu GAS zastąp GAS_ENDPOINT prawdziwym URL-em.
+ * ────────────────────────────────────────────────────────────
+ */
 (function () {
   'use strict';
 
-  /* ── KONFIGURACJA ── */
-  var ENDPOINT = 'WKLEJ_URL_GOOGLE_APPS_SCRIPT_TUTAJ';
+  /* ── KONFIGURACJA ─────────────────────────────────────────── */
+  var GAS_ENDPOINT = 'WSTAW_URL_GAS_WEBAPP_TUTAJ'; // ← zmień po deployu
 
-  /* ── SESJA ── */
-  var sid = 'az_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
-  var t0 = Date.now();
-  var currentStep = 1;
-  var stepEnterTime = Date.now();
-  var stepHistory = [];
+  /* ── GENEROWANIE ID ──────────────────────────────────────── */
+  function uuid() {
+    return 'xxxx-4xxx-yxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    }) + '-' + Date.now().toString(36);
+  }
 
-  /* ── STAN GOŚCI I DAT (live) ── */
-  var lastTrackedAdults = -1;
-  var lastTrackedKids   = -1;
-  var lastTrackedStart  = null;
-  var lastTrackedEnd    = null;
-  var checkinClickTs    = null;
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+  function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { } }
 
-  /* ── POMOCNICZE ── */
-  function qs(k) { try { return new URLSearchParams(location.search).get(k) || ''; } catch(e) { return ''; } }
-  function nowIso() { return new Date().toISOString(); }
-  function elapsed() { return Math.round((Date.now() - t0) / 1000); }
-  function stepElapsed() { return Math.round((Date.now() - stepEnterTime) / 1000); }
-  function fmtDate(s) { if (!s) return ''; var p = s.split('-'); return p[2] + '.' + p[1] + '.' + p[0]; }
-  function nightsBetween(s, e) {
-    if (!s || !e) return 0;
-    var sp = s.split('-'), ep = e.split('-');
-    var sd = new Date(+sp[0], +sp[1]-1, +sp[2]);
-    var ed = new Date(+ep[0], +ep[1]-1, +ep[2]);
-    var n = Math.round((ed - sd) / 86400000);
-    return n > 0 ? n : 0;
-  }
-  function monthName(dateStr) {
-    var months = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
-                  'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
-    if (!dateStr) return '';
-    return months[parseInt(dateStr.split('-')[1], 10) - 1] + ' ' + dateStr.split('-')[0];
-  }
-  function monthNum(dateStr) { return dateStr ? dateStr.substring(0, 7) : ''; }
-  function dayOfWeek(dateStr) {
-    var days = ['Nd','Pon','Wt','Śr','Czw','Pt','Sob'];
-    if (!dateStr) return '';
-    var p = dateStr.split('-');
-    return days[new Date(+p[0], +p[1]-1, +p[2]).getDay()];
-  }
-  function nightsBucket(n) {
-    if (!n || n <= 0) return '—';
-    if (n <= 3)  return '1-3 noce';
-    if (n <= 7)  return '4-7 nocy';
-    if (n <= 14) return '8-14 nocy';
-    return '15+ nocy';
-  }
-  function readGuestDOM() {
-    var a = parseInt((document.getElementById('av') || {}).textContent) || 0;
-    var k = parseInt((document.getElementById('kv') || {}).textContent) || 0;
-    return { adults: a, kids: k, total: a + k, guestConfig: a + '+' + k };
-  }
-  function readCalDOM() {
-    var startEl = document.querySelector('.day.sel-start[data-key]');
-    var endEl   = document.querySelector('.day.sel-end[data-key]');
+  /* Persistent user ID (cross-session fingerprint) */
+  var userId = lsGet('_az_uid');
+  if (!userId) { userId = uuid(); lsSet('_az_uid', userId); }
+  var isReturning = lsGet('_az_ret') === '1';
+  lsSet('_az_ret', '1');
+
+  /* Session ID (per page load) */
+  var sessionId = ssGet('_az_sid');
+  if (!sessionId) { sessionId = uuid(); ssSet('_az_sid', sessionId); }
+
+  /* ── WYKRYWANIE ŹRÓDŁA RUCHU ─────────────────────────────── */
+  function detectSource() {
+    var p = {};
+    try { p = Object.fromEntries(new URLSearchParams(window.location.search)); } catch (e) { }
+    var utmSrc = (p.utm_source || '').toLowerCase();
+    var utmMed = (p.utm_medium || '').toLowerCase();
+    var utmCam = (p.utm_campaign || '').toLowerCase();
+    var ref = document.referrer || '';
+    var refL = ref.toLowerCase();
+
+    var source = 'direct';
+    var fbType = '';
+
+    /* 1. UTM obecny → reklama / post / FB ogólnie */
+    if (utmSrc.includes('facebook') || utmSrc === 'fb') {
+      if (utmMed === 'cpc' || utmMed === 'paid' || utmMed === 'paid_social' || utmMed === 'ppc') {
+        source = 'fb_ads'; fbType = 'ads';
+      } else if (utmCam.includes('group') || utmCam.includes('grupa') || utmMed === 'group') {
+        source = 'fb_group'; fbType = 'group';
+      } else {
+        source = 'fb_organic'; fbType = 'post';
+      }
+    }
+    /* 2. Referrer z Facebook bez UTM → grupy lub post organiczny */
+    else if (refL.includes('facebook.com') || refL.includes('l.facebook.com') || refL.includes('m.facebook.com')) {
+      if (refL.includes('/groups/') || refL.includes('groups%2F')) {
+        source = 'fb_group'; fbType = 'group';
+      } else {
+        source = 'fb_organic'; fbType = 'post';
+      }
+    }
+    /* 3. Instagram */
+    else if (utmSrc.includes('instagram') || refL.includes('instagram.com')) {
+      source = 'instagram';
+    }
+    /* 4. Google */
+    else if (utmSrc.includes('google') || refL.includes('google.com')) {
+      source = 'google';
+    }
+    /* 5. Inny referrer */
+    else if (ref && ref !== window.location.href) {
+      source = 'referral';
+    }
+
     return {
-      start: startEl ? startEl.getAttribute('data-key') : null,
-      end:   endEl   ? endEl.getAttribute('data-key')   : null
+      source: source,
+      fbType: fbType,
+      utmCampaign: p.utm_campaign || '',
+      utmMedium: p.utm_medium || '',
+      utmContent: p.utm_content || '',
+      referrer: ref.substring(0, 200)
     };
   }
 
-  /* ── WYSYŁANIE ZDARZENIA ── */
-  function track(event, extra) {
-    if (!ENDPOINT || ENDPOINT.indexOf('WKLEJ') !== -1) return;
-    var payload = Object.assign({
-      event: event,
-      sessionId: sid,
-      ts: nowIso(),
-      sessionDuration: elapsed(),
-      lang: (typeof window.lang !== 'undefined' ? window.lang : 'pl'),
-      isMobile: /Mobi|Android/i.test(navigator.userAgent) ? 1 : 0,
-      screenW: screen.width,
-      referrer: (document.referrer || '').substring(0, 150),
-      utm_source: qs('utm_source'),
-      utm_medium: qs('utm_medium'),
-      utm_campaign: qs('utm_campaign'),
-      fbclid: qs('fbclid') ? 1 : 0,
-      currentStep: currentStep
-    }, extra || {});
-    var body = JSON.stringify(payload);
-    try {
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(ENDPOINT, body);
-      } else {
-        fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: body }).catch(function () {});
-      }
-    } catch (e) {}
+  var src = detectSource();
+  var device = window.innerWidth < 768 ? 'mobile' : 'desktop';
+  var t0 = Date.now();
+
+  /* ── STAN SESJI ──────────────────────────────────────────── */
+  var S = {
+    maxStep: 1,
+    converted: false,
+    adults: 0, kids: 0,
+    aptSelected: null,
+    calNavigations: 0,
+    datesTried: 0,
+    dateRangeStart: null, dateRangeEnd: null,
+    maxScroll: 0,
+    faqOpened: 0,
+    photosViewed: 0
+  };
+
+  /* ── KOLEJKA ZDARZEŃ ─────────────────────────────────────── */
+  var queue = [];
+  var flushTimer = null;
+
+  function track(evType, data) {
+    var ev = {
+      sid: sessionId, uid: userId,
+      ev: evType, step: curStep(),
+      d: data || {},
+      src: src.source, fb: src.fbType,
+      camp: src.utmCampaign, med: src.utmMedium,
+      ref: src.referrer, lang: window.lang || 'pl',
+      dev: device, ret: isReturning ? 1 : 0,
+      t: Math.round((Date.now() - t0) / 1000),
+      ts: new Date().toISOString()
+    };
+    queue.push(ev);
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flush, 500);
   }
 
-  /* ── START SESJI ── */
-  track('session_start', { url: location.href.substring(0, 200), screenH: screen.height });
-
-  /* ── SCROLL SEKCJI ── */
-  var sectionsObserved = {};
-  var sectionDefs = [
-    { sel: '.pt-section',  name: 'o_lokalizacji' },
-    { sel: '#heroMapCard', name: 'mapa_okolicy'  },
-    { sel: '#steps',       name: 'booking_start' },
-    { sel: '.faq-section', name: 'faq'           },
-    { sel: '.cin-block',   name: 'certyfikat_cin'}
-  ];
-  if ('IntersectionObserver' in window) {
-    var secObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var name = e.target.__azzSec;
-        if (e.isIntersecting && name && !sectionsObserved[name]) {
-          sectionsObserved[name] = true;
-          track('scroll_section', { section: name, timeFromStart: elapsed() });
-        }
-      });
-    }, { threshold: 0.35 });
-    sectionDefs.forEach(function (def) {
-      var el = document.querySelector(def.sel);
-      if (el) { el.__azzSec = def.name; secObs.observe(el); }
-    });
+  function curStep() {
+    for (var s = 4; s >= 1; s--) {
+      var el = document.getElementById('step' + s);
+      if (el && !el.classList.contains('hidden')) return s;
+    }
+    return 1;
   }
 
-  /* ── SCROLL DEPTH ── */
-  var scrollReported = {};
+  function flush(sync) {
+    if (!queue.length) return;
+    var batch = queue.slice(); queue = [];
+    if (!GAS_ENDPOINT || GAS_ENDPOINT.includes('WSTAW')) return;
+
+    var payload = JSON.stringify({ ev: batch });
+
+    if (sync && navigator.sendBeacon) {
+      navigator.sendBeacon(GAS_ENDPOINT + '?action=track', new Blob([payload], { type: 'text/plain' }));
+    } else {
+      /* GET z base64 – unika CORS preflight */
+      var b64 = btoa(unescape(encodeURIComponent(payload)));
+      var url = GAS_ENDPOINT + '?action=track&d=' + encodeURIComponent(b64);
+      var img = new Image(); img.src = url; /* fire & forget */
+    }
+  }
+
+  /* ── SCROLL DEPTH ────────────────────────────────────────── */
+  var scrollMarks = { 25: 0, 50: 0, 75: 0, 100: 0 };
   window.addEventListener('scroll', function () {
-    var pct = Math.min(100, Math.round(
-      (window.scrollY + window.innerHeight) / document.body.scrollHeight * 100
-    ));
-    [10,25,50,75,90,100].forEach(function (m) {
-      if (!scrollReported[m] && pct >= m) {
-        scrollReported[m] = true;
-        track('scroll_depth', { depth: m });
-      }
+    var pct = Math.round(window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight) * 100);
+    if (pct > S.maxScroll) S.maxScroll = pct;
+    [25, 50, 75, 100].forEach(function (m) {
+      if (!scrollMarks[m] && pct >= m) { scrollMarks[m] = 1; track('scroll', { depth: m }); }
     });
   }, { passive: true });
 
-  /* ── WRAPPERS ── */
-  function wrapBefore(fnName, cb) {
-    if (typeof window[fnName] !== 'function') return;
-    var orig = window[fnName];
-    window[fnName] = function () {
-      try { cb.apply(this, arguments); } catch(e) {}
-      return orig.apply(this, arguments);
-    };
-  }
-  function wrapAfter(fnName, cb) {
-    if (typeof window[fnName] !== 'function') return;
-    var orig = window[fnName];
-    window[fnName] = function () {
-      var r = orig.apply(this, arguments);
-      try { cb.apply(this, arguments); } catch(e) {}
-      return r;
-    };
-  }
-
-  /* ── KROKI ── */
-  function recordStepExit(toStep) {
-    var dur = stepElapsed();
-    stepHistory.push({ step: currentStep, duration: dur });
-    track('step_transition', { fromStep: currentStep, toStep: toStep, stepDuration: dur });
-    currentStep = toStep;
-    stepEnterTime = Date.now();
-    track('step_view', { step: toStep });
-  }
-
-  /* ============================================================
-     GOŚCIE — śledzenie zmian liczników i potwierdzenia
-  ============================================================ */
-  var guestDebounce = null;
-
-  function onGuestChange() {
-    clearTimeout(guestDebounce);
-    guestDebounce = setTimeout(function () {
-      var g = readGuestDOM();
-      if (g.adults > 0 && (g.adults !== lastTrackedAdults || g.kids !== lastTrackedKids)) {
-        lastTrackedAdults = g.adults;
-        lastTrackedKids   = g.kids;
-        track('guest_count_change', {
-          adults:      g.adults,
-          kids:        g.kids,
-          total:       g.total,
-          guestConfig: g.guestConfig   // np. "2+1", "4+0"
-        });
-      }
-    }, 1200);
-  }
-
-  wrapAfter('chA', onGuestChange);
-  wrapAfter('chK', onGuestChange);
-
-  // Potwierdzenie składu grupy → krok 2
-  wrapBefore('goStep2', function () {
-    clearTimeout(guestDebounce);
-    var g = readGuestDOM();
-    lastTrackedAdults = g.adults;
-    lastTrackedKids   = g.kids;
-    track('guest_confirmed', {
-      adults:       g.adults,
-      kids:         g.kids,
-      total:        g.total,
-      guestConfig:  g.guestConfig,
-      stepDuration: stepElapsed()
+  /* ── PAGE EXIT ───────────────────────────────────────────── */
+  function onExit() {
+    var cs = curStep();
+    queue.push({
+      sid: sessionId, uid: userId,
+      ev: 'exit', step: cs,
+      d: {
+        dur: Math.round((Date.now() - t0) / 1000),
+        maxStep: S.maxStep, conv: S.converted,
+        scroll: S.maxScroll, adults: S.adults, kids: S.kids,
+        apt: S.aptSelected, calNav: S.calNavigations,
+        datesTried: S.datesTried,
+        drStart: S.dateRangeStart, drEnd: S.dateRangeEnd,
+        exitStep: cs, faq: S.faqOpened, photos: S.photosViewed
+      },
+      src: src.source, fb: src.fbType,
+      camp: src.utmCampaign, med: src.utmMedium,
+      ref: src.referrer, lang: window.lang || 'pl',
+      dev: device, ret: isReturning ? 1 : 0,
+      t: Math.round((Date.now() - t0) / 1000),
+      ts: new Date().toISOString()
     });
-    recordStepExit(2);
-  });
+    flush(true);
+  }
+  window.addEventListener('pagehide', onExit);
+  window.addEventListener('beforeunload', onExit);
 
-  /* ============================================================
-     DATY — check-in, check-out, potwierdzenie
-  ============================================================ */
-
-  // dayClick jest wywoływany po kliknięciu dnia w kalendarzu.
-  // Po wywołaniu oryginału odczytujemy aktualny stan DOM kalendarza.
-  wrapAfter('dayClick', function () {
-    // Dajemy 50ms na przerenderowanie CSS klas sel-start / sel-end
-    setTimeout(function () {
-      var cal = readCalDOM();
-
-      // Check-in ustawiony, check-out jeszcze nie
-      if (cal.start && !cal.end && cal.start !== lastTrackedStart) {
-        checkinClickTs  = Date.now();
-        lastTrackedStart = cal.start;
-        lastTrackedEnd   = null;
-        track('date_checkin_selected', {
-          checkin:          cal.start,
-          checkinFormatted: fmtDate(cal.start),
-          checkinMonth:     monthName(cal.start),
-          checkinMonthNum:  monthNum(cal.start),          // "2025-07"
-          checkinDayOfWeek: dayOfWeek(cal.start),
-          checkinDay:       parseInt(cal.start.split('-')[2], 10)
-        });
-      }
-
-      // Oba ustawione — check-out wybrany
-      if (cal.start && cal.end && cal.end !== lastTrackedEnd) {
-        var nights   = nightsBetween(cal.start, cal.end);
-        var timeToSelectCheckout = checkinClickTs
-          ? Math.round((Date.now() - checkinClickTs) / 1000) : null;
-
-        lastTrackedStart = cal.start;
-        lastTrackedEnd   = cal.end;
-        track('date_checkout_selected', {
-          checkin:                  cal.start,
-          checkout:                 cal.end,
-          checkinFormatted:         fmtDate(cal.start),
-          checkoutFormatted:        fmtDate(cal.end),
-          nights:                   nights,
-          nightsBucket:             nightsBucket(nights),
-          checkinMonth:             monthName(cal.start),
-          checkinMonthNum:          monthNum(cal.start),
-          checkoutMonthNum:         monthNum(cal.end),
-          checkinDayOfWeek:         dayOfWeek(cal.start),
-          checkoutDayOfWeek:        dayOfWeek(cal.end),
-          timeToSelectCheckout_s:   timeToSelectCheckout,
-          adults:                   lastTrackedAdults,
-          kids:                     lastTrackedKids
-        });
-      }
-    }, 50);
-  });
-
-  // Potwierdzenie dat → krok 3
-  wrapBefore('goStep3', function () {
-    var cal = readCalDOM();
-    if (cal.start && cal.end) {
-      var nights = nightsBetween(cal.start, cal.end);
-      track('dates_confirmed', {
-        checkin:         cal.start,
-        checkout:        cal.end,
-        checkinFormatted: fmtDate(cal.start),
-        checkoutFormatted: fmtDate(cal.end),
-        nights:          nights,
-        nightsBucket:    nightsBucket(nights),
-        checkinMonth:    monthName(cal.start),
-        checkinMonthNum: monthNum(cal.start),
-        checkinDayOfWeek: dayOfWeek(cal.start),
-        adults:          lastTrackedAdults,
-        kids:            lastTrackedKids,
-        total:           lastTrackedAdults + lastTrackedKids,
-        guestConfig:     lastTrackedAdults + '+' + lastTrackedKids,
-        stepDuration:    stepElapsed()
-      });
+  /* ── HOOK: KROKI LEJKA ───────────────────────────────────── */
+  function hookSteps() {
+    /* Step 2: wybranie liczby gości */
+    if (window.goStep2 && !window._az2) {
+      window._az2 = 1;
+      var g2 = window.goStep2;
+      window.goStep2 = function () {
+        S.adults = window.adults || 0; S.kids = window.kids || 0;
+        S.maxStep = Math.max(S.maxStep, 2);
+        track('step', { to: 2, adults: S.adults, kids: S.kids });
+        return g2.apply(this, arguments);
+      };
     }
-    recordStepExit(3);
-  });
-
-  // Krok 4
-  if (typeof window.goStep4 === 'function') {
-    wrapBefore('goStep4', function () { recordStepExit(4); });
+    /* Step 3: wybranie opcji apartamentu */
+    if (window.goStep3 && !window._az3) {
+      window._az3 = 1;
+      var g3 = window.goStep3;
+      window.goStep3 = function () {
+        var o = window.selOpt;
+        if (o) S.aptSelected = o.id;
+        S.maxStep = Math.max(S.maxStep, 3);
+        track('step', { to: 3, aptId: o ? o.id : null, aptName: o ? (o.name || '') : '' });
+        return g3.apply(this, arguments);
+      };
+    }
+    /* Step 4: zatwierdzenie dat */
+    if (window.goStep4 && !window._az4) {
+      window._az4 = 1;
+      var g4 = window.goStep4;
+      window.goStep4 = function () {
+        S.maxStep = Math.max(S.maxStep, 4);
+        var ss = window.selStart, se = window.selEnd;
+        if (ss) { S.datesTried++; S.dateRangeStart = ss; S.dateRangeEnd = se; }
+        var nights = (ss && se) ? Math.round((se - ss) / 86400000) : null;
+        track('step', { to: 4, dsStart: ss, dsEnd: se, nights: nights, apt: S.aptSelected });
+        return g4.apply(this, arguments);
+      };
+    }
+    /* Cofanie do kroku */
+    if (window.goStep1 && !window._azBack1) {
+      window._azBack1 = 1;
+      var b1 = window.goStep1;
+      window.goStep1 = function () {
+        track('back', { from: curStep(), to: 1 });
+        return b1.apply(this, arguments);
+      };
+    }
+    if (window.goStep2back && !window._azBack2) {
+      window._azBack2 = 1;
+      var b2 = window.goStep2back;
+      window.goStep2back = function () {
+        track('back', { from: curStep(), to: 2 });
+        return b2.apply(this, arguments);
+      };
+    }
   }
-  var s4el = document.getElementById('s4');
-  if (s4el && 'MutationObserver' in window) {
-    var s4mo = new MutationObserver(function () {
-      if (!s4el.classList.contains('hidden') && currentStep < 4) { recordStepExit(4); }
-    });
-    s4mo.observe(s4el, { attributes: true, attributeFilter: ['class'] });
-  }
 
-  // Cofanie
-  wrapAfter('goBack', function (stepNum) {
-    var targetStep = typeof stepNum === 'number' ? stepNum : 1;
-    track('step_back', { backTo: targetStep, from: currentStep, stepDuration: stepElapsed() });
-    currentStep = targetStep;
-    stepEnterTime = Date.now();
-  });
-
-  /* ── CTA (z pełnym kontekstem gości i dat) ── */
-  function ctaExtra(ctaName) {
-    return {
-      cta:            ctaName,
-      step:           currentStep,
-      sessionDuration: elapsed(),
-      adults:         lastTrackedAdults,
-      kids:           lastTrackedKids,
-      checkin:        lastTrackedStart,
-      checkout:       lastTrackedEnd,
-      nights:         nightsBetween(lastTrackedStart, lastTrackedEnd),
-      checkinMonth:   monthName(lastTrackedStart),
-      nightsBucket:   nightsBucket(nightsBetween(lastTrackedStart, lastTrackedEnd))
-    };
-  }
-  wrapBefore('openWhatsApp',   function () { track('cta_click', ctaExtra('whatsapp'));      });
-  wrapBefore('openMessenger',  function () { track('cta_click', ctaExtra('messenger'));     });
-  wrapBefore('openWhatsAppMix',function () { track('cta_click', ctaExtra('whatsapp_mix')); });
-  wrapBefore('openMessengerMix',function(){ track('cta_click', ctaExtra('messenger_mix')); });
-
-  /* ── INNE ── */
-  wrapAfter('setLang', function (l) {
-    track('language_switch', { toLang: l, fromLang: l === 'pl' ? 'en' : 'pl' });
-  });
-  wrapAfter('faqToggle', function (item) {
-    if (!item || !item.classList.contains('open')) return;
-    var qEl = item.querySelector('.faq-q span[id]') || item.querySelector('.faq-q span');
-    track('faq_open', {
-      faq: qEl ? qEl.textContent.trim().substring(0, 100) : '',
-      faqIndex: Array.from(document.querySelectorAll('.faq-item')).indexOf(item)
-    });
-  });
-  wrapBefore('lbOpen', function (photos, idx) {
-    track('lightbox_open', { photoCount: photos ? photos.length : 0, photoIdx: idx || 0 });
-  });
-  document.addEventListener('click', function (e) {
-    var pill = e.target.closest('.hero-cta-pill');
-    if (pill) track('hero_cta_click', { label: pill.textContent.trim().substring(0, 50) });
-  });
-
-  /* ── ENGAGEMENT ── */
-  var engagementTimer = null;
-  var engaged = false;
-  ['scroll','click','mousemove','keydown','touchstart'].forEach(function (ev) {
-    window.addEventListener(ev, function () {
-      clearTimeout(engagementTimer);
-      engagementTimer = setTimeout(function () {
-        if (!engaged && elapsed() >= 30) { engaged = true; track('engagement_30s'); }
-      }, 500);
-    }, { passive: true });
-  });
-
-  /* ── WYJŚCIE ── */
-  var exitSent = false;
-  function sendExit() {
-    if (exitSent) return;
-    exitSent = true;
-    var n = nightsBetween(lastTrackedStart, lastTrackedEnd);
-    track('page_exit', {
-      maxStep:       Math.max.apply(null, stepHistory.map(function(s){ return s.step; }).concat([currentStep])),
-      lastStep:      currentStep,
-      stepDuration:  stepElapsed(),
-      scrollDepth:   Object.keys(scrollReported).length > 0
-        ? Math.max.apply(null, Object.keys(scrollReported).map(Number)) : 0,
-      engaged:       engaged,
-      adults:        lastTrackedAdults,
-      kids:          lastTrackedKids,
-      checkin:       lastTrackedStart,
-      checkout:      lastTrackedEnd,
-      nights:        n,
-      nightsBucket:  nightsBucket(n),
-      checkinMonth:  monthName(lastTrackedStart)
+  /* ── HOOK: KONWERSJA ─────────────────────────────────────── */
+  function hookContact() {
+    ['openWhatsApp', 'openMessenger', 'openWhatsAppMix', 'openMessengerMix'].forEach(function (fn) {
+      if (window[fn] && !window['_azC_' + fn]) {
+        window['_azC_' + fn] = 1;
+        var orig = window[fn];
+        window[fn] = function () {
+          S.converted = true;
+          track('conversion', {
+            ch: fn.includes('WhatsApp') ? 'whatsapp' : 'messenger',
+            mix: fn.includes('Mix') ? 1 : 0,
+            adults: S.adults, kids: S.kids, apt: S.aptSelected,
+            nights: (S.dateRangeStart && S.dateRangeEnd)
+              ? Math.round((S.dateRangeEnd - S.dateRangeStart) / 86400000) : null,
+            drStart: S.dateRangeStart, drEnd: S.dateRangeEnd
+          });
+          /* flush natychmiast przed otwarciem WA/Messenger */
+          flush(false);
+          return orig.apply(this, arguments);
+        };
+      }
     });
   }
-  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') sendExit(); });
-  window.addEventListener('pagehide', sendExit);
-  window.addEventListener('beforeunload', sendExit);
 
-  /* ── BOUNCE ── */
-  setTimeout(function () {
-    if (Object.keys(scrollReported).length === 0) track('potential_bounce', { duration: elapsed() });
-  }, 15000);
+  /* ── HOOK: KALENDARZ ─────────────────────────────────────── */
+  function hookCalendar() {
+    /* Nawigacja miesiącami */
+    ['cal-prev', 'cal-next'].forEach(function (id) {
+      var btn = document.getElementById(id);
+      if (btn && !btn._azHk) {
+        btn._azHk = 1;
+        var orig = btn.onclick;
+        btn.onclick = function (e) {
+          S.calNavigations++;
+          var ml = document.getElementById('cal-ml');
+          track('cal_nav', { dir: id === 'cal-next' ? 'next' : 'prev', month: ml ? ml.textContent : '', navCount: S.calNavigations });
+          return orig ? orig.call(this, e) : undefined;
+        };
+      }
+    });
+
+    /* Wybranie zakresu dat */
+    if (window.renderSummary && !window._azRS) {
+      window._azRS = 1;
+      var origRS = window.renderSummary;
+      window.renderSummary = function () {
+        var result = origRS.apply(this, arguments);
+        var ss = window.selStart, se = window.selEnd;
+        if (ss && se) {
+          S.datesTried++; S.dateRangeStart = ss; S.dateRangeEnd = se;
+          track('date_select', {
+            dsStart: ss, dsEnd: se,
+            nights: Math.round((se - ss) / 86400000),
+            calNav: S.calNavigations, apt: S.aptSelected
+          });
+        }
+        return result;
+      };
+    }
+  }
+
+  /* ── HOOK: FAQ ───────────────────────────────────────────── */
+  function hookFAQ() {
+    if (window.faqToggle && !window._azFaq) {
+      window._azFaq = 1;
+      var of = window.faqToggle;
+      window.faqToggle = function (item) {
+        if (!item.classList.contains('open')) {
+          S.faqOpened++;
+          var q = item.querySelector('.faq-q');
+          track('faq', { q: q ? q.textContent.substring(0, 100) : '' });
+        }
+        return of.call(this, item);
+      };
+    }
+  }
+
+  /* ── HOOK: ZDJĘCIA ───────────────────────────────────────── */
+  function hookGallery() {
+    if (window.galMove && !window._azGal) {
+      window._azGal = 1;
+      var og = window.galMove;
+      window.galMove = function (btn, dir, e) {
+        S.photosViewed++;
+        return og.call(this, btn, dir, e);
+      };
+    }
+  }
+
+  /* ── HOOK: JĘZYK ─────────────────────────────────────────── */
+  function hookLang() {
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      if (!btn._azL) {
+        btn._azL = 1;
+        btn.addEventListener('click', function () {
+          track('lang', { to: btn.textContent.trim().toLowerCase() });
+        });
+      }
+    });
+  }
+
+  /* ── SELECT OPT: hook bezpośredni ───────────────────────── */
+  function hookSelectOpt() {
+    if (window.selectOpt && !window._azSO) {
+      window._azSO = 1;
+      var oso = window.selectOpt;
+      window.selectOpt = function (o, div) {
+        track('apt_click', { aptId: o ? o.id : null, aptName: o ? (o.name || '') : '', adults: S.adults, kids: S.kids });
+        return oso.call(this, o, div);
+      };
+    }
+  }
+
+  /* ── INIT ────────────────────────────────────────────────── */
+  function init() {
+    hookSteps(); hookContact(); hookCalendar();
+    hookFAQ(); hookGallery(); hookLang(); hookSelectOpt();
+
+    track('pageview', {
+      url: window.location.href.substring(0, 200),
+      screen: window.innerWidth + 'x' + window.innerHeight,
+      ret: isReturning ? 1 : 0
+    });
+  }
+
+  /* Uruchom po załadowaniu DOM i jeszcze raz po 2s (async scripts) */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 100); });
+  } else { setTimeout(init, 100); }
+  setTimeout(function () { hookSteps(); hookContact(); hookCalendar(); hookSelectOpt(); }, 2500);
 
 })();
     </script>

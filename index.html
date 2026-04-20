@@ -5112,365 +5112,442 @@
         }
     </script>
     <!-- End Cloudflare Web Analytics -->
-<!-- ═══════════════════════════════════════════════════════════════
-     AZZURRO TRACKING SNIPPET — wklej przed </body> w index.html
-     Zastąp APPS_SCRIPT_URL swoim URL wdrożenia Apps Script
-     ═══════════════════════════════════════════════════════════════ -->
-<script>
+/**
+ * azzurro-analytics.js
+ * Wklej PRZED </body> w index.html
+ * Ustaw ANALYTICS_URL na URL swojego Web App z Apps Script
+ */
 (function () {
   'use strict';
 
-  // ── CONFIG ──────────────────────────────────────────────────────
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyG7Pse6dossDGUmpDHXUBHJatt7JtQeBDxduBDa2ORn-qE60E0OM98mYPFynMwSDPB/exec';
-  var MAX_BATCH = 20;   // max events per batch send
-  var SEND_INTERVAL = 8000; // ms between sends
+  // ── KONFIGURACJA ──────────────────────────────────────────
+  var ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbyQhTaX4KeEZXfDqk8J6xyWcLnOcizqM0nOW3Fjtdz8iLqTqYF_nXToVhWTGWR5QNZPtA/exec'; // np. https://script.google.com/macros/s/XXX/exec
+  var DEBUG = false; // ustaw true aby widzieć logi w konsoli
 
-  // ── IDENTIFY USER & SESSION ─────────────────────────────────────
-  // One persistent UID per browser (localStorage), new sessionId each visit
+  // ── SESSION / VISITOR IDS ─────────────────────────────────
+  function uuid() {
+    return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
 
-  function getOrCreateUID() {
+  var visitorId = (function () {
     try {
-      var uid = localStorage.getItem('az_uid');
-      if (!uid) {
-        uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-        localStorage.setItem('az_uid', uid);
-      }
-      return uid;
-    } catch (e) { return 'u_anon_' + Math.random().toString(36).slice(2); }
-  }
-
-  var uid = getOrCreateUID();
-  var sessionId = 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  var sessionStart = Date.now();
-
-  // ── DETECT SOURCE ───────────────────────────────────────────────
-  // Rozróżnia FB Ads (utm params) od FB Grupy (referrer z facebook.com bez utms)
-
-  function detectSource() {
-    var params = new URLSearchParams(window.location.search);
-    // FB Ads — campaign params
-    if (params.get('utm_source') === 'facebook' || params.get('fbclid')) {
-      var medium = params.get('utm_medium') || '';
-      if (medium === 'paid' || medium === 'cpc' || params.get('utm_campaign')) {
-        return 'FB Ads|' + (params.get('utm_campaign') || '');
-      }
-    }
-    // Custom label dla grup
-    if (params.get('src') === 'fbgroup' || params.get('ref') === 'fbgroup') return 'FB Grupy';
-    if (params.get('src') === 'fbad') return 'FB Ads';
-
-    // Referrer-based detection
-    var ref = document.referrer || '';
-    if (ref.includes('facebook.com') || ref.includes('fb.com')) {
-      // FB without ad params = organic / group
-      if (params.get('fbclid')) return 'FB Ads';
-      return 'FB Grupy';
-    }
-    if (ref.includes('google.')) return 'Organic';
-    if (ref.includes('l.facebook.com')) return 'FB Grupy'; // mobile FB link shim
-    if (!ref && !params.get('utm_source')) return 'Direct / inne';
-    return params.get('utm_source') || 'Direct / inne';
-  }
-
-  var source = detectSource();
-  var lang = (typeof window.lang !== 'undefined' ? window.lang : 'pl');
-  var device = window.innerWidth <= 480 ? 'mobile' : window.innerWidth <= 900 ? 'tablet' : 'desktop';
-
-  // ── EVENT QUEUE ─────────────────────────────────────────────────
-  var eventQueue = [];
-  var sending = false;
-
-  function pushEvent(eventName, meta) {
-    eventQueue.push({
-      action: 'track',
-      uid: uid,
-      sessionId: sessionId,
-      source: source,
-      event: eventName,
-      meta: meta || {},
-      url: window.location.href.split('?')[0], // no params in URL
-      lang: lang,
-      device: device,
-      ts: Date.now()
-    });
-  }
-
-  function flushEvents() {
-    if (sending || !eventQueue.length) return;
-    var batch = eventQueue.splice(0, MAX_BATCH);
-    sending = true;
-    // Send each event individually (Apps Script doesn't batch natively)
-    var remaining = batch.length;
-    if (remaining === 0) { sending = false; return; }
-    batch.forEach(function (ev) {
-      fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(ev),
-        headers: { 'Content-Type': 'text/plain' }, // avoids CORS preflight
-        keepalive: true
-      }).catch(function () {}).finally(function () {
-        remaining--;
-        if (remaining === 0) { sending = false; }
-      });
-    });
-  }
-
-  setInterval(flushEvents, SEND_INTERVAL);
-
-  // ── SEND ON UNLOAD ───────────────────────────────────────────────
-  function sendClose() {
-    var timeOnSite = Math.round((Date.now() - sessionStart) / 1000);
-    navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify({
-      action: 'closeSession',
-      uid: uid,
-      sessionId: sessionId,
-      timeOnSite: timeOnSite
-    }));
-    // Also flush any remaining events
-    eventQueue.forEach(function (ev) {
-      navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify(ev));
-    });
-  }
-
-  window.addEventListener('pagehide', sendClose);
-  window.addEventListener('beforeunload', sendClose);
-  document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') sendClose();
-  });
-
-  // ── TRACK PAGE VIEW ─────────────────────────────────────────────
-  pushEvent('page_view', {});
-
-  // ── TRACK HERO CTA ───────────────────────────────────────────────
-  // Przycisk "Sprawdź dostępność" na hero
-  (function () {
-    var heroCta = document.querySelector('.hero-cta, [onclick*="scrollTo"], [onclick*="scroll"]');
-    if (heroCta) {
-      heroCta.addEventListener('click', function () {
-        pushEvent('hero_cta', {});
-      });
-    }
+      var k = 'azz_vid';
+      var v = localStorage.getItem(k);
+      if (!v) { v = uuid(); localStorage.setItem(k, v); }
+      return v;
+    } catch (e) { return uuid(); }
   })();
 
-  // ── TRACK STEP 1 — GUEST SELECTION ──────────────────────────────
-  // Przyciski +/- przy gościach i dzieciach
-  (function () {
-    function patchCounter(btnSelector, type) {
-      document.querySelectorAll(btnSelector).forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var av = document.getElementById('av');
-          var kv = document.getElementById('kv');
-          pushEvent('guest_change', {
-            type: type,
-            adults: av ? parseInt(av.textContent) : 0,
-            kids: kv ? parseInt(kv.textContent) : 0
-          });
-        });
-      });
-    }
-    patchCounter('.cbtn', 'counter');
+  var sessionId = uuid();
+  var sessionStart = Date.now();
+  var pageLoadTime = Date.now();
 
-    // Przycisk dalej (krok 1 → 2)
+  // ── UTM / SOURCE DETECTION ───────────────────────────────
+  function getUtm() {
+    var params = new URLSearchParams(window.location.search);
+    var referrer = document.referrer || '';
+
+    var source   = params.get('utm_source')   || '';
+    var medium   = params.get('utm_medium')   || '';
+    var campaign = params.get('utm_campaign') || '';
+    var content  = params.get('utm_content')  || '';
+    var term     = params.get('utm_term')     || '';
+
+    // ── Rozróżnienie ruchu Facebook ──────────────────────
+    // FB Ads: fbclid w URL lub utm_medium=cpc/paid lub utm_campaign zawiera "ads"
+    var fbclid = params.get('fbclid') || '';
+
+    if (!source && (fbclid || referrer.indexOf('facebook.com') > -1 || referrer.indexOf('fb.me') > -1 || referrer.indexOf('l.facebook.com') > -1)) {
+      source = 'facebook';
+    }
+
+    if (source === 'facebook' && !medium) {
+      if (fbclid) {
+        // fbclid = prawdopodobnie reklama FB Ads
+        medium = 'cpc';
+      } else {
+        // brak fbclid ale ref = facebook = organicznie / grupy
+        medium = 'social';
+      }
+    }
+
+    // Jeśli utm_content zawiera "group" lub campaign zawiera "group" = ruch z grupy
+    var isGroup = (content.toLowerCase().indexOf('group') > -1 ||
+                   campaign.toLowerCase().indexOf('group') > -1 ||
+                   medium.toLowerCase() === 'group');
+
+    // Kategoryzacja źródła
+    var srcCategory = 'other';
+    if (source === 'facebook' && (medium === 'cpc' || medium === 'paid')) {
+      srcCategory = 'fb_ads';
+    } else if (source === 'facebook' && isGroup) {
+      srcCategory = 'fb_group';
+    } else if (source === 'facebook') {
+      srcCategory = 'fb_other';
+    } else if (!source && !referrer) {
+      srcCategory = 'direct';
+    }
+
+    // Zapisz UTM w sessionStorage aby nie gubić przy nawigacji
+    try {
+      var stored = JSON.parse(sessionStorage.getItem('azz_utm') || 'null');
+      if (!stored) {
+        stored = { source: source, medium: medium, campaign: campaign, content: content, term: term, referrer: referrer, fbclid: fbclid, srcCategory: srcCategory };
+        sessionStorage.setItem('azz_utm', JSON.stringify(stored));
+      }
+      return stored;
+    } catch (e) {
+      return { source: source, medium: medium, campaign: campaign, content: content, term: term, referrer: referrer, fbclid: fbclid, srcCategory: srcCategory };
+    }
+  }
+
+  var utm = getUtm();
+
+  // ── DEVICE DETECTION ──────────────────────────────────────
+  function getDevice() {
+    var w = window.screen.width;
+    if (w < 600) return 'mobile';
+    if (w < 1024) return 'tablet';
+    return 'desktop';
+  }
+
+  function getUAShort() {
+    var ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/.test(ua)) return 'iOS';
+    if (/Android/.test(ua)) return 'Android';
+    if (/Windows/.test(ua)) return 'Windows';
+    if (/Mac/.test(ua)) return 'Mac';
+    return 'Other';
+  }
+
+  // ── SESSION STATE ─────────────────────────────────────────
+  var state = {
+    maxStep: 1,
+    converted: false,
+    adults: 0,
+    kids: 0,
+    aptOption: '',
+    dateStart: '',
+    dateEnd: '',
+    nights: 0,
+    priceTotal: 0,
+    language: (window.lang || document.documentElement.lang || 'pl'),
+    datesTried: [],
+    aptsTried: [],
+    eventCount: 0,
+    exitReason: ''
+  };
+
+  // ── SEND EVENT ────────────────────────────────────────────
+  function sendEvent(eventName, extra) {
+    state.eventCount++;
+    var payload = {
+      action: 'event',
+      sessionId: sessionId,
+      visitorId: visitorId,
+      event: eventName,
+      step: state.maxStep,
+      adults: state.adults,
+      kids: state.kids,
+      aptOption: state.aptOption,
+      dateStart: state.dateStart,
+      dateEnd: state.dateEnd,
+      nights: state.nights,
+      priceTotal: state.priceTotal,
+      language: state.language,
+      source: utm.source,
+      medium: utm.medium,
+      campaign: utm.campaign,
+      utmContent: utm.content,
+      utmTerm: utm.term,
+      referrer: utm.referrer,
+      uaShort: getUAShort(),
+      screenW: window.screen.width,
+      timeOnPage: Math.round((Date.now() - pageLoadTime) / 1000)
+    };
+
+    if (extra) {
+      Object.keys(extra).forEach(function (k) { payload[k] = extra[k]; });
+    }
+
+    if (DEBUG) console.log('[Azzurro Analytics] event:', eventName, payload);
+    if (!ANALYTICS_URL || ANALYTICS_URL === 'WKLEJ_TU_URL_WEB_APP') return;
+
+    navigator.sendBeacon
+      ? navigator.sendBeacon(ANALYTICS_URL, JSON.stringify(payload))
+      : fetch(ANALYTICS_URL, { method: 'POST', body: JSON.stringify(payload), keepalive: true }).catch(function () {});
+  }
+
+  // ── SEND SESSION SUMMARY ──────────────────────────────────
+  function sendSession(exitReason) {
+    state.exitReason = exitReason || state.exitReason;
+    var now = new Date().toISOString();
+    var payload = {
+      action: 'session',
+      sessionId: sessionId,
+      visitorId: visitorId,
+      firstSeen: new Date(sessionStart).toISOString(),
+      lastSeen: now,
+      duration: Math.round((Date.now() - sessionStart) / 1000),
+      eventCount: state.eventCount,
+      maxStep: state.maxStep,
+      converted: state.converted,
+      aptOption: state.aptOption,
+      dateStart: state.dateStart,
+      dateEnd: state.dateEnd,
+      nights: state.nights,
+      priceTotal: state.priceTotal,
+      adults: state.adults,
+      kids: state.kids,
+      language: state.language,
+      source: utm.source,
+      medium: utm.medium,
+      campaign: utm.campaign,
+      utmContent: utm.content,
+      referrer: utm.referrer,
+      exitReason: state.exitReason,
+      datesTried: state.datesTried,
+      aptsTried: state.aptsTried,
+      device: getDevice()
+    };
+
+    if (DEBUG) console.log('[Azzurro Analytics] session summary:', payload);
+    if (!ANALYTICS_URL || ANALYTICS_URL === 'WKLEJ_TU_URL_WEB_APP') return;
+
+    // sendBeacon działa też przy zamknięciu zakładki
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(ANALYTICS_URL, JSON.stringify(payload));
+    } else {
+      fetch(ANALYTICS_URL, { method: 'POST', body: JSON.stringify(payload), keepalive: true }).catch(function () {});
+    }
+  }
+
+  // ── HOOK SYSTEM ───────────────────────────────────────────
+  // Monkey-patch funkcji strony po załadowaniu DOM
+  function installHooks() {
+
+    // ─ Krok 1: wybór liczby osób ─
+    var origChA = window.chA;
+    if (origChA) {
+      window.chA = function (d) {
+        origChA(d);
+        state.adults = window.adults || 0;
+        // Zdarzenie tylko kiedy user potwierdzi (btn1 click) — patrz niżej
+      };
+    }
+    var origChK = window.chK;
+    if (origChK) {
+      window.chK = function (d) {
+        origChK(d);
+        state.kids = window.kids || 0;
+      };
+    }
+
+    // ─ Krok 1 → Krok 2 (przycisk "Dalej") ─
     var btn1 = document.getElementById('btn1');
     if (btn1) {
       btn1.addEventListener('click', function () {
-        var av = document.getElementById('av');
-        var kv = document.getElementById('kv');
-        pushEvent('step1_next', {
-          adults: av ? parseInt(av.textContent) : 0,
-          kids: kv ? parseInt(kv.textContent) : 0
-        });
+        state.adults = window.adults || 0;
+        state.kids = window.kids || 0;
+        state.maxStep = Math.max(state.maxStep, 2);
+        sendEvent('step2_view', { adults: state.adults, kids: state.kids });
       });
     }
-  })();
 
-  // ── TRACK STEP 2 — CALENDAR ─────────────────────────────────────
-  // Patch goStep2 aby rejestrował otwarcie kalendarza
-  (function () {
-    var origGoStep2 = window.goStep2;
-    if (typeof origGoStep2 === 'function') {
-      window.goStep2 = function () {
-        pushEvent('cal_open', {});
-        return origGoStep2.apply(this, arguments);
-      };
-    }
-
-    // Patch calClick / pickDate aby śledzić każde kliknięcie daty
-    var origCalClick = window.calClick;
-    if (typeof origCalClick === 'function') {
-      window.calClick = function (y, m, d) {
-        var dateStr = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-        pushEvent('cal_date_change', { date: dateStr });
-        return origCalClick.apply(this, arguments);
-      };
-    }
-
-    // Śledzenie wyboru zakresu dat (selStart/selEnd)
-    var origGoStep3 = window.goStep3;
-    if (typeof origGoStep3 === 'function') {
-      window.goStep3 = function () {
-        var s = window.selStart || '';
-        var e = window.selEnd || '';
-        if (s && e) {
-          pushEvent('cal_date_select', { dates: s + ' – ' + e });
-        }
-        return origGoStep3.apply(this, arguments);
-      };
-    }
-  })();
-
-  // ── TRACK STEP 3 — APARTMENT VIEW ───────────────────────────────
-  (function () {
-    var origGoStep3 = window.goStep3;
-    if (typeof origGoStep3 === 'function') {
-      window.goStep3 = function () {
-        pushEvent('step3_apts', {});
-        var ret = origGoStep3.apply(this, arguments);
-        // After render, track which apartments are shown
-        setTimeout(function () {
-          document.querySelectorAll('.aopt').forEach(function (el) {
-            var rk = el.querySelector('.apt-gallery') && el.querySelector('.apt-gallery').dataset.rk;
-            if (!el.classList.contains('unavail')) {
-              pushEvent('apt_view', { apt: rk || el.dataset.apt || 'unknown' });
-            }
-          });
-        }, 300);
-        return ret;
-      };
-    }
-
-    // Patch selectOpt to track apartment selection
+    // ─ Krok 2: wybór apartamentu ─
     var origSelectOpt = window.selectOpt;
-    if (typeof origSelectOpt === 'function') {
+    if (origSelectOpt) {
       window.selectOpt = function (o, div) {
-        pushEvent('apt_expand', { apt: o ? (o.apts || []).join('+') : 'unknown' });
-        return origSelectOpt.apply(this, arguments);
+        var aptId = o ? (o.id || '') : '';
+        if (state.aptsTried.indexOf(aptId) === -1) state.aptsTried.push(aptId);
+        state.aptOption = aptId;
+        state.maxStep = Math.max(state.maxStep, 3);
+        sendEvent('apt_selected', { aptOption: aptId });
+        origSelectOpt(o, div);
       };
     }
 
-    // Track price view (step 4)
+    // ─ Krok 3: otwarcie karty apartamentu (ekspansja) ─
+    var origToggleApt = window.toggleApt;
+    if (origToggleApt) {
+      window.toggleApt = function (div) {
+        var t = div ? div.getAttribute('data-t') : '';
+        sendEvent('apt_expanded', { aptOption: t });
+        origToggleApt(div);
+      };
+    }
+
+    // ─ Krok 3→4: wybór dat w kalendarzu ─
+    // Hookujemy setSelRange lub onDayClick (zależnie od implementacji)
     var origGoStep4 = window.goStep4;
-    if (typeof origGoStep4 === 'function') {
+    if (origGoStep4) {
       window.goStep4 = function () {
-        var selOpt = window.selOpt;
-        pushEvent('price_view', {
-          apt: selOpt ? (selOpt.apts || []).join('+') : 'unknown'
-        });
-        return origGoStep4.apply(this, arguments);
-      };
-    }
-  })();
-
-  // ── TRACK CTAs — WHATSAPP & MESSENGER ───────────────────────────
-  (function () {
-    var origOpenWA = window.openWhatsApp;
-    if (typeof origOpenWA === 'function') {
-      window.openWhatsApp = function () {
-        var selOpt = window.selOpt;
-        pushEvent('cta_wa', {
-          apt: selOpt ? (selOpt.apts || []).join('+') : '',
-          dates: (window.selStart || '') + ' – ' + (window.selEnd || '')
-        });
-        flushEvents(); // flush immediately on conversion
-        return origOpenWA.apply(this, arguments);
+        var ds = window.selStart || '';
+        var de = window.selEnd || '';
+        if (ds && de) {
+          var s = new Date(ds), e = new Date(de);
+          var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
+          state.dateStart = ds;
+          state.dateEnd   = de;
+          state.nights    = nights;
+          if (state.datesTried.indexOf(ds + '_' + de) === -1) {
+            state.datesTried.push(ds + '_' + de);
+          }
+          state.maxStep = Math.max(state.maxStep, 4);
+          // Oblicz cenę
+          state.priceTotal = calcPrice();
+          sendEvent('step4_summary', { dateStart: ds, dateEnd: de, nights: nights, priceTotal: state.priceTotal });
+        }
+        origGoStep4();
       };
     }
 
-    var origOpenWAMix = window.openWhatsAppMix;
-    if (typeof origOpenWAMix === 'function') {
-      window.openWhatsAppMix = function () {
-        pushEvent('cta_wa', { type: 'mix' });
-        flushEvents();
-        return origOpenWAMix.apply(this, arguments);
-      };
-    }
-
-    var origOpenMsg = window.openMessenger;
-    if (typeof origOpenMsg === 'function') {
-      window.openMessenger = function () {
-        var selOpt = window.selOpt;
-        pushEvent('cta_msg', {
-          apt: selOpt ? (selOpt.apts || []).join('+') : '',
-          dates: (window.selStart || '') + ' – ' + (window.selEnd || '')
-        });
-        flushEvents();
-        return origOpenMsg.apply(this, arguments);
-      };
-    }
-
-    // Also catch by button click (fallback)
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest('#btn-wa, #btn-msg, [id*="btn-wa"], [id*="btn-msg"]');
-      if (!btn) return;
-      if (btn.id && btn.id.includes('wa')) pushEvent('cta_wa', {});
-      else if (btn.id && btn.id.includes('msg')) pushEvent('cta_msg', {});
-      flushEvents();
+    // ─ Krok 4: kliknięcie WhatsApp (konwersja) ─
+    ['openWhatsApp', 'openWhatsAppMix'].forEach(function (fn) {
+      var orig = window[fn];
+      if (orig) {
+        window[fn] = function () {
+          state.converted = true;
+          state.exitReason = 'converted_whatsapp';
+          sendEvent('conversion_whatsapp');
+          sendSession('converted_whatsapp');
+          orig();
+        };
+      }
     });
-  })();
 
-  // ── TRACK SCROLL DEPTH ───────────────────────────────────────────
-  (function () {
-    var scrollMilestones = [25, 50, 75, 100];
-    var reached = {};
-    function checkScroll() {
+    // ─ Krok 4: kliknięcie Messenger (konwersja) ─
+    ['openMessenger', 'openMessengerMix'].forEach(function (fn) {
+      var orig = window[fn];
+      if (orig) {
+        window[fn] = function () {
+          state.converted = true;
+          state.exitReason = 'converted_messenger';
+          sendEvent('conversion_messenger');
+          sendSession('converted_messenger');
+          orig();
+        };
+      }
+    });
+
+    // ─ Zmiana języka ─
+    var origSetLang = window.setLang;
+    if (origSetLang) {
+      window.setLang = function (l) {
+        state.language = l;
+        sendEvent('lang_change', { language: l });
+        origSetLang(l);
+      };
+    }
+
+    // ─ FAQ kliknięcia ─
+    var origFaqToggle = window.faqToggle;
+    if (origFaqToggle) {
+      window.faqToggle = function (item) {
+        var q = item ? (item.querySelector('.faq-q') || item).textContent.trim().substr(0, 60) : '';
+        sendEvent('faq_open', { faqQuestion: q });
+        origFaqToggle(item);
+      };
+    }
+
+    // ─ Lightbox (zdjęcia apartamentów) ─
+    var origLbOpen = window.lbOpen;
+    if (origLbOpen) {
+      window.lbOpen = function (photos, idx) {
+        sendEvent('gallery_lightbox');
+        origLbOpen(photos, idx);
+      };
+    }
+
+    // ─ Scroll depth ─
+    var scrollDepths = [25, 50, 75, 100];
+    var firedDepths = {};
+    window.addEventListener('scroll', function () {
       var scrolled = window.scrollY + window.innerHeight;
       var total = document.body.scrollHeight;
-      var pct = Math.round(scrolled / total * 100);
-      scrollMilestones.forEach(function (m) {
-        if (!reached[m] && pct >= m) {
-          reached[m] = true;
-          pushEvent('scroll_depth', { depth: m });
+      var pct = Math.round((scrolled / total) * 100);
+      scrollDepths.forEach(function (d) {
+        if (pct >= d && !firedDepths[d]) {
+          firedDepths[d] = true;
+          sendEvent('scroll_depth_' + d);
         }
       });
-    }
-    window.addEventListener('scroll', checkScroll, { passive: true });
-  })();
+    }, { passive: true });
 
-  // ── TRACK FAQ OPEN ───────────────────────────────────────────────
-  (function () {
-    var origFaqToggle = window.faqToggle;
-    if (typeof origFaqToggle === 'function') {
-      window.faqToggle = function (item) {
-        var q = item && item.querySelector('.faq-q');
-        pushEvent('faq_open', { question: q ? q.textContent.slice(0, 60) : 'unknown' });
-        return origFaqToggle.apply(this, arguments);
-      };
-    }
-  })();
+    // ─ Wykryj zmianę dat bez konwersji (bottleneck kalendarza) ─
+    var origDayClick = window.onDayClick || window.dayClick;
+    // Kalendarz używa bezpośrednich onclick na komórkach — hookujemy delegację
+    document.addEventListener('click', function (e) {
+      var day = e.target.closest('.day.free');
+      if (!day) return;
+      var dk = day.dataset && day.dataset.dk;
+      if (dk && state.datesTried.indexOf(dk) === -1 && state.datesTried.length < 50) {
+        state.datesTried.push(dk);
+      }
+    });
 
-  // ── TRACK LANG SWITCH ────────────────────────────────────────────
-  (function () {
-    var origSetLang = window.setLang;
-    if (typeof origSetLang === 'function') {
-      window.setLang = function (l) {
-        pushEvent('lang_switch', { to: l });
-        lang = l;
-        return origSetLang.apply(this, arguments);
-      };
-    }
-  })();
+  } // end installHooks
 
-  // ── TRACK LIGHTBOX ───────────────────────────────────────────────
-  (function () {
-    var origLbOpen = window.lbOpen;
-    if (typeof origLbOpen === 'function') {
-      window.lbOpen = function (photos, idx) {
-        pushEvent('lightbox_open', { idx: idx });
-        return origLbOpen.apply(this, arguments);
-      };
-    }
-  })();
+  // ── PRICE HELPER ──────────────────────────────────────────
+  function calcPrice() {
+    try {
+      if (!window.selOpt || !window.selStart || !window.selEnd) return 0;
+      var s = new Date(window.selStart), e = new Date(window.selEnd);
+      var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
+      if (nights <= 0) return 0;
+      var total = 0;
+      var c = new Date(s);
+      for (var i = 0; i < nights; i++) {
+        total += (window.getDayPrice ? window.getDayPrice(window.selOpt.apts, c.getMonth() + 1) : 0);
+        c.setDate(c.getDate() + 1);
+      }
+      total += (window.kids || 0) * (window.KIDS_PRICE || 15) * nights;
+      return total;
+    } catch (e2) { return 0; }
+  }
 
-  // ── TRACK "BACK" BUTTON ──────────────────────────────────────────
-  window.addEventListener('popstate', function (e) {
-    pushEvent('back_button', { step: e.state && e.state.step });
+  // ── EXIT INTENT ───────────────────────────────────────────
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') {
+      var reason = state.converted ? 'converted' :
+                   state.maxStep >= 4 ? 'exit_after_summary' :
+                   state.maxStep >= 3 ? 'exit_after_apt' :
+                   state.maxStep >= 2 ? 'exit_after_persons' : 'bounce';
+      if (!state.converted) state.exitReason = reason;
+      sendSession(reason);
+    }
   });
 
-  // Expose for debugging
-  window._azTrack = { push: pushEvent, flush: flushEvents, uid: uid, sessionId: sessionId };
+  window.addEventListener('pagehide', function () {
+    if (!state.converted) {
+      var reason = state.maxStep >= 4 ? 'exit_after_summary' :
+                   state.maxStep >= 3 ? 'exit_after_apt' :
+                   state.maxStep >= 2 ? 'exit_after_persons' : 'bounce';
+      state.exitReason = reason;
+      sendSession(reason);
+    }
+  });
+
+  // ── PAGE VIEW (pierwsze zdarzenie) ────────────────────────
+  window.addEventListener('load', function () {
+    sendEvent('page_view');
+    installHooks();
+  });
+
+  // ── EXPOSE API dla ręcznego logowania ────────────────────
+  window.AzzurroAnalytics = {
+    sendEvent: sendEvent,
+    sendSession: sendSession,
+    state: state,
+    sessionId: sessionId,
+    visitorId: visitorId
+  };
 
 })();
-</script>
-<!-- ═══════════════════════════════════════════════════════════════ END TRACKING -->
-  </body>
+
+</body>
+
 </html>

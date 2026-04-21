@@ -18,8 +18,32 @@
     <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=794338596767404&ev=PageView&noscript=1"/></noscript>
     <!-- End Facebook Pixel -->
+    <!-- App Choice Popup (Dowiedz się więcej) -->
+    <div class="app-choice-overlay" id="app-choice-popup" onclick="closeInfoPopup(event)">
+        <div class="app-choice-box">
+            <div class="app-choice-title" id="t-popup-title">Skontaktuj się z nami</div>
+            <div class="app-choice-sub" id="t-popup-sub">Wybierz aplikację, przez którą chcesz napisać</div>
+            <div class="app-choice-btns">
+                <button class="btn-messenger" onclick="openInfoMessenger()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
+                        <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
+                    </svg>
+                    <span id="t-popup-btn-msg">Messenger</span>
+                </button>
+                <button class="btn-whatsapp" onclick="openInfoWhatsApp()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/>
+                    </svg>
+                    <span id="t-popup-btn-wa">WhatsApp</span>
+                </button>
+            </div>
+            <button class="app-choice-cancel" onclick="document.getElementById('app-choice-popup').classList.remove('open')" id="t-popup-cancel">Anuluj</button>
+        </div>
+    </div>
+
     <script>
-        // Lock viewport height before FB WebView collapses its chrome on first touch.
+
         // svh/vh change causes a full-screen jump when FB hides its navigation bar.
         (function () {
             var vh = window.innerHeight * 0.01;
@@ -2707,6 +2731,86 @@
             color: rgba(255, 255, 255, 0.35);
             font-family: 'DM Sans', sans-serif;
         }
+
+        /* ── App Choice Popup ── */
+        .app-choice-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 28, 40, 0.65);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .app-choice-overlay.open {
+            display: flex;
+        }
+        .app-choice-box {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px 24px 24px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            animation: fadeUp .28s ease both;
+        }
+        .app-choice-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--ocean);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .app-choice-sub {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+        .app-choice-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .app-choice-cancel {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 13px;
+            cursor: pointer;
+            padding: 10px;
+            margin-top: 4px;
+            font-family: "DM Sans", sans-serif;
+            letter-spacing: .02em;
+        }
+        .app-choice-cancel:hover { color: var(--ocean); }
+
+        .btn-info-gold {
+            width: 100%;
+            border-radius: 14px;
+            font-weight: 600;
+            font-family: "DM Sans", sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 14px 16px;
+            color: var(--gold);
+            background: transparent;
+            border: 2px solid var(--gold);
+            box-shadow: 0 2px 12px rgba(201, 168, 76, 0.18);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 8px;
+        }
+        .btn-info-gold:hover, .btn-info-gold:active {
+            background: rgba(201, 168, 76, 0.08);
+            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.28);
+        }
     </style>
 </head>
 
@@ -3023,6 +3127,9 @@
                 <button id="btn-rezerwuj" class="btn-luxury"
                     onclick="document.querySelector('#s4 .btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
                     <span id="t-btn-reserve">Rezerwuj</span>
+                </button>
+                <button class="btn-info-gold" onclick="openInfoPopup()">
+                    <span id="t-btn-info">Dowiedz się więcej</span>
                 </button>
             </div>
             <div class="inclusions">
@@ -3551,6 +3658,7 @@
                 cinText: 'Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.',
                 cinBtn: 'Sprawdź CIN', cinCopy: 'Kopiuj',
                 btnReserve: 'Rezerwuj', btnMsg: 'Rezerwuj przez Messenger', btnWa: 'Rezerwuj przez WhatsApp', contactNote: 'Odpiszemy szybko i ustalimy wszystkie szczegóły rezerwacji.',
+                btnInfo: 'Dowiedz się więcej', popupTitle: 'Skontaktuj się z nami', popupSub: 'Wybierz aplikację, przez którą chcesz napisać', popupBtnMsg: 'Messenger', popupBtnWa: 'WhatsApp', popupCancel: 'Anuluj',
                 optFor: 'Dostępne opcje dla', adult1: ' gościa', adults: ' gości', kid1: ' dostawka', kids: ' dostawki',
                 calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
                 apt1: 'Apartament nr 1', apt2: 'Apartament nr 2', apt3: 'Apartament nr 3',
@@ -3630,6 +3738,7 @@
                 cinText: 'Our property is officially registered and holds the Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is reported to the relevant authorities in accordance with Italian law — book with complete confidence.',
                 cinBtn: 'Verify CIN', cinCopy: 'Copy',
                 btnReserve: 'Book now', btnMsg: 'Message us on Messenger', btnWa: 'Message us on WhatsApp', contactNote: "We'll get back to you quickly and sort out all the details.",
+                btnInfo: 'Learn more', popupTitle: 'Contact us', popupSub: 'Choose the app you want to write through', popupBtnMsg: 'Messenger', popupBtnWa: 'WhatsApp', popupCancel: 'Cancel',
                 optFor: 'Available options for', adult1: ' guest', adults: ' guests', kid1: ' extra bed', kids: ' extra beds',
                 calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
                 apt1: 'Apartment No. 1', apt2: 'Apartment No. 2', apt3: 'Apartment No. 3',
@@ -3763,6 +3872,12 @@
             setTxt('t-cin-btn', T.cinBtn || 'Sprawdź CIN');
             setTxt('t-cin-copy-lbl', T.cinCopy || 'Kopiuj');
             setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
+            setTxt('t-btn-info', T.btnInfo || 'Dowiedz się więcej');
+            setTxt('t-popup-title', T.popupTitle || 'Skontaktuj się z nami');
+            setTxt('t-popup-sub', T.popupSub || 'Wybierz aplikację, przez którą chcesz napisać');
+            setTxt('t-popup-btn-msg', T.popupBtnMsg || 'Messenger');
+            setTxt('t-popup-btn-wa', T.popupBtnWa || 'WhatsApp');
+            setTxt('t-popup-cancel', T.popupCancel || 'Anuluj');
             if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
             setTxt('t-tip-text', T.tipText);
             setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
@@ -4919,6 +5034,49 @@
         }
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
+            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        }
+
+        /* ── Dowiedz się więcej popup ── */
+        function buildInfoMsg() {
+            var mAskInfo = (lang === 'en') ? '. Could you please send me more information?' : '. Proszę więcej informacji.';
+            var msg = T.mHi;
+            if (selOpt) {
+                var aptName = selOpt.name;
+                var osoby = adults + (adults === 1 ? T.calA1 : T.calAN);
+                if (kids > 0) osoby += ', ' + kids + (kids === 1 ? T.calK1 : T.calKN);
+                if (selStart && selEnd) {
+                    var s = pD4(selStart), e = pD4(selEnd);
+                    var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
+                    var ns = nights === 1 ? '1' + T.n1 : (nights < 5 ? nights + T.n2 : nights + T.n5);
+                    var total = calcTotalForMsg(s, e, nights);
+                    msg = T.mHi + ' ' + T.mInt + aptName + T.mIn + fmtDate(s) + ' - ' + fmtDate(e) + ' (' + ns + '),' + T.mG + osoby + '.' + T.mPrice + total + '€.' + mAskInfo;
+                } else if (selStart) {
+                    msg = T.mHi + ' ' + T.mInt + aptName + T.mFrom + fmtDate(pD4(selStart)) + ',' + T.mG + osoby + mAskInfo;
+                } else {
+                    msg = T.mHi + ' ' + T.mInt + aptName + ',' + T.mG + osoby + mAskInfo;
+                }
+            }
+            return msg;
+        }
+        function openInfoPopup() {
+            document.getElementById('app-choice-popup').classList.add('open');
+        }
+        function closeInfoPopup(e) {
+            if (e.target === document.getElementById('app-choice-popup')) {
+                document.getElementById('app-choice-popup').classList.remove('open');
+            }
+        }
+        function openInfoMessenger() {
+            document.getElementById('app-choice-popup').classList.remove('open');
+            var msg = buildInfoMsg();
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
+            window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        }
+        function openInfoWhatsApp() {
+            document.getElementById('app-choice-popup').classList.remove('open');
+            var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
             window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }

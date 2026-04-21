@@ -3024,6 +3024,9 @@
                     onclick="document.querySelector('#s4 .btn-contact-row').scrollIntoView({behavior: 'smooth', block: 'end'});">
                     <span id="t-btn-reserve">Rezerwuj</span>
                 </button>
+                <button id="btn-learn-more" class="btn-main" style="margin-top: 10px; background: transparent; border: 1.5px solid var(--ocean); color: var(--ocean);" onclick="openLearnMore()">
+                    <span id="t-btn-learn-more">Dowiedz się więcej</span>
+                </button>
             </div>
             <div class="inclusions">
                 <div class="incl-title" id="t-incl-title">Co zawiera cena?</div>
@@ -3566,6 +3569,8 @@
                 n1: ' noc', n2: ' noce', n5: ' nocy',
                 mHi: 'Dzień dobry,', mInt: 'jestem zainteresowany/a ', mIn: ' w terminie ',
                 mFrom: ' od ', mG: ' liczba gości: ', mAsk: '. Proszę o informacje dotyczące rezerwacji.',
+                mAskInfo: '. Proszę o więcej informacji.',
+                btnLearnMore: 'Dowiedz się więcej',
                 mPrice: ' Wyliczona cena za ten pobyt: ',
                 errLoad: 'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
                 tipText: 'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.',
@@ -3645,6 +3650,8 @@
                 n1: ' night', n2: ' nights', n5: ' nights',
                 mHi: 'Hello,', mInt: "I'm interested in ", mIn: ' from ',
                 mFrom: ' from ', mG: ', number of guests: ', mAsk: '. Could you please send me booking details?',
+                mAskInfo: '. Could you please send me more information?',
+                btnLearnMore: 'Learn more',
                 mPrice: ' Estimated price for this stay: ',
                 errLoad: 'Could not load the calendar. Please refresh the page and try again.',
                 tipText: 'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.',
@@ -3762,7 +3769,7 @@
             setTxt('t-cin-title', T.cinTitle); setTxt('t-cin-text', T.cinText);
             setTxt('t-cin-btn', T.cinBtn || 'Sprawdź CIN');
             setTxt('t-cin-copy-lbl', T.cinCopy || 'Kopiuj');
-            setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
+            setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote); setTxt('t-btn-learn-more', T.btnLearnMore || 'Dowiedz się więcej');
             if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
             setTxt('t-tip-text', T.tipText);
             setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
@@ -4911,6 +4918,30 @@
             window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
+        /* ── dowiedz się więcej (info) ── */
+        function openLearnMore() {
+            var msg = T.mHi;
+            if (selOpt) {
+                var aptName = selOpt.name;
+                var osoby = adults + (adults === 1 ? T.calA1 : T.calAN);
+                if (kids > 0) osoby += ', ' + kids + (kids === 1 ? T.calK1 : T.calKN);
+                if (selStart && selEnd) {
+                    var s = pD4(selStart), e = pD4(selEnd);
+                    var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
+                    var ns = nights === 1 ? '1' + T.n1 : (nights < 5 ? nights + T.n2 : nights + T.n5);
+                    var total = calcTotalForMsg(s, e, nights);
+                    msg = T.mHi + ' ' + T.mInt + aptName + T.mIn + fmtDate(s) + ' - ' + fmtDate(e) + ' (' + ns + '),' + T.mG + osoby + '.' + T.mPrice + total + '€.' + (T.mAskInfo || '. Proszę o więcej informacji.');
+                } else if (selStart) {
+                    msg = T.mHi + ' ' + T.mInt + aptName + T.mFrom + fmtDate(pD4(selStart)) + ',' + T.mG + osoby + (T.mAskInfo || '. Proszę o więcej informacji.');
+                } else {
+                    msg = T.mHi + ' ' + T.mInt + aptName + ',' + T.mG + osoby + (T.mAskInfo || '. Proszę o więcej informacji.');
+                }
+            }
+            if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'LearnMore'});
+            /* Otwieramy Messenger — tak samo jak btn-messenger */
+            window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        }
+
         /* ── messenger & whatsapp for mixed availability ── */
         function openMessengerMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
@@ -5433,6 +5464,18 @@
                 };
               }
             });
+
+            // ─ Krok 4: kliknięcie "Dowiedz się więcej" (konwersja) ─
+            var origLearnMore = window.openLearnMore;
+            if (origLearnMore) {
+              window.openLearnMore = function () {
+                state.converted = true;
+                state.exitReason = 'converted_learn_more';
+                sendEvent('conversion_learn_more');
+                sendSession('converted_learn_more');
+                origLearnMore();
+              };
+            }
 
             // ─ Zmiana języka ─
             var origSetLang = window.setLang;

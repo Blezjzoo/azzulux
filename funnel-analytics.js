@@ -1,7 +1,7 @@
 (function() {
     // URL backendu z Google Apps Script. 
     // UWAGA: Należy podmienić ten URL po wdrożeniu skryptu backend.gs
-    const BACKEND_URL = 'TWOJ_APPS_SCRIPT_WEB_APP_URL';
+    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyXqRvEqbUY_YnfcP4fxjH-3bfUs_JcKHB5CcCDp8JA-ypBRXKsqpczWufWIZBfrFvE/exec';
     
     function generateSessionId() {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

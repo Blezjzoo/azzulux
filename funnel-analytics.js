@@ -71,7 +71,104 @@
         });
     });
 
-    // ── 2. Patch goStep2 — wejście do kalendarza ──
+    // ── 2. Patch goStep4 — wejście na ostatnią stronę (podsumowanie) ──
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+
+            // Patch _showStep4 lub goStep4
+            var _origStep4 = window._showStep4 || window.goStep4;
+            var step4EntryTime = null;
+            var step4MaxScroll = 0;
+            var step4ScrollListener = null;
+            var step4CtaVisible = false;
+
+            function startStep4Tracking() {
+                step4EntryTime = Date.now();
+                step4MaxScroll = 0;
+                step4CtaVisible = false;
+
+                // Scroll tracking na kroku 4
+                if (step4ScrollListener) window.removeEventListener('scroll', step4ScrollListener);
+                step4ScrollListener = function() {
+                    var s4 = document.getElementById('s4');
+                    if (!s4 || s4.classList.contains('hidden')) return;
+                    var rect = s4.getBoundingClientRect();
+                    var s4Height = s4.offsetHeight || 1;
+                    var scrolled = Math.max(0, -rect.top);
+                    var pct = Math.min(100, Math.round(scrolled / s4Height * 100));
+                    if (pct > step4MaxScroll) step4MaxScroll = pct;
+
+                    // Czy CTA (btn-messenger/btn-whatsapp) jest widoczne
+                    var cta = document.getElementById('btn-messenger');
+                    if (cta) {
+                        var cr = cta.getBoundingClientRect();
+                        if (cr.top < window.innerHeight && cr.bottom > 0 && !step4CtaVisible) {
+                            step4CtaVisible = true;
+                            trackStage('Krok4_CTA_Widoczne', {});
+                        }
+                    }
+                };
+                window.addEventListener('scroll', step4ScrollListener, { passive: true });
+
+                trackStage('Wejscie_Krok4', {});
+            }
+
+            // Zapisz czas i scroll gdy użytkownik opuszcza krok 4
+            function endStep4Tracking(reason) {
+                if (!step4EntryTime) return;
+                var timeSec = Math.round((Date.now() - step4EntryTime) / 1000);
+                trackStage('Opuszczenie_Krok4', {
+                    reason: reason || 'nawigacja',
+                    timeOnStep: timeSec,
+                    maxScrollPct: step4MaxScroll,
+                    ctaSeen: step4CtaVisible
+                });
+                step4EntryTime = null;
+            }
+
+            if (typeof window._showStep4 === 'function') {
+                var _orig4 = window._showStep4;
+                window._showStep4 = function() {
+                    startStep4Tracking();
+                    return _orig4.apply(this, arguments);
+                };
+            } else if (typeof window.goStep4 === 'function') {
+                var _orig4b = window.goStep4;
+                window.goStep4 = function() {
+                    startStep4Tracking();
+                    return _orig4b.apply(this, arguments);
+                };
+            }
+
+            // Patch openMessenger i openWhatsApp — żeby wiedzieć że kliknął CTA będąc na kroku 4
+            ['openMessenger', 'openWhatsApp'].forEach(function(fn) {
+                if (typeof window[fn] === 'function') {
+                    var _origFn = window[fn];
+                    window[fn] = function() {
+                        endStep4Tracking('klikniecie_cta');
+                        return _origFn.apply(this, arguments);
+                    };
+                }
+            });
+
+            // Patch nawigacji wstecz (showStep)
+            if (typeof window.showStep === 'function') {
+                var _origShow = window.showStep;
+                window.showStep = function(step) {
+                    if (step !== 4) endStep4Tracking('powrot_do_kroku_' + step);
+                    return _origShow.apply(this, arguments);
+                };
+            }
+
+            // Zamknięcie strony
+            window.addEventListener('beforeunload', function() {
+                endStep4Tracking('zamkniecie_strony');
+            });
+
+        }, 1500);
+    });
+
+    // ── 3. Patch goStep2 — wejście do kalendarza ──
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             if (typeof window.goStep2 === 'function') {

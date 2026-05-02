@@ -17,9 +17,11 @@
     const referrer = document.referrer;
 
     let source = 'Direct';
-    if (utmSource) source = utmSource;
-    else if (refParam) source = refParam;
-    else if (referrer && !referrer.includes(window.location.hostname)) {
+    if (utmSource) {
+        source = utmSource;
+    } else if (refParam) {
+        source = refParam;
+    } else if (referrer && !referrer.includes(window.location.hostname)) {
         try { source = new URL(referrer).hostname; } catch(e) { source = referrer; }
     }
 
@@ -33,7 +35,8 @@
         localStorage.setItem('azzurro_funnel_session', JSON.stringify(sessionData));
     }
 
-    function trackStage(stageName, details = {}) {
+    function trackStage(stageName, details) {
+        details = details || {};
         const eventData = {
             sessionId: sessionData.sessionId,
             source: sessionData.source,
@@ -50,69 +53,61 @@
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(eventData)
-        }).catch(err => console.error('Błąd śledzenia:', err));
+        }).catch(function(err) { console.error('Błąd śledzenia:', err); });
     }
 
     window.AzzurroFunnel = {
         track: trackStage,
-        getSession: () => sessionData
+        getSession: function() { return sessionData; }
     };
 
-    // ── 1. PageView z datą wejścia ──
-    window.addEventListener('load', () => {
-        const now = new Date();
+    // ── 1. PageView z datą i dniem tygodnia ──
+    window.addEventListener('load', function() {
+        var now = new Date();
         trackStage('PageView', {
             path: window.location.pathname,
-            dayOfWeek: now.toLocaleDateString('pl-PL', { weekday: 'long' }),
-            visitDate: now.toISOString().substring(0, 10)  // YYYY-MM-DD
+            visitDate: now.toISOString().substring(0, 10),
+            dayOfWeek: now.toLocaleDateString('pl-PL', { weekday: 'long' })
         });
     });
 
-    // ── 2. Patch goStep2 — śledzenie wejścia do kalendarza ──
-    document.addEventListener('DOMContentLoaded', () => {
-        // Czekamy aż strona załaduje swoje funkcje
-        setTimeout(() => {
+    // ── 2. Patch goStep2 — wejście do kalendarza ──
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
             if (typeof window.goStep2 === 'function') {
-                const _originalGoStep2 = window.goStep2;
+                var _orig = window.goStep2;
                 window.goStep2 = function() {
-                    // Pobierz liczbę gości z formularza (zmienna globalna strony)
-                    const adults = window.adults || null;
-                    const kids = window.kids || null;
                     trackStage('Wejscie_Kalendarz', {
-                        adults: adults,
-                        kids: kids
+                        adults: window.adults || null,
+                        kids: window.kids || null
                     });
-                    return _originalGoStep2.apply(this, arguments);
+                    return _orig.apply(this, arguments);
                 };
             }
         }, 1500);
     });
 
-    // ── 3. Patch dayClick — śledzenie zaznaczonych dat ──
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
+    // ── 3. Patch dayClick — śledzenie wybranych dat ──
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
             if (typeof window.dayClick === 'function') {
-                const _originalDayClick = window.dayClick;
+                var _origDay = window.dayClick;
                 window.dayClick = function(dk) {
-                    const result = _originalDayClick.apply(this, arguments);
-                    // Po kliknięciu odczytaj stan z globalnych zmiennych strony
-                    setTimeout(() => {
-                        const start = window.selStart || null;
-                        const end = window.selEnd || null;
+                    var result = _origDay.apply(this, arguments);
+                    setTimeout(function() {
+                        var start = window.selStart || null;
+                        var end   = window.selEnd   || null;
                         if (start && !end) {
-                            // Wybrano check-in
                             trackStage('Data_CheckIn', { checkIn: start });
                         } else if (start && end) {
-                            // Wybrano pełny zakres
-                            const nights = Math.round(
-                                (new Date(end.slice(0,4), end.slice(4,6)-1, end.slice(6,8)) -
-                                 new Date(start.slice(0,4), start.slice(4,6)-1, start.slice(6,8)))
-                                / (1000*60*60*24)
+                            // format YYYY-MM-DD — prosta różnica dat
+                            var nights = Math.round(
+                                (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)
                             );
                             trackStage('Data_CheckOut', {
-                                checkIn: start,
+                                checkIn:  start,
                                 checkOut: end,
-                                nights: nights
+                                nights:   nights
                             });
                         }
                     }, 50);
@@ -122,13 +117,13 @@
         }, 1500);
     });
 
-    // ── 4. Kliknięcia przycisków (Messenger, WhatsApp, apartamenty) ──
+    // ── 4. Kliknięcia przycisków ──
     document.addEventListener('click', function(e) {
-        const target = e.target.closest('button, .step, .aopt');
+        var target = e.target.closest('button, .step, .aopt');
         if (!target) return;
 
-        let actionName = null;
-        let details = {};
+        var actionName = null;
+        var details = {};
 
         if (target.classList.contains('btn-messenger')) {
             actionName = 'Klikniecie_Messenger';
@@ -139,8 +134,12 @@
         } else if (target.classList.contains('step')) {
             actionName = 'Nawigacja_Krok_' + target.id;
         } else if (target.classList.contains('aopt')) {
-            const h3 = target.querySelector('h3');
+            var h3 = target.querySelector('h3');
             actionName = 'Wybor_Apartamentu_' + (h3 ? h3.innerText.trim() : 'Nieznany');
+        } else if (target.onclick) {
+            var clickStr = target.onclick.toString();
+            if (clickStr.includes('openInfoMessenger')) actionName = 'Info_Messenger';
+            if (clickStr.includes('openInfoWhatsApp'))  actionName = 'Info_WhatsApp';
         }
 
         if (actionName) {
@@ -148,4 +147,5 @@
             trackStage(actionName, details);
         }
     });
+
 })();

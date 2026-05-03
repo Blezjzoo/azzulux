@@ -4929,7 +4929,7 @@
                            to jest "orphan gap" i zasada minimum nie obowiązuje */
                         if (isMinMoStrict && cache) {
                             var gapDayBefore = new Date(sD); gapDayBefore.setDate(gapDayBefore.getDate() - 1);
-                            var gapDayAfter = new Date(eD2);
+                            var gapDayAfter  = new Date(eD2); gapDayAfter.setDate(gapDayAfter.getDate() + 1);
                             var busyBefore = !!(cache[dkey(gapDayBefore)] && cache[dkey(gapDayBefore)].length > 0);
                             var busyAfter  = !!(cache[dkey(gapDayAfter)]  && cache[dkey(gapDayAfter)].length  > 0);
                             if (busyBefore && busyAfter) isMinMoStrict = false;
@@ -4974,7 +4974,7 @@
             /* Wyjątek: orphan gap — luka między rezerwacjami zwalnia z minimum */
             if (isMinMo && cache) {
                 var smDayBefore = new Date(s); smDayBefore.setDate(smDayBefore.getDate() - 1);
-                var smDayAfter  = new Date(e);
+                var smDayAfter  = new Date(e); smDayAfter.setDate(smDayAfter.getDate() + 1);
                 var smBusyBefore = !!(cache[dkey(smDayBefore)] && cache[dkey(smDayBefore)].length > 0);
                 var smBusyAfter  = !!(cache[dkey(smDayAfter)]  && cache[dkey(smDayAfter)].length  > 0);
                 if (smBusyBefore && smBusyAfter) isMinMo = false;

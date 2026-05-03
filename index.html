@@ -4928,6 +4928,15 @@
                         var sMo = sD.getMonth() + 1, eMo = eD2.getMonth() + 1;
                         /* min-stay: jeśli start LUB koniec pobytu w lipcu/sierpniu → min 5 nocy */
                         var isMinMoStrict = (sMo === 7 || sMo === 8 || eMo === 7 || eMo === 8);
+                        /* Wyjątek: luka między rezerwacjami — jeśli dzień przed startem ORAZ dzień po końcu są zajęte,
+                           to jest "orphan gap" i zasada minimum nie obowiązuje */
+                        if (isMinMoStrict && cache) {
+                            var gapDayBefore = new Date(sD); gapDayBefore.setDate(gapDayBefore.getDate() - 1);
+                            var gapDayAfter = new Date(eD2);
+                            var busyBefore = !!(cache[dkey(gapDayBefore)] && cache[dkey(gapDayBefore)].length > 0);
+                            var busyAfter  = !!(cache[dkey(gapDayAfter)]  && cache[dkey(gapDayAfter)].length  > 0);
+                            if (busyBefore && busyAfter) isMinMoStrict = false;
+                        }
                         if (isMinMoStrict && nightsChk < MIN_STAY_NIGHTS) {
                             var warn2 = $id('min-warn');
                             if (warn2) { warn2.textContent = T.minWarn; warn2.style.display = 'block'; }
@@ -4965,6 +4974,14 @@
             var nights = Math.round((e - s) / (1000 * 60 * 60 * 24));
             if (nights <= 0) { if (warn) warn.style.display = 'none'; return; }
             var isMinMo = (s.getMonth() + 1 === 7 || s.getMonth() + 1 === 8 || e.getMonth() + 1 === 7 || e.getMonth() + 1 === 8);
+            /* Wyjątek: orphan gap — luka między rezerwacjami zwalnia z minimum */
+            if (isMinMo && cache) {
+                var smDayBefore = new Date(s); smDayBefore.setDate(smDayBefore.getDate() - 1);
+                var smDayAfter  = new Date(e);
+                var smBusyBefore = !!(cache[dkey(smDayBefore)] && cache[dkey(smDayBefore)].length > 0);
+                var smBusyAfter  = !!(cache[dkey(smDayAfter)]  && cache[dkey(smDayAfter)].length  > 0);
+                if (smBusyBefore && smBusyAfter) isMinMo = false;
+            }
             if (isMinMo && nights < MIN_STAY_NIGHTS) { if (warn) { warn.textContent = T.minWarn; warn.style.display = 'block'; } return; }
             if (warn) warn.style.display = 'none';
         }

@@ -2667,6 +2667,159 @@
             background: var(--ocean2);
         }
 
+        /* ── Hero Video Player ── */
+        .hero-video-section {
+            width: 100%;
+            max-width: 268px;
+            margin-top: 28px;
+        }
+
+        .hero-vp-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #000;
+            box-shadow:
+                0 24px 56px rgba(0, 0, 0, 0.55),
+                0 0 0 1px rgba(255, 255, 255, 0.10) inset;
+        }
+
+        .hero-vp-iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Scale: 4:5 video inside 16:9 player → video width = 45% of iframe.
+               To fill container width → iframe must be 1/0.45 = 222% wide.
+               iframe height = 222% * 9/16 = 125% of container height. */
+            transform: translate(-50%, -50%);
+            width: 222%;
+            height: 125%;
+            border: none;
+            pointer-events: none;
+        }
+
+        /* Clickable overlay to start play */
+        .hero-vp-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.35s;
+            background: rgba(0,0,0,0.18);
+        }
+
+        .hero-vp-overlay.vp-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .hero-vp-big-play {
+            width: 66px;
+            height: 66px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .hero-vp-big-play:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        /* Controls bar below video */
+        .hero-vp-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 2px 0;
+        }
+
+        .hero-vp-btn {
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            cursor: pointer;
+            padding: 0;
+            color: rgba(255, 255, 255, 0.90);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            transition: background 0.2s, border-color 0.2s;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .hero-vp-btn:hover,
+        .hero-vp-btn:active {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        .hero-vp-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .hero-vp-progress-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 18px;
+        }
+
+        .hero-vp-progress {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 3px;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+        }
+
+        .hero-vp-progress::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s;
+        }
+
+        .hero-vp-progress:active::-webkit-slider-thumb {
+            transform: scale(1.25);
+        }
+
+        .hero-vp-progress::-moz-range-thumb {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+
         /* ── Hero Map (now in pt-section) ── */
         .hero-content {
             padding-bottom: 20px;
@@ -2833,8 +2986,64 @@
                 <span class="luxury-text" id="t-luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>
                 <span class="luxury-line"></span>
             </div>
+
+            <!-- ── Hero Video Player ── -->
+            <div class="hero-video-section">
+                <div class="hero-vp-wrap" id="hero-vp-wrap">
+                    <iframe
+                        id="hero-vimeo-iframe"
+                        class="hero-vp-iframe"
+                        src="https://player.vimeo.com/video/1190870640?background=1&loop=1&autopause=0&dnt=1"
+                        allow="autoplay; fullscreen; picture-in-picture; hdr"
+                        allowfullscreen>
+                    </iframe>
+                    <!-- Overlay – kliknij by odtworzyć (domyślnie ukryty – background=1 autoplays) -->
+                    <div class="hero-vp-overlay vp-hidden" id="hero-vp-overlay" onclick="heroVpToggle()">
+                        <div class="hero-vp-big-play">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Controls bar -->
+                <div class="hero-vp-controls">
+                    <!-- Play / Pause -->
+                    <button class="hero-vp-btn" id="hero-vp-play-btn" onclick="heroVpToggle()" aria-label="Play/Pause">
+                        <svg id="hero-vp-play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="hero-vp-pause-icon" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <!-- Progress -->
+                    <div class="hero-vp-progress-wrap">
+                        <input
+                            class="hero-vp-progress"
+                            id="hero-vp-progress"
+                            type="range"
+                            min="0"
+                            max="100"
+                            value="0"
+                            step="0.1"
+                            oninput="heroVpSeek(this.value)"
+                            aria-label="Postęp"
+                        />
+                    </div>
+                    <!-- Mute / Unmute -->
+                    <button class="hero-vp-btn" id="hero-vp-mute-btn" onclick="heroVpMute()" aria-label="Dźwięk">
+                        <!-- muted icon (default) -->
+                        <svg id="hero-vp-muted-icon" viewBox="0 0 24 24">
+                            <path d="M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zm-13.27-9L4 4.27 7.73 8H3v8h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06A8.99 8.99 0 0014 20.23v-.01l1.9 1.9L17.27 20.7 3.73 7.27 5.73 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                        </svg>
+                        <!-- sound icon (hidden) -->
+                        <svg id="hero-vp-sound-icon" viewBox="0 0 24 24" style="display:none">
+                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- ── / Hero Video Player ── -->
+
             <div class="hero-cta-group"
-                style="display:flex; flex-direction:column; gap:16px; margin-top:20px; z-index:3; align-items:center;">
+                style="display:flex; flex-direction:column; gap:16px; margin-top:24px; z-index:3; align-items:center;">
                 <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
                     <button class="hero-cta"
                         onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})"
@@ -5453,6 +5662,114 @@
     </div>
   </div>
 </div>
+
+<!-- Vimeo Player API -->
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+(function () {
+    var vp = null;
+    // background=1 autoplays muted immediately → start state = playing
+    var vpPlaying = true;
+    var vpMuted = true;
+    var vpReady = false;
+
+    function initVp() {
+        var iframe = document.getElementById('hero-vimeo-iframe');
+        if (!iframe || typeof Vimeo === 'undefined') return;
+
+        vp = new Vimeo.Player(iframe);
+        vpReady = true;
+
+        // background=1 autoplays — sync play icon to pause state
+        updatePlayIcons();
+
+        vp.on('play', function () {
+            vpPlaying = true;
+            updatePlayIcons();
+            var overlay = document.getElementById('hero-vp-overlay');
+            if (overlay) overlay.classList.add('vp-hidden');
+        });
+
+        vp.on('pause', function () {
+            vpPlaying = false;
+            updatePlayIcons();
+            // show overlay with play button when paused
+            var overlay = document.getElementById('hero-vp-overlay');
+            if (overlay) overlay.classList.remove('vp-hidden');
+        });
+
+        // loop=1 → ended nie odpali, ale zostawiamy jako safety
+        vp.on('ended', function () {
+            vpPlaying = false;
+            updatePlayIcons();
+            var prog = document.getElementById('hero-vp-progress');
+            if (prog) { prog.value = 0; updateProgressFill(prog); }
+        });
+
+        vp.on('timeupdate', function (data) {
+            var prog = document.getElementById('hero-vp-progress');
+            if (prog && data.duration > 0) {
+                prog.value = (data.seconds / data.duration) * 100;
+                updateProgressFill(prog);
+            }
+        });
+
+        // HDR: Vimeo Player API automatycznie serwuje HDR na urządzeniach
+        // które to obsługują (HDR10 / Dolby Vision) — nie wymaga dodatkowej konfiguracji.
+        // background=1 zapewnia brak branding overlay na końcu.
+    }
+
+    function updatePlayIcons() {
+        var pi = document.getElementById('hero-vp-play-icon');
+        var pa = document.getElementById('hero-vp-pause-icon');
+        if (!pi || !pa) return;
+        pi.style.display = vpPlaying ? 'none' : 'block';
+        pa.style.display = vpPlaying ? 'block' : 'none';
+    }
+
+    function updateMuteIcons() {
+        var mi = document.getElementById('hero-vp-muted-icon');
+        var si = document.getElementById('hero-vp-sound-icon');
+        if (!mi || !si) return;
+        mi.style.display = vpMuted ? 'block' : 'none';
+        si.style.display = vpMuted ? 'none' : 'block';
+    }
+
+    function updateProgressFill(input) {
+        var pct = ((input.value - input.min) / (input.max - input.min)) * 100;
+        input.style.background =
+            'linear-gradient(to right, rgba(255,255,255,0.85) ' + pct + '%, rgba(255,255,255,0.22) ' + pct + '%)';
+    }
+
+    window.heroVpToggle = function () {
+        if (!vpReady) { initVp(); return; }
+        if (vpPlaying) { vp.pause(); } else { vp.play(); }
+    };
+
+    window.heroVpMute = function () {
+        if (!vpReady) return;
+        vpMuted = !vpMuted;
+        vp.setVolume(vpMuted ? 0 : 1);
+        updateMuteIcons();
+    };
+
+    window.heroVpSeek = function (val) {
+        if (!vpReady) return;
+        var prog = document.getElementById('hero-vp-progress');
+        updateProgressFill(prog);
+        vp.getDuration().then(function (dur) {
+            vp.setCurrentTime(dur * val / 100);
+        });
+    };
+
+    // init when Vimeo script has loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initVp);
+    } else {
+        initVp();
+    }
+})();
+</script>
 
 <!-- JS -->
 <script>

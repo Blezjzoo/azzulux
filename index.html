@@ -2964,6 +2964,89 @@
             background: rgba(201, 168, 76, 0.08);
             box-shadow: 0 4px 16px rgba(201, 168, 76, 0.28);
         }
+        /* ── GOOGLE REVIEWS CAROUSEL ── */
+        .reviews-section {
+            margin-top: 28px;
+            width: 100%;
+        }
+        .reviews-eyebrow {
+            text-align: center;
+            font-family: "DM Sans", sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .25em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .reviews-track-wrap {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+        .reviews-track {
+            display: flex;
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+        }
+        .reviews-track:active { cursor: grabbing; }
+        .review-card {
+            flex: 0 0 100%;
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 20px 20px 18px;
+            box-shadow: 0 2px 18px rgba(26,74,92,.10);
+            border: 1px solid rgba(216,238,245,.7);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .review-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--white);
+        }
+        .review-meta { flex: 1; min-width: 0; }
+        .review-name {
+            font-family: "DM Sans", sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .review-date {
+            font-family: "DM Sans", sans-serif;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+        .review-google-logo { flex-shrink: 0; opacity: .5; }
+        .review-stars { display: flex; gap: 2px; }
+        .review-star { color: #fbbc04; font-size: 15px; line-height: 1; }
+        .review-text {
+            font-family: "DM Sans", sans-serif;
+            font-size: 13.5px;
+            line-height: 1.65;
+            color: var(--text);
+            opacity: .88;
+        }
     </style>
 </head>
 
@@ -3452,6 +3535,77 @@
             </div>
 
             <!-- CIN popup overlay -->
+
+            <!-- Google Reviews Carousel -->
+            <div class="reviews-section">
+                <div class="reviews-eyebrow">✦ &nbsp; opinie gości &nbsp; ✦</div>
+                <div class="reviews-track-wrap" id="reviews-wrap">
+                    <div class="reviews-track" id="reviews-track">
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar" style="background:linear-gradient(135deg,#1a4a5c,#4a9ab5);">M</div>
+                                <div class="review-meta">
+                                    <div class="review-name">Małgorzata W.</div>
+                                    <div class="review-date">kwiecień 2025</div>
+                                </div>
+                                <svg class="review-google-logo" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            </div>
+                            <div class="review-stars">
+                                <span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span>
+                            </div>
+                            <div class="review-text">Przepiękne, luksusowe apartamenty w samym centrum Porto Torres. Plaża w 5 minut pieszo, parking bezpłatny, a właściciele niezwykle pomocni. Wrócimy na pewno! Polecamy z całego serca.</div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar" style="background:linear-gradient(135deg,#c9a84c,#e8c97a);">T</div>
+                                <div class="review-meta">
+                                    <div class="review-name">Tomasz i Kasia R.</div>
+                                    <div class="review-date">sierpień 2024</div>
+                                </div>
+                                <svg class="review-google-logo" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            </div>
+                            <div class="review-stars">
+                                <span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span>
+                            </div>
+                            <div class="review-text">Idealne miejsce na rodzinne wakacje. Apartament super czysty, w pełni wyposażona kuchnia, taras z widokiem. Sardynia z Porto Torres to strzał w dziesiątkę — La Pelosa zrobiła na nas piorunujące wrażenie!</div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar" style="background:linear-gradient(135deg,#2e7d32,#56ab2f);">A</div>
+                                <div class="review-meta">
+                                    <div class="review-name">Anna S.</div>
+                                    <div class="review-date">lipiec 2024</div>
+                                </div>
+                                <svg class="review-google-logo" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            </div>
+                            <div class="review-stars">
+                                <span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span>
+                            </div>
+                            <div class="review-text">Naprawdę luksusowe wnętrze w zaskakująco dobrej cenie. Wysoki standard wykończenia, pościel hotelowej jakości, szybkie Wi-Fi. Kontakt z gospodarzem bezproblemowy przez WhatsApp — dostaliśmy odpowiedź w 5 minut!</div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar" style="background:linear-gradient(135deg,#6a1b9a,#ab47bc);">P</div>
+                                <div class="review-meta">
+                                    <div class="review-name">Piotr &amp; Monika</div>
+                                    <div class="review-date">czerwiec 2024</div>
+                                </div>
+                                <svg class="review-google-logo" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            </div>
+                            <div class="review-stars">
+                                <span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span>
+                            </div>
+                            <div class="review-text">Porto Torres zaskoczyło nas pozytywnie — brak turystycznego zgiełku, autentyczna Sardynia. Apartament na Via Petronia to idealna baza. Parking pod domem, bezpłatny, co w centrum Włoch jest rzadkością. Szczerze polecamy!</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Google Reviews Carousel -->
 
             <div class="hero-map-wrap" style="margin-top:28px;">
                 <div class="map-eyebrow" id="t-map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
@@ -5662,6 +5816,96 @@
     </div>
   </div>
 </div>
+
+<!-- Reviews Carousel JS -->
+<script>
+(function() {
+    var track = document.getElementById('reviews-track');
+    if (!track) return;
+
+    // Clone cards for infinite loop
+    var cards = track.querySelectorAll('.review-card');
+    var total = cards.length;
+
+    // Clone first and last for seamless loop
+    var firstClone = cards[0].cloneNode(true);
+    var lastClone = cards[total - 1].cloneNode(true);
+    track.appendChild(firstClone);
+    track.insertBefore(lastClone, cards[0]);
+
+    // Now total real cards = total, clones at index 0 and total+1
+    var current = 1; // start at real first card (index 1 because of prepended clone)
+    var isAnimating = false;
+
+    function getW() {
+        return document.getElementById('reviews-wrap').offsetWidth;
+    }
+
+    function setPos(idx, animate) {
+        track.style.transition = animate ? 'transform .42s cubic-bezier(.4,0,.2,1)' : 'none';
+        track.style.transform = 'translateX(-' + (idx * getW()) + 'px)';
+    }
+
+    // Init: jump to real first card without animation
+    setPos(current, false);
+
+    function next() {
+        if (isAnimating) return;
+        isAnimating = true;
+        current++;
+        setPos(current, true);
+    }
+
+    function prev() {
+        if (isAnimating) return;
+        isAnimating = true;
+        current--;
+        setPos(current, true);
+    }
+
+    track.addEventListener('transitionend', function() {
+        isAnimating = false;
+        // Seamless loop: if we're on a clone, jump silently
+        if (current === total + 1) { current = 1; setPos(current, false); }
+        if (current === 0) { current = total; setPos(current, false); }
+    });
+
+    // Touch / mouse drag
+    var startX = 0, startT = 0, isDragging = false, currentDelta = 0;
+
+    function dragStart(x) { startX = x; startT = Date.now(); isDragging = true; currentDelta = 0; }
+    function dragMove(x) {
+        if (!isDragging) return;
+        currentDelta = x - startX;
+        // Live follow finger
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(-' + (current * getW() - currentDelta) + 'px)';
+    }
+    function dragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        var elapsed = Date.now() - startT;
+        var isFlick = elapsed < 300 && Math.abs(currentDelta) > 30;
+        if (currentDelta < -40 || (isFlick && currentDelta < 0)) next();
+        else if (currentDelta > 40 || (isFlick && currentDelta > 0)) prev();
+        else setPos(current, true);
+    }
+
+    track.addEventListener('touchstart', function(e) { dragStart(e.touches[0].clientX); }, { passive: true });
+    track.addEventListener('touchmove', function(e) { dragMove(e.touches[0].clientX); }, { passive: true });
+    track.addEventListener('touchend', dragEnd);
+    track.addEventListener('mousedown', function(e) { dragStart(e.clientX); e.preventDefault(); });
+    document.addEventListener('mousemove', function(e) { if (isDragging) dragMove(e.clientX); });
+    document.addEventListener('mouseup', dragEnd);
+
+    // Auto-advance every 5s
+    var autoTimer = setInterval(next, 5000);
+    track.addEventListener('touchstart', function() { clearInterval(autoTimer); }, { passive: true });
+
+    // Recalc on resize
+    window.addEventListener('resize', function() { setPos(current, false); });
+})();
+</script>
 
 <!-- Vimeo Player API -->
 <script src="https://player.vimeo.com/api/player.js"></script>

@@ -4116,7 +4116,7 @@
                 calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
                 apt1: 'Apartament nr 1', apt2: 'Apartament nr 2', apt3: 'Apartament nr 3',
                 apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartamenty — do 6 osób', aptL: '3 apartamenty — do 8 osób',
-                t1a: 'dla 2 osób', t1b: 'bez balkonu', t3a: 'dla 2 osób', t3b: 'z tarasem',
+                t1a: 'dla 2 osób', t1b: 'taras na dachu', t3a: 'dla 2 osób', t3b: 'z tarasem',
                 t2a: 'dla 4 osób', t2b: 'z balkonem', t12a: 'dla 2+4 osób', t12b: 'Apt 2 z balkonem', t13a: 'dla 2+2 osób', t13b: 'Apt 3 z tarasem',
                 t23a: 'Apt 2 z balkonem + Apt 3 z tarasem', tL: 'Apt 1 + Apt 2 + Apt 3',
                 bed1: '+ 1 dostawka', bedN: '+ {n} dostawki', orLbl: '— lub —',
@@ -4196,7 +4196,7 @@
                 calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
                 apt1: 'Apartment No. 1', apt2: 'Apartment No. 2', apt3: 'Apartment No. 3',
                 apt12: 'Apt 1 + Apt 2', apt13: 'Apt 1 + Apt 3', apt23: '2 apartments — up to 6 guests', aptL: '3 apartments — up to 8 guests',
-                t1a: 'for 2 guests', t1b: 'no balcony', t3a: 'for 2 guests', t3b: 'with terrace',
+                t1a: 'for 2 guests', t1b: 'rooftop terrace', t3a: 'for 2 guests', t3b: 'with terrace',
                 t2a: 'for 4 guests', t2b: 'with balcony', t12a: 'for 2+4 guests', t12b: 'Apt 2 with balcony', t13a: 'for 2+2 guests', t13b: 'Apt 3 with terrace',
                 t23a: 'Apt 2 with balcony + Apt 3 with terrace', tL: 'Apt 1 + Apt 2 + Apt 3',
                 bed1: '+ 1 extra bed', bedN: '+ {n} extra beds', orLbl: '— or —',
@@ -4284,7 +4284,7 @@
         var adults = 0, kids = 0, selOpt = null, cy, cm, cache = null, selStart = null, selEnd = null;
         var calLoading = false; // Added calLoading state
 
-        var PRICES = { 1: { 4: 70, 5: 80, 6: 90, 7: 100, 8: 120, 9: 90, 10: 70 }, 2: { 4: 90, 5: 120, 6: 140, 7: 160, 8: 175, 9: 120, 10: 90 }, 3: { 4: 80, 5: 90, 6: 100, 7: 110, 8: 130, 9: 100, 10: 80 } };
+        var PRICES = { 1: { 4: 85, 5: 95, 6: 105, 7: 115, 8: 135, 9: 105, 10: 85 }, 2: { 4: 90, 5: 120, 6: 140, 7: 160, 8: 175, 9: 120, 10: 90 }, 3: { 4: 80, 5: 90, 6: 100, 7: 110, 8: 130, 9: 100, 10: 80 } };
         var KIDS_PRICE = 5;
         var DEPOSIT = { 1: 200, 2: 300, 3: 500 };
         var MIN_STAY_NIGHTS = 5;

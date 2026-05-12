@@ -5094,8 +5094,11 @@
             x.ontimeout = function () { calLoading = false; showSt(T.errLoad, true); };
             x.send();
         }
+        /* checkinDays / checkoutDays: {dateKey: [aptNums]} — do wykrywania dni rotacyjnych */
+        var checkinDays = {}, checkoutDays = {};
         function parseGcal(data) {
             var ev = {};
+            checkinDays = {}; checkoutDays = {};
             (data.items || []).forEach(function (item) {
                 var sum = (item.summary || '').toLowerCase();
                 var ap = detApt(sum);
@@ -5103,7 +5106,36 @@
                 var ds, de;
                 if (item.start.date) { ds = item.start.date.replace(/-/g, ''); de = item.end.date.replace(/-/g, ''); }
                 else { ds = item.start.dateTime.replace(/-/g, '').replace(/T.*/, '') + 'T000000Z'; de = item.end.dateTime.replace(/-/g, '').replace(/T.*/, '') + 'T000000Z'; }
+                /* środkowe dni rezerwacji → busy */
                 expandR(ds, de).forEach(function (d) { if (!ev[d]) ev[d] = []; ap.forEach(function (n) { if (ev[d].indexOf(n) === -1) ev[d].push(n); }); });
+                /* zapamiętaj dzień check-in i check-out dla każdego apartamentu */
+                var allDay = ds.indexOf('T') === -1;
+                var sDate = pD(ds);
+                var eDate = pD(de);
+                if (sDate) {
+                    var ciKey = dkey(sDate);
+                    if (!checkinDays[ciKey]) checkinDays[ciKey] = [];
+                    ap.forEach(function (n) { if (checkinDays[ciKey].indexOf(n) === -1) checkinDays[ciKey].push(n); });
+                }
+                if (eDate) {
+                    /* dla all-day events Google Calendar end = dzień po ostatnim, więc cofamy o 1 */
+                    var coDate = new Date(eDate); if (allDay) coDate.setDate(coDate.getDate() - 1);
+                    var coKey = dkey(coDate);
+                    if (!checkoutDays[coKey]) checkoutDays[coKey] = [];
+                    ap.forEach(function (n) { if (checkoutDays[coKey].indexOf(n) === -1) checkoutDays[coKey].push(n); });
+                }
+            });
+            /* Dni rotacyjne: checkout + checkin tego samego apartamentu w tym samym dniu → dodaj do ev jako zajęty */
+            Object.keys(checkoutDays).forEach(function (dk) {
+                var coApts = checkoutDays[dk];
+                var ciApts = checkinDays[dk] || [];
+                coApts.forEach(function (n) {
+                    if (ciApts.indexOf(n) !== -1) {
+                        /* ten apartament ma tego dnia wyjazd I przyjazd → cały dzień zajęty */
+                        if (!ev[dk]) ev[dk] = [];
+                        if (ev[dk].indexOf(n) === -1) ev[dk].push(n);
+                    }
+                });
             });
             return ev;
         }

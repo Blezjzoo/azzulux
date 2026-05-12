@@ -4643,7 +4643,7 @@
 
         function buildGallery(aptIds) {
             var photos = [];
-            var maxPer = aptIds.length > 1 ? 3 : 99;
+            var maxPer = 99;
             aptIds.forEach(function (id) {
                 (APT_PHOTOS[id] || []).slice(0, maxPer).forEach(function (url) { photos.push(url); });
             });

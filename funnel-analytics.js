@@ -77,6 +77,12 @@
     // na atrybucie class elementu #s4. Dzięki temu śledzenie działa niezależnie od tego,
     // JAKA funkcja w index.html chowa/pokazuje krok (goBack, przyciski wstecz w historii
     // przeglądarki przez popstate, itd.) — bez potrzeby łatania każdej z osobna.
+    //
+    // UWAGA: widoczność CTA/sekcji liczymy przez zwykłe getBoundingClientRect (nie
+    // IntersectionObserver) — na realnym ruchu (w większości przeglądarki wbudowane w appkę
+    // Facebook/Instagram na iOS/Androidzie) IntersectionObserver nie dawał wiarygodnych wyników
+    // (nie odpalał się nawet u ~64% sesji, które faktycznie kliknęły CTA — te przeglądarki mają
+    // niepełne/niestabilne wsparcie tego API). getBoundingClientRect działa wszędzie.
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             var s4 = document.getElementById('s4');
@@ -90,6 +96,17 @@
             var step4ScrollListener = null;
             var scrollRafPending = false;
 
+            var WATCH_TARGETS = [
+                { selector: '#rezerwuj-wrap', kind: 'cta', key: 'gorna' },
+                { selector: '#btn-messenger', kind: 'cta', key: 'dolna' },
+                { selector: '.inclusions', kind: 'section', key: 'cena_zawiera' },
+                { selector: '.highlights', kind: 'section', key: 'atuty' },
+                { selector: '.cin-badge', kind: 'section', key: 'cin' },
+                { selector: '.reviews-section', kind: 'section', key: 'opinie' },
+                { selector: '.hero-map-wrap', kind: 'section', key: 'mapa' },
+                { selector: '.faq-section', kind: 'section', key: 'faq' }
+            ];
+
             function secSinceEntry() {
                 return step4EntryTime ? Math.round((Date.now() - step4EntryTime) / 1000) : null;
             }
@@ -100,6 +117,34 @@
                     if (el && !el.classList.contains('hidden')) return n;
                 }
                 return null;
+            }
+
+            function isInViewport(el) {
+                var r = el.getBoundingClientRect();
+                var vh = window.innerHeight || document.documentElement.clientHeight;
+                // element (przynajmniej częściowo) na ekranie i ma realny rozmiar (nie display:none)
+                return r.bottom > 0 && r.top < vh && (r.width > 0 || r.height > 0);
+            }
+
+            function markCtaSeen(key) {
+                if (!step4EntryTime || ctaSeen[key]) return;
+                ctaSeen[key] = true;
+                trackStage('Krok4_CTA_Widoczne', { pozycja: key, afterSec: secSinceEntry() });
+            }
+
+            function checkVisibility() {
+                if (!step4EntryTime || s4.classList.contains('hidden')) return;
+                WATCH_TARGETS.forEach(function(t) {
+                    if (t.kind === 'cta' ? ctaSeen[t.key] : sectionsSeen[t.key]) return;
+                    var el = document.querySelector(t.selector);
+                    if (!el || !isInViewport(el)) return;
+                    if (t.kind === 'cta') {
+                        markCtaSeen(t.key);
+                    } else {
+                        sectionsSeen[t.key] = true;
+                        trackStage('Krok4_Sekcja_Widoczna', { sekcja: t.key, afterSec: secSinceEntry() });
+                    }
+                });
             }
 
             function startStep4Tracking() {
@@ -127,11 +172,17 @@
                                 trackStage('Krok4_Scroll_Milestone', { pct: m, afterSec: secSinceEntry() });
                             }
                         });
+                        checkVisibility();
                     });
                 };
                 window.addEventListener('scroll', step4ScrollListener, { passive: true });
 
                 trackStage('Wejscie_Krok4', {});
+
+                // sprawdź OD RAZU, bez czekania na scroll — górne CTA jest zwykle widoczne
+                // natychmiast po wejściu na krok 4, bez żadnego przewijania; requestAnimationFrame
+                // czeka na to, aż przeglądarka faktycznie odmaluje layout po zdjęciu "hidden"
+                requestAnimationFrame(function() { requestAnimationFrame(checkVisibility); });
             }
 
             function endStep4Tracking(reason) {
@@ -147,45 +198,6 @@
                 });
                 step4EntryTime = null;
                 if (step4ScrollListener) { window.removeEventListener('scroll', step4ScrollListener); step4ScrollListener = null; }
-            }
-
-            // ── widoczność obu par CTA + kluczowych sekcji treści (krok 4) ──
-            var OBSERVE_TARGETS = [
-                { selector: '#rezerwuj-wrap', kind: 'cta', key: 'gorna' },
-                { selector: '#btn-messenger', kind: 'cta', key: 'dolna' },
-                { selector: '.inclusions', kind: 'section', key: 'cena_zawiera' },
-                { selector: '.highlights', kind: 'section', key: 'atuty' },
-                { selector: '.cin-badge', kind: 'section', key: 'cin' },
-                { selector: '.reviews-section', kind: 'section', key: 'opinie' },
-                { selector: '.hero-map-wrap', kind: 'section', key: 'mapa' },
-                { selector: '.faq-section', kind: 'section', key: 'faq' }
-            ];
-
-            if (typeof IntersectionObserver === 'function') {
-                var io = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (!entry.isIntersecting) return;
-                        if (s4.classList.contains('hidden') || !step4EntryTime) return;
-                        var meta = entry.target.__azzurroMeta;
-                        if (!meta) return;
-                        if (meta.kind === 'cta') {
-                            if (ctaSeen[meta.key]) return;
-                            ctaSeen[meta.key] = true;
-                            trackStage('Krok4_CTA_Widoczne', { pozycja: meta.key, afterSec: secSinceEntry() });
-                        } else {
-                            if (sectionsSeen[meta.key]) return;
-                            sectionsSeen[meta.key] = true;
-                            trackStage('Krok4_Sekcja_Widoczna', { sekcja: meta.key, afterSec: secSinceEntry() });
-                        }
-                    });
-                }, { threshold: 0.4 });
-
-                OBSERVE_TARGETS.forEach(function(t) {
-                    var el = document.querySelector(t.selector);
-                    if (!el) return;
-                    el.__azzurroMeta = { kind: t.kind, key: t.key };
-                    io.observe(el);
-                });
             }
 
             // ── wejście/wyjście: jedno źródło prawdy — zmiana klasy "hidden" na #s4 ──
@@ -207,6 +219,19 @@
             // jeśli krok 4 jest już widoczny w momencie inicjalizacji (np. powrót przez historię przeglądarki)
             if (!wasHidden) startStep4Tracking();
 
+            // ── dowód "na pewno widział" wprost z kliknięcia — w fazie CAPTURE, czyli ZANIM
+            // odpali się własny onclick przycisku (openMessenger/openWhatsApp), które od razu
+            // wysyłają Opuszczenie_Krok4. Bez tego, przy bardzo szybkim kliknięciu (a to właśnie
+            // robią najbardziej zdecydowani, konwertujący użytkownicy) checkVisibility() z
+            // requestAnimationFrame mógł nie zdążyć się wykonać przed nawigacją do WhatsAppa —
+            // stąd raport widział "CTA niewidoczne" nawet u realnych konwersji.
+            document.addEventListener('click', function(e) {
+                var btn = e.target.closest('.btn-messenger, .btn-whatsapp');
+                if (!btn) return;
+                var isTop = !!btn.closest('#rezerwuj-wrap');
+                markCtaSeen(isTop ? 'gorna' : 'dolna');
+            }, true);
+
             // ── kliknięcie CTA kończy pomiar z właściwym powodem, zanim otworzy się WhatsApp/Messenger ──
             ['openMessenger', 'openWhatsApp'].forEach(function(fn) {
                 if (typeof window[fn] === 'function') {
@@ -218,9 +243,22 @@
                 }
             });
 
-            // ── zamknięcie karty/przeglądarki ──
+            // ── zamknięcie/opuszczenie strony ──
+            // beforeunload samo w sobie jest zawodne na mobile (zwłaszcza przeglądarki wbudowane
+            // w appki typu Facebook/Instagram często go w ogóle nie odpalają) — pagehide i
+            // visibilitychange są zalecanym, dużo bardziej niezawodnym sygnałem na tych platformach.
+            // endStep4Tracking() jest bezpieczne do wywołania wielokrotnie/z kilku źródeł na to samo
+            // opuszczenie (pierwsze wywołanie zeruje step4EntryTime, kolejne są no-opem).
             window.addEventListener('beforeunload', function() {
                 endStep4Tracking('zamkniecie_strony');
+            });
+            window.addEventListener('pagehide', function() {
+                endStep4Tracking('zamkniecie_strony');
+            });
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'hidden') {
+                    endStep4Tracking('zamkniecie_strony');
+                }
             });
 
         }, 1500);

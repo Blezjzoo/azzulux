@@ -5045,14 +5045,14 @@
             var sApts = selOpt.apts, totalApt = 0;
             var c = new Date(s);
             for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
-            var silentBedNights = (selOpt && selOpt.silentBed) ? KIDS_PRICE * nights : 0;
-            var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids + silentBedNights, kaucja = DEPOSIT[sApts.length] || 200;
+            var mkCount = (selOpt && selOpt.mk) ? selOpt.mk : 0;
+            var totalKids = mkCount * KIDS_PRICE * nights, total = totalApt + totalKids, kaucja = DEPOSIT[sApts.length] || 200;
             var rows = '';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + '</span><span class="sum-val">' + selOpt.name + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumDate + '</span><span class="sum-val">' + fmtDate(s) + ' → ' + fmtDate(e) + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumNights + '</span><span class="sum-val">' + nights + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + ' (' + T.sumNights.toLowerCase() + ': ' + nights + ')</span><span class="sum-val">' + totalApt + '€</span></div>';
-            if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + kids + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
+            if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + mkCount + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
             rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
             rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
             rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
@@ -5183,8 +5183,8 @@
                 var numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
                 if (!past && !isBusy) {
                     if (!isPreviewMode) {
-                        var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
-                        var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE);
+                        var mkCount = (selOpt && selOpt.mk) ? selOpt.mk : 0;
+                        var dayP = getDayPrice(sApts, moNum) + (mkCount * KIDS_PRICE);
                         var prEl = document.createElement('div');
                         prEl.className = 'day-price';
                         prEl.textContent = dayP + '€';

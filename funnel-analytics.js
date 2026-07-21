@@ -71,49 +71,69 @@
         });
     });
 
-    // ── 2. Patch goStep4 — wejście na ostatnią stronę (podsumowanie) ──
+    // ── 2. Krok 4 (podsumowanie) — wejście/wyjście, scroll, widoczność CTA, sekcje ──
+    //
+    // Jedno źródło prawdy o tym, czy krok 4 jest aktualnie widoczny: MutationObserver
+    // na atrybucie class elementu #s4. Dzięki temu śledzenie działa niezależnie od tego,
+    // JAKA funkcja w index.html chowa/pokazuje krok (goBack, przyciski wstecz w historii
+    // przeglądarki przez popstate, itd.) — bez potrzeby łatania każdej z osobna.
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
+            var s4 = document.getElementById('s4');
+            if (!s4) return;
 
-            // Patch _showStep4 lub goStep4
-            var _origStep4 = window._showStep4 || window.goStep4;
             var step4EntryTime = null;
             var step4MaxScroll = 0;
+            var ctaSeen = { gorna: false, dolna: false };
+            var sectionsSeen = {};
+            var scrollMilestonesSeen = {};
             var step4ScrollListener = null;
-            var step4CtaVisible = false;
+            var scrollRafPending = false;
+
+            function secSinceEntry() {
+                return step4EntryTime ? Math.round((Date.now() - step4EntryTime) / 1000) : null;
+            }
+
+            function currentVisibleStep() {
+                for (var n = 1; n <= 4; n++) {
+                    var el = document.getElementById('s' + n);
+                    if (el && !el.classList.contains('hidden')) return n;
+                }
+                return null;
+            }
 
             function startStep4Tracking() {
                 step4EntryTime = Date.now();
                 step4MaxScroll = 0;
-                step4CtaVisible = false;
+                ctaSeen = { gorna: false, dolna: false };
+                sectionsSeen = {};
+                scrollMilestonesSeen = {};
 
-                // Scroll tracking na kroku 4
                 if (step4ScrollListener) window.removeEventListener('scroll', step4ScrollListener);
                 step4ScrollListener = function() {
-                    var s4 = document.getElementById('s4');
-                    if (!s4 || s4.classList.contains('hidden')) return;
-                    var rect = s4.getBoundingClientRect();
-                    var s4Height = s4.offsetHeight || 1;
-                    var scrolled = Math.max(0, -rect.top);
-                    var pct = Math.min(100, Math.round(scrolled / s4Height * 100));
-                    if (pct > step4MaxScroll) step4MaxScroll = pct;
-
-                    // Czy CTA (btn-messenger/btn-whatsapp) jest widoczne
-                    var cta = document.getElementById('btn-messenger');
-                    if (cta) {
-                        var cr = cta.getBoundingClientRect();
-                        if (cr.top < window.innerHeight && cr.bottom > 0 && !step4CtaVisible) {
-                            step4CtaVisible = true;
-                            trackStage('Krok4_CTA_Widoczne', {});
-                        }
-                    }
+                    if (scrollRafPending) return;
+                    scrollRafPending = true;
+                    requestAnimationFrame(function() {
+                        scrollRafPending = false;
+                        if (s4.classList.contains('hidden')) return;
+                        var rect = s4.getBoundingClientRect();
+                        var s4Height = s4.offsetHeight || 1;
+                        var scrolled = Math.max(0, -rect.top);
+                        var pct = Math.min(100, Math.round(scrolled / s4Height * 100));
+                        if (pct > step4MaxScroll) step4MaxScroll = pct;
+                        [25, 50, 75, 100].forEach(function(m) {
+                            if (pct >= m && !scrollMilestonesSeen[m]) {
+                                scrollMilestonesSeen[m] = true;
+                                trackStage('Krok4_Scroll_Milestone', { pct: m, afterSec: secSinceEntry() });
+                            }
+                        });
+                    });
                 };
                 window.addEventListener('scroll', step4ScrollListener, { passive: true });
 
                 trackStage('Wejscie_Krok4', {});
             }
 
-            // Zapisz czas i scroll gdy użytkownik opuszcza krok 4
             function endStep4Tracking(reason) {
                 if (!step4EntryTime) return;
                 var timeSec = Math.round((Date.now() - step4EntryTime) / 1000);
@@ -121,26 +141,73 @@
                     reason: reason || 'nawigacja',
                     timeOnStep: timeSec,
                     maxScrollPct: step4MaxScroll,
-                    ctaSeen: step4CtaVisible
+                    ctaGornaWidoczna: ctaSeen.gorna,
+                    ctaDolnaWidoczna: ctaSeen.dolna,
+                    sekcjeZobaczone: Object.keys(sectionsSeen)
                 });
                 step4EntryTime = null;
+                if (step4ScrollListener) { window.removeEventListener('scroll', step4ScrollListener); step4ScrollListener = null; }
             }
 
-            if (typeof window._showStep4 === 'function') {
-                var _orig4 = window._showStep4;
-                window._showStep4 = function() {
-                    startStep4Tracking();
-                    return _orig4.apply(this, arguments);
-                };
-            } else if (typeof window.goStep4 === 'function') {
-                var _orig4b = window.goStep4;
-                window.goStep4 = function() {
-                    startStep4Tracking();
-                    return _orig4b.apply(this, arguments);
-                };
+            // ── widoczność obu par CTA + kluczowych sekcji treści (krok 4) ──
+            var OBSERVE_TARGETS = [
+                { selector: '#rezerwuj-wrap', kind: 'cta', key: 'gorna' },
+                { selector: '#btn-messenger', kind: 'cta', key: 'dolna' },
+                { selector: '.inclusions', kind: 'section', key: 'cena_zawiera' },
+                { selector: '.highlights', kind: 'section', key: 'atuty' },
+                { selector: '.cin-badge', kind: 'section', key: 'cin' },
+                { selector: '.reviews-section', kind: 'section', key: 'opinie' },
+                { selector: '.hero-map-wrap', kind: 'section', key: 'mapa' },
+                { selector: '.faq-section', kind: 'section', key: 'faq' }
+            ];
+
+            if (typeof IntersectionObserver === 'function') {
+                var io = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (!entry.isIntersecting) return;
+                        if (s4.classList.contains('hidden') || !step4EntryTime) return;
+                        var meta = entry.target.__azzurroMeta;
+                        if (!meta) return;
+                        if (meta.kind === 'cta') {
+                            if (ctaSeen[meta.key]) return;
+                            ctaSeen[meta.key] = true;
+                            trackStage('Krok4_CTA_Widoczne', { pozycja: meta.key, afterSec: secSinceEntry() });
+                        } else {
+                            if (sectionsSeen[meta.key]) return;
+                            sectionsSeen[meta.key] = true;
+                            trackStage('Krok4_Sekcja_Widoczna', { sekcja: meta.key, afterSec: secSinceEntry() });
+                        }
+                    });
+                }, { threshold: 0.4 });
+
+                OBSERVE_TARGETS.forEach(function(t) {
+                    var el = document.querySelector(t.selector);
+                    if (!el) return;
+                    el.__azzurroMeta = { kind: t.kind, key: t.key };
+                    io.observe(el);
+                });
             }
 
-            // Patch openMessenger i openWhatsApp — żeby wiedzieć że kliknął CTA będąc na kroku 4
+            // ── wejście/wyjście: jedno źródło prawdy — zmiana klasy "hidden" na #s4 ──
+            var wasHidden = s4.classList.contains('hidden');
+            var s4ClassObserver = new MutationObserver(function() {
+                var isHidden = s4.classList.contains('hidden');
+                if (isHidden && !wasHidden) {
+                    // CTA (WhatsApp/Messenger) nie zmienia kroku — ten branch łapie wyłącznie
+                    // powrót do wcześniejszego kroku (przyciskiem "Zmień..." albo cofnięciem w przeglądarce)
+                    var target = currentVisibleStep();
+                    endStep4Tracking(target ? ('powrot_do_kroku_' + target) : 'nawigacja');
+                } else if (!isHidden && wasHidden) {
+                    startStep4Tracking();
+                }
+                wasHidden = isHidden;
+            });
+            s4ClassObserver.observe(s4, { attributes: true, attributeFilter: ['class'] });
+
+            // jeśli krok 4 jest już widoczny w momencie inicjalizacji (np. powrót przez historię przeglądarki)
+            if (!wasHidden) startStep4Tracking();
+
+            // ── kliknięcie CTA kończy pomiar z właściwym powodem, zanim otworzy się WhatsApp/Messenger ──
             ['openMessenger', 'openWhatsApp'].forEach(function(fn) {
                 if (typeof window[fn] === 'function') {
                     var _origFn = window[fn];
@@ -151,16 +218,7 @@
                 }
             });
 
-            // Patch nawigacji wstecz (showStep)
-            if (typeof window.showStep === 'function') {
-                var _origShow = window.showStep;
-                window.showStep = function(step) {
-                    if (step !== 4) endStep4Tracking('powrot_do_kroku_' + step);
-                    return _origShow.apply(this, arguments);
-                };
-            }
-
-            // Zamknięcie strony
+            // ── zamknięcie karty/przeglądarki ──
             window.addEventListener('beforeunload', function() {
                 endStep4Tracking('zamkniecie_strony');
             });
@@ -184,7 +242,7 @@
         }, 1500);
     });
 
-    // ── 3. Patch dayClick — śledzenie wybranych dat ──
+    // ── 4. Patch dayClick — śledzenie wybranych dat ──
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             if (typeof window.dayClick === 'function') {
@@ -197,7 +255,6 @@
                         if (start && !end) {
                             trackStage('Data_CheckIn', { checkIn: start });
                         } else if (start && end) {
-                            // format YYYY-MM-DD — prosta różnica dat
                             var nights = Math.round(
                                 (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)
                             );
@@ -214,9 +271,27 @@
         }, 1500);
     });
 
-    // ── 4. Kliknięcia przycisków ──
+    // ── 5. Patch selectOpt — realny wybór apartamentu (przycisk "Wybierz" ma stopPropagation,
+    //      więc globalny nasłuchiwacz kliknięć niżej NIGDY go nie widzi — trzeba złapać u źródła) ──
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            if (typeof window.selectOpt === 'function') {
+                var _origSelect = window.selectOpt;
+                window.selectOpt = function(o, div) {
+                    if (o && !o.unavail) {
+                        trackStage('Wybor_Apartamentu', { id: o.id, name: o.name });
+                    }
+                    return _origSelect.apply(this, arguments);
+                };
+            }
+        }, 1500);
+    });
+
+    // ── 6. Kliknięcia przycisków / elementów w całym lejku ──
     document.addEventListener('click', function(e) {
-        var target = e.target.closest('button, .step, .aopt');
+        var target = e.target.closest(
+            'button, .step, .aopt, .btn-back, .faq-q, .reviews-btn, #btn-waitlist'
+        );
         if (!target) return;
 
         var actionName = null;
@@ -228,11 +303,35 @@
             actionName = 'Klikniecie_WhatsApp';
         } else if (target.classList.contains('btn-main') && target.id === 'btn1') {
             actionName = 'Zatwierdzenie_Krok1';
+        } else if (target.id === 'btn-waitlist') {
+            actionName = 'Klikniecie_Waitlist'; // sygnał niezdecydowania — "jeszcze nie teraz"
+        } else if (target.classList.contains('btn-back')) {
+            actionName = 'Klikniecie_Wstecz';
+            var m = (target.getAttribute('onclick') || '').match(/goBack\((\d+)\)/);
+            details.doKroku = m ? Number(m[1]) : null;
+        } else if (target.classList.contains('faq-q')) {
+            actionName = 'Klikniecie_FAQ';
+            var qSpan = target.querySelector('span');
+            details.pytanie = qSpan ? qSpan.textContent.trim() : '';
+            // nasłuchiwacz na document odpala się PO inline onclick="faqToggle(this)" (bąbelkowanie),
+            // więc klasa "open" tu odzwierciedla już nowy stan po przełączeniu
+            details.otwarte = !!(target.closest('.faq-item') && target.closest('.faq-item').classList.contains('open'));
+        } else if (target.classList.contains('reviews-btn')) {
+            actionName = 'Klikniecie_Opinie_Nawigacja';
+            details.kierunek = target.id === 'rev-prev' ? 'poprzednia' : 'nastepna';
         } else if (target.classList.contains('step')) {
-            actionName = 'Nawigacja_Krok_' + target.id;
+            actionName = 'Nawigacja_Krok';
+            details.krok = target.id || null;
         } else if (target.classList.contains('aopt')) {
-            var h3 = target.querySelector('h3');
-            actionName = 'Wybor_Apartamentu_' + (h3 ? h3.innerText.trim() : 'Nieznany');
+            var aname = target.querySelector('.aname');
+            actionName = 'Rozwiniecie_Apartamentu'; // rozwinięcie karty — NIE jest to wybór (ten łapie patch selectOpt)
+            details.name = aname ? aname.innerText.trim() : 'Nieznany';
+        } else if (target.classList.contains('cin-copy-btn')) {
+            actionName = 'Klikniecie_CIN';
+            details.akcja = 'kopiuj';
+        } else if (target.classList.contains('cin-verify-btn')) {
+            actionName = 'Klikniecie_CIN';
+            details.akcja = 'sprawdz';
         } else if (target.onclick) {
             var clickStr = target.onclick.toString();
             if (clickStr.includes('openInfoMessenger')) actionName = 'Info_Messenger';
@@ -240,7 +339,7 @@
         }
 
         if (actionName) {
-            details.text = target.innerText ? target.innerText.trim().substring(0, 50) : '';
+            if (details.text === undefined) details.text = target.innerText ? target.innerText.trim().substring(0, 50) : '';
             trackStage(actionName, details);
         }
     });

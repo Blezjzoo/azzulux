@@ -1682,6 +1682,17 @@
             padding: 6px 0 2px
         }
 
+        .price-reassure {
+            font-size: 12.5px;
+            color: var(--baz);
+            font-weight: 600;
+            line-height: 1.5;
+            padding: 10px 12px;
+            margin-top: 10px;
+            background: var(--baz-l);
+            border-radius: 10px;
+        }
+
         .inclusions {
             background: var(--baz-l);
             border: 1.5px solid #a5d6a7;
@@ -4100,6 +4111,7 @@
                 sumTitle: 'Podsumowanie rezerwacji', sumDate: 'Pobyt', sumNights: 'Liczba nocy', sumApt: 'Apartament',
                 sumKids: 'Dostawki', sumTotal: 'Łącznie', sumDeposit: '+ Kaucja zwrotna',
                 depositNote: 'Kaucja jest pobierana przy zameldowaniu i zwracana w całości po wymeldowaniu — nie jest wliczona w cenę pobytu.',
+                priceReassure: '✓ Brak ukrytych opłat — sprzątanie, pościel i ręczniki wliczone w cenę, bez opłaty klimatycznej.',
                 inclTitle: 'Co zawiera cena?', incl1: 'Ręczniki i pościel', incl2: 'Sprzątanie końcowe', incl3: 'Bez opłaty klimatycznej', incl4: 'Pralka do dyspozycji',
                 hlTitle: 'Dlaczego warto wybrać nas?',
                 hl1: '25 minut od lotniska Alghero (Porto Torres)',
@@ -4180,6 +4192,7 @@
                 sumTitle: 'Booking summary', sumDate: 'Stay', sumNights: 'Nights', sumApt: 'Apartment',
                 sumKids: 'Extra beds', sumTotal: 'Total', sumDeposit: '+ Refundable security deposit',
                 depositNote: 'The security deposit is collected at check-in and fully refunded at check-out — it is not included in the accommodation price.',
+                priceReassure: '✓ No hidden fees — cleaning, linens and towels included, no tourist tax.',
                 inclTitle: "What's included", incl1: 'Towels and bed linen', incl2: 'End-of-stay cleaning', incl3: 'No tourist tax', incl4: 'Washing machine available',
                 hlTitle: 'Why stay with us?',
                 hl1: '25 minutes from Alghero Airport (Porto Torres)',
@@ -5056,6 +5069,7 @@
             rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
             rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
             rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
+            rows += '<div class="price-reassure">' + T.priceReassure + '</div>';
             var now2 = new Date(); now2.setHours(0, 0, 0, 0);
             var isLm = (s.getFullYear() === now2.getFullYear() && s.getMonth() === now2.getMonth());
             if (isLm) {

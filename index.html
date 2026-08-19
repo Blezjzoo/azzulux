@@ -4908,11 +4908,12 @@
             }
         }
 
-        /* ── wymuszenie przejrzenia min. 3 zdjęć przed "Sprawdź cenę" (pierwsze zdjęcie się nie liczy) ── */
+        /* ── wymuszenie przejrzenia WSZYSTKICH zdjęć przed "Sprawdź cenę" (pierwsze zdjęcie się nie liczy,
+           więc trzeba tyle razy nacisnąć/przewinąć ile jest zdjęć) ── */
         function galRequiredViews(gallery) {
             var n = gallery.querySelectorAll('.apt-gallery-slide').length;
             if (n <= 1) return 0;
-            return Math.min(3, n);
+            return n;
         }
         function galViewedCount(gallery) {
             return gallery._viewedSlides ? Object.keys(gallery._viewedSlides).length : 0;
@@ -5138,7 +5139,9 @@
                         galGateWarn(gallery, btn);
                     } else {
                         galAutoAdvance(gallery, btn);
-                        if (galGateOk(gallery)) { selectOpt(o, div); }
+                        /* nawet po obejrzeniu ostatniego zdjęcia i wypełnieniu przycisku na 100%
+                           NIE przechodzimy dalej automatycznie — wymagane jest jeszcze jedno,
+                           osobne kliknięcie (gate jest już spełniony, więc trafi w gałąź poniżej) */
                     }
                     return;
                 }

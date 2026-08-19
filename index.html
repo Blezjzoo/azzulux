@@ -53,11 +53,10 @@
     <!-- Preconnect do zewnętrznych hostów -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://drive.google.com">
-    <link rel="preconnect" href="https://lh3.googleusercontent.com">
-    <!-- Preload pierwszego zdjęcia hero (przed wykonaniem JS) -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <!-- Preload pierwszego zdjęcia hero (przed wykonaniem JS) — musi być zgodny z PHOTO_BASE w skrypcie -->
     <link rel="preload" as="image"
-        href="https://drive.google.com/thumbnail?id=1d0Yr-cdyKSRE594UHSl2G1svemfstN0W&sz=w800"
+        href="https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux@main/images/apt3/3.webp"
         fetchpriority="high">
     <!-- Google Fonts ładowane asynchronicznie — nie blokuje renderowania -->
     <link rel="preload"
@@ -3506,7 +3505,7 @@
                 <div class="sales-grid">
                     <div class="sales-card">
                         <img id="t-sc1-img"
-                            src="https://lh3.googleusercontent.com/d/18oIM2QMYi6a7t9_6vAwuo0UGxx-B-8wD=w800"
+                            src="https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux@main/images/sales/1.webp"
                             alt="Plaża na Sardynii">
                         <div class="sales-card-body">
                             <div class="sales-card-title" id="t-sc1-t">Krystaliczna woda i rajskie plaże</div>
@@ -3517,7 +3516,7 @@
                     </div>
                     <div class="sales-card">
                         <img id="t-sc2-img"
-                            src="https://lh3.googleusercontent.com/d/1tsY-LePkV6ihej3D85cDjt2xgp-Yi68k=w800"
+                            src="https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux@main/images/sales/2.webp"
                             alt="Włoskie miasteczko">
                         <div class="sales-card-body">
                             <div class="sales-card-title" id="t-sc2-t">Odkryj prawdziwą Sardynię</div>
@@ -4661,46 +4660,47 @@
             return opts;
         }
 
-        /* ── apartment photos config ── */
+        /* ── apartment photos config ──
+           Zdjęcia hostowane na GitHub (przez CDN jsDelivr — szybsze i stabilniejsze niż Google Drive).
+           PHOTO_BASE zostanie podmieniony na finalny adres po wgraniu folderu `images/` do repozytorium. */
+        var PHOTO_BASE = 'https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux@main/images/';
         var APT_PHOTOS = {
             1: [
-                'https://drive.google.com/thumbnail?id=16MBwBG7yu3R1HPQp6pUcvG3lfF0RfawI&sz=w800',
-                'https://drive.google.com/thumbnail?id=1mNGeHpOq2rL3W20_iL27FEzs8ITMqwCU&sz=w800',
-                'https://drive.google.com/thumbnail?id=1N_cr8eS5Ig68hdGTOTjxFh9N0NM0Cblx&sz=w800',
-                'https://drive.google.com/thumbnail?id=1FJPc20q9SPsgmsvJIjOr4oOljpPqnOXs&sz=w800',
-                'https://drive.google.com/thumbnail?id=1hif8OsYol_1b76L1x24-av0bgEa6veeu&sz=w800',
-                'https://drive.google.com/thumbnail?id=1P6YxTta1y5DalFzTH1ug7NUelEUuTvCj&sz=w800',
-                'https://drive.google.com/thumbnail?id=1roRf7pykgorTj2XRzVNp0unEdmR0T8uL&sz=w800',
-                'https://drive.google.com/thumbnail?id=1bTvWGJjtjY1g0gbdxC0S376tcEhrv1EH&sz=w800'
+                PHOTO_BASE + 'apt1/1.webp',
+                PHOTO_BASE + 'apt1/2.webp',
+                PHOTO_BASE + 'apt1/3.webp',
+                PHOTO_BASE + 'apt1/4.webp',
+                PHOTO_BASE + 'apt1/5.webp',
+                PHOTO_BASE + 'apt1/6.webp',
+                PHOTO_BASE + 'apt1/7.webp',
+                PHOTO_BASE + 'apt1/8.webp'
             ],
             2: [
-                'https://drive.google.com/thumbnail?id=1-xqJj5M1gWcocCPrlStqBy1s3dRegpVB&sz=w800',
-                'https://drive.google.com/thumbnail?id=1YXfW0qyZV7ytBV307HSkYOBK_gHNiqVU&sz=w800',
-                'https://drive.google.com/thumbnail?id=1jc0Im8f5uPyL2MvSB1EyqOCJsIhuJeCT&sz=w800',
-                'https://drive.google.com/thumbnail?id=1ia60RkyODZPrc-U0NQWNNzTtl0BtzaRJ&sz=w800',
-                'https://drive.google.com/thumbnail?id=1MZZgFNiIRxK0XHwQ8g-qB6oBKKS7ODGN&sz=w800',
-                'https://drive.google.com/thumbnail?id=11P9VX3oShkhHr3NdAeV4quw0S42KT_OX&sz=w800'
+                PHOTO_BASE + 'apt2/1.webp',
+                PHOTO_BASE + 'apt2/2.webp',
+                PHOTO_BASE + 'apt2/3.webp',
+                PHOTO_BASE + 'apt2/4.jpg',
+                PHOTO_BASE + 'apt2/5.webp',
+                PHOTO_BASE + 'apt2/6.webp'
             ],
             3: [
-                'https://drive.google.com/thumbnail?id=1x8T4_235RouMhz1S_iOWX3BKznIXdkSX&sz=w800',
-                'https://drive.google.com/thumbnail?id=1k2D5KeR1Xo2k9C0fTbMm9OW9oXATyf7x&sz=w800',
-                'https://drive.google.com/thumbnail?id=1d0Yr-cdyKSRE594UHSl2G1svemfstN0W&sz=w800',
-                'https://drive.google.com/thumbnail?id=1tKXyjwTulcg2wI_DscRdoJfDtYEzLSyh&sz=w800',
-                'https://drive.google.com/thumbnail?id=1tiDsEr2JbPUE4tE8Txw3uTWh22LiGl7N&sz=w800',
-                'https://drive.google.com/thumbnail?id=15ZWlbDN9w5Rlqgq_4rIGLbIR-0WBYka4&sz=w800'
+                PHOTO_BASE + 'apt3/1.webp',
+                PHOTO_BASE + 'apt3/2.jpg',
+                PHOTO_BASE + 'apt3/3.webp',
+                PHOTO_BASE + 'apt3/4.jpg',
+                PHOTO_BASE + 'apt3/5.webp',
+                PHOTO_BASE + 'apt3/6.jpg'
             ]
         };
 
-        /* responsive image size based on screen width */
-        var _heroSz = window.innerWidth > 1400 ? 'w1920' : window.innerWidth > 768 ? 'w1200' : 'w800';
         var HERO_PHOTO_URLS = [
-            'https://drive.google.com/thumbnail?id=1d0Yr-cdyKSRE594UHSl2G1svemfstN0W&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=1x8T4_235RouMhz1S_iOWX3BKznIXdkSX&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=11P9VX3oShkhHr3NdAeV4quw0S42KT_OX&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=1-xqJj5M1gWcocCPrlStqBy1s3dRegpVB&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=1YXfW0qyZV7ytBV307HSkYOBK_gHNiqVU&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=1BGxvMEjuNcaxEX5iPCL4hsDotDoQcVIp&sz=' + _heroSz,
-            'https://drive.google.com/thumbnail?id=1Z31LI61E7_c9gEvpmMF7wKu0958bC8ZY&sz=' + _heroSz,
+            PHOTO_BASE + 'apt3/3.webp',
+            PHOTO_BASE + 'apt3/1.webp',
+            PHOTO_BASE + 'apt2/6.webp',
+            PHOTO_BASE + 'apt2/1.webp',
+            PHOTO_BASE + 'apt2/2.webp',
+            PHOTO_BASE + 'hero/1.webp',
+            PHOTO_BASE + 'hero/2.webp'
         ];
 
         /* ── hero slideshow ── */

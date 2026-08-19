@@ -945,7 +945,42 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .gal-gate-toast {
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            margin-bottom: 9px;
+            background: var(--ocean);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 7px 12px;
+            border-radius: 10px;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+            opacity: 0;
+            transform: translateY(4px) scale(.96);
+            transition: opacity .22s ease, transform .22s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .gal-gate-toast::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 16px;
+            border: 6px solid transparent;
+            border-top-color: var(--ocean);
+        }
+
+        .gal-gate-toast.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
         .adots {
@@ -1024,16 +1059,100 @@
             touch-action: manipulation;
             flex-shrink: 0;
             line-height: 1;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            --fill-pct: 0%;
         }
 
-        .btn-select:hover {
-            background: var(--ocean);
-            color: #fff;
+        .btn-select::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            width: var(--fill-pct);
+            background: var(--baz);
+            opacity: .22;
+            z-index: -1;
+            transition: width .45s cubic-bezier(.4, 0, .2, 1);
+            pointer-events: none;
+        }
+
+        .btn-select:hover::before {
+            opacity: .32;
         }
 
         .aopt.sel .btn-select {
             background: var(--ocean);
             color: #fff;
+        }
+
+        .btn-select.gate-ready-shown {
+            border-color: var(--baz);
+            color: var(--baz);
+        }
+
+        .btn-select.ready-pulse {
+            animation: btnSelectPulse 1s ease-out;
+        }
+
+        .btn-select.ready-loop {
+            animation: btnSelectLoopPulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes btnSelectPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 125, 50, .55);
+            }
+
+            70% {
+                box-shadow: 0 0 0 14px rgba(46, 125, 50, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 125, 50, 0);
+            }
+        }
+
+        @keyframes btnSelectLoopPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 125, 50, .45);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(46, 125, 50, 0);
+                transform: scale(1.035);
+            }
+        }
+
+        .btn-select.shake {
+            animation: btnSelectShake .45s ease;
+        }
+
+        @keyframes btnSelectShake {
+
+            10%,
+            90% {
+                transform: translateX(-1px);
+            }
+
+            20%,
+            80% {
+                transform: translateX(2px);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translateX(-4px);
+            }
+
+            40%,
+            60% {
+                transform: translateX(4px);
+            }
         }
 
         /* ── widen calendar section for dual-month ── */
@@ -1082,6 +1201,34 @@
         .cal-months-wrap {
             display: flex;
             gap: 0;
+        }
+
+        /* płynne przejście, gdy kalendarz sam przesuwa się o miesiąc do przodu
+           po kliknięciu daty przyjazdu z prawego (drugiego) widocznego miesiąca */
+        .cal-months-wrap.cal-slide-next {
+            animation: calSlideNext .5s ease;
+        }
+
+        @keyframes calSlideNext {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            45% {
+                transform: translateX(-16px);
+                opacity: 0;
+            }
+
+            55% {
+                transform: translateX(16px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .cal-month-panel {
@@ -1682,17 +1829,6 @@
             padding: 6px 0 2px
         }
 
-        .price-reassure {
-            font-size: 12.5px;
-            color: var(--baz);
-            font-weight: 600;
-            line-height: 1.5;
-            padding: 10px 12px;
-            margin-top: 10px;
-            background: var(--baz-l);
-            border-radius: 10px;
-        }
-
         .inclusions {
             background: var(--baz-l);
             border: 1.5px solid #a5d6a7;
@@ -2163,6 +2299,31 @@
         .gal-prev:hover,
         .gal-next:hover {
             background: #fff
+        }
+
+        .gal-prev.nav-hint,
+        .gal-next.nav-hint {
+            animation: galNavHint 1.7s ease-in-out 2;
+        }
+
+        @keyframes galNavHint {
+
+            0%,
+            100% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+            }
+
+            20%,
+            50% {
+                transform: translateY(-50%) scale(1.25);
+                box-shadow: 0 2px 18px rgba(26, 74, 92, .6);
+                background: #fff;
+            }
+
+            35% {
+                transform: translateY(-50%) scale(1.05);
+            }
         }
 
         .gal-dots {
@@ -3460,6 +3621,7 @@
                 <div class="sum-body" id="sum-body"></div>
             </div>
             <div id="rezerwuj-wrap" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
+                <button class="btn-back" style="margin-top:0; margin-bottom:12px;" onclick="goBack(3)">&#8592; <span id="t-back3-top">Zmień apartament</span></button>
                 <div class="btn-contact-row" style="display:flex; flex-direction:column; gap:12px;">
                     <button class="btn-messenger" onclick="openMessenger()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
@@ -4111,7 +4273,6 @@
                 sumTitle: 'Podsumowanie rezerwacji', sumDate: 'Pobyt', sumNights: 'Liczba nocy', sumApt: 'Apartament',
                 sumKids: 'Dostawki', sumTotal: 'Łącznie', sumDeposit: '+ Kaucja zwrotna',
                 depositNote: 'Kaucja jest pobierana przy zameldowaniu i zwracana w całości po wymeldowaniu — nie jest wliczona w cenę pobytu.',
-                priceReassure: '✓ Brak ukrytych opłat — sprzątanie, pościel i ręczniki wliczone w cenę, bez opłaty klimatycznej.',
                 inclTitle: 'Co zawiera cena?', incl1: 'Ręczniki i pościel', incl2: 'Sprzątanie końcowe', incl3: 'Bez opłaty klimatycznej', incl4: 'Pralka do dyspozycji',
                 hlTitle: 'Dlaczego warto wybrać nas?',
                 hl1: '25 minut od lotniska Alghero (Porto Torres)',
@@ -4143,6 +4304,7 @@
                 errLoad: 'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
                 tipText: 'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.',
                 selectBtn: 'Sprawdź cenę →',
+                gatePeek: 'Zerknij, jak wygląda apartament 👀',
                 salesTitle: 'Poczuj prawdziwie włoski klimat',
                 sf1: 'Samo centrum Porto Torres',
                 sf2: 'Starożytne wykopaliska i Bazylika',
@@ -4192,7 +4354,6 @@
                 sumTitle: 'Booking summary', sumDate: 'Stay', sumNights: 'Nights', sumApt: 'Apartment',
                 sumKids: 'Extra beds', sumTotal: 'Total', sumDeposit: '+ Refundable security deposit',
                 depositNote: 'The security deposit is collected at check-in and fully refunded at check-out — it is not included in the accommodation price.',
-                priceReassure: '✓ No hidden fees — cleaning, linens and towels included, no tourist tax.',
                 inclTitle: "What's included", incl1: 'Towels and bed linen', incl2: 'End-of-stay cleaning', incl3: 'No tourist tax', incl4: 'Washing machine available',
                 hlTitle: 'Why stay with us?',
                 hl1: '25 minutes from Alghero Airport (Porto Torres)',
@@ -4224,6 +4385,7 @@
                 errLoad: 'Could not load the calendar. Please refresh the page and try again.',
                 tipText: 'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.',
                 selectBtn: 'Select →',
+                gatePeek: 'Take a peek at the apartment 👀',
                 salesTitle: 'Experience authentic Italian charm',
                 sf1: 'Right in the heart of Porto Torres',
                 sf2: 'Ancient ruins and the Basilica',
@@ -4327,7 +4489,7 @@
             setTxt('t-s2label', T.s2label); setTxt('t-s2title', T.s2title); setTxt('t-s2sub', T.s2sub);
             setTxt('t-back1', T.back1);
             setTxt('t-s3label', T.s3label); setTxt('t-s3title', T.s3title); setTxt('t-s4label', T.s4label || ''); setTxt('t-s4title', T.s4title || '');
-            setTxt('t-back2', T.back2); setTxt('t-back3', T.back3 || '');
+            setTxt('t-back2', T.back2); setTxt('t-back3', T.back3 || ''); setTxt('t-back3-top', T.back3 || '');
             setTxt('t-loading', T.loading);
             setTxt('t-sum-title', T.sumTitle);
             setTxt('t-incl-title', T.inclTitle);
@@ -4616,6 +4778,7 @@
             } else if (n === 3) {
                 if (s2done) {
                     if (!$id('s3').classList.contains('hidden')) return;
+                    goBack(3);
                 }
             }
         }
@@ -4723,7 +4886,7 @@
             e && e.stopPropagation();
             galGoTo(dot.closest('.apt-gallery'), idx);
         }
-        function galGoTo(gallery, idx) {
+        function galGoTo(gallery, idx, skipCount) {
             var track = gallery.querySelector('.apt-gallery-track');
             var slides = track.querySelectorAll('.apt-gallery-slide');
             var n = slides.length;
@@ -4737,6 +4900,81 @@
             });
             var dots = gallery.querySelectorAll('.gal-dot');
             dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+
+            if (!skipCount) {
+                if (!gallery._viewedSlides) gallery._viewedSlides = {};
+                gallery._viewedSlides[idx] = true;
+                updateGalGate(gallery);
+            }
+        }
+
+        /* ── wymuszenie przejrzenia min. 3 zdjęć przed "Sprawdź cenę" (pierwsze zdjęcie się nie liczy) ── */
+        function galRequiredViews(gallery) {
+            var n = gallery.querySelectorAll('.apt-gallery-slide').length;
+            if (n <= 1) return 0;
+            return Math.min(3, n);
+        }
+        function galViewedCount(gallery) {
+            return gallery._viewedSlides ? Object.keys(gallery._viewedSlides).length : 0;
+        }
+        function galGateOk(gallery) {
+            if (!gallery) return true;
+            return galViewedCount(gallery) >= galRequiredViews(gallery);
+        }
+        function updateGalGate(gallery) {
+            var card = gallery.closest('.aopt');
+            var btn = card && card.querySelector('.btn-select');
+            if (!btn) return;
+            var required = galRequiredViews(gallery);
+            var viewed = galViewedCount(gallery);
+            var pct = required > 0 ? Math.min(100, Math.round(viewed / required * 100)) : 100;
+            btn.style.setProperty('--fill-pct', pct + '%');
+            if (viewed >= required && !btn.classList.contains('gate-ready-shown')) {
+                btn.classList.add('gate-ready-shown', 'ready-pulse');
+                galHideToast(btn);
+                setTimeout(function () {
+                    btn.classList.remove('ready-pulse');
+                    btn.classList.add('ready-loop');
+                }, 1000);
+            }
+        }
+        function galShakeBtn(btn) {
+            btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+            setTimeout(function () { btn.classList.remove('shake'); }, 460);
+        }
+        /* dymek zostaje widoczny bez znikania, aż przycisk wypełni się w 100% na zielono */
+        function galShowToast(btn, text) {
+            var arow = btn.closest('.arow');
+            if (!arow) return;
+            var toast = arow.querySelector('.gal-gate-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'gal-gate-toast';
+                arow.appendChild(toast);
+            }
+            toast.textContent = text;
+            toast.classList.add('show');
+        }
+        function galHideToast(btn) {
+            var arow = btn.closest('.arow');
+            var toast = arow && arow.querySelector('.gal-gate-toast');
+            if (toast) toast.classList.remove('show');
+        }
+        function galGateWarn(gallery, btn) {
+            galShakeBtn(btn);
+
+            var nav = gallery.querySelectorAll('.gal-prev, .gal-next');
+            nav.forEach(function (n) { n.classList.remove('nav-hint'); void n.offsetWidth; n.classList.add('nav-hint'); });
+            setTimeout(function () { nav.forEach(function (n) { n.classList.remove('nav-hint'); }); }, 3400);
+
+            galShowToast(btn, T.gatePeek || 'Zerknij, jak wygląda apartament 👀');
+        }
+        /* dla osób, które nie zauważają strzałek nawigacji — sam przycisk "Sprawdź cenę"
+           zaczyna przesuwać zdjęcia po drugim kliknięciu, dopóki nie obejrzy się kompletu */
+        function galAutoAdvance(gallery, btn) {
+            galShakeBtn(btn);
+            var idx = parseInt(gallery.dataset.idx) || 0;
+            galGoTo(gallery, idx + 1);
         }
         function initGallery(gallery) {
             var inner = gallery.querySelector('.apt-gallery-inner');
@@ -4746,7 +4984,7 @@
                 var img = slides[0].querySelector('img[data-src]');
                 if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); img.onload = function () { img.classList.add('loaded'); }; }
             }
-            galGoTo(gallery, parseInt(gallery.dataset.idx) || 0);
+            galGoTo(gallery, parseInt(gallery.dataset.idx) || 0, true);
             var startX = 0, startY = 0, moving = false, locked = false;
             inner.addEventListener('touchstart', function (e) {
                 startX = e.touches[0].clientX;
@@ -4892,6 +5130,18 @@
             /* select button */
             div.querySelector('.btn-select').addEventListener('click', function (e) {
                 e.stopPropagation();
+                var gallery = div.querySelector('.apt-gallery');
+                var btn = this;
+                if (gallery && !galGateOk(gallery)) {
+                    if (!gallery._peekShown) {
+                        gallery._peekShown = true;
+                        galGateWarn(gallery, btn);
+                    } else {
+                        galAutoAdvance(gallery, btn);
+                        if (galGateOk(gallery)) { selectOpt(o, div); }
+                    }
+                    return;
+                }
                 selectOpt(o, div);
             });
 
@@ -5058,18 +5308,17 @@
             var sApts = selOpt.apts, totalApt = 0;
             var c = new Date(s);
             for (var i = 0; i < nights; i++) { totalApt += getDayPrice(sApts, c.getMonth() + 1); c.setDate(c.getDate() + 1); }
-            var mkCount = (selOpt && selOpt.mk) ? selOpt.mk : 0;
-            var totalKids = mkCount * KIDS_PRICE * nights, total = totalApt + totalKids, kaucja = DEPOSIT[sApts.length] || 200;
+            var silentBedNights = (selOpt && selOpt.silentBed) ? KIDS_PRICE * nights : 0;
+            var totalKids = kids * KIDS_PRICE * nights, total = totalApt + totalKids + silentBedNights, kaucja = DEPOSIT[sApts.length] || 200;
             var rows = '';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + '</span><span class="sum-val">' + selOpt.name + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumDate + '</span><span class="sum-val">' + fmtDate(s) + ' → ' + fmtDate(e) + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumNights + '</span><span class="sum-val">' + nights + '</span></div>';
             rows += '<div class="sum-row"><span class="sum-label">' + T.sumApt + ' (' + T.sumNights.toLowerCase() + ': ' + nights + ')</span><span class="sum-val">' + totalApt + '€</span></div>';
-            if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + mkCount + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
+            if (totalKids > 0) rows += '<div class="sum-row"><span class="sum-label">' + T.sumKids + ' (' + kids + ' × ' + KIDS_PRICE + '€ × ' + nights + ')</span><span class="sum-val">' + totalKids + '€</span></div>';
             rows += '<div class="sum-row total"><span class="sum-label">' + T.sumTotal + '</span><span class="sum-val">' + total + '€</span></div>';
             rows += '<div class="sum-row kaucja"><span class="sum-label">' + T.sumDeposit + '</span><span class="sum-val">' + kaucja + '€</span></div>';
             rows += '<div class="kaucja-note">' + T.depositNote + '</div>';
-            rows += '<div class="price-reassure">' + T.priceReassure + '</div>';
             var now2 = new Date(); now2.setHours(0, 0, 0, 0);
             var isLm = (s.getFullYear() === now2.getFullYear() && s.getMonth() === now2.getMonth());
             if (isLm) {
@@ -5197,8 +5446,8 @@
                 var numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; cell.appendChild(numEl);
                 if (!past && !isBusy) {
                     if (!isPreviewMode) {
-                        var mkCount = (selOpt && selOpt.mk) ? selOpt.mk : 0;
-                        var dayP = getDayPrice(sApts, moNum) + (mkCount * KIDS_PRICE);
+                        var silentK = (selOpt && selOpt.silentBed) ? 1 : 0;
+                        var dayP = getDayPrice(sApts, moNum) + ((kids + silentK) * KIDS_PRICE);
                         var prEl = document.createElement('div');
                         prEl.className = 'day-price';
                         prEl.textContent = dayP + '€';
@@ -5281,6 +5530,24 @@
 
             var lh = $id('legHalf'); if (lh) lh.style.display = hasHalf ? 'flex' : 'none';
             updateSummary(); updateMinNote(); updateLmBanner();
+        }
+
+        /* Gdy data przyjazdu wypadnie w drugim (prawym) widocznym miesiącu,
+           kalendarz sam przesuwa widok o miesiąc do przodu, żeby od razu było
+           widać kolejny miesiąc na wybór daty wyjazdu — z płynną animacją. */
+        function animateCalMonthShift(steps) {
+            var wrap = document.querySelector('#cgrid .cal-months-wrap');
+            if (!wrap) return false;
+            wrap.classList.remove('cal-slide-next'); void wrap.offsetWidth;
+            wrap.classList.add('cal-slide-next');
+            setTimeout(function () {
+                cm += steps;
+                while (cm > 11) { cm -= 12; cy++; }
+                while (cm < 0) { cm += 12; cy--; }
+                renderCal();
+            }, 230);
+            setTimeout(function () { wrap.classList.remove('cal-slide-next'); }, 520);
+            return true;
         }
 
         function showCalAlert(aptsObj) {
@@ -5409,6 +5676,16 @@
                         setTimeout(goStep3, 400);
                         return;
                     }
+                }
+            }
+
+            /* data przyjazdu wybrana w drugim widocznym miesiącu — przesuń widok do przodu */
+            if (selStart && !selEnd) {
+                var sd = pD4(selStart);
+                var vy2 = cm === 11 ? cy + 1 : cy;
+                var vm2 = cm === 11 ? 0 : cm + 1;
+                if (sd.getFullYear() === vy2 && sd.getMonth() === vm2 && animateCalMonthShift(1)) {
+                    return;
                 }
             }
             renderCal();

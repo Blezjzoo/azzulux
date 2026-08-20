@@ -3261,7 +3261,7 @@
         <button class="lang-btn" onclick="setLang('en')">EN</button>
     </div>
 
-    <header>
+    <header id="site-header">
         <div class="hero-slideshow" id="hero-slideshow" aria-hidden="true"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -4703,6 +4703,22 @@
             PHOTO_BASE + 'hero/2.webp'
         ];
 
+        /* ── wstępne pobieranie zdjęć apartamentów (krok 3) w tle ──
+           Dzięki temu gdy użytkownik dotrze do kroku 3, zdjęcia są już w cache
+           przeglądarki i pojawiają się natychmiast, zamiast dopiero się ładować. */
+        (function preloadAptPhotos() {
+            var urls = [].concat(APT_PHOTOS[1], APT_PHOTOS[2], APT_PHOTOS[3]);
+            function start() {
+                urls.forEach(function (url) {
+                    var img = new Image();
+                    img.src = url;
+                });
+            }
+            if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 1500 });
+            else if (document.readyState === 'complete') start();
+            else window.addEventListener('load', start);
+        })();
+
         /* ── hero slideshow ── */
         (function () {
             function shuffle(arr, avoidFirst) {
@@ -5749,8 +5765,18 @@
 
         /* ── navigation ── */
         var _userInteracted = false; /* guard – nie scrolluj przy pierwszym ładowaniu strony */
-        function show(id) { $id(id).classList.remove('hidden'); }
+        function show(id) {
+            $id(id).classList.remove('hidden');
+            if (id === 's1') setDistractionsVisible(true);
+            else if (id === 's2' || id === 's3' || id === 's4') setDistractionsVisible(false);
+        }
         function hide(id) { $id(id).classList.add('hidden'); }
+        function setDistractionsVisible(visible) {
+            var header = $id('site-header');
+            var pt = document.querySelector('.pt-section');
+            if (header) header.classList.toggle('hidden', !visible);
+            if (pt) pt.classList.toggle('hidden', !visible);
+        }
         function mkActive(n) { var e = $id('i' + n); e.classList.remove('done'); e.classList.add('active'); }
         function mkDone(n) { var e = $id('i' + n); e.classList.remove('active'); e.classList.add('done'); $id('sn' + n).textContent = '\u2713'; }
         function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }

@@ -4472,9 +4472,10 @@
             document.querySelectorAll('.lang-btn').forEach(function (b) { b.classList.toggle('active', b.textContent.toLowerCase() === l); });
             applyT();
             if (adults > 0) refreshDescs();
-            var s2 = $id('s2'), s3 = $id('s3');
+            var s2 = $id('s2'), s3 = $id('s3'), s4 = $id('s4');
             if (s2 && !s2.classList.contains('hidden')) refreshS2();
             if (s3 && !s3.classList.contains('hidden')) { renderCal(); updateHint(); updateMinNote(); updateSummary(); }
+            if (s4 && !s4.classList.contains('hidden')) renderSummaryS4();
         }
 
         function applyT() {

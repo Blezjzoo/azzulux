@@ -1231,7 +1231,9 @@
 
     <div class="mh-tip" id="t-mh-tip">💡 Jeśli zamiast czatu z nami zobaczysz listę rozmów, zaczekaj kilka sekund, a czat z nami się rozpocznie.</div>
 
-    <button class="mh-confirm-btn" onclick="confirmMessengerOpen()" id="t-mh-confirm">Rozumiem, otwórz Messenger</button>
+    <!-- To MUSI być prawdziwy <a href>, nie przycisk z location.href w JS — iOS gwarantuje
+         ciche przełączenie na natywną appkę (Universal Links) tylko przy realnym tapnięciu w link. -->
+    <a class="mh-confirm-btn" href="#" id="t-mh-confirm" onclick="onMessengerConfirmClick()">Rozumiem, otwórz Messenger</a>
   </div>
 </div>
 

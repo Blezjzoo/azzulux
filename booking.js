@@ -74,6 +74,7 @@
                 btnUp: '↑ Wróć na górę i sprawdź termin',
                 bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa',
                 heroVpUnmute: 'Kliknij, aby zobaczyć lokalizację',
+                copyToastMsg: 'Wiadomość skopiowana — jeśli czat otworzy się pusty, po prostu ją wklej.',
                 mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
                 mixBtnMsg: 'Napisz na Messenger',
                 mixBtnWa: 'Napisz na WhatsApp',
@@ -156,6 +157,7 @@
                 btnUp: '↑ Back to top — check availability',
                 bestValue: 'Best value', sofa: 'sofa bed',
                 heroVpUnmute: 'Click to see the location',
+                copyToastMsg: 'Message copied — if the chat opens empty, just paste it.',
                 mixAlertInfo: 'We have apartments available across this or similar dates.<br>Contact us so we can arrange the best option for you!',
                 mixBtnMsg: 'Message on Messenger',
                 mixBtnWa: 'Message on WhatsApp',
@@ -1581,6 +1583,78 @@
             var totalKids = mkCount * KIDS_PRICE * nights;
             return totalApt + totalKids;
         }
+        /* ── otwieranie Messenger/WhatsApp — zoptymalizowane pod przeglądarkę wbudowaną w appkę
+           Facebooka/Instagrama (u nas to niemal cały ruch, skoro trafik jest z grup na FB) ──
+
+           Dwa problemy, które to rozwiązuje:
+           1) window.open(url, '_blank') potrafi być zawodne w przeglądarce wbudowanej w appkę —
+              zamiast oddać sterowanie natywnej aplikacji Messenger/WhatsApp, czasem otwiera link
+              w ograniczonym, wewnętrznym podglądzie appki, który wolno się ładuje i słabo obsługuje
+              m.me/wa.me. Nawigacja przez location.href jest w tym środowisku dużo bardziej
+              niezawodna (to standardowe zachowanie zalecane dla in-app browserów).
+           2) Parametr ?text= w m.me/wa.me, który ma wypełniać treść wiadomości, nie jest oficjalnie
+              gwarantowany przez Meta i w praktyce bywa zawodny — stąd "wiadomość rzadko się tworzy".
+              Dlatego DODATKOWO kopiujemy treść do schowka i pokazujemy komunikat, żeby użytkownik
+              mógł ją wkleić ręcznie, jeśli czat otworzy się pusty. */
+        function isEmbeddedBrowser() {
+            var ua = navigator.userAgent || '';
+            return /FBAN|FBAV|FB_IAB|Instagram|Line\//i.test(ua);
+        }
+        function legacyCopyToClipboard(text) {
+            try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) { /* nieudane kopiowanie nie jest krytyczne — link i tak się otworzy */ }
+        }
+        function copyMsgToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(function () { legacyCopyToClipboard(text); });
+            } else {
+                legacyCopyToClipboard(text);
+            }
+        }
+        var _copyToastTimer = null;
+        function showCopyToast() {
+            var toast = document.getElementById('contact-copy-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'contact-copy-toast';
+                toast.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);'
+                    + 'background:#1a4a5c;color:#fff;padding:12px 18px;border-radius:12px;'
+                    + 'font-family:"DM Sans",sans-serif;font-size:13px;line-height:1.4;max-width:88vw;'
+                    + 'text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:99999;'
+                    + 'opacity:0;transition:opacity .3s ease, transform .3s ease;pointer-events:none;';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = T.copyToastMsg || 'Wiadomość skopiowana — jeśli czat otworzy się pusty, po prostu ją wklej.';
+            requestAnimationFrame(function () {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            clearTimeout(_copyToastTimer);
+            _copyToastTimer = setTimeout(function () {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(16px)';
+            }, 4000);
+        }
+        function goToContact(url, msg) {
+            if (msg) copyMsgToClipboard(msg);
+            showCopyToast();
+            if (isEmbeddedBrowser()) {
+                window.location.href = url;
+            } else {
+                window.open(url, '_blank', 'noopener');
+            }
+        }
+
         function openMessenger() {
             var msg = T.mHi;
             if (selOpt) {
@@ -1600,7 +1674,7 @@
                 }
             }
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── whatsapp ── */
@@ -1623,19 +1697,19 @@
                 }
             }
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── messenger & whatsapp for mixed availability ── */
         function openMessengerMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── Dowiedz się więcej popup ── */
@@ -1672,13 +1746,13 @@
             document.getElementById('app-choice-popup').classList.remove('open');
             var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            window.open('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
         function openInfoWhatsApp() {
             document.getElementById('app-choice-popup').classList.remove('open');
             var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── lightbox ── */

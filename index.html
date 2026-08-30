@@ -1203,6 +1203,35 @@
   </div>
 </div>
 
+<!-- Messenger Help Modal — tłumaczy prostym językiem + animacją, co zrobić, jeśli Messenger
+     otworzy się z pustym oknem czatu (wiadomość jest już skopiowana do schowka). -->
+<div id="messenger-help-overlay" class="mh-overlay">
+  <div class="mh-modal">
+    <button class="mh-close" onclick="closeMessengerHelp()" aria-label="Zamknij">×</button>
+
+    <div class="mh-icon">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="#0084FF">
+        <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
+      </svg>
+    </div>
+
+    <div class="mh-title" id="t-mh-title">Zaraz otworzy się Messenger</div>
+    <div class="mh-text" id="t-mh-text">Twoja wiadomość jest już skopiowana. Jeśli okno czatu będzie puste — przytrzymaj palcem pole tekstowe na dole i wybierz <strong>„Wklej"</strong>, tak jak na animacji:</div>
+
+    <!-- Animowana podpowiedź: przytrzymaj pole → pojawia się „Wklej" → dotknij → tekst się wkleja -->
+    <div class="mh-demo" aria-hidden="true">
+      <div class="mh-demo-bubble" id="t-mh-paste">Wklej</div>
+      <div class="mh-demo-bar">
+        <span class="mh-demo-bar-placeholder">Aa</span>
+        <span class="mh-demo-bar-pasted">Dzień dobry, jestem...</span>
+      </div>
+      <div class="mh-demo-finger">👆</div>
+    </div>
+
+    <button class="mh-confirm-btn" onclick="confirmMessengerOpen()" id="t-mh-confirm">Rozumiem, otwórz Messenger</button>
+  </div>
+</div>
+
 <!-- Reviews Carousel JS -->
 <script src="reviews-carousel.js"></script>
 

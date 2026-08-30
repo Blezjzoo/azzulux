@@ -1695,10 +1695,26 @@
            goToContact) — dlatego zamiast samego cichego toasta, dla Messengera pokazujemy pełny,
            prosty do zrozumienia popup z animacją "przytrzymaj i wklej", zanim w ogóle otworzymy
            czat. Wiadomość kopiujemy do schowka już w momencie otwarcia popupu (to wciąż bezpośrednia
-           reakcja na kliknięcie użytkownika, więc kopiowanie działa niezawodnie). */
-        var _pendingMessengerUrl = null;
+           reakcja na kliknięcie użytkownika, więc kopiowanie działa niezawodnie).
+
+           WAŻNE: przycisk potwierdzenia w tym popupie to prawdziwy <a href="..."> (patrz index.html),
+           NIE button z location.href ustawianym w JS. Apple gwarantuje ciche przełączenie Safari na
+           natywną appkę (Universal Links) tylko przy realnym tapnięciu w link — nawigacja wywołana
+           skryptem (location.href) nie ma tej gwarancji i w praktyce potrafi zamiast appki załadować
+           zwykłą stronę web m.me z przyciskami "Otwórz"/"Pobierz". Dlatego adres ustawiamy na <a>
+           z WYPRZEDZENIEM (już przy otwarciu popupu), a kliknięcie użytkownika to zwykła, natywna
+           nawigacja przeglądarki — nie robimy nic, co mogłoby ją zablokować (żadnego preventDefault). */
         function showMessengerHelp(url, msg) {
-            _pendingMessengerUrl = url;
+            var link = document.getElementById('t-mh-confirm');
+            if (link) {
+                link.setAttribute('href', url);
+                if (shouldNavigateSameTab()) {
+                    link.removeAttribute('target');
+                } else {
+                    link.setAttribute('target', '_blank');
+                    link.setAttribute('rel', 'noopener');
+                }
+            }
             if (msg) copyMsgToClipboard(msg);
             var overlay = document.getElementById('messenger-help-overlay');
             if (overlay) overlay.classList.add('open');
@@ -1709,15 +1725,10 @@
             if (overlay) overlay.classList.remove('open');
             document.body.style.overflow = '';
         };
-        window.confirmMessengerOpen = function () {
-            var url = _pendingMessengerUrl;
+        // Kliknięcie w <a> — pozwalamy przeglądarce wykonać naturalną nawigację (bez preventDefault),
+        // tylko sprzątamy popup przy okazji.
+        window.onMessengerConfirmClick = function () {
             window.closeMessengerHelp();
-            if (!url) return;
-            if (shouldNavigateSameTab()) {
-                window.location.href = url;
-            } else {
-                window.open(url, '_blank', 'noopener');
-            }
         };
 
         function openMessenger() {

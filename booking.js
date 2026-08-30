@@ -1618,6 +1618,23 @@
             var ua = navigator.userAgent || '';
             return /FBAN|FBAV|FB_IAB|Instagram|Line\//i.test(ua);
         }
+        // Na telefonie (Safari na iOS, Chrome na Androidzie — nie tylko w przeglądarce wbudowanej
+        // w appkę FB) trzeba nawigować w TEJ SAMEJ karcie (location.href), żeby system po cichu
+        // przełączył na natywną appkę Messenger/WhatsApp (tzw. Universal Links / App Links).
+        // window.open() otwiera nową kartę, w której to przełączenie zawodzi — Safari zamiast appki
+        // ładuje wtedy zwykłą stronę web m.me z ręcznymi przyciskami "Otwórz w Messengerze"/"Pobierz".
+        // Na komputerze nie ma do czego się przełączać, więc tam nowa karta zostaje (nie tracimy
+        // strony rezerwacji w oryginalnej karcie).
+        function isMobileDevice() {
+            var ua = navigator.userAgent || '';
+            if (/Android|iPhone|iPad|iPod/i.test(ua)) return true;
+            // iPadOS 13+ w Safari podaje się za "Macintosh", ale ma ekran dotykowy
+            if (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1) return true;
+            return false;
+        }
+        function shouldNavigateSameTab() {
+            return isEmbeddedBrowser() || isMobileDevice();
+        }
         function legacyCopyToClipboard(text) {
             try {
                 var ta = document.createElement('textarea');
@@ -1666,7 +1683,7 @@
         function goToContact(url, msg) {
             if (msg) copyMsgToClipboard(msg);
             showCopyToast();
-            if (isEmbeddedBrowser()) {
+            if (shouldNavigateSameTab()) {
                 window.location.href = url;
             } else {
                 window.open(url, '_blank', 'noopener');
@@ -1696,7 +1713,7 @@
             var url = _pendingMessengerUrl;
             window.closeMessengerHelp();
             if (!url) return;
-            if (isEmbeddedBrowser()) {
+            if (shouldNavigateSameTab()) {
                 window.location.href = url;
             } else {
                 window.open(url, '_blank', 'noopener');

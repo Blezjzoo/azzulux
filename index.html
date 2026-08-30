@@ -54,6 +54,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <!-- Preconnect do Vimeo — przyspiesza start wideo w hero (mniej czasu na DNS/TLS zanim zacznie się buforować) -->
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin>
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://vod-progressive.akamaized.net">
     <!-- Preload pierwszego zdjęcia hero (przed wykonaniem JS) — musi być zgodny z PHOTO_BASE w skrypcie -->
     <link rel="preload" as="image"
         href="https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux-assets@main/images/apt3/3.webp"
@@ -2857,6 +2862,19 @@
                 0 0 0 1px rgba(255, 255, 255, 0.10) inset;
         }
 
+        /* Zdjęcie-zastępcze pod wideo — to samo zdjęcie co pierwszy slajd hero,
+           więc jest już w cache (preload w <head>). Zamiast czarnego kwadratu
+           widać od razu rozmyty, ciemniejszy kadr, spójny z resztą hero. */
+        .hero-vp-poster {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://cdn.jsdelivr.net/gh/Blezjzoo/azzulux-assets@main/images/apt3/3.webp');
+            background-size: cover;
+            background-position: center;
+            filter: blur(14px) brightness(0.6) saturate(1.05);
+            transform: scale(1.15);
+        }
+
         .hero-vp-iframe {
             position: absolute;
             top: 50%;
@@ -2869,6 +2887,12 @@
             height: 125%;
             border: none;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity .6s ease;
+        }
+
+        .hero-vp-iframe.vp-loaded {
+            opacity: 1;
         }
 
         /* Clickable overlay to start play */
@@ -3277,6 +3301,8 @@
             <!-- ── Hero Video Player ── -->
             <div class="hero-video-section">
                 <div class="hero-vp-wrap" id="hero-vp-wrap">
+                    <!-- Placeholder pod wideo — zamiast czarnego kwadratu, gdy Vimeo jeszcze się ładuje -->
+                    <div class="hero-vp-poster" aria-hidden="true"></div>
                     <iframe
                         id="hero-vimeo-iframe"
                         class="hero-vp-iframe"
@@ -5849,7 +5875,7 @@
                 }
             }
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48698043271?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
         /* ── messenger & whatsapp for mixed availability ── */
@@ -5861,7 +5887,7 @@
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48698043271?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
         /* ── Dowiedz się więcej popup ── */
@@ -5904,7 +5930,7 @@
             document.getElementById('app-choice-popup').classList.remove('open');
             var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            window.open('https://wa.me/48698043271?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+            window.open('https://wa.me/48728703663?text=' + encodeURIComponent(msg), '_blank', 'noopener');
         }
 
         /* ── lightbox ── */
@@ -6257,6 +6283,19 @@
 
         // background=1 autoplays — sync play icon to pause state
         updatePlayIcons();
+
+        // Odsłoń wideo (fade-in) dopiero gdy faktycznie jest gotowe do wyświetlenia —
+        // do tego czasu widać rozmyty poster zamiast czarnego kwadratu.
+        var revealed = false;
+        function revealVideo() {
+            if (revealed) return;
+            revealed = true;
+            iframe.classList.add('vp-loaded');
+        }
+        vp.on('loaded', revealVideo);
+        vp.on('play', revealVideo);
+        // Zabezpieczenie: gdyby zdarzenia się nie odpaliły, i tak odsłoń po chwili.
+        setTimeout(revealVideo, 4000);
 
         vp.on('play', function () {
             vpPlaying = true;

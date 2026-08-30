@@ -75,6 +75,10 @@
                 bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa',
                 heroVpUnmute: 'Kliknij, aby zobaczyć lokalizację',
                 copyToastMsg: 'Wiadomość skopiowana — jeśli czat otworzy się pusty, po prostu ją wklej.',
+                mhTitle: 'Zaraz otworzy się Messenger',
+                mhText: 'Twoja wiadomość jest już skopiowana. Jeśli okno czatu będzie puste — przytrzymaj palcem pole tekstowe na dole i wybierz <strong>„Wklej"</strong>, tak jak na animacji:',
+                mhConfirm: 'Rozumiem, otwórz Messenger',
+                mhPaste: 'Wklej',
                 mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
                 mixBtnMsg: 'Napisz na Messenger',
                 mixBtnWa: 'Napisz na WhatsApp',
@@ -158,6 +162,10 @@
                 bestValue: 'Best value', sofa: 'sofa bed',
                 heroVpUnmute: 'Click to see the location',
                 copyToastMsg: 'Message copied — if the chat opens empty, just paste it.',
+                mhTitle: 'Messenger is about to open',
+                mhText: 'Your message is already copied. If the chat opens empty — press and hold the text field at the bottom and choose <strong>"Paste"</strong>, just like in the animation:',
+                mhConfirm: 'Got it, open Messenger',
+                mhPaste: 'Paste',
                 mixAlertInfo: 'We have apartments available across this or similar dates.<br>Contact us so we can arrange the best option for you!',
                 mixBtnMsg: 'Message on Messenger',
                 mixBtnWa: 'Message on WhatsApp',
@@ -268,6 +276,10 @@
             setTxt('t-popup-btn-msg', T.popupBtnMsg || 'Messenger');
             setTxt('t-popup-btn-wa', T.popupBtnWa || 'WhatsApp');
             setTxt('t-popup-cancel', T.popupCancel || 'Anuluj');
+            setTxt('t-mh-title', T.mhTitle || 'Zaraz otworzy się Messenger');
+            setHtml('t-mh-text', T.mhText || 'Twoja wiadomość jest już skopiowana. Jeśli okno czatu będzie puste — przytrzymaj palcem pole tekstowe na dole i wybierz <strong>„Wklej"</strong>, tak jak na animacji:');
+            setTxt('t-mh-confirm', T.mhConfirm || 'Rozumiem, otwórz Messenger');
+            setTxt('t-mh-paste', T.mhPaste || 'Wklej');
             if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }
             setTxt('t-tip-text', T.tipText);
             setTxt('t-sales-title', T.salesTitle || 'Poczuj prawdziwie włoski klimat');
@@ -1655,6 +1667,36 @@
             }
         }
 
+        /* ── Messenger Help Modal ──
+           Messenger jest zdecydowanie mniej przewidywalny niż WhatsApp (patrz komentarz przy
+           goToContact) — dlatego zamiast samego cichego toasta, dla Messengera pokazujemy pełny,
+           prosty do zrozumienia popup z animacją "przytrzymaj i wklej", zanim w ogóle otworzymy
+           czat. Wiadomość kopiujemy do schowka już w momencie otwarcia popupu (to wciąż bezpośrednia
+           reakcja na kliknięcie użytkownika, więc kopiowanie działa niezawodnie). */
+        var _pendingMessengerUrl = null;
+        function showMessengerHelp(url, msg) {
+            _pendingMessengerUrl = url;
+            if (msg) copyMsgToClipboard(msg);
+            var overlay = document.getElementById('messenger-help-overlay');
+            if (overlay) overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        window.closeMessengerHelp = function () {
+            var overlay = document.getElementById('messenger-help-overlay');
+            if (overlay) overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        };
+        window.confirmMessengerOpen = function () {
+            var url = _pendingMessengerUrl;
+            window.closeMessengerHelp();
+            if (!url) return;
+            if (isEmbeddedBrowser()) {
+                window.location.href = url;
+            } else {
+                window.open(url, '_blank', 'noopener');
+            }
+        };
+
         function openMessenger() {
             var msg = T.mHi;
             if (selOpt) {
@@ -1674,7 +1716,7 @@
                 }
             }
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
+            showMessengerHelp('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── whatsapp ── */
@@ -1704,7 +1746,7 @@
         function openMessengerMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
+            showMessengerHelp('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
@@ -1746,7 +1788,7 @@
             document.getElementById('app-choice-popup').classList.remove('open');
             var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'Messenger'});
-            goToContact('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
+            showMessengerHelp('https://m.me/azzurrosardegna?text=' + encodeURIComponent(msg), msg);
         }
         function openInfoWhatsApp() {
             document.getElementById('app-choice-popup').classList.remove('open');

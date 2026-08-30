@@ -24,18 +24,18 @@
             <div class="app-choice-title" id="t-popup-title">Skontaktuj się z nami</div>
             <div class="app-choice-sub" id="t-popup-sub">Wybierz aplikację, przez którą chcesz napisać</div>
             <div class="app-choice-btns">
-                <button class="btn-messenger" onclick="openInfoMessenger()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
-                        <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
-                    </svg>
-                    <span id="t-popup-btn-msg">Messenger</span>
-                </button>
                 <button class="btn-whatsapp" onclick="openInfoWhatsApp()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                         <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/>
                     </svg>
                     <span id="t-popup-btn-wa">WhatsApp</span>
+                </button>
+                <button class="btn-messenger" onclick="openInfoMessenger()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
+                        <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
+                    </svg>
+                    <span id="t-popup-btn-msg">Messenger</span>
                 </button>
             </div>
             <button class="app-choice-cancel" onclick="document.getElementById('app-choice-popup').classList.remove('open')" id="t-popup-cancel">Anuluj</button>
@@ -495,10 +495,16 @@
         }
 
         .pt-hi-icon {
-            font-size: 16px;
             flex-shrink: 0;
             width: 22px;
-            text-align: center;
+            display: inline-flex;
+            justify-content: center;
+            color: #c9a84c;
+        }
+
+        .pt-hi-icon svg {
+            width: 18px;
+            height: 18px;
         }
 
         .pt-closing {
@@ -832,7 +838,13 @@
         }
 
         .aopt-chip-icon {
-            font-size: 11px;
+            display: inline-flex;
+            color: #c9a84c;
+        }
+
+        .aopt-chip-icon svg {
+            width: 13px;
+            height: 13px;
         }
 
         .aopt-chip.extra-bed {
@@ -1188,8 +1200,14 @@
             box-shadow: 0 2px 10px rgba(74, 154, 181, .12);
         }
         .price-check-icon {
-            font-size: 22px;
             flex-shrink: 0;
+            display: flex;
+            color: #c9a84c;
+        }
+
+        .price-check-icon svg {
+            width: 22px;
+            height: 22px;
         }
 
         /* ── dual-month calendar (Booking-style) ── */
@@ -1525,9 +1543,15 @@
         }
 
         .sum-lm-badge-icon {
-            font-size: 20px;
             flex-shrink: 0;
             margin-top: 1px;
+            display: flex;
+            color: #c9781e;
+        }
+
+        .sum-lm-badge-icon svg {
+            width: 20px;
+            height: 20px;
         }
 
         .sum-lm-badge-title {
@@ -1883,9 +1907,15 @@
         }
 
         .cin-icon {
-            font-size: 20px;
             flex-shrink: 0;
-            margin-top: 1px
+            margin-top: 1px;
+            color: #c9a84c;
+        }
+
+        .cin-icon svg {
+            width: 20px;
+            height: 20px;
+            display: block;
         }
 
         .cin-title {
@@ -2212,8 +2242,14 @@
 
         .tip-icon {
             flex-shrink: 0;
-            font-size: 14px;
-            margin-top: 1px
+            margin-top: 1px;
+            display: flex;
+            color: #c9a84c;
+        }
+
+        .tip-icon svg {
+            width: 16px;
+            height: 16px;
         }
 
         .btn-back:active {
@@ -2491,7 +2527,13 @@
         }
 
         .apt-meta-icon {
-            font-size: 14px
+            display: inline-flex;
+            color: #c9a84c;
+        }
+
+        .apt-meta-icon svg {
+            width: 15px;
+            height: 15px;
         }
 
         .meta-zoom-btn {
@@ -2565,9 +2607,15 @@
         }
 
         .hl-icon {
-            font-size: 14px;
             flex-shrink: 0;
-            margin-top: -1px
+            margin-top: -1px;
+            color: #c9a84c;
+        }
+
+        .hl-icon svg {
+            width: 17px;
+            height: 17px;
+            display: block;
         }
 
         /* ── emoji animations ── */
@@ -2771,8 +2819,15 @@
         }
 
         .sf-icon {
-            font-size: 26px;
+            display: flex;
+            justify-content: center;
             margin-bottom: 8px;
+            color: #c9a84c;
+        }
+
+        .sf-icon svg {
+            width: 26px;
+            height: 26px;
         }
 
         .sf-title {
@@ -3326,7 +3381,7 @@
                         id="hero-vimeo-iframe"
                         class="hero-vp-iframe"
                         src="https://player.vimeo.com/video/1190941668?loop=1&autopause=0&dnt=1&autoplay=0&muted=1&controls=0&title=0&byline=0&portrait=0"
-                        allow="autoplay; fullscreen; picture-in-picture; hdr"
+                        allow="autoplay; fullscreen; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                     <!-- Overlay – wideo NIE odtwarza się automatycznie; kliknięcie włącza dźwięk i start -->
@@ -3336,7 +3391,7 @@
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="hero-vp-overlay-text" id="t-hero-vp-unmute">Kliknij, aby włączyć dźwięk</span>
+                        <span class="hero-vp-overlay-text" id="t-hero-vp-unmute">Kliknij, aby zobaczyć lokalizację</span>
                     </div>
                 </div>
                 <!-- Controls bar -->
@@ -3427,30 +3482,30 @@
                 <p class="pt-p" id="t-pt-p4">Dlatego <strong>najlepsze miejsca to te, o których nie jest
                         głośno.</strong> To
                     właśnie tam
-                    możesz poczuć prawdziwą magię Sardynii. 🌊</p>
+                    możesz poczuć prawdziwą magię Sardynii.</p>
                 <p class="pt-p" id="t-pt-p5"><strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały
                     rok —
                     dlatego masz
                     dostęp do wszystkiego, co potrzebne.</p>
                 <div class="pt-highlights">
-                    <div class="pt-hi-row"><span class="pt-hi-icon">🍝</span><span id="t-pt-hi1">Restauracje — <strong>1
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7a2 2 0 0 0 4 0V2"/><path d="M8 9v13"/><path d="M17 2c-1.7 0-3 2-3 5s1 5 3 5"/><path d="M17 2v19"/></svg></span><span id="t-pt-hi1">Restauracje — <strong>1
                                 minuta</strong>
                             spacerem</span></div>
-                    <div class="pt-hi-row"><span class="pt-hi-icon">🛒</span><span id="t-pt-hi2">Lidl — <strong>3
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg></span><span id="t-pt-hi2">Lidl — <strong>3
                                 minuty</strong>
                             spacerem</span></div>
-                    <div class="pt-hi-row"><span class="pt-hi-icon">☕</span><span id="t-pt-hi3">Kawiarnie, bary,
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c-.5 1 .5 1.5 0 3"/><path d="M12 3c-.5 1 .5 1.5 0 3"/></svg></span><span id="t-pt-hi3">Kawiarnie, bary,
                             restauracje —
                             dosłownie
                             <strong>50 metrów</strong></span></div>
-                    <div class="pt-hi-row"><span class="pt-hi-icon">🏖️</span><span id="t-pt-hi4">Plaża — <strong>5
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M3 13a9 9 0 0 1 18 0z"/><path d="M12 16a2 2 0 0 1-2 2"/></svg></span><span id="t-pt-hi4">Plaża — <strong>5
                                 minut</strong>
                             i jesteś nad
                             wodą</span></div>
-                    <div class="pt-hi-row"><span class="pt-hi-icon">🚶</span><span id="t-pt-hi5">Port, darmowe plaże i
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="6" rx="2" ry="3"/><ellipse cx="16" cy="15" rx="2" ry="3"/><path d="M8 9v3"/><path d="M16 18v3"/></svg></span><span id="t-pt-hi5">Port, darmowe plaże i
                             <strong>piękny
                                 deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki</span></div>
-                    <div class="pt-hi-row"><span class="pt-hi-icon">🍕</span><span id="t-pt-hi6">Prawdziwe, rodzinne
+                    <div class="pt-hi-row"><span class="pt-hi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l18 3-9 14z"/><circle cx="10" cy="10" r=".6" fill="currentColor" stroke="none"/><circle cx="14" cy="13" r=".6" fill="currentColor" stroke="none"/></svg></span><span id="t-pt-hi6">Prawdziwe, rodzinne
                             restauracje —
                             ceny dla
                             lokalnych, nie turystów. Nawet od <strong>4,5€</strong></span></div>
@@ -3458,7 +3513,7 @@
                 <p class="pt-closing" id="t-pt-closing">Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i
                     poczuć
                     prawdziwy, sardyński
-                    klimat życia. 🌿</p>
+                    klimat życia.</p>
             </div>
 
             <!-- Proximity map moved here, below pt-closing -->
@@ -3492,7 +3547,7 @@
             <h2 class="stitle" id="t-s1title">Kto przyjeżdża?</h2>
             <p class="ssub" id="t-s1sub"></p>
             <div class="price-check-hint" id="t-price-check-hint">
-                <span class="price-check-icon">💰</span>
+                <span class="price-check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.6 2.7l8.7 8.7a2 2 0 0 1 0 2.8l-7.1 7.1a2 2 0 0 1-2.8 0L2.7 12.6a2 2 0 0 1-.6-1.4V4a1.3 1.3 0 0 1 1.3-1.3h7.2a2 2 0 0 1 1.4.6z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg></span>
                 <span id="t-price-check-text">Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu</span>
             </div>
             <div class="counters">
@@ -3520,7 +3575,7 @@
                 </div>
             </div>
             <div class="group-tip" id="t-group-tip" style="display: none;">
-                <span class="tip-icon">💡</span>
+                <span class="tip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2.2h5.2c0-1 .4-1.7 1-2.2A6 6 0 0 0 12 3z"/></svg></span>
                 <span id="t-tip-text">Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż
                     rezerwacja
                     większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.</span>
@@ -3532,19 +3587,19 @@
                 <h3 class="sales-title" id="t-sales-title">Poczuj prawdziwie włoski klimat</h3>
                 <div class="sales-features">
                     <div class="sf-item">
-                        <div class="sf-icon">📍</div>
+                        <div class="sf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg></div>
                         <div class="sf-title" id="t-sf1">Samo centrum Porto Torres</div>
                     </div>
                     <div class="sf-item">
-                        <div class="sf-icon">🏛️</div>
+                        <div class="sf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M4 21V10"/><path d="M8 21V10"/><path d="M12 21V10"/><path d="M16 21V10"/><path d="M20 21V10"/><path d="M2 10l10-6 10 6"/></svg></div>
                         <div class="sf-title" id="t-sf2">Starożytne wykopaliska i Bazylika</div>
                     </div>
                     <div class="sf-item">
-                        <div class="sf-icon">🏖️</div>
+                        <div class="sf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M3 13a9 9 0 0 1 18 0z"/><path d="M12 16a2 2 0 0 1-2 2"/></svg></div>
                         <div class="sf-title" id="t-sf3">5 min do plaży Balai, blisko La Pelosa</div>
                     </div>
                     <div class="sf-item">
-                        <div class="sf-icon">🍷</div>
+                        <div class="sf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10c0 5-2 8-5 8s-5-3-5-8z"/><path d="M12 11v7"/><path d="M8 21h8"/></svg></div>
                         <div class="sf-title" id="t-sf4">Mniej turystów, lokalna atmosfera</div>
                     </div>
                 </div>
@@ -3606,10 +3661,10 @@
                         apartamenty w
                         tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!</span>
                     <div style="display:flex; gap:10px; width:100%;">
-                        <button class="btn-main" style="background:#0084ff; padding: 12px; font-size: 14px; width:50%;"
-                            onclick="openMessengerMix()"><span id="cal-mix-btn-msg">Napisz na Messenger</span></button>
                         <button class="btn-main" style="background:#25d366; padding: 12px; font-size: 14px; width:50%;"
                             onclick="openWhatsAppMix()"><span id="cal-mix-btn-wa">Napisz na WhatsApp</span></button>
+                        <button class="btn-main" style="background:#0084ff; padding: 12px; font-size: 14px; width:50%;"
+                            onclick="openMessengerMix()"><span id="cal-mix-btn-msg">Napisz na Messenger</span></button>
                     </div>
                 </div>
                 <div id="min-stay-note" class="min-stay"></div>
@@ -3668,18 +3723,18 @@
             <div id="rezerwuj-wrap" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
                 <button class="btn-back" style="margin-top:0; margin-bottom:12px;" onclick="goBack(3)">&#8592; <span id="t-back3-top">Zmień apartament</span></button>
                 <div class="btn-contact-row" style="display:flex; flex-direction:column; gap:12px;">
-                    <button class="btn-messenger" onclick="openMessenger()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
-                            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
-                        </svg>
-                        <span>Rezerwuj przez Messenger</span>
-                    </button>
                     <button class="btn-whatsapp" onclick="openWhatsApp()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                             <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/>
                         </svg>
                         <span>Rezerwuj przez WhatsApp</span>
+                    </button>
+                    <button class="btn-messenger" onclick="openMessenger()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
+                            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z"/>
+                        </svg>
+                        <span>Rezerwuj przez Messenger</span>
                     </button>
                 </div>
                 <p class="contact-note" style="margin-top: 10px; margin-bottom: 8px;">1 klik i wysyłasz gotową wiadomość (bez pisania).</p>
@@ -3732,28 +3787,28 @@
             <div class="highlights">
                 <div class="hl-title" id="t-hl-title">Dlaczego warto wybrać nas?</div>
                 <div class="hl-items">
-                    <div class="hl-item"><span class="hl-icon"><span class="anim-plane">✈️</span></span><span
+                    <div class="hl-item"><span class="hl-icon"><span class="anim-plane"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></span><span
                             id="t-hl1">25 minut
                             od lotniska Alghero (Porto
                             Torres)</span></div>
-                    <div class="hl-item"><span class="hl-icon"><span class="anim-beach">🏖️</span></span><span
+                    <div class="hl-item"><span class="hl-icon"><span class="anim-beach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M3 13a9 9 0 0 1 18 0z"/><path d="M12 16a2 2 0 0 1-2 2"/></svg></span></span><span
                             id="t-hl2">5 minut
                             spacerem do plaży</span></div>
-                    <div class="hl-item"><span class="hl-icon"><span class="anim-clink">🥂</span></span><span
+                    <div class="hl-item"><span class="hl-icon"><span class="anim-clink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l1 7a3 3 0 0 0 6 0l1-7z"/><path d="M9 10v8"/><path d="M6 21h6"/><path d="M18 5l-1.2 6a2.3 2.3 0 0 1-4.5-.5"/><path d="M16.5 11v7"/><path d="M14 21h5"/></svg></span></span><span
                             id="t-hl3">Centrum
                             miasta — kawiarnie, restauracje i
                             sklepy tuż pod ręką</span></div>
-                    <div class="hl-item"><span class="hl-icon"><span class="anim-parking">🅿️</span></span><span
+                    <div class="hl-item"><span class="hl-icon"><span class="anim-parking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 16V8h4a2.5 2.5 0 0 1 0 5H9"/></svg></span></span><span
                             id="t-hl4">Bezpłatny parking przy obiekcie</span>
                     </div>
-                    <div class="hl-item"><span class="hl-icon"><span class="anim-taxi">🚕</span></span><span
+                    <div class="hl-item"><span class="hl-icon"><span class="anim-taxi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13"/><path d="M3 13v4a1 1 0 0 0 1 1h1"/><path d="M21 13v4a1 1 0 0 1-1 1h-1"/><path d="M3 13h18"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/></svg></span></span><span
                             id="t-hl5">Transfer
                             z/na lotnisko — zaprzyjaźniony
                             taksówkarz odbierze i odwiezie gości na życzenie</span></div>
                 </div>
             </div>
             <div class="cin-badge">
-                <div class="cin-icon"><span class="anim-shield">&#128737;</span></div>
+                <div class="cin-icon"><span class="anim-shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4.5"/></svg></span></div>
                 <div>
                     <div class="cin-title" id="t-cin-title">Legalny wynajem krótkoterminowy we Włoszech</div>
                     <div class="cin-text" id="t-cin-text">Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski
@@ -4138,13 +4193,6 @@
 
             <div class="contact">
                 <div class="btn-contact-row">
-                    <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
-                            <path
-                                d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z" />
-                        </svg>
-                        <span id="t-btn-msg">Rezerwuj przez Messenger</span>
-                    </button>
                     <button class="btn-whatsapp" id="btn-whatsapp" onclick="openWhatsApp()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
                             <path
@@ -4153,6 +4201,13 @@
                                 d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.531 5.852L0 24l6.335-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.797 9.797 0 01-5.003-1.371l-.358-.214-3.76.895.952-3.668-.234-.374A9.775 9.775 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z" />
                         </svg>
                         <span id="t-btn-wa">Rezerwuj przez WhatsApp</span>
+                    </button>
+                    <button class="btn-messenger" id="btn-messenger" onclick="openMessenger()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
+                            <path
+                                d="M12 2C6.477 2 2 6.145 2 11.243c0 2.879 1.37 5.452 3.521 7.15V22l3.286-1.806C9.863 20.383 10.917 20.5 12 20.5c5.523 0 10-4.145 10-9.257C22 6.145 17.523 2 12 2z" />
+                        </svg>
+                        <span id="t-btn-msg">Rezerwuj przez Messenger</span>
                     </button>
                 </div>
                 <p class="contact-note" id="t-contact-note">1 klik i wysyłasz gotową wiadomość (bez pisania).
@@ -4349,7 +4404,7 @@
                 errLoad: 'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
                 tipText: 'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.',
                 selectBtn: 'Sprawdź cenę →',
-                gatePeek: 'Zerknij, jak wygląda apartament 👀',
+                gatePeek: 'Zerknij, jak wygląda apartament',
                 salesTitle: 'Poczuj prawdziwie włoski klimat',
                 sf1: 'Samo centrum Porto Torres',
                 sf2: 'Starożytne wykopaliska i Bazylika',
@@ -4361,14 +4416,14 @@
                 sc2d: 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.',
                 btnUp: '↑ Wróć na górę i sprawdź termin',
                 bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa',
-                heroVpUnmute: 'Kliknij, aby włączyć dźwięk',
+                heroVpUnmute: 'Kliknij, aby zobaczyć lokalizację',
                 mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
                 mixBtnMsg: 'Napisz na Messenger',
                 mixBtnWa: 'Napisz na WhatsApp',
                 mMixTxt: ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.',
                 lmTitle: 'Oferta Last Minute!',
                 lmSub: 'Wolne terminy w bieżącym miesiącu dostępne od zaraz — rezerwuj szybko i skorzystaj z tych dat!',
-                lmSumTitle: '⚡ Oferta Last Minute!',
+                lmSumTitle: 'Oferta Last Minute!',
                 lmSumSub: 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko — te daty mogą zniknąć w każdej chwili!',
                 priceCheckHint: 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu'
             },
@@ -4431,7 +4486,7 @@
                 errLoad: 'Could not load the calendar. Please refresh the page and try again.',
                 tipText: 'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.',
                 selectBtn: 'Select →',
-                gatePeek: 'Take a peek at the apartment 👀',
+                gatePeek: 'Take a peek at the apartment',
                 salesTitle: 'Experience authentic Italian charm',
                 sf1: 'Right in the heart of Porto Torres',
                 sf2: 'Ancient ruins and the Basilica',
@@ -4443,7 +4498,7 @@
                 sc2d: 'Stay right in the centre of Porto Torres. Explore ancient Roman ruins, the magnificent Basilica, and enjoy authentic Italian life away from the tourist crowds.',
                 btnUp: '↑ Back to top — check availability',
                 bestValue: 'Best value', sofa: 'sofa bed',
-                heroVpUnmute: 'Click to turn on sound',
+                heroVpUnmute: 'Click to see the location',
                 mixAlertInfo: 'We have apartments available across this or similar dates.<br>Contact us so we can arrange the best option for you!',
                 mixBtnMsg: 'Message on Messenger',
                 mixBtnWa: 'Message on WhatsApp',
@@ -4454,7 +4509,7 @@
                 ptP1: 'Everyone will naturally promote their own place... But the truth is that <strong>it all depends on what matters most to you.</strong>',
                 ptP2: "Many towns in northern Sardinia are typical tourist resorts. In winter everything is closed — shops, restaurants, bars. They open only in summer, specifically for tourists. Prices are higher, quality is often lower... because you're a tourist.",
                 ptP3: "No car? Sometimes you can't even buy bread without driving to a shop. <strong>Alghero, Olbia?</strong> Great — if you enjoy crowds and inflated prices.",
-                ptP4: "That's why <strong>the best places are the ones nobody talks about.</strong> That's where you can feel the real magic of Sardinia. 🌊",
+                ptP4: "That's why <strong>the best places are the ones nobody talks about.</strong> That's where you can feel the real magic of Sardinia.",
                 ptP5: '<strong>Porto Torres</strong> is the perfect example. Life goes on here all year round, so you have access to everything you need.',
                 ptHi1: 'Restaurants — <strong>1 minute</strong> walk',
                 ptHi2: 'Lidl — <strong>3 minutes</strong> walk',
@@ -4462,7 +4517,7 @@
                 ptHi4: 'Beach — <strong>5 minutes</strong> and you are by the water',
                 ptHi5: 'Harbour, free beaches and a <strong>beautiful promenade</strong> along the coast — cliffs and charming coves',
                 ptHi6: 'Real family-run restaurants — local prices, not tourist prices. From just <strong>4.5€</strong>',
-                ptClosing: 'Porto Torres is the perfect place if you want to relax<br>and feel the real Sardinian way of life. 🌿',
+                ptClosing: 'Porto Torres is the perfect place if you want to relax<br>and feel the real Sardinian way of life.',
                 sc1Alt: 'Beach in Sardinia', sc2Alt: 'Italian town',
                 mapEyebrow: '✦ &nbsp; nearby attractions &nbsp; ✦',
                 mapRestTitle: '🍝 Restaurants', mapRestTime: '1 min',
@@ -4487,7 +4542,7 @@
                 photo: 'Photo',
                 lmTitle: 'Last Minute offer!',
                 lmSub: 'Dates available this month — book now before they are gone!',
-                lmSumTitle: '⚡ Last Minute offer!',
+                lmSumTitle: 'Last Minute offer!',
                 lmSumSub: 'Your selected dates are available right now. Book quickly — these dates could go at any time!',
                 priceCheckHint: 'To check the price — select the number of guests and your dates'
             }
@@ -4572,14 +4627,14 @@
             setTxt('t-btnChangeApt', T.btnChangeApt);
             setTxt('t-hero-cta', T.heroCta || 'Sprawdź dostępność');
             setTxt('t-hero-why', T.heroWhy || 'Dlaczego u nas?');
-            setTxt('t-hero-vp-unmute', T.heroVpUnmute || 'Kliknij, aby włączyć dźwięk');
+            setTxt('t-hero-vp-unmute', T.heroVpUnmute || 'Kliknij, aby zobaczyć lokalizację');
             setTxt('t-luxury-text', T.luxuryText || 'Wysoki standard · Blisko plaży');
             setTxt('t-pt-eyebrow', T.ptEyebrow || 'Sardynia bez retuszu');
             setHtml('t-pt-heading', T.ptHeading || 'Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em>');
             setHtml('t-pt-p1', T.ptP1 || 'Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong>');
             setHtml('t-pt-p2', T.ptP2 || 'Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.');
             setHtml('t-pt-p3', T.ptP3 || 'Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.');
-            setHtml('t-pt-p4', T.ptP4 || 'Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii. 🌊');
+            setHtml('t-pt-p4', T.ptP4 || 'Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii.');
             setHtml('t-pt-p5', T.ptP5 || '<strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.');
             setHtml('t-pt-hi1', T.ptHi1 || 'Restauracje — <strong>1 minuta</strong> spacerem');
             setHtml('t-pt-hi2', T.ptHi2 || 'Lidl — <strong>3 minuty</strong> spacerem');
@@ -4587,7 +4642,7 @@
             setHtml('t-pt-hi4', T.ptHi4 || 'Plaża — <strong>5 minut</strong> i jesteś nad wodą');
             setHtml('t-pt-hi5', T.ptHi5 || 'Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki');
             setHtml('t-pt-hi6', T.ptHi6 || 'Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong>');
-            setHtml('t-pt-closing', T.ptClosing || 'Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia. 🌿');
+            setHtml('t-pt-closing', T.ptClosing || 'Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia.');
             setHtml('t-map-eyebrow', T.mapEyebrow || '✦ &nbsp; bliskość atrakcji &nbsp; ✦');
             setTxt('t-map-rest-title', T.mapRestTitle || '🍝 Restauracje');
             setTxt('t-map-rest-time', T.mapRestTime || '1 min');
@@ -4849,6 +4904,19 @@
             }
         }
 
+        /* ── ikony cech apartamentu (linearne SVG zamiast emotek) ── */
+        var META_ICONS = {
+            persons: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V21"/><circle cx="9.5" cy="8.5" r="3.5"/><path d="M21 21v-1.5a4 4 0 0 0-2.8-3.83"/><path d="M15.5 4.17a3.5 3.5 0 0 1 0 6.66"/></svg>',
+            bedrooms: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 13v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M3 18v2"/><path d="M21 18v2"/><path d="M3 18h18"/></svg>',
+            kitchen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="13" r="7"/><path d="M17 10h5"/><path d="M4.5 9.5c1-2 3-3.5 5.5-3.5"/></svg>',
+            bathroom: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 4-5 6.5-5 9a5 5 0 0 0 10 0c0-2.5-2-5-5-9z"/></svg>',
+            aircon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M4.5 6.5l15 11"/><path d="M19.5 6.5l-15 11"/></svg>',
+            balcony: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18"/><path d="M5 8v13"/><path d="M9 8v13"/><path d="M13 8v13"/><path d="M17 8v13"/><path d="M21 8v13"/><path d="M3 21h18"/></svg>',
+            terrace: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c0-8 5-15 14-16-1 9-8 14-14 16z"/><path d="M8 18c2-3 5-6 9-9"/></svg>',
+            sofa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v-2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><path d="M3 12h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4z"/><path d="M5 17v3"/><path d="M19 17v3"/></svg>'
+        };
+        META_ICONS.extrabed = META_ICONS.bedrooms;
+
         var APT_META = {
             1: [{ icon: '👥', key: 'persons', n: 2 }, { icon: '🛏️', key: 'bedrooms', n: 1 }, { icon: '🍳', key: 'kitchen' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
             2: [{ icon: '👥', key: 'persons', n: 4 }, { icon: '🛏️', key: 'bedrooms', n: 2 }, { icon: '🍳', key: 'kitchen' }, { icon: '🏖️', key: 'balcony' }, { icon: '🚿', key: 'bathroom' }, { icon: '❄️', key: 'aircon' }],
@@ -4938,7 +5006,7 @@
             }
             if (!meta.length) return '';
             var items = meta.map(function (m) {
-                return '<div class="apt-meta-item"><span class="apt-meta-icon">' + m.icon + '</span>' + metaLabel(m) + '</div>';
+                return '<div class="apt-meta-item"><span class="apt-meta-icon">' + (META_ICONS[m.key] || m.icon) + '</span>' + metaLabel(m) + '</div>';
             }).join('');
             return '<div class="apt-meta">' + items + '</div>';
         }
@@ -5034,7 +5102,7 @@
             nav.forEach(function (n) { n.classList.remove('nav-hint'); void n.offsetWidth; n.classList.add('nav-hint'); });
             setTimeout(function () { nav.forEach(function (n) { n.classList.remove('nav-hint'); }); }, 3400);
 
-            galShowToast(btn, T.gatePeek || 'Zerknij, jak wygląda apartament 👀');
+            galShowToast(btn, T.gatePeek || 'Zerknij, jak wygląda apartament');
         }
         /* dla osób, które nie zauważają strzałek nawigacji — sam przycisk "Sprawdź cenę"
            zaczyna przesuwać zdjęcia po drugim kliknięciu, dopóki nie obejrzy się kompletu */
@@ -5122,7 +5190,7 @@
             }
             return meta.map(function (m) {
                 var cls = m.extraBedChip ? ' extra-bed' : '';
-                return '<span class="aopt-chip' + cls + '"><span class="aopt-chip-icon">' + m.icon + '</span>' + metaLabel(m) + '</span>';
+                return '<span class="aopt-chip' + cls + '"><span class="aopt-chip-icon">' + (META_ICONS[m.key] || m.icon) + '</span>' + metaLabel(m) + '</span>';
             }).join('');
         }
 
@@ -5391,7 +5459,7 @@
             var now2 = new Date(); now2.setHours(0, 0, 0, 0);
             var isLm = (s.getFullYear() === now2.getFullYear() && s.getMonth() === now2.getMonth());
             if (isLm) {
-                rows += '<div class="sum-lm-badge"><span class="sum-lm-badge-icon">⚡</span><div><div class="sum-lm-badge-title">' + (T.lmSumTitle || '⚡ Oferta Last Minute!') + '</div><div class="sum-lm-badge-sub">' + (T.lmSumSub || 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko!') + '</div></div></div>';
+                rows += '<div class="sum-lm-badge"><span class="sum-lm-badge-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><div><div class="sum-lm-badge-title">' + (T.lmSumTitle || 'Oferta Last Minute!') + '</div><div class="sum-lm-badge-sub">' + (T.lmSumSub || 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko!') + '</div></div></div>';
             }
             sumBody.innerHTML = rows;
             sumDiv.classList.remove('hidden');
@@ -6181,7 +6249,7 @@
     <div style="margin-bottom: 22px;">
       <div style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: #6a8a98; margin-bottom: 6px;">Azzurro Luxury Boutique</div>
       <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: #1a4a5c; line-height: 1.2;">Zapisz się na<br>listę zainteresowanych</div>
-      <div style="font-size: 0.82rem; color: #6a8a98; margin-top: 8px;">Gdy pojawi się wolny termin — damy Ci znać. Wyślemy też przypomnienie kiedy poprosisz.</div>
+      <div style="font-size: 0.82rem; color: #6a8a98; margin-top: 8px;">Wyślemy Ci przypomnienie, kiedy poprosisz.</div>
     </div>
 
     <!-- Formularz -->
@@ -6215,14 +6283,6 @@
           onblur="this.style.borderColor='#d8eef5'"
         >
           <option value="">— wybierz —</option>
-          <option value="2026-05">Maj 2026</option>
-          <option value="2026-06">Czerwiec 2026</option>
-          <option value="2026-07">Lipiec 2026</option>
-          <option value="2026-08">Sierpień 2026</option>
-          <option value="2026-09">Wrzesień 2026</option>
-          <option value="2026-10">Październik 2026</option>
-          <option value="2026-11">Listopad 2026</option>
-
         </select>
       </div>
 
@@ -6233,6 +6293,7 @@
           <button class="wl-remind-btn" data-days="7"  onclick="selectReminder(this)" style="flex:1; padding: 10px 6px; border: 1.5px solid #d8eef5; border-radius: 10px; font-family:'DM Sans',sans-serif; font-size: 0.82rem; color: #1a4a5c; background: #f7f3ed; cursor: pointer; transition: all 0.2s;">7 dni</button>
           <button class="wl-remind-btn" data-days="14" onclick="selectReminder(this)" style="flex:1; padding: 10px 6px; border: 1.5px solid #d8eef5; border-radius: 10px; font-family:'DM Sans',sans-serif; font-size: 0.82rem; color: #1a4a5c; background: #f7f3ed; cursor: pointer; transition: all 0.2s;">14 dni</button>
           <button class="wl-remind-btn" data-days="21" onclick="selectReminder(this)" style="flex:1; padding: 10px 6px; border: 1.5px solid #d8eef5; border-radius: 10px; font-family:'DM Sans',sans-serif; font-size: 0.82rem; color: #1a4a5c; background: #f7f3ed; cursor: pointer; transition: all 0.2s;">21 dni</button>
+          <button class="wl-remind-btn" data-days="60" onclick="selectReminder(this)" style="flex:1; padding: 10px 6px; border: 1.5px solid #d8eef5; border-radius: 10px; font-family:'DM Sans',sans-serif; font-size: 0.82rem; color: #1a4a5c; background: #f7f3ed; cursor: pointer; transition: all 0.2s;">60 dni</button>
         </div>
       </div>
 
@@ -6256,9 +6317,9 @@
 
     <!-- Potwierdzenie -->
     <div id="waitlist-success" style="display:none; text-align: center; padding: 20px 0 10px;">
-      <div style="font-size: 2.5rem; margin-bottom: 14px;">✉️</div>
+      <div style="display:flex; justify-content:center; margin-bottom: 14px; color:#c9a84c;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="40" height="40"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
       <div style="font-family: 'Cormorant Garamond',serif; font-size: 1.4rem; font-weight: 600; color: #1a4a5c; margin-bottom: 8px;">Zapisano!</div>
-      <div style="font-size: 0.85rem; color: #6a8a98; line-height: 1.6;">Wyślemy Ci przypomnienie na <strong id="wl-confirm-email"></strong>.<br>Do zobaczenia na Sardynii 🌊</div>
+      <div style="font-size: 0.85rem; color: #6a8a98; line-height: 1.6;">Wyślemy Ci przypomnienie na <strong id="wl-confirm-email"></strong>.<br>Do zobaczenia na Sardynii</div>
       <button onclick="closeWaitlistModal()" style="margin-top: 20px; padding: 10px 28px; border-radius: 10px; border: 1.5px solid #d8eef5; background: white; color: #1a4a5c; font-family: 'DM Sans',sans-serif; font-size: 0.85rem; cursor: pointer;">Zamknij</button>
     </div>
   </div>
@@ -6349,9 +6410,9 @@
             }
         });
 
-        // HDR: Vimeo Player API automatycznie serwuje HDR na urządzeniach
-        // które to obsługują (HDR10 / Dolby Vision) — nie wymaga dodatkowej konfiguracji.
-        // background=1 zapewnia brak branding overlay na końcu.
+        // HDR celowo wyłączone (brak "hdr" w atrybucie allow iframe) — odtwarzanie w HDR/Dolby Vision
+        // powodowało cykliczne, krótkie czarne miganie (przełączanie trybu SDR/HDR ekranu ~co 1s,
+        // niezależnie od stanu play/pauza). Wymuszenie SDR eliminuje ten efekt.
     }
 
     function updatePlayIcons() {
@@ -6381,7 +6442,7 @@
         if (vpPlaying) { vp.pause(); } else { vp.play(); }
     };
 
-    // Kliknięcie w overlay "Kliknij, aby włączyć dźwięk" — odmutowuje i startuje wideo w jednym ruchu
+    // Kliknięcie w overlay "Kliknij, aby zobaczyć lokalizację" — odmutowuje i startuje wideo w jednym ruchu
     window.heroVpStart = function () {
         if (!vpReady) { initVp(); return; }
         vpMuted = false;
@@ -6420,9 +6481,25 @@
 (function() {
   var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyXqRvEqbUY_YnfcP4fxjH-3bfUs_JcKHB5CcCDp8JA-ypBRXKsqpczWufWIZBfrFvE/exec';
   var selectedDays = null;
+  var PL_MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+
+  // Lista "orientacyjny miesiąc pobytu" — zawsze bieżący miesiąc + 9 kolejnych, liczone od dziś (nigdy się nie dezaktualizuje)
+  function populateWaitlistMonths() {
+    var sel = document.getElementById('wl-month');
+    if (!sel) return;
+    var now = new Date();
+    var opts = '<option value="">— wybierz —</option>';
+    for (var i = 0; i < 9; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+      var val = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+      opts += '<option value="' + val + '">' + PL_MONTHS[d.getMonth()] + ' ' + d.getFullYear() + '</option>';
+    }
+    sel.innerHTML = opts;
+  }
 
   window.openWaitlistModal = function() {
     var overlay = document.getElementById('waitlist-overlay');
+    populateWaitlistMonths();
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     if (window.AzzurroFunnel) window.AzzurroFunnel.track('Waitlist_Otwarcie', {});

@@ -120,8 +120,11 @@
                     <!-- Overlay – wideo NIE odtwarza się automatycznie; kliknięcie włącza dźwięk i start -->
                     <div class="hero-vp-overlay" id="hero-vp-overlay" onclick="heroVpStart()">
                         <div class="hero-vp-big-play">
-                            <svg viewBox="0 0 24 24" width="26" height="26" fill="white">
+                            <svg class="hero-vp-play-triangle" viewBox="0 0 24 24" width="26" height="26" fill="white">
                                 <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <svg class="hero-vp-spinner" viewBox="0 0 24 24" width="26" height="26" fill="none">
+                                <circle cx="12" cy="12" r="9.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="42 18"/>
                             </svg>
                         </div>
                         <span class="hero-vp-overlay-text" id="t-hero-vp-unmute">Kliknij, aby zobaczyć lokalizację</span>

@@ -3362,7 +3362,9 @@
         }
 
         .mh-confirm-btn {
+            display: block;
             width: 100%;
+            box-sizing: border-box;
             border: none;
             border-radius: 14px;
             padding: 14px 16px;
@@ -3372,6 +3374,8 @@
             font-size: 14px;
             font-weight: 600;
             letter-spacing: 0.02em;
+            text-align: center;
+            text-decoration: none;
             cursor: pointer;
             transition: background .2s;
         }

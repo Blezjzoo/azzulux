@@ -3162,6 +3162,205 @@
         }
         .app-choice-cancel:hover { color: var(--ocean); }
 
+        /* ── Messenger Help Modal ── */
+        .mh-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 28, 40, 0.65);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mh-overlay.open {
+            display: flex;
+        }
+
+        .mh-modal {
+            position: relative;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px 24px 24px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            animation: fadeUp .28s ease both;
+            text-align: center;
+        }
+
+        .mh-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            line-height: 1;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .mh-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(0, 132, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+
+        .mh-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--ocean);
+            margin-bottom: 8px;
+        }
+
+        .mh-text {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.55;
+            margin-bottom: 18px;
+        }
+
+        .mh-text strong {
+            color: var(--ocean);
+        }
+
+        /* ── animowana podpowiedź "przytrzymaj i wklej" ── */
+        .mh-demo {
+            position: relative;
+            width: 100%;
+            height: 84px;
+            margin-bottom: 20px;
+        }
+
+        .mh-demo-bar {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 14px;
+            height: 36px;
+            border-radius: 18px;
+            background: #eef2f4;
+            border: 1.5px solid #dbe4e8;
+            overflow: hidden;
+            animation: mhBarPulse 3.6s ease-in-out infinite;
+        }
+
+        .mh-demo-bar-placeholder,
+        .mh-demo-bar-pasted {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+            font-family: "DM Sans", sans-serif;
+            font-size: 13px;
+        }
+
+        .mh-demo-bar-placeholder {
+            color: rgba(26, 74, 92, 0.35);
+            animation: mhPlaceholderFade 3.6s ease-in-out infinite;
+        }
+
+        .mh-demo-bar-pasted {
+            color: var(--ocean);
+            font-weight: 500;
+            opacity: 0;
+            animation: mhPastedFade 3.6s ease-in-out infinite;
+        }
+
+        .mh-demo-bubble {
+            position: absolute;
+            left: 50%;
+            bottom: 56px;
+            transform: translate(-50%, 6px) scale(0.9);
+            background: #1a2a30;
+            color: #fff;
+            font-family: "DM Sans", sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            animation: mhBubbleShow 3.6s ease-in-out infinite;
+        }
+
+        .mh-demo-finger {
+            position: absolute;
+            left: 50%;
+            bottom: 6px;
+            font-size: 26px;
+            line-height: 1;
+            transform: translate(-50%, 40px);
+            opacity: 0;
+            animation: mhFingerMove 3.6s ease-in-out infinite;
+        }
+
+        @keyframes mhFingerMove {
+            0% { transform: translate(-50%, 40px) scale(1); opacity: 0; }
+            8% { opacity: 1; }
+            20%, 46% { transform: translate(-50%, 4px) scale(0.88); opacity: 1; }
+            54%, 70% { transform: translate(-50%, -38px) scale(0.88); opacity: 1; }
+            85% { transform: translate(-50%, 40px) scale(1); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes mhBarPulse {
+            0%, 18% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0); }
+            26%, 48% { box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.3); }
+            56%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0); }
+        }
+
+        @keyframes mhBubbleShow {
+            0%, 28% { opacity: 0; transform: translate(-50%, 6px) scale(0.9); }
+            36%, 58% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+            66%, 100% { opacity: 0; transform: translate(-50%, 6px) scale(0.9); }
+        }
+
+        @keyframes mhPlaceholderFade {
+            0%, 58% { opacity: 1; }
+            66%, 100% { opacity: 0; }
+        }
+
+        @keyframes mhPastedFade {
+            0%, 60% { opacity: 0; }
+            70%, 92% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .mh-confirm-btn {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 16px;
+            background: #0084FF;
+            color: #fff;
+            font-family: "DM Sans", sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .mh-confirm-btn:active {
+            background: #0070d6;
+        }
+
         .btn-info-gold {
             width: 100%;
             border-radius: 14px;

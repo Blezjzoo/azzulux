@@ -2900,17 +2900,36 @@
             position: absolute;
             inset: 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 12px;
             cursor: pointer;
             z-index: 10;
             transition: opacity 0.35s;
-            background: rgba(0,0,0,0.18);
+            background: rgba(0,0,0,0.34);
         }
 
         .hero-vp-overlay.vp-hidden {
             opacity: 0;
             pointer-events: none;
+        }
+
+        /* po pierwszym starcie dźwięk jest już włączony — przy pauzie/wznowieniu
+           pokazujemy tylko ikonę play, bez ponownego komunikatu o dźwięku */
+        .hero-vp-overlay.vp-started .hero-vp-overlay-text {
+            display: none;
+        }
+
+        .hero-vp-overlay-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: #fff;
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.5);
         }
 
         .hero-vp-big-play {
@@ -3306,17 +3325,18 @@
                     <iframe
                         id="hero-vimeo-iframe"
                         class="hero-vp-iframe"
-                        src="https://player.vimeo.com/video/1190941668?background=1&loop=1&autopause=0&dnt=1"
+                        src="https://player.vimeo.com/video/1190941668?loop=1&autopause=0&dnt=1&autoplay=0&muted=1&controls=0&title=0&byline=0&portrait=0"
                         allow="autoplay; fullscreen; picture-in-picture; hdr"
                         allowfullscreen>
                     </iframe>
-                    <!-- Overlay – kliknij by odtworzyć (domyślnie ukryty – background=1 autoplays) -->
-                    <div class="hero-vp-overlay vp-hidden" id="hero-vp-overlay" onclick="heroVpToggle()">
+                    <!-- Overlay – wideo NIE odtwarza się automatycznie; kliknięcie włącza dźwięk i start -->
+                    <div class="hero-vp-overlay" id="hero-vp-overlay" onclick="heroVpStart()">
                         <div class="hero-vp-big-play">
                             <svg viewBox="0 0 24 24" width="26" height="26" fill="white">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
+                        <span class="hero-vp-overlay-text" id="t-hero-vp-unmute">Kliknij, aby włączyć dźwięk</span>
                     </div>
                 </div>
                 <!-- Controls bar -->
@@ -4341,6 +4361,7 @@
                 sc2d: 'Mieszkaj w samym centrum Porto Torres. Odkrywaj starożytne rzymskie wykopaliska, monumentalną Bazylikę i ciesz się autentycznym włoskim życiem bez tłumów turystów.',
                 btnUp: '↑ Wróć na górę i sprawdź termin',
                 bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa',
+                heroVpUnmute: 'Kliknij, aby włączyć dźwięk',
                 mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
                 mixBtnMsg: 'Napisz na Messenger',
                 mixBtnWa: 'Napisz na WhatsApp',
@@ -4422,6 +4443,7 @@
                 sc2d: 'Stay right in the centre of Porto Torres. Explore ancient Roman ruins, the magnificent Basilica, and enjoy authentic Italian life away from the tourist crowds.',
                 btnUp: '↑ Back to top — check availability',
                 bestValue: 'Best value', sofa: 'sofa bed',
+                heroVpUnmute: 'Click to turn on sound',
                 mixAlertInfo: 'We have apartments available across this or similar dates.<br>Contact us so we can arrange the best option for you!',
                 mixBtnMsg: 'Message on Messenger',
                 mixBtnWa: 'Message on WhatsApp',
@@ -4550,6 +4572,7 @@
             setTxt('t-btnChangeApt', T.btnChangeApt);
             setTxt('t-hero-cta', T.heroCta || 'Sprawdź dostępność');
             setTxt('t-hero-why', T.heroWhy || 'Dlaczego u nas?');
+            setTxt('t-hero-vp-unmute', T.heroVpUnmute || 'Kliknij, aby włączyć dźwięk');
             setTxt('t-luxury-text', T.luxuryText || 'Wysoki standard · Blisko plaży');
             setTxt('t-pt-eyebrow', T.ptEyebrow || 'Sardynia bez retuszu');
             setHtml('t-pt-heading', T.ptHeading || 'Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em>');
@@ -6269,8 +6292,8 @@
 <script>
 (function () {
     var vp = null;
-    // background=1 autoplays muted immediately → start state = playing
-    var vpPlaying = true;
+    // Wideo NIE odtwarza się automatycznie — czeka na kliknięcie (heroVpStart), które je odmutowuje i uruchamia
+    var vpPlaying = false;
     var vpMuted = true;
     var vpReady = false;
 
@@ -6281,10 +6304,11 @@
         vp = new Vimeo.Player(iframe);
         vpReady = true;
 
-        // background=1 autoplays — sync play icon to pause state
+        // sync ikon do stanu początkowego (wstrzymane, wyciszone)
         updatePlayIcons();
+        updateMuteIcons();
 
-        // Odsłoń wideo (fade-in) dopiero gdy faktycznie jest gotowe do wyświetlenia —
+        // Odsłoń wideo (fade-in) dopiero gdy faktycznie zaczyna grać —
         // do tego czasu widać rozmyty poster zamiast czarnego kwadratu.
         var revealed = false;
         function revealVideo() {
@@ -6292,16 +6316,13 @@
             revealed = true;
             iframe.classList.add('vp-loaded');
         }
-        vp.on('loaded', revealVideo);
         vp.on('play', revealVideo);
-        // Zabezpieczenie: gdyby zdarzenia się nie odpaliły, i tak odsłoń po chwili.
-        setTimeout(revealVideo, 4000);
 
         vp.on('play', function () {
             vpPlaying = true;
             updatePlayIcons();
             var overlay = document.getElementById('hero-vp-overlay');
-            if (overlay) overlay.classList.add('vp-hidden');
+            if (overlay) { overlay.classList.add('vp-hidden'); overlay.classList.add('vp-started'); }
         });
 
         vp.on('pause', function () {
@@ -6358,6 +6379,15 @@
     window.heroVpToggle = function () {
         if (!vpReady) { initVp(); return; }
         if (vpPlaying) { vp.pause(); } else { vp.play(); }
+    };
+
+    // Kliknięcie w overlay "Kliknij, aby włączyć dźwięk" — odmutowuje i startuje wideo w jednym ruchu
+    window.heroVpStart = function () {
+        if (!vpReady) { initVp(); return; }
+        vpMuted = false;
+        vp.setVolume(1);
+        updateMuteIcons();
+        vp.play();
     };
 
     window.heroVpMute = function () {

@@ -29,6 +29,7 @@
         vp.on('play', function () {
             vpPlaying = true;
             updatePlayIcons();
+            clearStartingState();
             var overlay = document.getElementById('hero-vp-overlay');
             if (overlay) { overlay.classList.add('vp-hidden'); overlay.classList.add('vp-started'); }
         });
@@ -89,13 +90,36 @@
         if (vpPlaying) { vp.pause(); } else { vp.play(); }
     };
 
-    // Kliknięcie w overlay "Kliknij, aby zobaczyć lokalizację" — odmutowuje i startuje wideo w jednym ruchu
+    // Zabezpieczenie: gdyby Vimeo z jakiegoś powodu nie odpaliło 'play' (np. problem sieciowy),
+    // po chwili wracamy do zwykłej ikony play, żeby użytkownik mógł spróbować jeszcze raz —
+    // zamiast zostawiać spinner kręcący się w nieskończoność.
+    var startingTimeout = null;
+    function clearStartingState() {
+        if (startingTimeout) { clearTimeout(startingTimeout); startingTimeout = null; }
+        var overlay = document.getElementById('hero-vp-overlay');
+        if (overlay) overlay.classList.remove('vp-starting');
+    }
+
+    // Kliknięcie w overlay "Kliknij, aby zobaczyć lokalizację" — odmutowuje i startuje wideo w jednym ruchu.
+    // Natychmiast po kliknięciu pokazujemy spinner (klasa "vp-starting"), żeby było od razu widać,
+    // że klik został zarejestrowany — samo odtwarzanie w Vimeo potrafi ruszyć z zauważalnym opóźnieniem.
     window.heroVpStart = function () {
         if (!vpReady) { initVp(); return; }
+        var overlay = document.getElementById('hero-vp-overlay');
+        if (overlay) {
+            if (overlay.classList.contains('vp-starting')) return; // już czeka na start — ignoruj powtórne kliki
+            overlay.classList.add('vp-starting');
+        }
+        if (startingTimeout) clearTimeout(startingTimeout);
+        startingTimeout = setTimeout(clearStartingState, 8000);
+
         vpMuted = false;
         vp.setVolume(1);
         updateMuteIcons();
-        vp.play();
+        var playResult = vp.play();
+        if (playResult && typeof playResult.catch === 'function') {
+            playResult.catch(function () { clearStartingState(); });
+        }
     };
 
     window.heroVpMute = function () {

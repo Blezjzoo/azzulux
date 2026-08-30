@@ -2931,6 +2931,31 @@
             background: rgba(255, 255, 255, 0.28);
         }
 
+        /* Spinner ładowania — pokazuje się natychmiast po kliknięciu, zanim Vimeo
+           faktycznie zacznie odtwarzać, żeby użytkownik od razu widział, że klik "złapał". */
+        .hero-vp-spinner {
+            display: none;
+            animation: heroVpSpin 0.7s linear infinite;
+        }
+
+        .hero-vp-overlay.vp-starting {
+            cursor: default;
+        }
+
+        .hero-vp-overlay.vp-starting .hero-vp-play-triangle {
+            display: none;
+        }
+
+        .hero-vp-overlay.vp-starting .hero-vp-spinner {
+            display: block;
+        }
+
+        @keyframes heroVpSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         /* Controls bar below video */
         .hero-vp-controls {
             display: flex;

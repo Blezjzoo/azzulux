@@ -76,7 +76,9 @@
                 heroVpUnmute: 'Kliknij, aby zobaczyć lokalizację',
                 copyToastMsg: 'Wiadomość skopiowana — jeśli czat otworzy się pusty, po prostu ją wklej.',
                 mhTitle: 'Zaraz otworzy się Messenger',
-                mhText: 'Twoja wiadomość jest już skopiowana. Jeśli okno czatu będzie puste — przytrzymaj palcem pole tekstowe na dole i wybierz <strong>„Wklej"</strong>, tak jak na animacji:',
+                mhText: 'Twoja wiadomość jest już skopiowana. Messenger czasem otwiera się z kilkusekundowym opóźnieniem — to normalne, po prostu <strong>poczekaj chwilę</strong>, aż wczyta się czat z nami.',
+                mhDemoCaption: 'Jeśli okno czatu będzie puste, przytrzymaj pole tekstowe i wybierz „Wklej".',
+                mhTip: '💡 Jeśli zamiast czatu z nami zobaczysz listę rozmów (bo Messenger był już otwarty), wyszukaj na górze ekranu „Azzurro Sardegna".',
                 mhConfirm: 'Rozumiem, otwórz Messenger',
                 mhPaste: 'Wklej',
                 mixAlertInfo: 'Mamy apartamenty w tym lub podobnym terminie.<br>Skontaktuj się z nami, a dobierzemy najlepszą opcję!',
@@ -163,7 +165,9 @@
                 heroVpUnmute: 'Click to see the location',
                 copyToastMsg: 'Message copied — if the chat opens empty, just paste it.',
                 mhTitle: 'Messenger is about to open',
-                mhText: 'Your message is already copied. If the chat opens empty — press and hold the text field at the bottom and choose <strong>"Paste"</strong>, just like in the animation:',
+                mhText: 'Your message is already copied. Messenger sometimes takes a few seconds to open — that\'s normal, just <strong>wait a moment</strong> for the chat with us to load.',
+                mhDemoCaption: 'If the chat opens empty, press and hold the text field and choose "Paste".',
+                mhTip: '💡 If you see your conversation list instead of a chat with us (because Messenger was already open), search for "Azzurro Sardegna" at the top of the screen.',
                 mhConfirm: 'Got it, open Messenger',
                 mhPaste: 'Paste',
                 mixAlertInfo: 'We have apartments available across this or similar dates.<br>Contact us so we can arrange the best option for you!',
@@ -277,7 +281,9 @@
             setTxt('t-popup-btn-wa', T.popupBtnWa || 'WhatsApp');
             setTxt('t-popup-cancel', T.popupCancel || 'Anuluj');
             setTxt('t-mh-title', T.mhTitle || 'Zaraz otworzy się Messenger');
-            setHtml('t-mh-text', T.mhText || 'Twoja wiadomość jest już skopiowana. Jeśli okno czatu będzie puste — przytrzymaj palcem pole tekstowe na dole i wybierz <strong>„Wklej"</strong>, tak jak na animacji:');
+            setHtml('t-mh-text', T.mhText || 'Twoja wiadomość jest już skopiowana. Messenger czasem otwiera się z kilkusekundowym opóźnieniem — to normalne, po prostu <strong>poczekaj chwilę</strong>, aż wczyta się czat z nami.');
+            setTxt('t-mh-demo-caption', T.mhDemoCaption || 'Jeśli okno czatu będzie puste, przytrzymaj pole tekstowe i wybierz „Wklej".');
+            setTxt('t-mh-tip', T.mhTip || '💡 Jeśli zamiast czatu z nami zobaczysz listę rozmów (bo Messenger był już otwarty), wyszukaj na górze ekranu „Azzurro Sardegna".');
             setTxt('t-mh-confirm', T.mhConfirm || 'Rozumiem, otwórz Messenger');
             setTxt('t-mh-paste', T.mhPaste || 'Wklej');
             if (adults === 0) { setTxt('ad-desc', T.adDescDef); setTxt('kd-desc', T.kdDescDef); }

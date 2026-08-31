@@ -41,6 +41,7 @@
                 cinText: 'Nasz obiekt jest oficjalnie zarejestrowany i posiada włoski numer CIN nadany przez Ministerstwo Turystyki. Każdy gość jest zgłaszany do odpowiednich organów zgodnie z włoskim prawem — rezerwuj bez obaw.',
                 cinBtn: 'Sprawdź CIN', cinCopy: 'Kopiuj',
                 btnReserve: 'Rezerwuj', btnMsg: 'Rezerwuj przez Messenger', btnWa: 'Rezerwuj przez WhatsApp', contactNote: '1 klik i wysyłasz gotową wiadomość (bez pisania).',
+                btnWaitlist: 'Nie mam jeszcze pewnego terminu — przypomnij mi',
                 btnInfo: 'Dowiedz się więcej', popupTitle: 'Skontaktuj się z nami', popupSub: 'Wybierz aplikację, przez którą chcesz napisać', popupBtnMsg: 'Messenger', popupBtnWa: 'WhatsApp', popupCancel: 'Anuluj',
                 optFor: 'Dostępne opcje dla', adult1: ' gościa', adults: ' gości', kid1: ' dostawka', kids: ' dostawki',
                 calA1: ' gość', calAN: ' gości', calK1: ' dostawka', calKN: ' dostawki',
@@ -130,6 +131,7 @@
                 cinText: 'Our property is officially registered and holds the Italian identification number (CIN), issued by the Ministry of Tourism. Every guest is reported to the relevant authorities in accordance with Italian law — book with complete confidence.',
                 cinBtn: 'Verify CIN', cinCopy: 'Copy',
                 btnReserve: 'Book now', btnMsg: 'Message us on Messenger', btnWa: 'Message us on WhatsApp', contactNote: "We'll get back to you quickly and sort out all the details.",
+                btnWaitlist: "I don't have exact dates yet — remind me",
                 btnInfo: 'Learn more', popupTitle: 'Contact us', popupSub: 'Choose the app you want to write through', popupBtnMsg: 'Messenger', popupBtnWa: 'WhatsApp', popupCancel: 'Cancel',
                 optFor: 'Available options for', adult1: ' guest', adults: ' guests', kid1: ' extra bed', kids: ' extra beds',
                 calA1: ' guest', calAN: ' guests', calK1: ' extra bed', calKN: ' extra beds',
@@ -274,6 +276,8 @@
             setTxt('t-cin-btn', T.cinBtn || 'Sprawdź CIN');
             setTxt('t-cin-copy-lbl', T.cinCopy || 'Kopiuj');
             setTxt('t-btn-reserve', T.btnReserve || 'Rezerwuj'); setTxt('t-btn-msg', T.btnMsg); setTxt('t-btn-wa', T.btnWa || 'WhatsApp'); setTxt('t-contact-note', T.contactNote);
+            setTxt('t-btn-msg-top', T.btnMsg); setTxt('t-btn-wa-top', T.btnWa || 'WhatsApp'); setTxt('t-contact-note-top', T.contactNote);
+            setTxt('t-btn-waitlist', T.btnWaitlist || 'Nie mam jeszcze pewnego terminu — przypomnij mi');
             setTxt('t-btn-info', T.btnInfo || 'Dowiedz się więcej');
             setTxt('t-popup-title', T.popupTitle || 'Skontaktuj się z nami');
             setTxt('t-popup-sub', T.popupSub || 'Wybierz aplikację, przez którą chcesz napisać');

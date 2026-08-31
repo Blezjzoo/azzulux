@@ -1,5 +1,8 @@
 (function() {
   var BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyXqRvEqbUY_YnfcP4fxjH-3bfUs_JcKHB5CcCDp8JA-ypBRXKsqpczWufWIZBfrFvE/exec';
+  // Tryb testowy (?test=1) — ten formularz normalnie wysyła PRAWDZIWEGO emaila potwierdzającego,
+  // więc testowanie go bez tego zabezpieczenia zaśmiecałoby listę i wysyłało realne wiadomości.
+  var isTestMode = new URLSearchParams(window.location.search).get('test') === '1';
   var selectedDays = null;
   var PL_MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
 
@@ -75,6 +78,14 @@
       source: (window.AzzurroFunnel ? window.AzzurroFunnel.getSession().source : 'Direct'),
       sessionId: (window.AzzurroFunnel ? window.AzzurroFunnel.getSession().sessionId : '')
     };
+
+    if (isTestMode) {
+      console.log('[Waitlist] tryb testowy — nic nie wysłano, email NIE zostanie wysłany', payload);
+      document.getElementById('wl-confirm-email').textContent = email;
+      document.getElementById('waitlist-form').style.display = 'none';
+      document.getElementById('waitlist-success').style.display = 'block';
+      return;
+    }
 
     fetch(BACKEND_URL, {
       method: 'POST',

@@ -76,8 +76,8 @@
                 bestValue: 'Najkorzystniejsza opcja', sofa: 'kanapa',
                 heroVpUnmute: 'Kliknij, aby zobaczyć lokalizację',
                 copyToastMsg: 'Wiadomość skopiowana — jeśli czat otworzy się pusty, po prostu ją wklej.',
-                mhTitle: 'Zaraz otworzy się Messenger',
-                mhText: 'Twoja wiadomość jest już skopiowana. Messenger czasem otwiera się z kilkusekundowym opóźnieniem — to normalne, po prostu <strong>poczekaj chwilę</strong>, aż wczyta się czat z nami.',
+                mhTitle: 'Kliknij, aby otworzyć Messenger',
+                mhText: 'Twoja wiadomość jest już skopiowana. Kliknij przycisk poniżej, aby otworzyć Messenger — czasem wczytuje się kilka sekund, to normalne, <strong>po prostu poczekaj chwilę</strong> po kliknięciu.',
                 mhDemoCaption: 'Jeśli okno czatu będzie puste, przytrzymaj pole tekstowe i wybierz „Wklej".',
                 mhTip: '💡 Jeśli zamiast czatu z nami zobaczysz listę rozmów, zaczekaj kilka sekund, a czat z nami się rozpocznie.',
                 mhConfirm: 'Rozumiem, otwórz Messenger',
@@ -166,8 +166,8 @@
                 bestValue: 'Best value', sofa: 'sofa bed',
                 heroVpUnmute: 'Click to see the location',
                 copyToastMsg: 'Message copied — if the chat opens empty, just paste it.',
-                mhTitle: 'Messenger is about to open',
-                mhText: 'Your message is already copied. Messenger sometimes takes a few seconds to open — that\'s normal, just <strong>wait a moment</strong> for the chat with us to load.',
+                mhTitle: 'Click to open Messenger',
+                mhText: 'Your message is already copied. Click the button below to open Messenger — it sometimes takes a few seconds to load, that\'s normal, <strong>just wait a moment</strong> after clicking.',
                 mhDemoCaption: 'If the chat opens empty, press and hold the text field and choose "Paste".',
                 mhTip: '💡 If you see your conversation list instead of a chat with us, just wait a few seconds and the chat with us will start.',
                 mhConfirm: 'Got it, open Messenger',
@@ -284,8 +284,8 @@
             setTxt('t-popup-btn-msg', T.popupBtnMsg || 'Messenger');
             setTxt('t-popup-btn-wa', T.popupBtnWa || 'WhatsApp');
             setTxt('t-popup-cancel', T.popupCancel || 'Anuluj');
-            setTxt('t-mh-title', T.mhTitle || 'Zaraz otworzy się Messenger');
-            setHtml('t-mh-text', T.mhText || 'Twoja wiadomość jest już skopiowana. Messenger czasem otwiera się z kilkusekundowym opóźnieniem — to normalne, po prostu <strong>poczekaj chwilę</strong>, aż wczyta się czat z nami.');
+            setTxt('t-mh-title', T.mhTitle || 'Kliknij, aby otworzyć Messenger');
+            setHtml('t-mh-text', T.mhText || 'Twoja wiadomość jest już skopiowana. Kliknij przycisk poniżej, aby otworzyć Messenger — czasem wczytuje się kilka sekund, to normalne, <strong>po prostu poczekaj chwilę</strong> po kliknięciu.');
             setTxt('t-mh-demo-caption', T.mhDemoCaption || 'Jeśli okno czatu będzie puste, przytrzymaj pole tekstowe i wybierz „Wklej".');
             setTxt('t-mh-tip', T.mhTip || '💡 Jeśli zamiast czatu z nami zobaczysz listę rozmów, zaczekaj kilka sekund, a czat z nami się rozpocznie.');
             setTxt('t-mh-confirm', T.mhConfirm || 'Rozumiem, otwórz Messenger');

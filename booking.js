@@ -1777,7 +1777,7 @@
                 }
             }
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
+            goToContact('https://wa.me/48698043271?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── messenger & whatsapp for mixed availability ── */
@@ -1789,7 +1789,7 @@
         function openWhatsAppMix() {
             var msg = T.mHi + (T.mMixTxt || ' Jesteśmy zainteresowani pobytem w terminie {dates}. Dostępność pokazuje różne apartamenty w tym czasie. Proszę o kontakt i propozycję.').replace('{dates}', fmtDate(pD4(selStart)) + ' - ' + fmtDate(pD4(selEnd)));
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
+            goToContact('https://wa.me/48698043271?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── Dowiedz się więcej popup ── */
@@ -1832,7 +1832,7 @@
             document.getElementById('app-choice-popup').classList.remove('open');
             var msg = buildInfoMsg();
             if (typeof fbq === 'function') fbq('track', 'Lead', {content_name: 'WhatsApp'});
-            goToContact('https://wa.me/48728703663?text=' + encodeURIComponent(msg), msg);
+            goToContact('https://wa.me/48698043271?text=' + encodeURIComponent(msg), msg);
         }
 
         /* ── lightbox ── */

@@ -16,7 +16,7 @@
                 adDescDef: '1–11 gości', kdDescDef: 'Wybierz liczbę dzieci',
                 btn1: 'Dalej', back1: 'Zmień skład grupy', back2: 'Zmień daty', back3: 'Zmień apartament',
                 loading: 'Ładowanie...',
-                legFree: 'Dostępny', legBusy: 'Zarezerwowany', legSel: 'Twój pobyt',
+                legFree: 'Dostępny', legBusy: 'Zarezerwowany', legSel: 'Twój pobyt', legLastMinute: 'Oferta last minute',
                 minStay: '⚠ Lipiec i sierpień: minimalny pobyt 5 nocy',
                 minWarn: '⚠ W lipcu i sierpniu minimalny pobyt wynosi 5 nocy. Wybierz co najmniej 5 nocy.',
                 hintArrival: 'Wybierz datę przyjazdu', hintDepart: 'Zaznacz datę wyjazdu.',
@@ -106,7 +106,7 @@
                 adDescDef: '1–11 guests', kdDescDef: 'Select number of children',
                 btn1: 'Continue', back1: 'Change guests', back2: 'Change dates', back3: 'Change apartment',
                 loading: 'Loading...',
-                legFree: 'Available', legBusy: 'Already booked', legSel: 'Your stay',
+                legFree: 'Available', legBusy: 'Already booked', legSel: 'Your stay', legLastMinute: 'Last minute offer',
                 minStay: '⚠ July & August: minimum stay is 5 nights',
                 minWarn: '⚠ A minimum stay of 5 nights applies in July and August. Please select at least 5 nights.',
                 hintArrival: 'Select your check-in date', hintDepart: 'Select departure date.',
@@ -366,7 +366,8 @@
             l.innerHTML = '<div class="li"><div class="ld" style="background:var(--free-bg);border:1px solid #a5d6a7"></div>' + T.legFree + '</div>'
                 + '<div class="li" id="legHalf" style="display:none"><div class="ld" style="background:linear-gradient(135deg, var(--busy) 50%, #4caf50 50%)"></div>' + (T.legHalf || 'Inne dostępne') + '</div>'
                 + '<div class="li"><div class="ld" style="background:var(--busy)"></div>' + T.legBusy + '</div>'
-                + '<div class="li"><div class="ld" style="background:var(--sel)"></div>' + T.legSel + '</div>';
+                + '<div class="li"><div class="ld" style="background:var(--sel)"></div>' + T.legSel + '</div>'
+                + '<div class="li"><div class="ld" style="background:var(--gold)"></div>' + (T.legLastMinute || 'Oferta last minute') + '</div>';
         }
 
         function buildWdays() {
@@ -1275,11 +1276,9 @@
                     tkTime.setHours(0, 0, 0, 0);
                     var isSameMonth = (dt.getMonth() === tkTime.getMonth() && dt.getFullYear() === tkTime.getFullYear());
                     if (isSameMonth) {
+                        // Zamiast małego podpisu pod dniem — sam numer dnia podświetlony na złoto
+                        // (patrz .day.lm-day .day-num w CSS) + legenda na dole kalendarza.
                         cell.classList.add('lm-day');
-                        var lmEl = document.createElement('div');
-                        lmEl.className = 'day-last-minute';
-                        lmEl.textContent = 'oferta last minute';
-                        cell.appendChild(lmEl);
                     }
                 }
                 if (!past && !isBusy) {

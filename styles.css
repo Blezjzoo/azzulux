@@ -3064,6 +3064,13 @@
             margin-top: 24px;
         }
 
+        /* Blokada scrolla całej strony na czas animacji mapy (patrz map-animation.js —
+           lockScroll/unlockScroll) używa position:fixed na <body>, stąd ten reset:
+           bez niego zmiana position mogłaby przesunąć layout body w bok. */
+        body.map-scroll-locked {
+            width: 100%;
+        }
+
         .map-eyebrow {
             text-align: center;
             font-size: 8px;

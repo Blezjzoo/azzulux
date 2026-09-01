@@ -1395,29 +1395,17 @@
             padding: 10px 8px 8px
         }
 
-        .day-last-minute {
-            font-size: 6px;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            line-height: 1;
-            text-align: center;
-            position: absolute;
-            bottom: 3px;
-            left: 0;
-            width: 100%;
-            color: var(--muted);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* lm-day: bez kolorowego tla – wyglada jak zwykly wolny dzien */
+        /* lm-day: bez kolorowego tla – wyglada jak zwykly wolny dzien, tylko numer dnia
+           podświetlony na złoto (zamiast dawnego podpisu "oferta last minute" pod spodem).
+           Znaczenie koloru tłumaczy legenda na dole kalendarza (patrz buildLegend()). */
         .day.lm-day {
             background: inherit;
             border: inherit;
         }
 
         .day.lm-day .day-num {
-            margin-top: -2px;
+            color: var(--gold);
+            font-weight: 700;
         }
 
         /* Zachowaj kolory selekcji nad last-minute */
@@ -1432,17 +1420,8 @@
             color: #fff !important;
         }
 
-        .day.lm-day.sel-start .day-last-minute,
-        .day.lm-day.sel-end .day-last-minute {
-            color: rgba(255, 255, 255, .7);
-        }
-
         .day.lm-day.in-range {
             background: var(--range) !important;
-        }
-
-        .day.lm-day.in-range .day-last-minute {
-            color: var(--ocean);
         }
 
         /* ── Last Minute banner (krok 2) ── */

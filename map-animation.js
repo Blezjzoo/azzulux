@@ -2,19 +2,17 @@
             var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             var card = document.getElementById('heroMapCard');
-            var spacer = document.getElementById('mapPinSpacer');
             var wrapper = document.getElementById('mapZoomWrapper');
             var wideGroup = document.getElementById('wideGroup');
             var progressEl = document.getElementById('mapProgress');
-            if (!card || !wrapper || !spacer) return;
+            if (!card || !wrapper) return;
 
             var ALL_PATH_IDS = ['mapPathAlghero', 'mapPathOlbia', 'mapPathRest', 'mapPathLidl', 'mapPathScoglio', 'mapPathDolci', 'mapPathBalai'];
             var ALL_BADGE_IDS = ['mapBadgeAlghero', 'mapBadgeOlbia', 'mapBadgeRest', 'mapBadgeLidl', 'mapBadgeScoglio', 'mapBadgeDolci', 'mapBadgeBalai'];
             var ALL_DOT_IDS = ['mapDotAlghero', 'mapDotOlbia', 'mapDotRest', 'mapDotLidl', 'mapDotScoglio', 'mapDotDolci', 'mapDotBalai'];
 
             // Osoby z włączonym "ogranicz animacje" dostają od razu gotowy, w pełni
-            // odsłonięty stan mapy — bez rysowania linii, zoomu i bez "korytarza" scrolla
-            // (spacer wraca do position:static, karta zachowuje się jak zwykły blok).
+            // odsłonięty stan mapy — bez rysowania linii, zoomu i bez blokowania scrolla.
             function showFinalStateInstantly() {
                 ALL_PATH_IDS.forEach(function (id) {
                     var p = document.getElementById(id);
@@ -35,18 +33,20 @@
                 if (wideGroup) wideGroup.style.opacity = '0';
                 wrapper.style.transform = 'scale(1)';
                 if (progressEl) progressEl.style.display = 'none';
-                spacer.classList.add('no-pin');
             }
 
             if (reducedMotion) { showFinalStateInstantly(); return; }
 
             /* ── Krok po kroku, w stylu "Apple scrollytelling" ──────────────────────
-               #mapPinSpacer jest wysoki na 5 "ekranów" scrolla; #mapPinSticky trzyma
-               kartę na środku ekranu przez position:sticky (natywny mechanizm
-               przeglądarki — nic tu nie "łapie" scrolla i nie woła preventDefault,
-               więc działa identycznie kółkiem myszy, trackpadem i palcem, niezależnie
-               od tego, gdzie na stronie zaczyna się gest). Pozycja scrolla wewnątrz
-               tego korytarza mówi nam wprost, który z 5 kroków ma być odsłonięty. */
+               Gdy karta z mapą dojedzie do środka ekranu, CAŁA strona zostaje
+               zablokowana (prawdziwa blokada scrolla przez position:fixed na <body>,
+               a nie tylko preventDefault na pojedynczych zdarzeniach — to jedyny
+               sposób, żeby nie dało się "przewinąć bezwładnościowo" przez animację na
+               telefonie, gdzie system kontynuuje scroll jeszcze chwilę po puszczeniu
+               palca). Każdy kolejny scroll/swipe w dół odsłania jedną z 5 porcji;
+               swipe w górę cofa poprzednią. Po dotarciu do końca ANIMACJA JEST
+               TRWALE ZAKOŃCZONA — powrót od dołu strony (np. z FAQ) nigdy jej nie
+               cofa ani nie blokuje ponownie scrolla. */
 
             var STEPS = [
                 { points: [{ path: 'mapPathAlghero', badge: 'mapBadgeAlghero', dot: 'mapDotAlghero', len: 1000, dur: 700 }] },
@@ -67,7 +67,13 @@
                 { points: [{ path: 'mapPathBalai', badge: 'mapBadgeBalai', dot: 'mapDotBalai', dur: 850 }] }
             ];
             var TOTAL = STEPS.length;
-            var currentStep = 0; // ile porcji jest aktualnie odsłoniętych (0..TOTAL)
+            var step = 0;          // ile porcji jest odsłoniętych (0..TOTAL)
+            var completed = false; // raz na zawsze — po dojściu do końca nie odpalamy się już nigdy więcej
+            var engaged = false;   // strona jest aktualnie zablokowana na tej sekcji
+            var cooldown = false;  // jeden gest = jeden krok
+            var COOLDOWN_MS = 620;
+            var lockedScrollY = 0;
+            var suppressEngageUntil = 0;
 
             var lenCache = {};
             function pathLen(id, fallback) {
@@ -114,10 +120,11 @@
                 }
             }
 
-            function setStepState(idx, revealed) {
+            function applyStep(direction) {
+                var idx = direction === 1 ? step : step - 1;
                 var s = STEPS[idx];
                 if (!s) return;
-                if (revealed) {
+                if (direction === 1) {
                     if (s.zoomIn) {
                         if (wideGroup) wideGroup.style.opacity = '0';
                         wrapper.style.transform = 'scale(1)';
@@ -136,45 +143,126 @@
                 if (!progressEl) return;
                 var dots = progressEl.children;
                 for (var i = 0; i < dots.length; i++) {
-                    dots[i].classList.toggle('filled', i < currentStep);
+                    dots[i].classList.toggle('filled', i < step);
                 }
             }
 
-            function computeTargetStep() {
-                var rect = spacer.getBoundingClientRect();
-                var runway = rect.height - window.innerHeight;
-                if (runway <= 0) return TOTAL;
-                var scrolled = -rect.top;
-                var progress = scrolled / runway;
-                if (progress < 0) progress = 0;
-                if (progress > 1) progress = 1;
-                var t = Math.floor(progress * TOTAL + 1e-6);
-                if (t < 0) t = 0;
-                if (t > TOTAL) t = TOTAL;
-                return t;
+            // ── prawdziwa blokada scrolla całej strony ──
+            // preventDefault na pojedynczych zdarzeniach NIE wystarcza na telefonach —
+            // po puszczeniu palca system i tak dokończy przewijanie bezwładnościowe.
+            // position:fixed na <body> fizycznie uniemożliwia jakikolwiek scroll,
+            // niezależnie od tego, czy próbuje go wywołać kółko, palec czy klawiatura.
+            function lockScroll() {
+                lockedScrollY = window.scrollY || window.pageYOffset || 0;
+                document.body.style.position = 'fixed';
+                document.body.style.top = (-lockedScrollY) + 'px';
+                document.body.style.left = '0';
+                document.body.classList.add('map-scroll-locked');
+            }
+            function unlockScroll() {
+                document.body.classList.remove('map-scroll-locked');
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+                window.scrollTo(0, lockedScrollY);
+                // Ta przywrócona pozycja to DOKŁADNIE ten sam punkt, w którym karta jest
+                // wyśrodkowana — bez tego okna zdarzenie "scroll" wywołane przez powyższy
+                // scrollTo natychmiast z powrotem uruchomiłoby maybeEngage() (błędne koło:
+                // odblokuj → scrollTo → scroll event → znów wyśrodkowana → zablokuj).
+                suppressEngageUntil = Date.now() + 400;
             }
 
-            function checkStep() {
-                var target = computeTargetStep();
-                if (target !== currentStep) {
-                    if (target > currentStep) {
-                        for (var i = currentStep; i < target; i++) setStepState(i, true);
-                    } else {
-                        for (var j = currentStep - 1; j >= target; j--) setStepState(j, false);
-                    }
-                    currentStep = target;
+            function tryAdvance(dir) {
+                if (cooldown) return false;
+                if (dir === 1) {
+                    if (step >= TOTAL) return false;
+                    cooldown = true;
+                    applyStep(1);
+                    step += 1;
                     updateProgress();
+                    setTimeout(function () { cooldown = false; }, COOLDOWN_MS);
+                    if (step >= TOTAL) {
+                        completed = true;
+                        setTimeout(release, COOLDOWN_MS + 60);
+                    }
+                    return true;
+                } else {
+                    if (step <= 0) return false;
+                    cooldown = true;
+                    applyStep(-1);
+                    step -= 1;
+                    updateProgress();
+                    setTimeout(function () { cooldown = false; }, COOLDOWN_MS);
+                    if (step <= 0) {
+                        setTimeout(release, COOLDOWN_MS + 60);
+                    }
+                    return true;
                 }
             }
 
-            // Ciągłe odpytywanie klatka po klatce (requestAnimationFrame), zamiast polegania
-            // wyłącznie na zdarzeniu "scroll" — to ten sam, sprawdzony wzorzec co w
-            // scrollytellingu na stronach Apple: działa identycznie niezależnie od tego, czy
-            // przeglądarka/urządzenie generuje zdarzenia scroll gęsto, rzadko, czy z opóźnieniem
-            // przy przewijaniu bezwładnościowym (moment scrolling na telefonach).
-            function loop() {
-                checkStep();
-                requestAnimationFrame(loop);
+            function release() {
+                if (!engaged) return;
+                engaged = false;
+                unlockScroll();
             }
-            requestAnimationFrame(loop);
+
+            function isCentered() {
+                var r = card.getBoundingClientRect();
+                var mid = window.innerHeight / 2;
+                return r.top < mid && r.bottom > mid;
+            }
+
+            function maybeEngage() {
+                if (engaged || completed) return;
+                if (Date.now() < suppressEngageUntil) return;
+                if (isCentered()) {
+                    engaged = true;
+                    lockScroll();
+                }
+            }
+
+            // Dwa niezależne mechanizmy wykrywania, że karta jest na środku ekranu —
+            // zdarzenie "scroll" (tanie, zwykle wystarcza) ORAZ ciągłe odpytywanie
+            // klatka po klatce jako zabezpieczenie na wypadek, gdyby przeglądarka
+            // ograniczała częstotliwość zdarzeń scroll przy przewijaniu
+            // bezwładnościowym (częste na telefonach). rAF sam w sobie jest
+            // wstrzymywany, gdy karta przeglądarki jest w tle — nieistotne tutaj,
+            // bo wtedy i tak nikt nie scrolluje.
+            window.addEventListener('scroll', maybeEngage, { passive: true });
+            function watchLoop() {
+                maybeEngage();
+                requestAnimationFrame(watchLoop);
+            }
+            requestAnimationFrame(watchLoop);
+            maybeEngage(); // np. po odświeżeniu strony w trakcie przewinięcia
+
+            // ── kółko myszy / trackpad ──
+            window.addEventListener('wheel', function (e) {
+                if (!engaged) return;
+                e.preventDefault();
+                tryAdvance(e.deltaY > 0 ? 1 : -1);
+            }, { passive: false });
+
+            // ── dotyk: jeden swipe (>22px) = jeden krok. Sprawdzamy `engaged` (flaga
+            //    globalna, ustawiana przez scroll listener, a nie migawka z touchstart),
+            //    więc nie ma znaczenia, gdzie na ekranie zaczyna się gest palcem. ──
+            var touchY = null;
+            window.addEventListener('touchstart', function (e) {
+                touchY = e.touches[0].clientY;
+            }, { passive: true });
+
+            window.addEventListener('touchmove', function (e) {
+                var y = e.touches[0].clientY;
+                if (!engaged) { touchY = y; return; }
+                e.preventDefault();
+                if (touchY === null) { touchY = y; return; }
+                var delta = touchY - y; // dodatnie = palec w górę = zamiar scrolla w dół
+                if (Math.abs(delta) > 22) {
+                    if (tryAdvance(delta > 0 ? 1 : -1)) touchY = y;
+                }
+            }, { passive: false });
+
+            window.addEventListener('touchend', function () { touchY = null; }, { passive: true });
+
+            updateProgress();
         })();

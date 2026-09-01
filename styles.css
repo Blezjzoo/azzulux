@@ -1573,6 +1573,12 @@
             color: var(--ocean)
         }
 
+        /* Gdy dzisiejszy dzień jest też ofertą last minute, złoto ma wygrać
+           (inaczej dziś wyglądałoby inaczej niż reszta złotych dni). */
+        .day.today.lm-day .day-num {
+            color: var(--gold);
+        }
+
         .day.today::after {
             content: "";
             position: absolute;

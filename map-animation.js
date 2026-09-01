@@ -2,18 +2,19 @@
             var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             var card = document.getElementById('heroMapCard');
+            var spacer = document.getElementById('mapPinSpacer');
             var wrapper = document.getElementById('mapZoomWrapper');
             var wideGroup = document.getElementById('wideGroup');
             var progressEl = document.getElementById('mapProgress');
-            if (!card || !wrapper) return;
+            if (!card || !wrapper || !spacer) return;
 
             var ALL_PATH_IDS = ['mapPathAlghero', 'mapPathOlbia', 'mapPathRest', 'mapPathLidl', 'mapPathScoglio', 'mapPathDolci', 'mapPathBalai'];
             var ALL_BADGE_IDS = ['mapBadgeAlghero', 'mapBadgeOlbia', 'mapBadgeRest', 'mapBadgeLidl', 'mapBadgeScoglio', 'mapBadgeDolci', 'mapBadgeBalai'];
             var ALL_DOT_IDS = ['mapDotAlghero', 'mapDotOlbia', 'mapDotRest', 'mapDotLidl', 'mapDotScoglio', 'mapDotDolci', 'mapDotBalai'];
 
-            // Osoby z włączonym "ogranicz animacje" (prefers-reduced-motion) dostają od razu
-            // gotowy, w pełni odsłonięty stan mapy — bez rysowania linii, zoomu i bez
-            // przechwytywania scrolla (poniższy mechanizm "krok na swipe" w ogóle się nie uruchamia).
+            // Osoby z włączonym "ogranicz animacje" dostają od razu gotowy, w pełni
+            // odsłonięty stan mapy — bez rysowania linii, zoomu i bez "korytarza" scrolla
+            // (spacer wraca do position:static, karta zachowuje się jak zwykły blok).
             function showFinalStateInstantly() {
                 ALL_PATH_IDS.forEach(function (id) {
                     var p = document.getElementById(id);
@@ -34,16 +35,18 @@
                 if (wideGroup) wideGroup.style.opacity = '0';
                 wrapper.style.transform = 'scale(1)';
                 if (progressEl) progressEl.style.display = 'none';
+                spacer.classList.add('no-pin');
             }
 
             if (reducedMotion) { showFinalStateInstantly(); return; }
 
             /* ── Krok po kroku, w stylu "Apple scrollytelling" ──────────────────────
-               Gdy karta z mapą dojedzie do środka ekranu, scroll strony się zatrzymuje
-               ("przypina" kartę na miejscu) i każde kolejne przewinięcie/swipe w dół
-               odsłania JEDNĄ z 5 porcji animacji zamiast przewijać stronę dalej.
-               Swipe w górę cofa poprzednią porcję. Dopiero po 5. kroku (albo cofnięciu
-               do 0) scroll strony wraca do normy i można pojechać dalej / wrócić wyżej. */
+               #mapPinSpacer jest wysoki na 5 "ekranów" scrolla; #mapPinSticky trzyma
+               kartę na środku ekranu przez position:sticky (natywny mechanizm
+               przeglądarki — nic tu nie "łapie" scrolla i nie woła preventDefault,
+               więc działa identycznie kółkiem myszy, trackpadem i palcem, niezależnie
+               od tego, gdzie na stronie zaczyna się gest). Pozycja scrolla wewnątrz
+               tego korytarza mówi nam wprost, który z 5 kroków ma być odsłonięty. */
 
             var STEPS = [
                 { points: [{ path: 'mapPathAlghero', badge: 'mapBadgeAlghero', dot: 'mapDotAlghero', len: 1000, dur: 700 }] },
@@ -64,9 +67,7 @@
                 { points: [{ path: 'mapPathBalai', badge: 'mapBadgeBalai', dot: 'mapDotBalai', dur: 850 }] }
             ];
             var TOTAL = STEPS.length;
-            var step = 0;       // ile porcji już odsłonięto (0..TOTAL)
-            var cooldown = false; // blokada na czas trwania animacji jednego kroku, żeby jeden swipe = jeden krok
-            var COOLDOWN_MS = 620;
+            var currentStep = 0; // ile porcji jest aktualnie odsłoniętych (0..TOTAL)
 
             var lenCache = {};
             function pathLen(id, fallback) {
@@ -113,20 +114,10 @@
                 }
             }
 
-            function updateProgress() {
-                if (!progressEl) return;
-                var dots = progressEl.children;
-                for (var i = 0; i < dots.length; i++) {
-                    dots[i].classList.toggle('filled', i < step);
-                }
-            }
-
-            // direction: 1 = wchodzimy do przodu (odsłaniamy krok), -1 = cofamy się (chowamy krok)
-            function applyStep(direction) {
-                var idx = direction === 1 ? step : step - 1;
+            function setStepState(idx, revealed) {
                 var s = STEPS[idx];
                 if (!s) return;
-                if (direction === 1) {
+                if (revealed) {
                     if (s.zoomIn) {
                         if (wideGroup) wideGroup.style.opacity = '0';
                         wrapper.style.transform = 'scale(1)';
@@ -141,79 +132,49 @@
                 }
             }
 
-            function tryAdvance(dir) {
-                if (cooldown) return false;
-                if (dir === 1) {
-                    if (step >= TOTAL) return false; // gotowe — puszczamy scroll dalej w dół
-                    cooldown = true;
-                    applyStep(1);
-                    step += 1;
-                    updateProgress();
-                    setTimeout(function () { cooldown = false; }, COOLDOWN_MS);
-                    return true;
-                } else {
-                    if (step <= 0) return false; // nic do cofnięcia — puszczamy scroll dalej w górę
-                    cooldown = true;
-                    applyStep(-1);
-                    step -= 1;
-                    updateProgress();
-                    setTimeout(function () { cooldown = false; }, COOLDOWN_MS);
-                    return true;
+            function updateProgress() {
+                if (!progressEl) return;
+                var dots = progressEl.children;
+                for (var i = 0; i < dots.length; i++) {
+                    dots[i].classList.toggle('filled', i < currentStep);
                 }
             }
 
-            function isEngaged() {
-                var r = card.getBoundingClientRect();
-                var mid = window.innerHeight / 2;
-                return r.top < mid && r.bottom > mid;
+            function computeTargetStep() {
+                var rect = spacer.getBoundingClientRect();
+                var runway = rect.height - window.innerHeight;
+                if (runway <= 0) return TOTAL;
+                var scrolled = -rect.top;
+                var progress = scrolled / runway;
+                if (progress < 0) progress = 0;
+                if (progress > 1) progress = 1;
+                var t = Math.floor(progress * TOTAL + 1e-6);
+                if (t < 0) t = 0;
+                if (t > TOTAL) t = TOTAL;
+                return t;
             }
 
-            // ── kółko myszy / trackpad ──
-            window.addEventListener('wheel', function (e) {
-                if (!isEngaged()) return;
-                var dir = e.deltaY > 0 ? 1 : -1;
-                if (dir === 1 && step >= TOTAL) return;
-                if (dir === -1 && step <= 0) return;
-                e.preventDefault();
-                tryAdvance(dir);
-            }, { passive: false });
-
-            // ── dotyk (telefon/tablet): jeden swipe = jeden krok, niezależnie od tego,
-            //    jak daleko przesunie się palec — trzymamy zdarzenie, aż palec się podniesie ──
-            var touchStartY = null, touchConsumed = false, touchBlocking = false;
-            window.addEventListener('touchstart', function (e) {
-                touchStartY = isEngaged() ? e.touches[0].clientY : null;
-                touchConsumed = false;
-                touchBlocking = false;
-            }, { passive: true });
-
-            window.addEventListener('touchmove', function (e) {
-                if (touchStartY === null) return;
-                if (!isEngaged()) { touchStartY = null; return; }
-                var y = e.touches[0].clientY;
-                var delta = touchStartY - y; // dodatnie = palec w górę = zamiar scrolla w dół
-                var dir = delta > 0 ? 1 : -1;
-                if (dir === 1 && step >= TOTAL) return;  // koniec animacji — puszczamy naturalny scroll
-                if (dir === -1 && step <= 0) return;
-
-                if (!touchConsumed) {
-                    if (Math.abs(delta) > 22) {
-                        e.preventDefault();
-                        touchConsumed = tryAdvance(dir);
-                        touchBlocking = true;
+            function checkStep() {
+                var target = computeTargetStep();
+                if (target !== currentStep) {
+                    if (target > currentStep) {
+                        for (var i = currentStep; i < target; i++) setStepState(i, true);
                     } else {
-                        // ruch za mały, żeby liczyć się jako swipe — i tak nie dajemy
-                        // stronie "pełznąć" w trakcie decydowania
-                        e.preventDefault();
+                        for (var j = currentStep - 1; j >= target; j--) setStepState(j, false);
                     }
-                } else if (touchBlocking) {
-                    e.preventDefault();
+                    currentStep = target;
+                    updateProgress();
                 }
-            }, { passive: false });
+            }
 
-            window.addEventListener('touchend', function () {
-                touchStartY = null; touchConsumed = false; touchBlocking = false;
-            }, { passive: true });
-
-            updateProgress();
+            // Ciągłe odpytywanie klatka po klatce (requestAnimationFrame), zamiast polegania
+            // wyłącznie na zdarzeniu "scroll" — to ten sam, sprawdzony wzorzec co w
+            // scrollytellingu na stronach Apple: działa identycznie niezależnie od tego, czy
+            // przeglądarka/urządzenie generuje zdarzenia scroll gęsto, rzadko, czy z opóźnieniem
+            // przy przewijaniu bezwładnościowym (moment scrolling na telefonach).
+            function loop() {
+                checkStep();
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
         })();

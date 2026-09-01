@@ -659,6 +659,11 @@
             </div>
             <!-- End Google Reviews Carousel -->
 
+            <!-- Sekcja mapy jest "przypięta" na środku ekranu, dopóki nie przewinie się
+                 przez cały jej "korytarz" scrolla (position:sticky — bez łapania scrolla w JS,
+                 więc działa niezależnie od tego, gdzie zaczyna się gest, i bez migotania). -->
+            <div class="map-pin-spacer" id="mapPinSpacer">
+            <div class="map-pin-sticky">
             <div class="hero-map-wrap" style="margin-top:28px;">
                 <div class="map-eyebrow" id="t-map-eyebrow">✦ &nbsp; bliskość atrakcji &nbsp; ✦</div>
                 <div class="map-card" id="heroMapCard">
@@ -934,6 +939,8 @@
                         <div class="map-foot-dot"></div>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
             <!-- LISTA ZAINTERESOWANYCH -->
 

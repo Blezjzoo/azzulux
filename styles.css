@@ -3064,13 +3064,6 @@
             margin-top: 24px;
         }
 
-        /* Blokada scrolla całej strony na czas animacji mapy (patrz map-animation.js —
-           lockScroll/unlockScroll) używa position:fixed na <body>, stąd ten reset:
-           bez niego zmiana position mogłaby przesunąć layout body w bok. */
-        body.map-scroll-locked {
-            width: 100%;
-        }
-
         .map-eyebrow {
             text-align: center;
             font-size: 8px;
@@ -3124,34 +3117,6 @@
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.35);
             font-family: 'DM Sans', sans-serif;
-        }
-
-        /* Wskaźnik postępu 5-krokowej animacji mapy (jeden swipe = jeden krok) */
-        .map-progress {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 0 0;
-        }
-
-        .map-progress-dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: rgba(201, 168, 76, 0.25);
-            transition: background .35s ease, transform .35s ease;
-        }
-
-        .map-progress-dot.filled {
-            background: var(--gold);
-            transform: scale(1.7);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .map-progress-dot {
-                transition: none;
-            }
         }
 
         /* ── App Choice Popup ── */

@@ -687,8 +687,11 @@
 
                         <g id="mapZoomWrapper"
                             style="transform-origin: 120px 158px; transform: scale(0.42); transition: transform 2.5s cubic-bezier(0.65, 0, 0.1, 1);">
-                            <!-- Sea background -->
-                            <rect x="-400" y="-150" width="1200" height="700" fill="url(#mapSeaG)" />
+                            <!-- Sea background — celowo dużo większy niż potrzeba dla samej ramki (0 0 380 210).
+                                 #mapZoomWrapper skaluje się do 0.42 wokół punktu (120,158) w stanie "szerokim" (oba
+                                 lotniska), co ściąga brzegi tego prostokąta do środka i przy zbyt małym rozmiarze
+                                 odsłaniało to górę karty (przezroczyste .map-card + blur na tle dawało szary pasek). -->
+                            <rect x="-700" y="-500" width="2200" height="1500" fill="url(#mapSeaG)" />
 
                             <!-- 
               Porto Torres topography:
@@ -918,6 +921,13 @@
                             <!-- End of zoom wrapper -->
                         </g>
                     </svg>
+                    <div class="map-progress" id="mapProgress" aria-hidden="true">
+                        <span class="map-progress-dot"></span>
+                        <span class="map-progress-dot"></span>
+                        <span class="map-progress-dot"></span>
+                        <span class="map-progress-dot"></span>
+                        <span class="map-progress-dot"></span>
+                    </div>
                     <div class="map-foot">
                         <div class="map-foot-dot"></div>
                         <span class="map-foot-text" id="t-map-foot-text">Porto Torres · Sardegna</span>

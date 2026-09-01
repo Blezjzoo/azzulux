@@ -334,20 +334,48 @@
          }, 1500);
      });
 
+     // Skąd dokładnie kliknięto Messenger/WhatsApp — żeby dashboard mógł pokazać
+     // każdy przycisk osobno, nie tylko sumę "kliknięto Messenger/WhatsApp gdziekolwiek".
+     function ctaLocation(el) {
+         if (el.closest('#rezerwuj-wrap')) return 'cta_gorne';
+         if (el.closest('.contact')) return 'cta_dolne';
+         if (el.closest('#app-choice-popup')) return 'popup_dowiedz_sie';
+         if (el.closest('#cal-mix-alert')) return 'baner_brak_terminu';
+         if (el.closest('#messenger-help-overlay')) return 'popup_potwierdzenie';
+         return 'inne';
+     }
+
      // ── 6. Kliknięcia przycisków / elementów w całym lejku ──
      document.addEventListener('click', function(e) {
          var target = e.target.closest(
-             'button, .step, .aopt, .btn-back, .faq-q, .reviews-btn, #btn-waitlist'
+             'button, a#t-mh-confirm, .step, .aopt, .btn-back, .faq-q, .reviews-btn, #btn-waitlist'
          );
          if (!target) return;
 
          var actionName = null;
          var details = {};
+         var clickStr0 = (target.getAttribute('onclick') || '');
 
-         if (target.classList.contains('btn-messenger')) {
+         if (target.id === 't-mh-confirm') {
+             // Kliknięcie "Rozumiem, otwórz Messenger" w popupie — to jest ten klik, który
+             // FAKTYCZNIE otwiera Messenger (poprzedni klik na "Rezerwuj przez Messenger"
+             // tylko pokazuje popup). To <a>, nie <button>, dlatego osobny warunek.
              actionName = 'Klikniecie_Messenger';
+             details.miejsce = 'popup_potwierdzenie';
+         } else if (target.classList.contains('btn-messenger')) {
+             actionName = 'Klikniecie_Messenger';
+             details.miejsce = ctaLocation(target);
          } else if (target.classList.contains('btn-whatsapp')) {
              actionName = 'Klikniecie_WhatsApp';
+             details.miejsce = ctaLocation(target);
+         } else if (target.classList.contains('btn-main') && clickStr0.includes('openWhatsAppMix')) {
+             // Baner "mieszanej dostępności" w kalendarzu — te przyciski mają klasę btn-main,
+             // nie btn-whatsapp/btn-messenger, więc trzeba je złapać osobno po treści onclick.
+             actionName = 'Klikniecie_WhatsApp';
+             details.miejsce = 'baner_brak_terminu';
+         } else if (target.classList.contains('btn-main') && clickStr0.includes('openMessengerMix')) {
+             actionName = 'Klikniecie_Messenger';
+             details.miejsce = 'baner_brak_terminu';
          } else if (target.classList.contains('btn-main') && target.id === 'btn1') {
              actionName = 'Zatwierdzenie_Krok1';
          } else if (target.id === 'btn-waitlist') {

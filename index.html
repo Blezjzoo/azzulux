@@ -195,7 +195,16 @@
     </header>
 
     <!-- Porto Torres story -->
-    <section class="pt-section">
+    <section class="pt-section pt-has-video" id="pt-section">
+        <!-- Wideo w tle — src ustawia pt-video.js dopiero przy wejściu w sekcję,
+             żeby nie ciągnąć playera na starcie strony. -->
+        <div class="pt-video-layer" aria-hidden="true">
+            <iframe class="pt-video-frame" id="pt-vimeo" tabindex="-1"
+                title="Porto Torres — wideo w tle"
+                data-src="https://player.vimeo.com/video/1224618758?autoplay=0&amp;loop=1&amp;muted=1&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;playsinline=1&amp;dnt=1&amp;autopause=0"
+                allow="autoplay; picture-in-picture"></iframe>
+            <div class="pt-video-scrim"></div>
+        </div>
         <div class="pt-inner">
             <div class="pt-eyebrow" id="t-pt-eyebrow">Sardynia bez retuszu</div>
             <h2 class="pt-heading" id="t-pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>
@@ -1235,6 +1244,7 @@
 <!-- Vimeo Player API -->
 <script src="https://player.vimeo.com/api/player.js"></script>
 <script src="hero-video.js"></script>
+<script src="pt-video.js"></script>
 
 <!-- JS -->
 <script src="waitlist.js"></script>

@@ -125,10 +125,14 @@
             position: absolute;
             inset: 0;
             z-index: 1;
+            /* Dół hero domyka się kolorem sekcji z wideo (#0b1a22), żeby zdjęcie
+               przechodziło w nią miękko, bez twardej linii na styku. */
             background: linear-gradient(to bottom,
                     rgba(10, 28, 40, 0.55) 0%,
-                    rgba(10, 28, 40, 0.40) 50%,
-                    rgba(10, 28, 40, 0.72) 100%);
+                    rgba(10, 28, 40, 0.40) 48%,
+                    rgba(10, 28, 40, 0.72) 82%,
+                    rgba(11, 26, 34, 0.94) 95%,
+                    #0b1a22 100%);
         }
 
         /* Hero foreground content */
@@ -3543,4 +3547,208 @@
             min-width: 36px;
             text-align: center;
             letter-spacing: .05em;
+        }
+
+        /* ══════════════════════════════════════════════════════════
+           „Dlaczego u nas" — wideo w tle sekcji Porto Torres
+
+           Przebieg: wejście w sekcję → wideo 9:16 wypełnia ją jak
+           object-fit:cover i leci czyste 5 s → przyciemnienie schodzi
+           od góry do dołu, a tekst wchodzi kaskadą blok po bloku →
+           wideo chodzi dalej w pętli.
+           Czasy startu w pt-video.js (REVEAL_DELAY, FAILSAFE),
+           tempo samej animacji niżej w tym bloku.
+           ══════════════════════════════════════════════════════════ */
+        .pt-has-video {
+            position: relative;
+            background: #0b1a22;
+            border-bottom: none;
+            isolation: isolate;
+        }
+
+        /* Miejsce na dolne rozmycie w beż — żeby tekst nie wchodził w jaśniejącą strefę. */
+        .pt-has-video .pt-inner {
+            position: relative;
+            z-index: 1;
+            padding-bottom: 150px;
+        }
+
+        .pt-video-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            /* widać to, zanim player wystartuje — zamiast czarnej dziury */
+            background: radial-gradient(125% 80% at 50% 18%, #17505c 0%, #0b1a22 72%);
+        }
+
+        /* cover dla materiału 9:16: pełna wysokość, szerokość z proporcji,
+           a min-width dopina kadr, gdy sekcja jest szersza niż wysoka */
+        .pt-video-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 100%;
+            width: auto;
+            aspect-ratio: 9 / 16;
+            min-width: 100%;
+            border: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+
+        .pt-playing .pt-video-frame {
+            opacity: 1;
+        }
+
+        /* ── miękkie krawędzie sekcji — żadnych twardych linii ── */
+        /* góra: wideo wynurza się z ciemności, w którą schodzi fala hero */
+        .pt-video-layer::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 160px;
+            z-index: 2;
+            background: linear-gradient(180deg, #0b1a22 0%, rgba(11, 26, 34, .72) 42%, rgba(11, 26, 34, 0) 100%);
+        }
+
+        /* dół: sekcja rozpływa się w beżowe tło strony */
+        .pt-video-layer::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 210px;
+            z-index: 2;
+            background: linear-gradient(180deg,
+                    rgba(11, 26, 34, 0) 0%,
+                    rgba(11, 26, 34, .78) 34%,
+                    #0b1a22 58%,
+                    var(--sand) 100%);
+        }
+
+        /* ── przyciemnienie schodzące od góry do dołu ──
+           Maska jest dwa razy wyższa od elementu: górna połowa kryje,
+           dolna jest przezroczysta z miękkim przejściem. Przesuwając ją
+           ze 100% na 0% zjeżdżamy krawędzią cienia w dół sekcji. */
+        .pt-video-scrim {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                    rgba(6, 18, 24, .52) 0%,
+                    rgba(6, 18, 24, .66) 45%,
+                    rgba(6, 18, 24, .78) 100%);
+            opacity: 0;
+            -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0) 74%);
+            mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0) 74%);
+            -webkit-mask-size: 100% 200%;
+            mask-size: 100% 200%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: 0 100%;
+            mask-position: 0 100%;
+            transition: opacity .5s ease,
+                -webkit-mask-position 1.9s cubic-bezier(.33, .1, .25, 1),
+                mask-position 1.9s cubic-bezier(.33, .1, .25, 1);
+        }
+
+        .pt-revealed .pt-video-scrim {
+            opacity: 1;
+            -webkit-mask-position: 0 0;
+            mask-position: 0 0;
+        }
+
+        /* ── tekst wchodzi kaskadą, blok po bloku, z góry na dół ── */
+        .pt-armed .pt-eyebrow,
+        .pt-armed .pt-heading,
+        .pt-armed .pt-body>* {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        .pt-armed.pt-revealed .pt-eyebrow,
+        .pt-armed.pt-revealed .pt-heading,
+        .pt-armed.pt-revealed .pt-body>* {
+            opacity: 1;
+            transform: none;
+            transition: opacity .8s ease var(--rd, 0ms),
+                transform .8s cubic-bezier(.2, .7, .3, 1) var(--rd, 0ms);
+        }
+
+        .pt-has-video .pt-eyebrow { --rd: 0ms }
+        .pt-has-video .pt-heading { --rd: 120ms }
+        .pt-has-video .pt-body>*:nth-child(1) { --rd: 240ms }
+        .pt-has-video .pt-body>*:nth-child(2) { --rd: 350ms }
+        .pt-has-video .pt-body>*:nth-child(3) { --rd: 460ms }
+        .pt-has-video .pt-body>*:nth-child(4) { --rd: 570ms }
+        .pt-has-video .pt-body>*:nth-child(5) { --rd: 680ms }
+        .pt-has-video .pt-body>*:nth-child(6) { --rd: 790ms }
+        .pt-has-video .pt-body>*:nth-child(7) { --rd: 900ms }
+        .pt-has-video .pt-body>*:nth-child(8) { --rd: 1010ms }
+
+        /* ── treść czytana na ciemnym wideo ── */
+        .pt-has-video .pt-eyebrow {
+            color: #e9c887;
+        }
+
+        .pt-has-video .pt-heading {
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, .45);
+        }
+
+        .pt-has-video .pt-heading em {
+            color: #e9c887;
+        }
+
+        .pt-has-video .pt-p {
+            color: rgba(255, 255, 255, .9);
+            text-shadow: 0 1px 14px rgba(0, 0, 0, .4);
+        }
+
+        .pt-has-video .pt-p strong {
+            color: #fff;
+        }
+
+        .pt-has-video .pt-closing {
+            color: rgba(255, 255, 255, .93);
+            text-shadow: 0 1px 14px rgba(0, 0, 0, .45);
+        }
+
+        .pt-has-video .pt-highlights {
+            background: rgba(8, 24, 32, .55);
+            border-color: rgba(255, 255, 255, .16);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+        }
+
+        .pt-has-video .pt-hi-row {
+            color: rgba(255, 255, 255, .9);
+        }
+
+        .pt-has-video .pt-hi-row strong {
+            color: #fff;
+        }
+
+        /* Fala zamykająca hero wchodzi teraz w ciemną sekcję, nie w jasną. */
+        .wave-svg {
+            fill: #0b1a22;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .pt-armed .pt-eyebrow,
+            .pt-armed .pt-heading,
+            .pt-armed .pt-body>*,
+            .pt-armed.pt-revealed .pt-eyebrow,
+            .pt-armed.pt-revealed .pt-heading,
+            .pt-armed.pt-revealed .pt-body>*,
+            .pt-video-frame,
+            .pt-video-scrim {
+                transition: none;
+            }
         }

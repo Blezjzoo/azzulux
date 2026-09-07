@@ -175,13 +175,6 @@
                         style="margin-top:0;">
                         <span class="hero-cta-pill hero-cta-glow" id="t-hero-cta">Sprawdź dostępność</span>
                     </button>
-                    <button class="hero-cta"
-                        onclick="document.querySelector('.pt-section').scrollIntoView({behavior:'smooth',block:'start'})"
-                        style="margin-top:0;">
-                        <span class="hero-cta-pill hero-cta-secondary" id="t-hero-why"
-                            style="background:rgba(0,0,0,0.2); border-color:rgba(255,255,255,0.4);">Dlaczego u
-                            nas?</span>
-                    </button>
                 </div>
                 <span class="hero-cta-arrow"
                     style="animation: heroBounce 2s ease-in-out infinite; font-size: 20px; color: rgba(255,255,255,.7); line-height: 1;">↓</span>
@@ -205,6 +198,11 @@
                 allow="autoplay; picture-in-picture"></iframe>
             <div class="pt-video-scrim"></div>
         </div>
+        <!-- Przycisk odsłaniający: pokazuje go dopiero JS (klasa pt-armed),
+             więc bez JS treść sekcji jest widoczna normalnie. -->
+        <button class="pt-reveal-btn" id="pt-reveal-btn" type="button">
+            <span class="pt-reveal-btn-pill" id="t-hero-why">Dlaczego u nas?</span>
+        </button>
         <div class="pt-inner">
             <div class="pt-eyebrow" id="t-pt-eyebrow">Sardynia bez retuszu</div>
             <h2 class="pt-heading" id="t-pt-heading">Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em></h2>

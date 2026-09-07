@@ -3553,11 +3553,11 @@
            „Dlaczego u nas" — wideo w tle sekcji Porto Torres
 
            Przebieg: wejście w sekcję → wideo 9:16 wypełnia ją jak
-           object-fit:cover i leci czyste 5 s → przyciemnienie schodzi
-           od góry do dołu, a tekst wchodzi kaskadą blok po bloku →
+           object-fit:cover i leci czyste, z przyciskiem „Dlaczego u nas?"
+           na środku → kliknięcie → przyciemnienie schodzi od góry do dołu,
+           tekst wchodzi kaskadą blok po bloku, przycisk znika →
            wideo chodzi dalej w pętli.
-           Czasy startu w pt-video.js (REVEAL_DELAY, FAILSAFE),
-           tempo samej animacji niżej w tym bloku.
+           Sterowanie w pt-video.js, tempo animacji niżej w tym bloku.
            ══════════════════════════════════════════════════════════ */
         .pt-has-video {
             position: relative;
@@ -3691,6 +3691,62 @@
         .pt-has-video .pt-body>*:nth-child(7) { --rd: 900ms }
         .pt-has-video .pt-body>*:nth-child(8) { --rd: 1010ms }
 
+        /* ── przycisk odsłaniający, na środku pierwszego ekranu sekcji ── */
+        /* display:none dopóki JS nie uzbroi sekcji — bez JS tekst jest
+           widoczny od razu i przycisk nie miałby czego odsłaniać */
+        .pt-reveal-btn {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: calc(var(--locked-vh, 1vh) * 46);
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+        }
+
+        .pt-armed .pt-reveal-btn {
+            display: block;
+        }
+
+        .pt-reveal-btn-pill {
+            display: inline-block;
+            background: rgba(0, 0, 0, .3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255, 255, 255, .45);
+            color: #fff;
+            font-family: "DM Sans", sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: .04em;
+            padding: 15px 32px;
+            border-radius: 50px;
+            white-space: nowrap;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, .45);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .32);
+            animation: heroCtaPulse 2.4s ease-in-out infinite;
+        }
+
+        .pt-reveal-btn:hover .pt-reveal-btn-pill,
+        .pt-reveal-btn:active .pt-reveal-btn-pill {
+            background: rgba(0, 0, 0, .42);
+            border-color: rgba(255, 255, 255, .75);
+            animation-play-state: paused;
+        }
+
+        /* po odsłonięciu przycisk gasnie i przestaje przechwytywać kliknięcia */
+        .pt-armed.pt-revealed .pt-reveal-btn {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(.92);
+            pointer-events: none;
+        }
+
         /* ── treść czytana na ciemnym wideo ── */
         .pt-has-video .pt-eyebrow {
             color: #e9c887;
@@ -3748,7 +3804,12 @@
             .pt-armed.pt-revealed .pt-heading,
             .pt-armed.pt-revealed .pt-body>*,
             .pt-video-frame,
-            .pt-video-scrim {
+            .pt-video-scrim,
+            .pt-reveal-btn {
                 transition: none;
+            }
+
+            .pt-reveal-btn-pill {
+                animation: none;
             }
         }

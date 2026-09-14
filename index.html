@@ -232,8 +232,7 @@
             </div>
             <!-- ── / Hero Video Player ── -->
 
-            <div class="hero-cta-group"
-                style="display:flex; flex-direction:column; gap:16px; margin-top:24px; z-index:3; align-items:center;">
+            <div class="hero-cta-group">
                 <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
                     <button class="hero-cta"
                         onclick="document.getElementById('steps').scrollIntoView({behavior:'smooth',block:'start'})"
@@ -530,7 +529,6 @@
                 <div class="sum-body" id="sum-body"></div>
             </div>
             <div id="rezerwuj-wrap" style="margin-top: 18px; animation: fadeUp 0.38s ease both;">
-                <button class="btn-back" style="margin-top:0; margin-bottom:12px;" onclick="goBack(3)">&#8592; <span id="t-back3-top">Zmień apartament</span></button>
                 <div class="btn-contact-row" style="display:flex; flex-direction:column; gap:12px;">
                     <button class="btn-whatsapp" onclick="openWhatsApp()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0">
@@ -547,6 +545,7 @@
                     </button>
                 </div>
                 <p class="contact-note" id="t-contact-note-top" style="margin-top: 10px; margin-bottom: 8px;">1 klik i wysyłasz gotową wiadomość (bez pisania).</p>
+                <button class="btn-back" style="margin-top:0; margin-bottom:8px;" onclick="goBack(3)">&#8592; <span id="t-back3-top">Zmień apartament</span></button>
                 <button class="btn-info-gold" onclick="openInfoPopup()">
                     <span id="t-btn-info">Dowiedz się więcej</span>
                 </button>

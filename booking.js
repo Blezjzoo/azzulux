@@ -3,8 +3,8 @@
         ============================================================ */
         var LANGS = {
             pl: {
-                h1: 'Sprawdź<br><em>dostępność</em>',
-                tagline: 'Wybierz skład grupy i daty pobytu',
+                h1: 'To Sardynia<br><em>w najlepszym wydaniu</em>',
+                tagline: 'Komfortowy pobyt w wyjątkowym miejscu, blisko tego, co na Sardynii najpiękniejsze.',
                 step1: 'Goście', step2: 'Daty', step3: 'Apartament', step4: 'Podsumowanie',
                 s1label: 'Krok 1 z 4', s1title: 'Kto przyjeżdża?',
                 s1sub: '',
@@ -61,7 +61,7 @@
                 mPrice: ' Wyliczona cena za ten pobyt: ',
                 errLoad: 'Nie udało się wczytać kalendarza. Odśwież stronę i spróbuj ponownie.',
                 tipText: 'Wskazówka: rodzina 2+1? Wybierz 2 gości i 1 dostawkę — to tańsza opcja niż rezerwacja większego apartamentu dla 3 osób. Jeśli dziecko woli własne łóżko, wybierz po prostu 3 gości.',
-                selectBtn: 'Sprawdź cenę →',
+                selectBtn: 'Sprawdź cenę tego apartamentu →',
                 gatePeek: 'Zerknij, jak wygląda apartament',
                 salesTitle: 'Poczuj prawdziwie włoski klimat',
                 sf1: 'Samo centrum Porto Torres',
@@ -93,8 +93,8 @@
                 priceCheckHint: 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu'
             },
             en: {
-                h1: 'Check<br><em>availability</em>',
-                tagline: 'Tell us who\'s coming and when',
+                h1: 'Sardinia at<br><em>its very best</em>',
+                tagline: 'A comfortable stay in a special place, close to everything that makes Sardinia beautiful.',
                 step1: 'Guests', step2: 'Dates', step3: 'Apartment', step4: 'Summary',
                 s1label: 'Step 1 of 4', s1title: 'Who\'s coming?',
                 s1sub: '',
@@ -151,7 +151,7 @@
                 mPrice: ' Estimated price for this stay: ',
                 errLoad: 'Could not load the calendar. Please refresh the page and try again.',
                 tipText: 'Tip: travelling as 2+1? Choose 2 guests and 1 extra bed — better value than a larger apartment for 3. If your child prefers their own proper bed, just select 3 guests.',
-                selectBtn: 'Select →',
+                selectBtn: 'Check the price of this apartment →',
                 gatePeek: 'Take a peek at the apartment',
                 salesTitle: 'Experience authentic Italian charm',
                 sf1: 'Right in the heart of Porto Torres',
@@ -254,9 +254,19 @@
             if (s4 && !s4.classList.contains('hidden')) renderSummaryS4();
         }
 
+        /* Nagłówek hero jest w teście A/B — wariant losuje i zapamiętuje skrypt w <head>
+           index.html, tam też leży copy obu wariantów (patrz komentarz przy AZZURRO_AB_HERO).
+           T.h1 / T.tagline zostają jako zapasowa treść, gdyby tamten skrypt nie wystartował. */
+        function heroCopy(key) {
+            var copy = window.AZZURRO_AB_HERO_COPY;
+            var v = window.AZZURRO_AB_HERO;
+            if (copy && copy[v] && copy[v][lang] && copy[v][lang][key]) return copy[v][lang][key];
+            return T[key];
+        }
+
         function applyT() {
-            setHtml('hdr-h1', T.h1);
-            setTxt('hdr-tagline', T.tagline);
+            setHtml('hdr-h1', heroCopy('h1'));
+            setTxt('hdr-tagline', heroCopy('tagline'));
             setTxt('t-step1', T.step1); setTxt('t-step2', T.step2); setTxt('t-step3', T.step3); setTxt('t-step4', T.step4 || '');
             setTxt('t-s1label', T.s1label); setTxt('t-s1title', T.s1title); setTxt('t-s1sub', T.s1sub);
             setTxt('t-adults-lbl', T.adultsLbl); setTxt('t-kids-lbl', T.kidsLbl);

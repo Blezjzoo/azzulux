@@ -27,6 +27,32 @@
             document.documentElement.style.setProperty('--locked-vh', vh + 'px');
         })();
 
+        /* ── Odświeżenie zaczyna od hero, nie od miejsca, w którym ktoś skończył ──
+           Przeglądarka domyślnie przywraca pozycję przewinięcia przy odświeżeniu (F5,
+           powrót do karty), więc po reloadzie użytkownik lądował w środku sekcji
+           „Dlaczego u nas?" zamiast na hero. A reload i tak resetuje lejek do kroku 1
+           (stan kroków żyje tylko w pamięci), więc przywrócona pozycja była myląca.
+
+           'manual' wyłącza to przywracanie; scrollTo(0,0) dokłada się dla przeglądarek,
+           które i tak próbują przewinąć po dołożeniu treści.
+
+           Wyjątki, celowo NIE ruszane:
+           - adres z kotwicą (#...) — ktoś wszedł z linku prosto do sekcji,
+           - powrót z bfcache (pageshow.persisted) — tak wraca ktoś, kto wyszedł na
+             WhatsAppa z kroku 4; strona nie jest wtedy wykonywana od nowa, lejek stoi
+             w miejscu i przerzucenie go na górę kosztowałoby rezerwację. */
+        (function () {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+            if (window.location.hash) return;
+
+            function naGore() { window.scrollTo(0, 0); }
+            window.addEventListener('DOMContentLoaded', naGore);
+            window.addEventListener('load', naGore);
+            window.addEventListener('pageshow', function (e) {
+                if (!e.persisted) naGore();
+            });
+        })();
+
         // Blokada zoomu dwoma palcami (pinch-to-zoom) — sam meta viewport (user-scalable=no)
         // nie wystarcza na nowszym iOS Safari, więc dodatkowo blokujemy gest bezpośrednio.
         (function () {

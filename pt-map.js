@@ -41,7 +41,8 @@
             { k: 'alg', i: 'ruins',  tKey: 'ptmAlgRow', tVal: 'ptvAlg' },
             { k: 'gro', i: 'grotto', tKey: 'ptmGro', tVal: 'ptvGro' },
             { k: 'olb', i: 'plane',  tKey: 'ptmOlb', tVal: 'ptvOlb' },
-            { k: 'sme', i: 'beach',  tKey: 'ptmSme', tVal: 'ptvSme' }
+            { k: 'sme', i: 'beach',  tKey: 'ptmSme', tVal: 'ptvSme' },
+            { k: 'mad', i: 'boat',   tKey: 'ptmMad', tVal: 'ptvMad' }
         ],
         okolica: [
             { k: 'res', i: 'fork',  tKey: 'ptmRes', tVal: 'ptvRes' },
@@ -76,7 +77,7 @@
 
     /* Wartości oznaczone w LANGS jako niepotwierdzone dostają kropkowane podkreślenie
        — żeby było widać, które czasy pochodzą z szacunku, a nie z pomiaru. */
-    var DO_POTWIERDZENIA = { cas: 1, pel: 1, sme: 1 };
+    var DO_POTWIERDZENIA = { cas: 1, pel: 1, sme: 1, mad: 1 };
 
     function renderList() {
         var box = $('pt-facts');

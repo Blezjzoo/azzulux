@@ -4250,12 +4250,26 @@
            Po kliknięciu limit znika i sekcja rośnie do swojej naturalnej wysokości,
            bo treść musi się zmieścić. min-height zostaje na stałe, żeby wideo
            wypełniało ekran także wtedy, gdy treść byłaby krótka. */
+        /* Dwie deklaracje pod rząd to celowa progresywna poprawka, nie pomyłka:
+           --locked-vh pochodzi z window.innerHeight, a to na iOS 26 liczy TAKŻE pas
+           zasłonięty przez unoszący się pasek Safari. Sekcja wychodziła więc o te
+           ~10% za wysoka i trzeba było doscrollować, mimo że „mieściła się w 100%".
+
+           Jednostka svh jest zdefiniowana jako widok przy ROZWINIĘTYM interfejsie
+           przeglądarki, czyli dokładnie ten bezpieczny obszar. min() bierze
+           mniejszą z dwóch wartości: na desktopie obie są równe (dlatego laptop
+           zostaje bez zmian), a na telefonie wygrywa svh.
+
+           Starsze przeglądarki bez svh odrzucą drugą deklarację jako niepoprawną
+           i zostaną przy pierwszej — dlatego pierwsza MUSI tu zostać. */
         .pt-has-video {
             min-height: calc(var(--locked-vh, 1vh) * 100);
+            min-height: min(100svh, calc(var(--locked-vh, 1vh) * 100));
         }
 
         .pt-has-video.pt-armed:not(.pt-revealed) {
             max-height: calc(var(--locked-vh, 1vh) * 100);
+            max-height: min(100svh, calc(var(--locked-vh, 1vh) * 100));
             overflow: hidden;
         }
 

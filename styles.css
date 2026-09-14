@@ -4278,3 +4278,74 @@
         .pt-has-video.pt-armed:not(.pt-revealed) .pt-inner {
             padding-bottom: 0;
         }
+
+
+        /* ── Kalendarz mieści się na ekranie telefonu ────────────────────────────
+           Dwa miesiące po ~283px, nagłówek na trzy linie i legenda dawały 744px
+           przy oknie 700 — trzeba było przewijać, żeby w ogóle zobaczyć siatkę dat.
+
+           Komórki dnia zostają przy 44px: to minimalny rozmiar celu dotykowego,
+           a pomyłka w kliknięciu daty kosztuje tu rezerwację. Miejsce odzyskujemy
+           więc z rzeczy zbędnych — drugiego miesiąca, którego i tak nie dało się
+           objąć wzrokiem. Strzałki ‹ › przewijają miesiące jak wcześniej,
+           a renderCal() skraca wtedy etykietę zakresu do jednego miesiąca. */
+        @media (max-width: 480px) {
+            /* Wszystko POZA komórkami dni. Dwa miesiące po 5 rzędów × 44px to samo
+               440px siatki — to jest nieruszalne (44px to minimalny cel dotykowy,
+               a pomyłka w dacie kosztuje rezerwację), więc miejsce bierzemy z ramy. */
+
+            main {
+                padding-top: 10px;
+            }
+
+            .steps {
+                margin-bottom: 10px;
+            }
+
+            /* Ciemny nagłówek karty: krótki tekst mieści się w jednej linii obok
+               nawigacji miesiącami, więc nie potrzebuje ani dużego kroju, ani
+               takich odstępów jak przy trzech linijkach. */
+            .cal-hdr {
+                padding: 8px 12px;
+                /* space-between zostawiało między tytułem a nawigacją 2px — wyglądały
+                   jak sklejone. gap wymusza odstęp niezależnie od długości tekstów. */
+                gap: 12px;
+            }
+
+            .cal-hdr-info h3 {
+                font-size: .95rem;
+            }
+
+            .cal-hdr-info p {
+                font-size: 9px;
+                margin-top: 1px;
+            }
+
+            .cal-month-title {
+                font-size: 11px;
+                padding: 6px 4px 3px;
+            }
+
+            .wday {
+                padding: 1px 0;
+                font-size: 8px;
+            }
+
+            .wdays {
+                margin-bottom: 1px;
+            }
+
+            .cal-grid {
+                padding: 4px 5px 4px;
+            }
+
+            .cal-hint {
+                padding: 6px 12px;
+                font-size: 10.5px;
+            }
+
+            .cal-legend {
+                padding: 6px 10px;
+                gap: 8px;
+            }
+        }

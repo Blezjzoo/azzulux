@@ -37,13 +37,26 @@
              sessionId: generateSessionId(),
              source: source,
              startTime: new Date().toISOString(),
+             abHero: (window.AZZURRO_AB_HERO === 'A' || window.AZZURRO_AB_HERO === 'B') ? window.AZZURRO_AB_HERO : null,
              stages: []
          };
          localStorage.setItem('azzurro_funnel_session', JSON.stringify(sessionData));
      }
 
+     // Wariant testu A/B nagłówka hero (losowany i zapamiętywany przez skrypt w <head>
+     // index.html). Doklejamy go do KAŻDEGO zdarzenia, bo backend zapisuje tylko kolumny
+     // Timestamp / SessionId / Source / Stage / Details — nie ma gdzie trzymać cechy
+     // całej sesji. Dzięki temu dashboard przypisze wariant do sesji niezależnie od tego,
+     // na którym etapie lejka ktoś odpadł (nawet jeśli jedynym zdarzeniem był PageView).
+     function abHeroVariant() {
+         var v = window.AZZURRO_AB_HERO;
+         return (v === 'A' || v === 'B') ? v : null;
+     }
+
      function trackStage(stageName, details) {
          details = details || {};
+         const ab = abHeroVariant();
+         if (ab && details.abHero === undefined) details.abHero = ab;
          const eventData = {
              sessionId: sessionData.sessionId,
              source: sessionData.source,

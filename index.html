@@ -45,7 +45,21 @@
             if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
             if (window.location.hash) return;
 
-            function naGore() { window.scrollTo(0, 0); }
+            /* Kluczowy warunek: przewijamy na górę TYLKO dopóki użytkownik niczego nie
+               dotknął. Zdarzenie 'load' czeka na wszystkie zasoby — w tym iframe'y
+               Vimeo w hero i w sekcji z wideo — więc potrafi odpalić kilka sekund po
+               starcie, gdy ktoś jest już w kalendarzu. Bez tej blokady wyrzucało go
+               wtedy z powrotem na górę strony. */
+            var przewijanieAnulowane = false;
+            function anuluj() { przewijanieAnulowane = true; }
+            ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach(function (ev) {
+                window.addEventListener(ev, anuluj, { once: true, passive: true });
+            });
+
+            function naGore() {
+                if (przewijanieAnulowane) return;
+                window.scrollTo(0, 0);
+            }
             window.addEventListener('DOMContentLoaded', naGore);
             window.addEventListener('load', naGore);
             window.addEventListener('pageshow', function (e) {

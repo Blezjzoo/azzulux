@@ -36,6 +36,58 @@
             document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
             document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
         })();
+
+        /* ── TEST A/B NAGŁÓWKA HERO ──────────────────────────────────────────────
+           Dwa warianty tytułu + podtytułu w hero. Wariant losowany raz na przeglądarkę
+           i zapisany w localStorage, żeby ta sama osoba przy kolejnych wejściach zawsze
+           widziała to samo (inaczej wyniki testu byłyby nieporównywalne).
+
+           Wariant leci do statystyk: funnel-analytics.js dokleja go (details.abHero)
+           do KAŻDEGO zdarzenia, a dashboard liczy z tego konwersję osobno dla A i B.
+
+           Podgląd konkretnego wariantu bez czyszczenia localStorage: ?ab=A lub ?ab=B
+           (razem z ?test=1, żeby taka wizyta nie zaśmieciła statystyk).
+
+           Copy trzymamy TUTAJ, a nie tylko w booking.js, bo ten skrypt wykonuje się
+           jeszcze w <head> — dzięki temu skrypt tuż pod nagłówkiem podmienia tekst,
+           zanim przeglądarka zdąży cokolwiek namalować (żadnego mignięcia wariantu A
+           u osób, które mają dostać wariant B). */
+        (function () {
+            var KEY = 'azzurro_ab_hero';
+            var v = null;
+            try { v = localStorage.getItem(KEY); } catch (e) {}
+            if (v !== 'A' && v !== 'B') {
+                v = Math.random() < 0.5 ? 'A' : 'B';
+                try { localStorage.setItem(KEY, v); } catch (e) {}
+            }
+            var forced = null;
+            try { forced = new URLSearchParams(window.location.search).get('ab'); } catch (e) {}
+            if (forced === 'A' || forced === 'B') v = forced;
+
+            window.AZZURRO_AB_HERO = v;
+            window.AZZURRO_AB_HERO_COPY = {
+                A: {
+                    pl: {
+                        h1: 'To Sardynia<br><em>w najlepszym wydaniu</em>',
+                        tagline: 'Komfortowy pobyt w wyjątkowym miejscu, blisko tego, co na Sardynii najpiękniejsze.'
+                    },
+                    en: {
+                        h1: 'Sardinia at<br><em>its very best</em>',
+                        tagline: 'A comfortable stay in a special place, close to everything that makes Sardinia beautiful.'
+                    }
+                },
+                B: {
+                    pl: {
+                        h1: 'Tu zaczynają się<br><em>prawdziwe wakacje</em>',
+                        tagline: 'Wakacje pełne słońca, swobody i chwil, do których chce się wracać.'
+                    },
+                    en: {
+                        h1: 'This is where<br><em>the real holiday starts</em>',
+                        tagline: 'A holiday full of sun, freedom and moments you will want to come back to.'
+                    }
+                }
+            };
+        })();
     </script>
     <!-- Preconnect do zewnętrznych hostów -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,8 +150,21 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <span class="logo-tag">Azzurro Luxury Boutique</span>
-            <h1 id="hdr-h1">Sprawdź<br><em>dostępność</em></h1>
-            <p class="tagline" id="hdr-tagline">Wybierz skład grupy i daty pobytu</p>
+            <!-- Wariant A testu A/B jest wpisany na sztywno w HTML (działa też bez JS);
+                 skrypt zaraz pod spodem podmienia go na wariant B, jeśli ta przeglądarka
+                 została wylosowana do B — jeszcze zanim cokolwiek zostanie namalowane. -->
+            <h1 id="hdr-h1">To Sardynia<br><em>w najlepszym wydaniu</em></h1>
+            <p class="tagline" id="hdr-tagline">Komfortowy pobyt w wyjątkowym miejscu, blisko tego, co na Sardynii
+                najpiękniejsze.</p>
+            <script>
+                (function () {
+                    var copy = window.AZZURRO_AB_HERO_COPY;
+                    var v = window.AZZURRO_AB_HERO;
+                    if (!copy || !copy[v] || v === 'A') return; // A = to, co już jest w HTML
+                    document.getElementById('hdr-h1').innerHTML = copy[v].pl.h1;
+                    document.getElementById('hdr-tagline').textContent = copy[v].pl.tagline;
+                })();
+            </script>
             <div class="luxury-badge">
                 <span class="luxury-line"></span>
                 <span class="luxury-text" id="t-luxury-text">Wysoki standard &nbsp;·&nbsp; Blisko plaży</span>

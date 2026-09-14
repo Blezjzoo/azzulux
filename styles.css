@@ -3741,7 +3741,11 @@
             display: none;
             position: absolute;
             left: 50%;
-            top: calc(var(--locked-vh, 1vh) * 46);
+            /* 50% sekcji, a nie 46% wysokości okna: przed odsłonięciem sekcja jest
+               przycięta dokładnie do jednego ekranu (reguła niżej), więc środek sekcji
+               i środek ekranu to teraz to samo miejsce. Wcześniej sekcja bywała
+               1,6 ekranu wysoka i przycisk siedział na 29% jej wysokości. */
+            top: 50%;
             transform: translate(-50%, -50%);
             z-index: 3;
             border: 0;
@@ -4233,4 +4237,30 @@
                 gap: 9px;
                 text-align: left;
             }
+        }
+
+
+        /* ── Sekcja z wideo przed odsłonięciem: dokładnie jeden ekran ────────────
+           Treść chowamy przez opacity (żeby dało się ją wprowadzić kaskadą), a nie
+           display:none — więc niewidoczny tekst NADAL zajmował wysokość i sekcja
+           rosła do ~1,6 ekranu. Efekt: trzeba było przewijać przez pustą przestrzeń
+           z samym wideo, żeby dojść do końca sekcji.
+
+           Przycinamy ją więc do wysokości okna, dopóki nie zostanie odsłonięta.
+           Po kliknięciu limit znika i sekcja rośnie do swojej naturalnej wysokości,
+           bo treść musi się zmieścić. min-height zostaje na stałe, żeby wideo
+           wypełniało ekran także wtedy, gdy treść byłaby krótka. */
+        .pt-has-video {
+            min-height: calc(var(--locked-vh, 1vh) * 100);
+        }
+
+        .pt-has-video.pt-armed:not(.pt-revealed) {
+            max-height: calc(var(--locked-vh, 1vh) * 100);
+            overflow: hidden;
+        }
+
+        /* 150px zapasu pod dolne rozmycie ma sens dopiero przy widocznej treści —
+           w stanie przyciętym tylko dokładałoby wysokości do obcięcia. */
+        .pt-has-video.pt-armed:not(.pt-revealed) .pt-inner {
+            padding-bottom: 0;
         }

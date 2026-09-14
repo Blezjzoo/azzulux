@@ -126,18 +126,21 @@
             inset: 0;
             z-index: 1;
             /* Dwie warstwy:
-               1. Miękki owal pod samym blokiem tekstu (logo → tytuł → podtytuł → badge).
-                  Slideshow przewija też bardzo jasne kadry — biała sypialnia, marmurowa
-                  łazienka — na których biały tytuł się rozpływał. Rozmyty radial daje mu
-                  kontrast, ale wygasa do zera zanim dojdzie do wideo, więc zdjęcie niżej
-                  zostaje jasne i nie robi się z hero jednolita ciemna plama.
+               1. Przyciemnienie całej góry hero — od samej krawędzi aż do playera,
+                  potem gaśnie i zdjęcie wraca do normalnej jasności.
+                  Musi być mocne, bo slideshow przewija bardzo jasne kadry (5 z 7 zdjęć
+                  ma w pasie nagłówka jasność ~190/255, czyli praktycznie biel), a złote
+                  napisy (--gold #c9a84c) są ciemne: przy 9-12px potrzebują tła nie
+                  jaśniejszego niż ~65/255, żeby dało się je przeczytać. Biały tytuł
+                  wybaczyłby więcej, ale to złoto wyznacza poprzeczkę.
                2. Pionowy gradient jak wcześniej — domyka dół hero kolorem sekcji (#0b1a22). */
             background:
-                radial-gradient(130% 46% at 50% 13%,
-                    rgba(6, 20, 30, 0.46) 0%,
-                    rgba(6, 20, 30, 0.34) 40%,
-                    rgba(6, 20, 30, 0.14) 70%,
-                    rgba(6, 20, 30, 0) 100%),
+                linear-gradient(to bottom,
+                    rgba(6, 18, 26, 0.72) 0%,
+                    rgba(6, 18, 26, 0.70) 43%,
+                    rgba(6, 18, 26, 0.56) 53%,
+                    rgba(6, 18, 26, 0.20) 65%,
+                    rgba(6, 18, 26, 0) 75%),
                 linear-gradient(to bottom,
                     rgba(10, 28, 40, 0.55) 0%,
                     rgba(10, 28, 40, 0.40) 48%,
@@ -3897,6 +3900,25 @@
 
             .hero-content {
                 padding-bottom: 10px;
+            }
+
+            /* Na telefonie hero jest niższe i blok tekstu kończy się na ~24% wysokości
+               (na desktopie dopiero na ~41%), a player startuje już na ~27%. Bazowe
+               stopnie przyciemniałyby tu połowę playera — więc wygaszamy je wcześniej. */
+            .hero-overlay {
+                background:
+                    linear-gradient(to bottom,
+                        rgba(6, 18, 26, 0.72) 0%,
+                        rgba(6, 18, 26, 0.70) 26%,
+                        rgba(6, 18, 26, 0.58) 38%,
+                        rgba(6, 18, 26, 0.20) 52%,
+                        rgba(6, 18, 26, 0) 62%),
+                    linear-gradient(to bottom,
+                        rgba(10, 28, 40, 0.55) 0%,
+                        rgba(10, 28, 40, 0.40) 48%,
+                        rgba(10, 28, 40, 0.72) 82%,
+                        rgba(11, 26, 34, 0.94) 95%,
+                        #0b1a22 100%);
             }
         }
 

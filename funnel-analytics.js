@@ -125,7 +125,6 @@
                  { selector: '.highlights', kind: 'section', key: 'atuty' },
                  { selector: '.cin-badge', kind: 'section', key: 'cin' },
                  { selector: '.reviews-section', kind: 'section', key: 'opinie' },
-                 { selector: '.hero-map-wrap', kind: 'section', key: 'mapa' },
                  { selector: '.faq-section', kind: 'section', key: 'faq' }
              ];
 

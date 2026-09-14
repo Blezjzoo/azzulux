@@ -90,7 +90,30 @@
                 lmSub: 'Wolne terminy w bieżącym miesiącu dostępne od zaraz — rezerwuj szybko i skorzystaj z tych dat!',
                 lmSumTitle: 'Oferta Last Minute!',
                 lmSumSub: 'Wybrany termin jest dostępny od zaraz. Zarezerwuj szybko — te daty mogą zniknąć w każdej chwili!',
-                priceCheckHint: 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu'
+                priceCheckHint: 'Aby sprawdzić cenę — wybierz ilość osób i terminy pobytu',
+                ptEyebrow: 'Sardynia bez retuszu',
+                ptHeading: 'Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em>',
+                ptLead: 'To zależy, czego chcesz. Wiele miejscowości na północy żyje tylko latem — zimą zamknięte sklepy i bary, w sezonie ceny dla turystów. <strong>Porto Torres żyje cały rok</strong> — i leży tam, skąd blisko do obu lotnisk i do najpiękniejszej części wyspy.',
+                ptMapPrompt: 'Co jest dla Ciebie ważne?',
+                ptModeWyspa: 'Chcę zwiedzać wyspę',
+                ptModeOkolica: 'Chcę odpocząć i mieć wszystko pod ręką',
+                ptMapFoot: 'Porto Torres · Sardegna',
+                ptLegWyspa: 'Czasy jazdy autem, od najbliższego. Oznaczone <b>⟡</b> — orientacyjne.',
+                ptLegOkolica: 'Wszystko pieszo, prosto z klatki.',
+                ptmAho: 'Lotnisko Alghero', ptvAho: '29 min',
+                ptmCas: 'Castelsardo', ptvCas: '30 min',
+                ptmPel: 'La Pelosa / Stintino', ptvPel: '35 min',
+                ptmAlg: 'Alghero', ptmAlgRow: 'Alghero — stare miasto', ptvAlg: '37 min',
+                ptmGro: 'Grota Neptuna', ptvGro: '50 min',
+                ptmOlb: 'Lotnisko Olbia', ptvOlb: '1 h 15 min',
+                ptmSme: 'Costa Smeralda', ptvSme: '1 h 45 min',
+                ptmRes: 'Restauracje', ptvRes: '1 min',
+                ptmKaw: 'Kawiarnie i bary', ptvKaw: '50 m',
+                ptmLid: 'Lidl', ptvLid: '3 min',
+                ptmBal: 'Plaża Balai', ptvBal: '5 min',
+                ptmPor: 'Port i deptak', ptvPor: 'spacerem',
+                ptmObiad: 'Obiad w rodzinnej restauracji', ptvObiad: 'od 4,5 €',
+                ptClosing: 'Nie musisz wybierać między wygodą a zwiedzaniem.'
             },
             en: {
                 h1: 'Sardinia at<br><em>its very best</em>',
@@ -179,26 +202,28 @@
                 heroWhy: 'Why us?', luxuryText: 'High standard · Close to the beach',
                 ptEyebrow: 'Sardinia, unfiltered',
                 ptHeading: 'Which location<br>in Sardinia is<br><em>best?</em>',
-                ptP1: 'Everyone will naturally promote their own place... But the truth is that <strong>it all depends on what matters most to you.</strong>',
-                ptP2: "Many towns in northern Sardinia are typical tourist resorts. In winter everything is closed — shops, restaurants, bars. They open only in summer, specifically for tourists. Prices are higher, quality is often lower... because you're a tourist.",
-                ptP3: "No car? Sometimes you can't even buy bread without driving to a shop. <strong>Alghero, Olbia?</strong> Great — if you enjoy crowds and inflated prices.",
-                ptP4: "That's why <strong>the best places are the ones nobody talks about.</strong> That's where you can feel the real magic of Sardinia.",
-                ptP5: '<strong>Porto Torres</strong> is the perfect example. Life goes on here all year round, so you have access to everything you need.',
-                ptHi1: 'Restaurants — <strong>1 minute</strong> walk',
-                ptHi2: 'Lidl — <strong>3 minutes</strong> walk',
-                ptHi3: 'Cafes, bars and restaurants — literally <strong>50 metres</strong>',
-                ptHi4: 'Beach — <strong>5 minutes</strong> and you are by the water',
-                ptHi5: 'Harbour, free beaches and a <strong>beautiful promenade</strong> along the coast — cliffs and charming coves',
-                ptHi6: 'Real family-run restaurants — local prices, not tourist prices. From just <strong>4.5€</strong>',
-                ptClosing: 'Porto Torres is the perfect place if you want to relax<br>and feel the real Sardinian way of life.',
+                ptLead: 'It depends on what you want. Many towns in the north only come alive in summer — in winter the shops and bars are shut, and in season the prices are made for tourists. <strong>Porto Torres lives all year round</strong> — within easy reach of both airports and of the most beautiful part of the island.',
+                ptMapPrompt: 'What matters to you?',
+                ptModeWyspa: 'I want to explore the island',
+                ptModeOkolica: 'I want to relax with everything close by',
+                ptMapFoot: 'Porto Torres · Sardinia',
+                ptLegWyspa: 'Driving times, nearest first. Marked <b>⟡</b> — approximate.',
+                ptLegOkolica: 'All on foot, straight from the door.',
+                ptmAho: 'Alghero Airport', ptvAho: '29 min',
+                ptmCas: 'Castelsardo', ptvCas: '30 min',
+                ptmPel: 'La Pelosa / Stintino', ptvPel: '35 min',
+                ptmAlg: 'Alghero', ptmAlgRow: 'Alghero — old town', ptvAlg: '37 min',
+                ptmGro: "Neptune's Grotto", ptvGro: '50 min',
+                ptmOlb: 'Olbia Airport', ptvOlb: '1 h 15 min',
+                ptmSme: 'Costa Smeralda', ptvSme: '1 h 45 min',
+                ptmRes: 'Restaurants', ptvRes: '1 min',
+                ptmKaw: 'Cafes and bars', ptvKaw: '50 m',
+                ptmLid: 'Lidl', ptvLid: '3 min',
+                ptmBal: 'Balai beach', ptvBal: '5 min',
+                ptmPor: 'Harbour & promenade', ptvPor: 'a short walk',
+                ptmObiad: 'Lunch at a family-run place', ptvObiad: 'from 4.5 €',
+                ptClosing: 'You do not have to choose between comfort and exploring.',
                 sc1Alt: 'Beach in Sardinia', sc2Alt: 'Italian town',
-                mapEyebrow: '✦ &nbsp; nearby attractions &nbsp; ✦',
-                mapRestTitle: '🍝 Restaurants', mapRestTime: '1 min',
-                mapLidlTime: '3 min', mapScoglioTime: '5 min walk', mapDolciTime: '8 min walk', mapBalaiTime: '20 min walk',
-                mapSeaLabel: 'S E A',
-                mapAlgheroTitle: '✈️ Alghero Airport', mapAlgheroTime: '25 min drive',
-                mapOlbiaTitle: '✈️ Olbia Airport', mapOlbiaTime: '1h 15m drive',
-                mapFoot: 'Porto Torres · Sardinia',
                 faqTitle: 'Frequently asked questions',
                 faqQ1: 'Do you rent cars? Can you recommend any car rental companies?',
                 faqA1: 'We recommend <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — a comparison site for all available rental companies. You can pick up the car straight at the airport, so it is very convenient. We have used this site in many countries across Europe and Asia and everything has always gone smoothly. It is worth checking the credit/debit card requirements, because rental prices can vary depending on the type of card you have.',
@@ -320,33 +345,17 @@
             setTxt('t-hero-why', T.heroWhy || 'Dlaczego u nas?');
             setTxt('t-hero-vp-unmute', T.heroVpUnmute || 'Kliknij, aby zobaczyć lokalizację');
             setTxt('t-luxury-text', T.luxuryText || 'Wysoki standard · Blisko plaży');
-            setTxt('t-pt-eyebrow', T.ptEyebrow || 'Sardynia bez retuszu');
-            setHtml('t-pt-heading', T.ptHeading || 'Jaka lokalizacja<br>na Sardynii jest<br><em>najlepsza?</em>');
-            setHtml('t-pt-p1', T.ptP1 || 'Każdy oczywiście będzie reklamował „swoje" miejsce… Ale prawda jest taka, że <strong>wszystko zależy od tego, na czym Ci zależy.</strong>');
-            setHtml('t-pt-p2', T.ptP2 || 'Wiele miast na północy to typowo turystyczne miejscowości. Zimą wszystko jest zamknięte — sklepy, restauracje, bary. Otwierają się tylko latem, specjalnie dla turystów. Wiadomo — ceny wyższe, jakość często słabsza… bo jesteś turystą.');
-            setHtml('t-pt-p3', T.ptP3 || 'Bez auta? Często nawet nie kupisz bułek. Do sklepu trzeba dojechać. <strong>Alghero, Olbia?</strong> Fajnie — jeśli lubisz tłumy i wygórowane ceny.');
-            setHtml('t-pt-p4', T.ptP4 || 'Dlatego <strong>najlepsze miejsca to te, o których nie jest głośno.</strong> To właśnie tam możesz poczuć prawdziwą magię Sardynii.');
-            setHtml('t-pt-p5', T.ptP5 || '<strong>Porto Torres</strong> to idealny przykład. Tu życie toczy się cały rok — dlatego masz dostęp do wszystkiego, co potrzebne.');
-            setHtml('t-pt-hi1', T.ptHi1 || 'Restauracje — <strong>1 minuta</strong> spacerem');
-            setHtml('t-pt-hi2', T.ptHi2 || 'Lidl — <strong>3 minuty</strong> spacerem');
-            setHtml('t-pt-hi3', T.ptHi3 || 'Kawiarnie, bary, restauracje — dosłownie <strong>50 metrów</strong>');
-            setHtml('t-pt-hi4', T.ptHi4 || 'Plaża — <strong>5 minut</strong> i jesteś nad wodą');
-            setHtml('t-pt-hi5', T.ptHi5 || 'Port, darmowe plaże i <strong>piękny deptak</strong> wzdłuż wybrzeża — klify i urocze zatoczki');
-            setHtml('t-pt-hi6', T.ptHi6 || 'Prawdziwe, rodzinne restauracje — ceny dla lokalnych, nie turystów. Nawet od <strong>4,5€</strong>');
-            setHtml('t-pt-closing', T.ptClosing || 'Porto Torres to idealne miejsce, jeśli chcesz odpocząć<br>i poczuć prawdziwy, sardyński klimat życia.');
-            setHtml('t-map-eyebrow', T.mapEyebrow || '✦ &nbsp; bliskość atrakcji &nbsp; ✦');
-            setTxt('t-map-rest-title', T.mapRestTitle || '🍝 Restauracje');
-            setTxt('t-map-rest-time', T.mapRestTime || '1 min');
-            setTxt('t-map-lidl-time', T.mapLidlTime || '3 min');
-            setTxt('t-map-scoglio-time', T.mapScoglioTime || '5 min spaceru');
-            setTxt('t-map-dolci-time', T.mapDolciTime || '8 min spaceru');
-            setTxt('t-map-balai-time', T.mapBalaiTime || '20 min spaceru');
-            setTxt('t-map-sea-label', T.mapSeaLabel || 'M A R E');
-            setTxt('t-map-alghero-title', T.mapAlgheroTitle || '✈️ Lotnisko Alghero');
-            setTxt('t-map-alghero-time', T.mapAlgheroTime || '25 min jazdy');
-            setTxt('t-map-olbia-title', T.mapOlbiaTitle || '✈️ Lotnisko Olbia');
-            setTxt('t-map-olbia-time', T.mapOlbiaTime || '1h 15m jazdy');
-            setTxt('t-map-foot-text', T.mapFoot || 'Porto Torres · Sardegna');
+            setTxt('t-pt-eyebrow', T.ptEyebrow);
+            setHtml('t-pt-heading', T.ptHeading);
+            setHtml('t-pt-lead', T.ptLead);
+            setTxt('t-pt-map-prompt', T.ptMapPrompt);
+            setTxt('t-pt-mode-wyspa', T.ptModeWyspa);
+            setTxt('t-pt-mode-okolica', T.ptModeOkolica);
+            setTxt('t-pt-map-foot', T.ptMapFoot);
+            setHtml('t-pt-closing', T.ptClosing);
+            /* Pinezki i lista mapy — pt-map.js czyta te same klucze z T, żeby mapa
+               i lista nie rozjechały się przy przełączeniu języka. */
+            if (typeof window.renderPtMap === 'function') window.renderPtMap();
             setTxt('t-faq-title', T.faqTitle || 'Najczęstsze pytania');
             setTxt('t-faq-q1', T.faqQ1 || 'Czy wynajmują państwo auta? Czy macie do polecenia wypożyczalnie aut?');
             setHtml('t-faq-a1', T.faqA1 || 'Polecamy stronę <a href="https://discovercars.com" target="_blank" rel="noopener">discovercars.com</a> — to porównywarka wszystkich dostępnych wypożyczalni. Auta można odebrać od razu na lotnisku, więc jest wygodnie bez ciągania się. Korzystaliśmy z tej strony w wielu krajach Europy oraz Azji i zawsze jest wszystko w porządku. Warto zwracać uwagę na kartę kredytową/debetową, bo są różnice w cenie wynajmu ze względu na rodzaj posiadanej karty.');

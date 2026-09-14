@@ -9,6 +9,7 @@
                 s1label: 'Krok 1 z 4', s1title: 'Kto przyjeżdża?',
                 s1sub: '',
                 s2label: 'Krok 2 z 4', s2title: 'Zaznacz datę przyjazdu, a następnie datę wyjazdu.',
+                s2titleShort: 'Wybierz daty',
                 s2sub: '',
                 s3label: 'Krok 3 z 4', s3title: 'Wybierz apartament', s4label: 'Krok 4 z 4', s4title: 'Podsumowanie rezerwacji',
                 s3sub: '',
@@ -123,6 +124,7 @@
                 s1label: 'Step 1 of 4', s1title: 'Who\'s coming?',
                 s1sub: '',
                 s2label: 'Step 2 of 4', s2title: 'Select your check-in date, then your check-out date.',
+                s2titleShort: 'Select dates',
                 s2sub: '',
                 s3label: 'Step 3 of 4', s3title: 'Choose your apartment', s4label: 'Step 4 of 4', s4title: 'Booking summary',
                 s3sub: '',
@@ -1092,7 +1094,7 @@
             var previewOpt = buildPreviewOpt();
             selOpt = previewOpt;
             $id('cal-hdr').className = 'cal-hdr cM';
-            setTxt('cal-name', T.s2title);
+            setTxt('cal-name', T.s2titleShort || T.s2title);
             var total = adults + kids;
             setTxt('cal-desc', total + (total === 1 ? T.calA1 : T.calAN));
             $id('cal-features').innerHTML = '';
@@ -1355,7 +1357,13 @@
             var cy2 = cm === 11 ? cy + 1 : cy;
             var cm2 = cm === 11 ? 0 : cm + 1;
 
-            setTxt('cal-ml', T.months[cm] + ' ' + cy + ' – ' + T.months[cm2] + ' ' + cy2);
+            /* Gdy oba miesiące są w tym samym roku, powtarzanie go dwa razy tylko
+               rozpycha nagłówek („Wrzesień 2026 – Październik 2026" zawijało się na
+               telefonie na dwie linie). Przy przełomie roku pełny zapis zostaje,
+               bo wtedy rok naprawdę niesie informację. */
+            setTxt('cal-ml', cy === cy2
+                ? T.months[cm] + ' – ' + T.months[cm2] + ' ' + cy
+                : T.months[cm] + ' ' + cy + ' – ' + T.months[cm2] + ' ' + cy2);
             setTxt('cal-month-title-1', T.months[cm] + ' ' + cy);
             setTxt('cal-month-title-2', T.months[cm2] + ' ' + cy2);
 

@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>Azzurro — Dashboard Lejka</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ocean: #1a4a5c;
+      --ocean2: #2a6a80;
+      --wave: #4a9ab5;
+      --foam: #d8eef5;
+      --sand: #f7f3ed;
+      --gold: #c9a84c;
+      --text: #1a2a30;
+      --muted: #6a8a98;
+      --white: #fff;
+      --bg: #f0f4f6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--ocean);
+      padding: 28px 40px 24px;
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .header-title em { color: var(--gold); font-style: italic; }
+    .header-sub {
+      font-size: 0.75rem;
+      color: var(--foam);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .refresh-btn {
+      margin-left: auto;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.05em;
+    }
+    .refresh-btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ── STAT CARDS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 22px;
+      box-shadow: 0 2px 8px rgba(26,74,92,0.07);
+      border-top: 3px solid var(--wave);
+      animation: fadeUp 0.4s ease both;
+    }
+    .stat-card:nth-child(2) { animation-delay: 0.05s; border-top-color: var(--gold); }
+    .stat-card:nth-child(3) { animation-delay: 0.1s; border-top-color: #4ab592; }
+    .stat-card:nth-child(4) { animation-delay: 0.15s; border-top-color: #b54a7a; }
+    .stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--ocean);
+      line-height: 1;
+    }
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* ── GRID 2-col ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 22px 24px;
+      box-shadow: 0 2px 8px rgba(26,74,92,0.07);
+      animation: fadeUp 0.4s ease both;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ocean);
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--wave);
+      flex-shrink: 0;
+    }
+    .toggle-past-btn {
+      margin-left: auto;
+      background: var(--sand);
+      border: 1px solid var(--foam);
+      color: var(--ocean);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding: 5px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .toggle-past-btn:hover { background: var(--foam); }
+
+    /* ── FUNNEL BARS ── */
+    .funnel-item { margin-bottom: 14px; }
+    .funnel-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    .funnel-label .pct { color: var(--muted); font-size: 0.72rem; }
+    .funnel-track {
+      height: 8px;
+      background: var(--foam);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .funnel-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ocean), var(--wave));
+      border-radius: 4px;
+      transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ── SOURCE PILLS ── */
+    .source-list { display: flex; flex-direction: column; gap: 10px; }
+    .source-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--sand);
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+    .source-badge {
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--ocean);
+      color: white;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .source-name { flex: 1; font-weight: 500; }
+    .source-count { color: var(--muted); font-size: 0.75rem; }
+
+    /* ── CALENDAR HEATMAP ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+      max-width: 420px;
+    }
+    .cal-day-label {
+      font-size: 0.58rem;
+      text-align: center;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding-bottom: 3px;
+    }
+    .cal-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      position: relative;
+      cursor: default;
+      transition: transform 0.15s;
+      line-height: 1.1;
+    }
+    .cal-cell:hover { transform: scale(1.18); z-index: 2; }
+    .cal-cell.empty { background: transparent; }
+    .cal-cell.heat-0 { background: var(--foam); color: var(--muted); }
+    .cal-cell.heat-1 { background: #b3d9e8; color: var(--ocean); }
+    .cal-cell.heat-2 { background: #6ab5d0; color: white; }
+    .cal-cell.heat-3 { background: var(--wave); color: white; }
+    .cal-cell.heat-4 { background: var(--ocean2); color: white; }
+    .cal-cell.heat-5 { background: var(--ocean); color: white; }
+    .cal-cell .cal-num  { font-size: 0.62rem; font-weight: 500; }
+    .cal-cell .cal-cnt  { font-size: 0.5rem; opacity: 0.85; }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cal-nav-btn {
+      background: none;
+      border: 1px solid var(--foam);
+      color: var(--ocean);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .cal-nav-btn:hover { background: var(--foam); }
+    .cal-month-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ocean);
+    }
+
+    /* ── DATES TABLE ── */
+    .dates-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .dates-table th {
+      text-align: left;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--foam);
+    }
+    .dates-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #f0f4f6;
+      vertical-align: middle;
+    }
+    .dates-table tr:last-child td { border-bottom: none; }
+    .dates-table tr:hover td { background: var(--sand); }
+    .source-chip {
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--foam);
+      color: var(--ocean);
+      font-weight: 500;
+    }
+    .nights-chip {
+      display: inline-block;
+      background: var(--ocean);
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    /* ── FULL-WIDTH CARD ── */
+    .card-full { margin-bottom: 24px; }
+
+    /* ── LOADING / ERROR ── */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      gap: 16px;
+      color: var(--muted);
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--foam);
+      border-top-color: var(--wave);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--ocean2);
+      padding: 12px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .filter-input {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      padding: 6px 12px;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .filter-input:focus { background: rgba(255,255,255,0.2); }
+    .filter-input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; }
+    .filter-sep { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+    .filter-preset {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      color: rgba(255,255,255,0.75);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .filter-preset:hover, .filter-preset.active {
+      background: rgba(255,255,255,0.25);
+      color: white;
+    }
+    .filter-info {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      white-space: nowrap;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-sub">Azzurro Luxury Boutique</div>
+    <div class="header-title">Funnel <em>Analytics</em></div>
+  </div>
+  <button class="refresh-btn" onclick="loadData()">↻ Odśwież</button>
+</div>
+
+<div class="filter-bar" id="filter-bar">
+  <span class="filter-label">Zakres dat</span>
+  <input type="date" id="filter-from" class="filter-input" onchange="applyFilter()" />
+  <span class="filter-sep">—</span>
+  <input type="date" id="filter-to" class="filter-input" onchange="applyFilter()" />
+  <button class="filter-preset active" id="preset-all"  onclick="setPreset('all')">Wszystkie</button>
+  <button class="filter-preset" id="preset-7"   onclick="setPreset(7)">7 dni</button>
+  <button class="filter-preset" id="preset-30"  onclick="setPreset(30)">30 dni</button>
+  <button class="filter-preset" id="preset-90"  onclick="setPreset(90)">90 dni</button>
+  <span class="filter-info" id="filter-info"></span>
+</div>
+
+<div class="main" id="main">
+  <div class="loading-state" id="loading">
+    <div class="spinner"></div>
+    <div>Ładowanie danych…</div>
+  </div>
+</div>
+
+<script>
+  // ── State ──
+  let allData = [];
+  let waitlistData = [];
+  let filteredData = [];
+  let calYear, calMonth;
+  let showPastDates = false; // przeszłe terminy domyślnie ukryte — patrz sekcja "Zaznaczone daty pobytu"
+
+  window.togglePastDates = function () {
+    showPastDates = !showPastDates;
+    render();
+  };
+
+  // ── Filter logic ──
+  function applyFilter() {
+    const from = document.getElementById('filter-from').value;
+    const to   = document.getElementById('filter-to').value;
+
+    // Update preset buttons
+    document.querySelectorAll('.filter-preset').forEach(b => b.classList.remove('active'));
+    document.getElementById('preset-all').classList.add('active');
+
+    if (from || to) {
+      const fromD = from ? new Date(from + 'T00:00:00') : null;
+      const toD   = to   ? new Date(to   + 'T23:59:59') : null;
+      filteredData = allData.filter(r => {
+        const d = new Date(r.Timestamp);
+        if (fromD && d < fromD) return false;
+        if (toD   && d > toD)   return false;
+        return true;
+      });
+    } else {
+      filteredData = allData;
+    }
+
+    const info = document.getElementById('filter-info');
+    info.textContent = filteredData.length < allData.length
+      ? filteredData.length + ' / ' + allData.length + ' zdarzeń'
+      : '';
+
+    render();
+  }
+
+  function setPreset(days) {
+    document.querySelectorAll('.filter-preset').forEach(b => b.classList.remove('active'));
+    if (days === 'all') {
+      document.getElementById('preset-all').classList.add('active');
+      document.getElementById('filter-from').value = '';
+      document.getElementById('filter-to').value   = '';
+      filteredData = allData;
+    } else {
+      document.getElementById('preset-' + days).classList.add('active');
+      const to   = new Date();
+      const from = new Date();
+      from.setDate(from.getDate() - days);
+      document.getElementById('filter-from').value = from.toISOString().substring(0,10);
+      document.getElementById('filter-to').value   = to.toISOString().substring(0,10);
+      filteredData = allData.filter(r => new Date(r.Timestamp) >= from);
+    }
+    const info = document.getElementById('filter-info');
+    info.textContent = filteredData.length < allData.length
+      ? filteredData.length + ' / ' + allData.length + ' zdarzeń'
+      : '';
+    render();
+  }
+
+  // ── Load ──
+  function loadData() {
+    document.getElementById('main').innerHTML = '<div class="loading-state" id="loading"><div class="spinner"></div><div>Ładowanie danych…</div></div>';
+    google.script.run.withSuccessHandler(onData).withFailureHandler(onError).getFunnelData();
+  }
+
+  function onError(err) {
+    document.getElementById('main').innerHTML = '<div class="loading-state">Błąd ładowania danych: ' + err.message + '</div>';
+  }
+
+  function onData(raw) {
+    allData = raw || [];
+    filteredData = allData;
+    const now = new Date();
+    calYear = now.getFullYear();
+    calMonth = now.getMonth();
+    google.script.run.withSuccessHandler(function(wl) {
+      waitlistData = wl || [];
+      render();
+    }).withFailureHandler(function() {
+      waitlistData = [];
+      render();
+    }).getWaitlistData();
+  }
+
+  // ── Parse helpers ──
+  function parseDetails(row) {
+    try { return JSON.parse(row.Details || '{}'); } catch(e) { return {}; }
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    // obsługa YYYY-MM-DD lub ISO string
+    const d = iso.length === 10 ? new Date(iso + 'T12:00:00') : new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('pl-PL', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  // ── Main render ──
+  function render() {
+    const data = filteredData.length ? filteredData : allData;
+    if (!data.length) {
+      document.getElementById('main').innerHTML = '<div class="loading-state">Brak danych do wyświetlenia.</div>';
+      return;
+    }
+
+    // Sessions unique
+    const sessions = new Set(data.map(r => r.SessionId));
+    const totalSessions = sessions.size;
+
+    // By stage
+    const stageSessions = {};
+    data.forEach(r => {
+      if (!stageSessions[r.Stage]) stageSessions[r.Stage] = new Set();
+      stageSessions[r.Stage].add(r.SessionId);
+    });
+
+    const pageViews    = (stageSessions['PageView']          || new Set()).size;
+    const calendarSess = (stageSessions['Wejscie_Kalendarz'] || new Set()).size;
+    const dateSess     = (stageSessions['Data_CheckOut']     || new Set()).size;
+    const step4Sess    = (stageSessions['Wejscie_Krok4']     || new Set()).size;
+    const messengerClickSess = (stageSessions['Klikniecie_Messenger'] || new Set()).size;
+    const whatsappClickSess  = (stageSessions['Klikniecie_WhatsApp']  || new Set()).size;
+
+    // ── Kliknięcia kontaktu w czasie, pogrupowane wg osoby ──
+    // Google Apps Script nie ma dostępu do adresu IP odwiedzającego (doPost/doGet tego
+    // nie udostępniają) — więc zamiast IP grupujemy po SessionId, czyli tym samym
+    // identyfikatorze przeglądarki/urządzenia, którego już używa cały lejek. W praktyce
+    // to i tak lepszy klucz niż IP (IP zmienia się np. w sieci komórkowej, SessionId nie).
+    const contactClicks = data.filter(r => r.Stage === 'Klikniecie_Messenger' || r.Stage === 'Klikniecie_WhatsApp');
+    const clicksBySession = {};
+    contactClicks.forEach(r => {
+      if (!clicksBySession[r.SessionId]) {
+        clicksBySession[r.SessionId] = { sessionId: r.SessionId, source: r.Source || 'Direct', platforms: {}, count: 0, lastTs: r.Timestamp };
+      }
+      const g = clicksBySession[r.SessionId];
+      const platform = r.Stage === 'Klikniecie_Messenger' ? 'Messenger' : 'WhatsApp';
+      g.platforms[platform] = (g.platforms[platform] || 0) + 1;
+      g.count++;
+      if (new Date(r.Timestamp) > new Date(g.lastTs)) g.lastTs = r.Timestamp;
+    });
+    const clickSessionsSorted = Object.values(clicksBySession).sort((a, b) => new Date(b.lastTs) - new Date(a.lastTs));
+
+    // ── Kliknięcia wg konkretnego przycisku (details.miejsce) ──
+    // Wymaga zaktualizowanego funnel-analytics.js, który od teraz zapisuje details.miejsce
+    // (starsze zdarzenia sprzed tej zmiany nie będą go mieć — trafiają do "nieznane miejsce").
+    const MIEJSCE_LABELS = {
+      cta_gorne: 'Górne CTA (zaraz po wyborze apartamentu)',
+      cta_dolne: 'Dolne CTA (przy mapce)',
+      popup_dowiedz_sie: 'Popup „Dowiedz się więcej"',
+      baner_brak_terminu: 'Baner „brak wolnego terminu" w kalendarzu',
+      popup_potwierdzenie: 'Potwierdzenie w popupie Messengera',
+      inne: 'Inne'
+    };
+    const clicksByPlaceMap = {};
+    contactClicks.forEach(r => {
+      const d = parseDetails(r);
+      const miejsce = d.miejsce || 'nieznane_miejsce';
+      const platform = r.Stage === 'Klikniecie_Messenger' ? 'Messenger' : 'WhatsApp';
+      const key = miejsce + '|' + platform;
+      if (!clicksByPlaceMap[key]) clicksByPlaceMap[key] = { miejsce, platform, count: 0 };
+      clicksByPlaceMap[key].count++;
+    });
+    const clicksByPlaceSorted = Object.values(clicksByPlaceMap).sort((a, b) => b.count - a.count);
+
+    // Średni czas i scroll na kroku 4
+    const step4exits = data.filter(r => r.Stage === 'Opuszczenie_Krok4');
+    const avgTime = step4exits.length
+      ? Math.round(step4exits.reduce((s,r) => s + (parseDetails(r).timeOnStep || 0), 0) / step4exits.length)
+      : null;
+    const avgScroll = step4exits.length
+      ? Math.round(step4exits.reduce((s,r) => s + (parseDetails(r).maxScrollPct || 0), 0) / step4exits.length)
+      : null;
+    const ctaSeenCount = step4exits.filter(r => parseDetails(r).ctaSeen).length;
+    const ctaClickedFromStep4 = step4exits.filter(r => parseDetails(r).reason === 'klikniecie_cta').length;
+
+    // Sources
+    const sourceMap = {};
+    data.forEach(r => {
+      const src = r.Source || 'Direct';
+      if (!sourceMap[src]) sourceMap[src] = new Set();
+      sourceMap[src].add(r.SessionId);
+    });
+    const sourcesSorted = Object.entries(sourceMap).sort((a,b) => b[1].size - a[1].size);
+
+    // Dates data — sesje które wybrały daty
+    const datesRows = data.filter(r => r.Stage === 'Data_CheckOut').map(r => {
+      const d = parseDetails(r);
+      let nights = d.nights;
+      if (!nights && d.checkIn && d.checkOut) {
+        nights = Math.round((new Date(d.checkOut) - new Date(d.checkIn)) / 86400000);
+      }
+      // znajdź dane gości z Wejscie_Kalendarz tej samej sesji
+      const calEntry = allData.find(x => x.SessionId === r.SessionId && x.Stage === 'Wejscie_Kalendarz');
+      const calDet = calEntry ? parseDetails(calEntry) : {};
+      return {
+        ts: r.Timestamp,
+        source: r.Source || 'Direct',
+        checkIn: d.checkIn,
+        checkOut: d.checkOut,
+        nights: nights || '?',
+        adults: calDet.adults || '?',
+        kids: calDet.kids != null ? calDet.kids : '?'
+      };
+    }).sort((a,b) => new Date(b.ts) - new Date(a.ts));
+
+    // ── Grupowanie wyszukanych terminów po (check-in, check-out) ──
+    // Surowa lista (datesRows) to jedno wyszukanie = jeden wiersz, co przy tysiącach
+    // wyszukań jest nieczytelne. Tu zliczamy, ile razy dokładnie ten sam termin był
+    // szukany — to pokazuje realny popyt na konkretne daty, a nie tylko log zdarzeń.
+    const todayStr = new Date().toISOString().substring(0, 10);
+    const dateGroupMap = {};
+    datesRows.forEach(r => {
+      if (!r.checkIn || !r.checkOut) return;
+      const key = r.checkIn + '_' + r.checkOut;
+      if (!dateGroupMap[key]) {
+        dateGroupMap[key] = {
+          checkIn: r.checkIn, checkOut: r.checkOut, nights: r.nights,
+          count: 0, lastTs: r.ts, sources: {}
+        };
+      }
+      const g = dateGroupMap[key];
+      g.count++;
+      if (new Date(r.ts) > new Date(g.lastTs)) g.lastTs = r.ts;
+      g.sources[r.source] = (g.sources[r.source] || 0) + 1;
+    });
+    const dateGroupsAll = Object.values(dateGroupMap);
+    const pastDateGroupsCount = dateGroupsAll.filter(g => g.checkOut < todayStr).length;
+    const dateGroupsShown = (showPastDates ? dateGroupsAll : dateGroupsAll.filter(g => g.checkOut >= todayStr))
+      .sort((a, b) => b.count - a.count);
+
+    // Sesje które weszły do kalendarza ale NIE wybrały dat
+    const calSessionIds = new Set(
+      data.filter(r => r.Stage === 'Wejscie_Kalendarz').map(r => r.SessionId)
+    );
+    const choseDate = new Set(
+      data.filter(r => r.Stage === 'Data_CheckOut').map(r => r.SessionId)
+    );
+    const noDateRows = data
+      .filter(r => r.Stage === 'Wejscie_Kalendarz' && !choseDate.has(r.SessionId))
+      .map(r => {
+        const d = parseDetails(r);
+        return {
+          ts: r.Timestamp,
+          source: r.Source || 'Direct',
+          adults: d.adults || '?',
+          kids: d.kids != null ? d.kids : '?'
+        };
+      }).sort((a,b) => new Date(b.ts) - new Date(a.ts));
+
+    // ── Popularność konfiguracji gości ──
+    // Mapa sessionId -> konfiguracja (z Wejscie_Kalendarz)
+    const sessionGuestConfig = {};
+    data.filter(r => r.Stage === 'Wejscie_Kalendarz').forEach(r => {
+      const d = parseDetails(r);
+      const adults = d.adults != null && d.adults !== '' ? String(d.adults) : null;
+      const kids   = d.kids   != null && d.kids   !== '' ? String(d.kids)   : '0';
+      if (!adults) return;
+      sessionGuestConfig[r.SessionId] = adults + 'a_' + kids + 'k';
+    });
+
+    // Sesje które dotarły do kroku 4
+    const step4SessionIds = new Set(
+      data.filter(r => r.Stage === 'Wejscie_Krok4').map(r => r.SessionId)
+    );
+
+    const guestConfigMap = {};
+    data.filter(r => r.Stage === 'Wejscie_Kalendarz').forEach(r => {
+      const d = parseDetails(r);
+      const adults = d.adults != null && d.adults !== '' ? String(d.adults) : null;
+      const kids   = d.kids   != null && d.kids   !== '' ? String(d.kids)   : '0';
+      if (!adults) return;
+      const key = adults + 'a_' + kids + 'k';
+      const label = kids === '0' || kids === '' ? adults + ' dorosłych' : adults + ' dorosłych + ' + kids + ' dzieci';
+      if (!guestConfigMap[key]) guestConfigMap[key] = { label, count: 0, toStep4: 0 };
+      guestConfigMap[key].count++;
+      if (step4SessionIds.has(r.SessionId)) guestConfigMap[key].toStep4++;
+    });
+    const guestConfigSorted = Object.values(guestConfigMap).sort((a,b) => b.count - a.count);
+
+    // ── Popularność liczby nocy ──
+    const nightsMap = {};
+    data.filter(r => r.Stage === 'Data_CheckOut').forEach(r => {
+      const d = parseDetails(r);
+      let nights = d.nights;
+      if (!nights && d.checkIn && d.checkOut) {
+        nights = Math.round((new Date(d.checkOut) - new Date(d.checkIn)) / 86400000);
+      }
+      if (!nights || nights === '?' || isNaN(nights)) return;
+      const key = String(nights);
+      if (!nightsMap[key]) nightsMap[key] = 0;
+      nightsMap[key]++;
+    });
+    const nightsSorted = Object.entries(nightsMap)
+      .map(([n, c]) => ({ nights: parseInt(n), count: c }))
+      .sort((a,b) => b.count - a.count);
+
+    // Popular check-in months heatmap data
+    const monthHeat = {};
+    datesRows.forEach(r => {
+      if (!r.checkIn) return;
+      const key = r.checkIn.substring(0, 7); // YYYY-MM
+      monthHeat[key] = (monthHeat[key] || 0) + 1;
+    });
+
+    // Visit days heatmap (by actual visit date)
+    const visitHeat = {};
+    data.filter(r => r.Stage === 'PageView').forEach(r => {
+      const d = parseDetails(r);
+      const key = d.visitDate || r.Timestamp.substring(0, 10);
+      visitHeat[key] = (visitHeat[key] || 0) + 1;
+    });
+
+    // ── Test A/B nagłówka hero ──────────────────────────────────────────────
+    // Wariant ("A" / "B") jest doklejony do details KAŻDEGO zdarzenia przez
+    // funnel-analytics.js, więc sesji wystarczy przypisać pierwszy wariant, jaki się
+    // w niej pojawił. Zdarzenia sprzed wdrożenia testu nie mają go wcale — takie sesje
+    // są po prostu pomijane w tym raporcie (nie psują wyniku).
+    const AB_LABELS = {
+      A: 'To Sardynia w najlepszym wydaniu',
+      B: 'Tu zaczynają się prawdziwe wakacje'
+    };
+    const AB_SUBS = {
+      A: 'Komfortowy pobyt w wyjątkowym miejscu, blisko tego, co na Sardynii najpiękniejsze.',
+      B: 'Wakacje pełne słońca, swobody i chwil, do których chce się wracać.'
+    };
+    const abBySession = {};
+    data.forEach(r => {
+      const v = parseDetails(r).abHero;
+      if ((v === 'A' || v === 'B') && !abBySession[r.SessionId]) abBySession[r.SessionId] = v;
+    });
+    const abStats = { A: null, B: null };
+    ['A', 'B'].forEach(v => {
+      abStats[v] = { sesje: new Set(), kalendarz: new Set(), daty: new Set(), krok4: new Set(), kontakt: new Set() };
+    });
+    data.forEach(r => {
+      const v = abBySession[r.SessionId];
+      if (!v) return;
+      const st = abStats[v];
+      st.sesje.add(r.SessionId);
+      if (r.Stage === 'Wejscie_Kalendarz') st.kalendarz.add(r.SessionId);
+      if (r.Stage === 'Data_CheckOut')     st.daty.add(r.SessionId);
+      if (r.Stage === 'Wejscie_Krok4')     st.krok4.add(r.SessionId);
+      if (r.Stage === 'Klikniecie_Messenger' || r.Stage === 'Klikniecie_WhatsApp') st.kontakt.add(r.SessionId);
+    });
+    const abRows = ['A', 'B'].map(v => {
+      const st = abStats[v];
+      const sesje = st.sesje.size;
+      const kontakt = st.kontakt.size;
+      return {
+        variant: v,
+        sesje: sesje,
+        kalendarz: st.kalendarz.size,
+        daty: st.daty.size,
+        krok4: st.krok4.size,
+        kontakt: kontakt,
+        cvr: sesje ? kontakt / sesje * 100 : 0
+      };
+    });
+    const abTotalSesje = abRows.reduce((sum, r) => sum + r.sesje, 0);
+    const abBoth = abRows.every(r => r.sesje > 0);
+    const abLeader = abBoth ? (abRows[0].cvr >= abRows[1].cvr ? abRows[0] : abRows[1]) : null;
+    const abLoser  = abBoth ? (abLeader === abRows[0] ? abRows[1] : abRows[0]) : null;
+
+    // Test istotności — dwie proporcje, z-test. Bez tego łatwo ogłosić zwycięzcę na
+    // podstawie kilku kliknięć różnicy, co przy małej próbce jest zwykłym szumem.
+    // |z| >= 1.96 ≈ 95% pewności, że różnica nie jest przypadkiem.
+    let abZ = null;
+    if (abBoth) {
+      const n1 = abRows[0].sesje, n2 = abRows[1].sesje;
+      const x1 = abRows[0].kontakt, x2 = abRows[1].kontakt;
+      const pPool = (x1 + x2) / (n1 + n2);
+      const se = Math.sqrt(pPool * (1 - pPool) * (1 / n1 + 1 / n2));
+      if (se > 0) abZ = Math.abs((x1 / n1 - x2 / n2) / se);
+    }
+    let abVerdict, abVerdictColor;
+    if (!abBoth || abTotalSesje === 0) {
+      abVerdict = 'Za mało danych — poczekaj, aż oba warianty zbiorą ruch.';
+      abVerdictColor = 'var(--muted)';
+    } else if (abLeader.kontakt === 0 && abLoser.kontakt === 0) {
+      abVerdict = 'Żaden wariant nie ma jeszcze kliknięcia w kontakt — nie ma czego porównywać.';
+      abVerdictColor = 'var(--muted)';
+    } else if (abZ !== null && abZ >= 1.96) {
+      abVerdict = 'Wariant ' + abLeader.variant + ' wygrywa — różnica jest istotna statystycznie (ok. 95% pewności).';
+      abVerdictColor = '#2e7d52';
+    } else if (abLeader.sesje < 100 || abLoser.sesje < 100) {
+      abVerdict = 'Prowadzi wariant ' + abLeader.variant + ', ale to dopiero wstępny wynik — przy mniej niż 100 sesjach na wariant różnica może być przypadkiem.';
+      abVerdictColor = '#e07b39';
+    } else {
+      abVerdict = 'Prowadzi wariant ' + abLeader.variant + ', ale różnica mieści się jeszcze w granicach przypadku — zbieraj dane dalej.';
+      abVerdictColor = '#e07b39';
+    }
+
+    // ── Build HTML ──
+    const cvr = pageViews > 0 ? Math.round(dateSess / pageViews * 100) : 0;
+    const calCvr = pageViews > 0 ? Math.round(calendarSess / pageViews * 100) : 0;
+    const s4Cvr = pageViews > 0 ? Math.round(step4Sess / pageViews * 100) : 0;
+
+    let html = '';
+
+    // ── Kliknięcia kontaktu w czasie — na samej górze dashboardu, bo to najważniejsze pytanie:
+    // kiedy przycisk Messenger/WhatsApp był wciśnięty. Pogrupowane wg osoby (SessionId — patrz
+    // komentarz przy obliczaniu clickSessionsSorted).
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:#0084FF"></span>Kliknięcia kontaktu w czasie (${contactClicks.length} kliknięć od ${clickSessionsSorted.length} osób)</div>`;
+
+    if (clickSessionsSorted.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">Brak kliknięć w przyciski kontaktu.</p>`;
+    } else {
+      html += `<table class="dates-table">
+        <thead><tr>
+          <th>Ostatnie kliknięcie</th>
+          <th>Platforma</th>
+          <th>Ile razy</th>
+          <th>Źródło</th>
+          <th>Osoba (sesja)</th>
+        </tr></thead><tbody>`;
+      clickSessionsSorted.forEach(g => {
+        const badges = Object.entries(g.platforms).map(([p, c]) => {
+          const isMsg = p === 'Messenger';
+          return `<span class="source-chip" style="background:${isMsg ? 'rgba(0,132,255,0.12)' : 'rgba(37,211,102,0.16)'};color:${isMsg ? '#0084FF' : '#1f9e52'}">${p}${c > 1 ? ' ×' + c : ''}</span>`;
+        }).join(' ');
+        html += `<tr>
+          <td>${fmtDate(g.lastTs)}</td>
+          <td>${badges}</td>
+          <td style="font-weight:600;color:var(--ocean)">${g.count}×</td>
+          <td><span class="source-chip">${g.source}</span></td>
+          <td style="font-family:monospace;font-size:0.7rem;color:var(--muted)">${g.sessionId.substring(0, 10)}…</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+    html += `</div>`;
+
+    // ── Kliknięcia wg konkretnego przycisku — każdy przycisk osobno ──
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:#7b5ea7"></span>Kliknięcia wg przycisku</div>`;
+    if (clicksByPlaceSorted.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">Brak kliknięć w przyciski kontaktu.</p>`;
+    } else {
+      html += `<table class="dates-table">
+        <thead><tr>
+          <th>Przycisk / miejsce</th>
+          <th>Platforma</th>
+          <th>Liczba kliknięć</th>
+        </tr></thead><tbody>`;
+      clicksByPlaceSorted.forEach(g => {
+        const isMsg = g.platform === 'Messenger';
+        html += `<tr>
+          <td style="font-weight:500">${MIEJSCE_LABELS[g.miejsce] || g.miejsce}</td>
+          <td><span class="source-chip" style="background:${isMsg ? 'rgba(0,132,255,0.12)' : 'rgba(37,211,102,0.16)'};color:${isMsg ? '#0084FF' : '#1f9e52'}">${g.platform}</span></td>
+          <td style="font-weight:600;color:var(--ocean)">${g.count}×</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+    html += `</div>`;
+
+    // STAT CARDS — row 1
+    html += `<div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Wizyty (PageView)</div>
+        <div class="stat-value">${pageViews}</div>
+        <div class="stat-sub">unikalnych sesji</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Dotarło do kalendarza</div>
+        <div class="stat-value">${calendarSess}</div>
+        <div class="stat-sub">${calCvr}% z odwiedzin</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Wybrało daty</div>
+        <div class="stat-value">${dateSess}</div>
+        <div class="stat-sub">${cvr}% z odwiedzin</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Dotarło do podsumowania</div>
+        <div class="stat-value">${step4Sess}</div>
+        <div class="stat-sub">${s4Cvr}% z odwiedzin</div>
+      </div>
+    </div>`;
+
+    // Scroll depth — interpretacja
+    // Strona podsumowania (krok 4) ma 3 strefy:
+    // 0-33% = górna (apartament/daty), 34-66% = środek (mapa/opis), 67-100% = dół (przyciski CTA)
+    function scrollZone(pct) {
+      if (pct === null) return { label: '—', sub: '', color: 'var(--muted)' };
+      if (pct < 34)  return { label: 'Górna część', sub: 'większość nie dotarła do przycisków kontaktu', color: '#e07b39' };
+      if (pct < 67)  return { label: 'Środek strony', sub: 'część widziała przyciski, część nie', color: '#c9a84c' };
+      return           { label: 'Cała strona', sub: 'większość dotarła do przycisków kontaktu', color: '#2e7d52' };
+    }
+    const zone = scrollZone(avgScroll);
+
+    // CTA interpretation
+    const ctaNotSeenCount = step4exits.length - ctaSeenCount;
+    const ctaSeenPct = step4exits.length > 0 ? Math.round(ctaSeenCount / step4exits.length * 100) : 0;
+    const ctaConvPct = ctaSeenCount > 0 ? Math.round(ctaClickedFromStep4 / ctaSeenCount * 100) : 0;
+
+    // STAT CARDS — row 2 (krok 4 szczegóły)
+    html += `<div class="stats-row" style="margin-top:-8px">
+      <div class="stat-card" style="border-top-color:#e07b39">
+        <div class="stat-label">Śr. czas na podsumowaniu</div>
+        <div class="stat-value" style="font-size:1.8rem">${avgTime !== null ? avgTime + 's' : '—'}</div>
+        <div class="stat-sub">sekund przed wyjściem lub kliknięciem</div>
+      </div>
+      <div class="stat-card" style="border-top-color:${zone.color}">
+        <div class="stat-label">Gdzie się zatrzymują</div>
+        <div class="stat-value" style="font-size:1.3rem;color:${zone.color}">${zone.label}</div>
+        <div class="stat-sub">${avgScroll !== null ? 'śr. ' + avgScroll + '% scrolla · ' : ''}${zone.sub}</div>
+      </div>
+      <div class="stat-card" style="border-top-color:#e07b39">
+        <div class="stat-label">Przyciski kontaktu w zasięgu wzroku</div>
+        <div class="stat-value" style="font-size:1.8rem">${ctaSeenPct}%</div>
+        <div class="stat-sub">${ctaSeenCount} z ${step4exits.length} sesji przewinęło do przycisków · ${ctaNotSeenCount} wyszło wcześniej</div>
+      </div>
+      <div class="stat-card" style="border-top-color:#4ab592">
+        <div class="stat-label">Kliknęło po zobaczeniu przycisków</div>
+        <div class="stat-value" style="font-size:1.8rem">${ctaConvPct}%</div>
+        <div class="stat-sub">${ctaClickedFromStep4} z ${ctaSeenCount} którzy widzieli przyciski</div>
+      </div>
+    </div>`;
+
+    // ── KARTA: Test A/B nagłówka hero ──
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:#7b5ea7"></span>Test A/B nagłówka hero — który tytuł daje więcej kontaktów</div>`;
+
+    if (abTotalSesje === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">Brak danych z testu A/B. Pojawią się, gdy strona z nową wersją skryptu zbierze pierwsze wizyty (starsze zdarzenia nie mają zapisanego wariantu).</p>`;
+    } else {
+      html += `<div style="background:rgba(0,0,0,0.02);border-left:3px solid ${abVerdictColor};padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:16px;font-size:0.85rem;color:${abVerdictColor};font-weight:600;">${abVerdict}</div>`;
+
+      const abMaxCvr = Math.max(...abRows.map(r => r.cvr), 0.0001);
+      abRows.forEach(r => {
+        const isLeader = abLeader && r.variant === abLeader.variant && r.kontakt > 0;
+        const pct = Math.round(r.cvr / abMaxCvr * 100);
+        html += `<div class="funnel-item" style="margin-bottom:14px">
+          <div class="funnel-label" style="align-items:flex-start">
+            <span>
+              <strong style="color:var(--ocean)">Wariant ${r.variant}</strong>
+              ${isLeader ? '<span class="source-chip" style="background:rgba(46,125,82,0.14);color:#2e7d52;margin-left:6px">prowadzi</span>' : ''}
+              <span style="display:block;font-size:0.82rem;color:var(--text);margin-top:2px">„${AB_LABELS[r.variant]}"</span>
+              <span style="display:block;font-size:0.74rem;color:var(--muted);margin-top:1px">${AB_SUBS[r.variant]}</span>
+            </span>
+            <span style="white-space:nowrap"><strong>${r.cvr.toFixed(1)}%</strong> <span class="pct">kontaktu</span></span>
+          </div>
+          <div class="funnel-track">
+            <div class="funnel-fill" style="width:${pct}%"></div>
+          </div>
+        </div>`;
+      });
+
+      html += `<table class="dates-table" style="margin-top:6px">
+        <thead><tr>
+          <th>Wariant</th>
+          <th>Sesje</th>
+          <th>Kalendarz</th>
+          <th>Wybrało daty</th>
+          <th>Podsumowanie</th>
+          <th>Kliknęło kontakt</th>
+          <th>Konwersja</th>
+        </tr></thead><tbody>`;
+      abRows.forEach(r => {
+        const p = (n) => r.sesje ? Math.round(n / r.sesje * 100) + '%' : '—';
+        html += `<tr>
+          <td style="font-weight:600">${r.variant} — „${AB_LABELS[r.variant]}"</td>
+          <td>${r.sesje}</td>
+          <td>${r.kalendarz} <span style="color:var(--muted);font-size:0.72rem">(${p(r.kalendarz)})</span></td>
+          <td>${r.daty} <span style="color:var(--muted);font-size:0.72rem">(${p(r.daty)})</span></td>
+          <td>${r.krok4} <span style="color:var(--muted);font-size:0.72rem">(${p(r.krok4)})</span></td>
+          <td style="font-weight:600;color:var(--ocean)">${r.kontakt}</td>
+          <td style="font-weight:700;color:${abLeader && r.variant === abLeader.variant && r.kontakt > 0 ? '#2e7d52' : 'var(--text)'}">${r.cvr.toFixed(1)}%</td>
+        </tr>`;
+      });
+      html += `</tbody></table>
+      <p style="color:var(--muted);font-size:0.74rem;margin-top:10px;line-height:1.5">
+        Konwersja = odsetek sesji danego wariantu, które kliknęły Messengera lub WhatsAppa (gdziekolwiek na stronie).
+        Wariant jest losowany raz na przeglądarkę i zapamiętywany, więc ta sama osoba przy kolejnych wejściach zawsze widzi ten sam tytuł.
+        Podgląd konkretnego wariantu na stronie: dopisz do adresu <code>?ab=A&amp;test=1</code> lub <code>?ab=B&amp;test=1</code>.
+      </p>`;
+    }
+    html += `</div>`;
+
+    // ROW 2: Funnel + Sources
+    html += `<div class="grid-2">`;
+
+    // FUNNEL
+    html += `<div class="card">
+      <div class="card-title"><span class="dot"></span>Lejek konwersji</div>`;
+    const funnelStages = [
+      { label: 'Wejście na stronę',         count: pageViews },
+      { label: 'Przejście do kalendarza',   count: calendarSess },
+      { label: 'Wybór dat',                 count: dateSess },
+      { label: 'Dotarło do podsumowania',   count: step4Sess },
+      { label: 'Kliknięcie — Messenger',    count: messengerClickSess },
+      { label: 'Kliknięcie — WhatsApp',     count: whatsappClickSess },
+    ];
+    const maxF = funnelStages[0].count || 1;
+    funnelStages.forEach(s => {
+      const pct = Math.round(s.count / maxF * 100);
+      html += `<div class="funnel-item">
+        <div class="funnel-label">
+          <span>${s.label}</span>
+          <span><strong>${s.count}</strong> <span class="pct">${pct}%</span></span>
+        </div>
+        <div class="funnel-track">
+          <div class="funnel-fill" style="width:${pct}%"></div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // SOURCES
+    html += `<div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--gold)"></span>Źródła ruchu</div>
+      <div class="source-list">`;
+    sourcesSorted.forEach(([src, set], i) => {
+      const pct = Math.round(set.size / totalSessions * 100);
+      html += `<div class="source-row">
+        <span class="source-badge">#${i+1}</span>
+        <span class="source-name">${src}</span>
+        <span class="source-count">${set.size} sesji · ${pct}%</span>
+      </div>`;
+    });
+    html += `</div></div>`;
+    html += `</div>`; // end grid-2
+
+    // ROW 2b: Popularność konfiguracji i nocy
+    html += `<div class="grid-2" style="margin-bottom:24px;">`;
+
+    // Konfiguracje gości
+    html += `<div class="card">
+      <div class="card-title"><span class="dot" style="background:#7b5ea7"></span>Szukane konfiguracje gości</div>`;
+    if (guestConfigSorted.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.82rem;">Brak danych — pojawią się gdy użytkownicy otworzą kalendarz.</p>`;
+    } else {
+      const maxG = guestConfigSorted[0].count;
+      guestConfigSorted.forEach((g, i) => {
+        const pct = Math.round(g.count / maxG * 100);
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+        const s4pct = g.count > 0 ? Math.round(g.toStep4 / g.count * 100) : 0;
+        html += `<div class="funnel-item">
+          <div class="funnel-label">
+            <span>${medal} ${g.label}</span>
+            <span>
+              <strong>${g.count}</strong> <span class="pct">raz${g.count === 1 ? '' : 'y'}</span>
+              &nbsp;·&nbsp;
+              <span style="color:var(--ocean);font-weight:600">${g.toStep4}</span>
+              <span class="pct"> do podsumowania (${s4pct}%)</span>
+            </span>
+          </div>
+          <div class="funnel-track">
+            <div class="funnel-fill" style="width:${pct}%;background:linear-gradient(90deg,#7b5ea7,#a07fd4)"></div>
+          </div>
+        </div>`;
+      });
+    }
+    html += `</div>`;
+
+    // Liczba nocy
+    html += `<div class="card">
+      <div class="card-title"><span class="dot" style="background:#2e7d52"></span>Szukana liczba nocy</div>`;
+    if (nightsSorted.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.82rem;">Brak danych — pojawią się gdy użytkownicy wybiorą daty.</p>`;
+    } else {
+      const maxN = nightsSorted[0].count;
+      nightsSorted.slice(0, 10).forEach((n, i) => {
+        const pct = Math.round(n.count / maxN * 100);
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+        html += `<div class="funnel-item">
+          <div class="funnel-label">
+            <span>${medal} ${n.nights} ${n.nights === 1 ? 'noc' : n.nights < 5 ? 'noce' : 'nocy'}</span>
+            <span><strong>${n.count}</strong> <span class="pct">raz${n.count === 1 ? '' : 'y'}</span></span>
+          </div>
+          <div class="funnel-track">
+            <div class="funnel-fill" style="width:${pct}%;background:linear-gradient(90deg,#2e7d52,#4caf50)"></div>
+          </div>
+        </div>`;
+      });
+    }
+    html += `</div>`;
+    html += `</div>`; // end grid-2
+
+    // ROW 3: Visit calendar heatmap
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:#4ab592"></span>Wizyty na stronie — kiedy ludzie wchodzą</div>
+      <div id="visit-cal"></div>
+    </div>`;
+
+    // ROW 4: Dates table — pogrupowane wg konkretnego terminu (check-in+check-out),
+    // posortowane od najczęściej szukanego. Przeszłe terminy domyślnie ukryte.
+    html += `<div class="card card-full">
+      <div class="card-title">
+        <span class="dot" style="background:#b54a7a"></span>
+        Zaznaczone daty pobytu (${dateGroupsAll.length} unikalnych terminów · ${datesRows.length} wyszukań)
+        <button class="toggle-past-btn" onclick="togglePastDates()">${showPastDates ? '✓ Pokazuję przeszłe terminy' : 'Pokaż też przeszłe terminy (' + pastDateGroupsCount + ')'}</button>
+      </div>`;
+
+    if (dateGroupsShown.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">${showPastDates ? 'Brak wybranych dat.' : 'Brak nadchodzących wybranych dat — spróbuj pokazać też przeszłe terminy.'}</p>`;
+    } else {
+      html += `<table class="dates-table">
+        <thead><tr>
+          <th>Termin</th>
+          <th>Noce</th>
+          <th>Ile razy szukany</th>
+          <th>Ostatnio szukany</th>
+          <th>Główne źródło</th>
+        </tr></thead><tbody>`;
+      dateGroupsShown.forEach(g => {
+        const isPast = g.checkOut < todayStr;
+        const topSource = Object.entries(g.sources).sort((a, b) => b[1] - a[1])[0];
+        html += `<tr${isPast ? ' style="opacity:0.55"' : ''}>
+          <td style="font-weight:500">${fmtDate(g.checkIn)} → ${fmtDate(g.checkOut)}${isPast ? ' <span class="source-chip" style="background:#eee;color:#999;">minione</span>' : ''}</td>
+          <td><span class="nights-chip">${g.nights} n.</span></td>
+          <td style="font-weight:600;color:var(--ocean)">${g.count}×</td>
+          <td>${fmtDate(g.lastTs)}</td>
+          <td><span class="source-chip">${topSource ? topSource[0] : '—'}</span></td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+    html += `</div>`;
+
+    // ROW 5: Weszli do kalendarza ale nie wybrali dat (brak wolnego terminu)
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:#e07b39"></span>Weszli do kalendarza — nie znaleźli wolnego terminu (${noDateRows.length})</div>`;
+
+    if (noDateRows.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">Brak takich sesji — wszyscy którzy otworzyli kalendarz wybrali daty.</p>`;
+    } else {
+      html += `<p style="color:var(--muted);font-size:0.78rem;margin-bottom:14px;">Osoby które otworzyły kalendarz, ale opuściły stronę bez wyboru dat. Najprawdopodobniej interesujące ich terminy były zajęte.</p>`;
+      html += `<table class="dates-table">
+        <thead><tr>
+          <th>Data wizyty</th>
+          <th>Źródło</th>
+          <th>Goście</th>
+        </tr></thead><tbody>`;
+      noDateRows.forEach(r => {
+        const guests = r.adults !== '?' ? `${r.adults} dorosłych${r.kids && r.kids !== '0' && r.kids !== '?' ? ` + ${r.kids} dzieci` : ''}` : '?';
+        html += `<tr>
+          <td>${fmtDate(r.ts)}</td>
+          <td><span class="source-chip">${r.source}</span></td>
+          <td style="font-weight:500">${guests}</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+    html += `</div>`;
+
+    // ROW 6: Waitlist
+    const monthNames = {'2026-05':'Maj 2026','2026-06':'Cze 2026','2026-07':'Lip 2026','2026-08':'Sie 2026','2026-09':'Wrz 2026','2026-10':'Paź 2026','2026-11':'Lis 2026','2027-05':'Maj 2027','2027-06':'Cze 2027','2027-07':'Lip 2027','2027-08':'Sie 2027','2027-09':'Wrz 2027'};
+    const waitlistSess = (stageSessions['Waitlist_Otwarcie'] || new Set()).size;
+    const waitlistConv = (stageSessions['Waitlist_Zapis']   || new Set()).size;
+    const wlCvr = waitlistSess > 0 ? Math.round(waitlistConv / waitlistSess * 100) : 0;
+
+    html += `<div class="card card-full">
+      <div class="card-title"><span class="dot" style="background:var(--gold)"></span>Lista zainteresowanych (${waitlistData.length} zapisanych)</div>`;
+
+    // Mini statystyki
+    html += `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+      <div style="background:var(--sand);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:4px;">Otworzyło modal</div>
+        <div style="font-size:1.6rem;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ocean)">${waitlistSess}</div>
+      </div>
+      <div style="background:var(--sand);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:4px;">Zapisało się</div>
+        <div style="font-size:1.6rem;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ocean)">${waitlistConv}</div>
+      </div>
+      <div style="background:var(--sand);border-radius:10px;padding:14px 16px;">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:4px;">Konwersja modalu</div>
+        <div style="font-size:1.6rem;font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ocean)">${wlCvr}%</div>
+      </div>
+    </div>`;
+
+    if (waitlistData.length === 0) {
+      html += `<p style="color:var(--muted);font-size:0.85rem;">Brak zapisów na liście zainteresowanych.</p>`;
+    } else {
+      html += `<table class="dates-table">
+        <thead><tr>
+          <th>Data zapisu</th>
+          <th>Imię</th>
+          <th>Email</th>
+          <th>Miesiąc pobytu</th>
+          <th>Przypomnij za</th>
+          <th>Źródło</th>
+          <th>Email wysłany</th>
+        </tr></thead><tbody>`;
+      waitlistData.forEach(r => {
+        const sent = r['Email wysłany'] === 'TAK';
+        const sentLabel = sent
+          ? `<span style="color:#2e7d52;font-size:0.7rem;font-weight:600">✓ Wysłany</span>`
+          : `<span style="color:var(--muted);font-size:0.7rem">Oczekuje</span>`;
+        html += `<tr>
+          <td>${fmtDate(r['Timestamp'])}</td>
+          <td style="font-weight:500">${r['Imię'] || '—'}</td>
+          <td style="color:var(--ocean);font-size:0.78rem">${r['Email'] || '—'}</td>
+          <td><span class="source-chip" style="background:rgba(201,168,76,0.12);color:#8a6820">${monthNames[r['Miesiąc']] || r['Miesiąc'] || '—'}</span></td>
+          <td><span class="nights-chip">${r['Przypomnij za (dni)']} dni</span></td>
+          <td><span class="source-chip">${r['Źródło'] || 'Direct'}</span></td>
+          <td>${sentLabel}</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+    html += `</div>`;
+
+    document.getElementById('main').innerHTML = html;
+
+    // Build calendar
+    buildVisitCal(visitHeat);
+  }
+
+  // ── Visit calendar ──
+  function buildVisitCal(heatData) {
+    const el = document.getElementById('visit-cal');
+    if (!el) return;
+
+    const maxVal = Math.max(1, ...Object.values(heatData));
+
+    function heatClass(v) {
+      if (!v) return 'heat-0';
+      const r = v / maxVal;
+      if (r < 0.15) return 'heat-1';
+      if (r < 0.35) return 'heat-2';
+      if (r < 0.55) return 'heat-3';
+      if (r < 0.8)  return 'heat-4';
+      return 'heat-5';
+    }
+
+    function renderMonth(year, month) {
+      const monthNames = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+      const days = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
+      const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+      const offset = (firstDay === 0) ? 6 : firstDay - 1; // Monday-first
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      let out = `<div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+        <span class="cal-month-label">${monthNames[month]} ${year}</span>
+        <button class="cal-nav-btn" onclick="calNext()">›</button>
+      </div>
+      <div class="cal-grid">`;
+
+      days.forEach(d => { out += `<div class="cal-day-label">${d}</div>`; });
+      for (let i = 0; i < offset; i++) out += `<div class="cal-cell empty"></div>`;
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+        const val = heatData[key] || 0;
+        const cls = heatClass(val);
+        const cntHtml = val > 0 ? `<span class="cal-cnt">${val}</span>` : '';
+        out += `<div class="cal-cell ${cls}" title="${d}: ${val} wejść"><span class="cal-num">${d}</span>${cntHtml}</div>`;
+      }
+      out += `</div>`;
+
+      // Legend
+      out += `<div style="display:flex;align-items:center;gap:6px;margin-top:14px;font-size:0.7rem;color:var(--muted);">
+        <span>Mniej</span>
+        <div style="width:14px;height:14px;border-radius:3px;background:var(--foam)"></div>
+        <div style="width:14px;height:14px;border-radius:3px;background:#b3d9e8"></div>
+        <div style="width:14px;height:14px;border-radius:3px;background:#6ab5d0"></div>
+        <div style="width:14px;height:14px;border-radius:3px;background:var(--wave)"></div>
+        <div style="width:14px;height:14px;border-radius:3px;background:var(--ocean2)"></div>
+        <div style="width:14px;height:14px;border-radius:3px;background:var(--ocean)"></div>
+        <span>Więcej</span>
+      </div>`;
+
+      return out;
+    }
+
+    el.innerHTML = renderMonth(calYear, calMonth);
+  }
+
+  window.calPrev = function() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    const heatData = {};
+    filteredData.filter(r => r.Stage === 'PageView').forEach(r => {
+      try {
+        const d = JSON.parse(r.Details || '{}');
+        const key = (d.visitDate || r.Timestamp.substring(0,10));
+        heatData[key] = (heatData[key]||0)+1;
+      } catch(e){}
+    });
+    buildVisitCal(heatData);
+  };
+
+  window.calNext = function() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    const heatData = {};
+    filteredData.filter(r => r.Stage === 'PageView').forEach(r => {
+      try {
+        const d = JSON.parse(r.Details || '{}');
+        const key = (d.visitDate || r.Timestamp.substring(0,10));
+        heatData[key] = (heatData[key]||0)+1;
+      } catch(e){}
+    });
+    buildVisitCal(heatData);
+  };
+
+  // ── Init ──
+  loadData();
+</script>
+</body>
+</html>

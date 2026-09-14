@@ -234,6 +234,17 @@
             animation: luxuryPulse 3s ease-in-out infinite;
         }
 
+        /* Layout grupy CTA — wyjęty z atrybutu style w index.html, żeby media query
+           poniżej mogło go w ogóle nadpisać (styl inline wygrywa z każdym selektorem). */
+        .hero-cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+            z-index: 3;
+        }
+
         /* CTA scroll button */
         .hero-cta {
             position: static;
@@ -3829,5 +3840,98 @@
 
             .pt-reveal-btn-pill {
                 animation: none;
+            }
+        }
+
+        /* ── Hero mieści się na jednym ekranie telefonu ──────────────────────────
+           Cała zawartość hero (tytuł → wideo → przycisk „Sprawdź dostępność" → strzałka)
+           musi być widoczna BEZ przewijania, bo przycisk pod krawędzią ekranu po prostu
+           nie istnieje dla użytkownika.
+
+           Wysokość bierzemy z --locked-vh (ustawianego w <head> z window.innerHeight),
+           a nie z vh — na iOS pasek Safari zmienia vh w trakcie scrollowania i layout by
+           skakał. Wideo dostaje rozmiar liczony z wysokości ekranu, więc na wyższych
+           telefonach zostaje duże (limit 268px), a na niższych samo się zmniejsza
+           zamiast wypychać przycisk poza ekran.
+
+           Zapas na dole jest celowy: w iOS 26 pasek adresu Safari unosi się NAD treścią,
+           więc ostatnie ~10% okna bywa zasłonięte, mimo że innerHeight je liczy. */
+        @media (max-width: 560px) {
+            header {
+                padding-top: max(28px, calc(var(--locked-vh, 1vh) * 4));
+            }
+
+            header h1 {
+                font-size: clamp(2rem, 8.2vw, 3.8rem);
+            }
+
+            header .tagline {
+                font-size: 13.5px;
+                margin-top: 8px;
+            }
+
+            .luxury-badge {
+                margin-top: 12px;
+            }
+
+            .hero-video-section {
+                margin-top: 14px;
+                max-width: min(268px, calc(var(--locked-vh, 1vh) * 28));
+            }
+
+            .hero-cta-group {
+                margin-top: 14px;
+                gap: 10px;
+            }
+
+            .hero-content {
+                padding-bottom: 10px;
+            }
+        }
+
+
+        /* Pusty podtytuł kroku nadal zajmował 24px marginesu (krok 1 i 4 zostawiają
+           .ssub pustym) — czysta dziura nad treścią, na każdej szerokości ekranu. */
+        .ssub:empty {
+            display: none;
+        }
+
+        /* ── Kroki rezerwacji: treść interaktywna wyżej na telefonie ─────────────
+           W przeglądarce wbudowanej w Facebooka (a stamtąd idzie większość ruchu)
+           pasek aplikacji zjada górę ekranu, więc nagłówki kroku spychały kalendarz,
+           karty apartamentów i przyciski kontaktu poniżej pierwszego ekranu.
+           Poniżej wycinamy to, co powtarza informację już widoczną gdzie indziej. */
+        @media (max-width: 560px) {
+            main {
+                padding-top: 16px;
+            }
+
+            /* Pasek kroków nad spisem sam pokazuje, gdzie jesteś (podświetlone
+               „2 Daty"), więc „KROK 2 Z 4" tuż pod nim to ta sama treść drugi raz. */
+            .slabel {
+                display: none;
+            }
+
+            .steps {
+                margin-bottom: 18px;
+            }
+
+            .stitle {
+                font-size: 1.45rem;
+                margin-bottom: 3px;
+            }
+
+            .ssub {
+                font-size: 12.5px;
+                margin-bottom: 14px;
+            }
+
+            /* Krok 2 i 4 miały nagłówek strony dosłownie identyczny z nagłówkiem karty
+               tuż pod nim (kalendarz: „Zaznacz datę przyjazdu…", podsumowanie:
+               „Podsumowanie rezerwacji"). Zostaje ten przy samej treści — tam, gdzie
+               i tak patrzy oko, a kalendarz wskakuje o ~130px wyżej. */
+            #t-s2title,
+            #t-s4title {
+                display: none;
             }
         }

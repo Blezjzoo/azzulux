@@ -1376,6 +1376,14 @@
 
             var lh = $id('legHalf'); if (lh) lh.style.display = hasHalf ? 'flex' : 'none';
             updateSummary(); updateMinNote(); updateLmBanner();
+
+            /* Dopiero teraz strona ma pełną wysokość — jeśli wejście w krok czekało
+               na kalendarz, domykamy przewinięcie. Flaga gaśnie po pierwszym użyciu,
+               więc przewijanie miesięcy strzałkami już stroną nie rusza. */
+            if (_pendingStepScroll) {
+                _pendingStepScroll = false;
+                setTimeout(_scrollStepsNow, 0);
+            }
         }
 
         /* Gdy data przyjazdu wypadnie w drugim (prawym) widocznym miesiącu,
@@ -1607,9 +1615,36 @@
         function mkActive(n) { var e = $id('i' + n); e.classList.remove('done'); e.classList.add('active'); }
         function mkDone(n) { var e = $id('i' + n); e.classList.remove('active'); e.classList.add('done'); $id('sn' + n).textContent = '\u2713'; }
         function resetI(n) { var e = $id('i' + n); e.classList.remove('done', 'active'); e.querySelector('.snum').textContent = n; }
+        /* Pasek z wyborem języka zjeżdża poza ekran, gdy tylko wejdziemy w kroki —
+           na etapie wybierania dat PL/EN to rzecz drugorzędna, a zajmuje 40px
+           z i tak ciasnego ekranu telefonu. Stepper ląduje 8px od górnej krawędzi. */
+        function _scrollStepsNow() {
+            var el = $id('steps');
+            if (!el) return;
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 8, behavior: 'auto' });
+        }
+
+        /* Powtórki są konieczne, nie są zapasem na wszelki wypadek: przy wejściu w krok 2
+           hero i sekcja z wideo są chowane, a kalendarz dociąga się z Google Calendar
+           dopiero po chwili. W momencie pierwszego wywołania strona bywa więc krótsza
+           niż ekran — nie ma czego przewijać, przeglądarka przycina pozycję do zera
+           i pasek języka zostaje na wierzchu. Dlatego ponawiamy po odmalowaniu layoutu
+           oraz raz po dorysowaniu kalendarza (flaga niżej, w renderCal). */
+        var _pendingStepScroll = false;
+
         function scrollToSteps() {
             if (!_userInteracted) return; /* nie scrolluj przy pierwszym renderze */
-            var el = $id('steps'); if (el) { var top = el.getBoundingClientRect().top + window.pageYOffset - 12; window.scrollTo({ top: top, behavior: 'auto' }); }
+            _scrollStepsNow();
+            _pendingStepScroll = true;
+            /* setTimeout, a nie requestAnimationFrame: rAF w ogóle nie odpala, gdy
+               dokument nie jest malowany (karta w tle, zminimalizowane okno, panel
+               podglądu). Timery działają zawsze, a tu chodzi o poprawienie pozycji,
+               nie o gładką animację. */
+            setTimeout(function () { if (_pendingStepScroll) _scrollStepsNow(); }, 60);
+            setTimeout(function () { if (_pendingStepScroll) _scrollStepsNow(); }, 300);
+            /* gdyby kalendarz się nie wczytał, flaga nie może wisieć w nieskończoność
+               i szarpać stroną przy późniejszym przewijaniu miesięcy */
+            setTimeout(function () { _pendingStepScroll = false; }, 5000);
         }
         function goBack(step) {
             _userInteracted = true;

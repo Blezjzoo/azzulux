@@ -125,9 +125,20 @@
             position: absolute;
             inset: 0;
             z-index: 1;
-            /* Dół hero domyka się kolorem sekcji z wideo (#0b1a22), żeby zdjęcie
-               przechodziło w nią miękko, bez twardej linii na styku. */
-            background: linear-gradient(to bottom,
+            /* Dwie warstwy:
+               1. Miękki owal pod samym blokiem tekstu (logo → tytuł → podtytuł → badge).
+                  Slideshow przewija też bardzo jasne kadry — biała sypialnia, marmurowa
+                  łazienka — na których biały tytuł się rozpływał. Rozmyty radial daje mu
+                  kontrast, ale wygasa do zera zanim dojdzie do wideo, więc zdjęcie niżej
+                  zostaje jasne i nie robi się z hero jednolita ciemna plama.
+               2. Pionowy gradient jak wcześniej — domyka dół hero kolorem sekcji (#0b1a22). */
+            background:
+                radial-gradient(130% 46% at 50% 13%,
+                    rgba(6, 20, 30, 0.46) 0%,
+                    rgba(6, 20, 30, 0.34) 40%,
+                    rgba(6, 20, 30, 0.14) 70%,
+                    rgba(6, 20, 30, 0) 100%),
+                linear-gradient(to bottom,
                     rgba(10, 28, 40, 0.55) 0%,
                     rgba(10, 28, 40, 0.40) 48%,
                     rgba(10, 28, 40, 0.72) 82%,

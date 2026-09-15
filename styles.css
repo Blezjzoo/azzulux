@@ -4446,3 +4446,118 @@
                 font-size: 13px;
             }
         }
+
+
+        /* ── Zachęta na przyciskach kontaktu ─────────────────────────────────────
+           To są przyciski, które tworzą leada, więc mają delikatnie przyciągać oko.
+           Dwa efekty naraz, oba subtelne:
+
+           1. Pierścień „oddychający" w kolorze danego komunikatora — ten sam idiom,
+              którego strona używa już w hero (heroCtaPulse), tylko stonowany
+              i w barwach marki zamiast białej.
+           2. Przesuwający się połysk, raz na cykl, z długą przerwą — dlatego
+              keyframes kończą ruch na 30% i stoją do końca. Ciągłe przelatywanie
+              byłoby męczące przy dłuższym czytaniu strony.
+
+           Połysk przesuwamy transformem (nie właściwością left), żeby szła przez to
+           tylko kompozycja klatki, bez przeliczania układu.
+
+           Oba przyciski mają różne opóźnienia — gdyby pulsowały zgodnie, wyglądałoby
+           to mechanicznie. Najechanie i dotknięcie zatrzymuje animację, tak samo jak
+           przy hero-cta-glow. */
+        .btn-whatsapp,
+        .btn-messenger {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-whatsapp {
+            animation: ctaPulseWa 2.9s ease-in-out infinite;
+        }
+
+        .btn-messenger {
+            animation: ctaPulseMsg 2.9s ease-in-out .9s infinite;
+        }
+
+        .btn-whatsapp::after,
+        .btn-messenger::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -55%;
+            width: 40%;
+            background: linear-gradient(100deg,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, .3),
+                    rgba(255, 255, 255, 0));
+            pointer-events: none;
+            animation: ctaSheen 5.2s ease-in-out infinite;
+        }
+
+        .btn-messenger::after {
+            animation-delay: 1.3s;
+        }
+
+        .btn-whatsapp:hover,
+        .btn-whatsapp:active,
+        .btn-messenger:hover,
+        .btn-messenger:active,
+        .btn-whatsapp:hover::after,
+        .btn-whatsapp:active::after,
+        .btn-messenger:hover::after,
+        .btn-messenger:active::after {
+            animation-play-state: paused;
+        }
+
+        @keyframes ctaPulseWa {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, .45);
+            }
+
+            60% {
+                box-shadow: 0 0 0 9px rgba(37, 211, 102, 0);
+            }
+        }
+
+        @keyframes ctaPulseMsg {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 132, 255, .45);
+            }
+
+            60% {
+                box-shadow: 0 0 0 9px rgba(0, 132, 255, 0);
+            }
+        }
+
+        @keyframes ctaSheen {
+            0% {
+                transform: translateX(0) skewX(-18deg);
+            }
+
+            30%,
+            100% {
+                transform: translateX(430%) skewX(-18deg);
+            }
+        }
+
+        /* Wyłączone dla osób z „ogranicz animacje" — przyciski zostają w pełni
+           sprawne, znika tylko ruch. */
+        @media (prefers-reduced-motion: reduce) {
+
+            .btn-whatsapp,
+            .btn-messenger,
+            .btn-whatsapp::after,
+            .btn-messenger::after {
+                animation: none;
+            }
+
+            .btn-whatsapp::after,
+            .btn-messenger::after {
+                display: none;
+            }
+        }

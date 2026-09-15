@@ -2389,6 +2389,17 @@
         }
 
         /* ── lightbox ── */
+        /* Lightbox był ukrywany WYŁĄCZNIE przez opacity: 0 — zostawał przy tym
+           display: flex i visibility: visible, czyli cały czas istniał jako malowana
+           warstwa 92% czerni rozciągnięta na pełny ekran (position: fixed, inset: 0).
+
+           Safari na iOS potrafi taką warstwę skomponować w złej kolejności i namalować
+           ją POD treścią zamiast jej nie malować wcale. Efekt: białe karty zostają
+           widoczne, ale wszystko dookoła nich robi się czarne zamiast beżowe — dokładnie
+           to było widać na telefonie, podczas gdy na desktopie renderowało się poprawnie.
+
+           visibility: hidden zdejmuje warstwę z malowania. Przejście z opóźnieniem 0.25s
+           odkłada ukrycie do końca zanikania, więc animacja zamykania zostaje płynna. */
         .lightbox {
             position: fixed;
             inset: 0;
@@ -2398,12 +2409,15 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity .25s;
+            visibility: hidden;
+            transition: opacity .25s, visibility 0s linear .25s;
             pointer-events: none
         }
 
         .lightbox.open {
             opacity: 1;
+            visibility: visible;
+            transition: opacity .25s, visibility 0s;
             pointer-events: all
         }
 

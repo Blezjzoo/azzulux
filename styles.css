@@ -2255,7 +2255,7 @@
         .apt-gallery {
             position: relative;
             overflow: hidden;
-            background: #1a2a30;
+            background: #fff;
             width: 100%;
             aspect-ratio: 4/5
         }
@@ -2282,17 +2282,19 @@
         .apt-gallery-slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center top;
+            /* contain, nie cover: zdjęcia nie mają jednej proporcji (część 1080×1350,
+               część 1086×1448), więc cover przycinał te drugie ZAWSZE — także na
+               desktopie, niezależnie od wysokości kontenera. Tło galerii jest białe
+               jak karta, więc margines przy niepasującej proporcji jest niewidoczny. */
+            object-fit: contain;
+            object-position: center;
             display: block;
             transition: opacity .3s
         }
 
-        @media(min-width:500px) {
-            .apt-gallery {
-                background: #e8f0f4
-            }
-        }
+        /* Tło galerii zostaje białe także na szerokich ekranach: przy dopasowaniu
+           bez przycinania zdjęcia 3:4 mają wąski margines po bokach, a błękitne tło
+           rysowałoby go jako widoczne pasy. Na białym zlewa się z kartą. */
 
         .apt-gallery-slide img[data-src] {
             opacity: 0
@@ -4378,28 +4380,55 @@
            rozwiniętym pasku przeglądarki, czyli wariant bezpieczny; deklaracja z vh
            zostaje przed nią dla starszych silników, które svh zignorują. */
         @media (max-width: 480px) {
+            /* ── Zdjęcie w całości, bez przycinania ──
+               Zdjęcia są pionowe i NIE mają jednej proporcji: część to 4:5 (1080×1350),
+               część 3:4 (1086×1448). Przy object-fit: cover te 3:4 były przycinane
+               zawsze, niezależnie od wysokości kontenera — bo kontener miał sztywne 4/5.
+
+               contain pokazuje kadr w całości. Tło karty jest białe, więc ewentualny
+               margines przy zdjęciach 3:4 zlewa się z kartą zamiast rysować ciemne pasy.
+               Wysokość ograniczamy tak, by przycisk CTA zmieścił się na ekranie.
+               286px = zmierzony narzut (199px nad zdjęciem: pasek kroków, podtytuł
+               i nagłówek karty; 76px pod: nazwa i wiersz przycisku) plus 11px zapasu. */
             .apt-gallery {
-                /* 348px to zmierzony narzut (330) plus zapas nad i pod zdjęciem: pasek kroków, tytuł
-                   z podtytułem, nagłówek karty i wiersz z przyciskiem. Zapisany wprost,
-                   bo procent wysokości ekranu skalował się źle — na 620px starczało,
-                   na 560px brakowało 10px. Dolne 180px chroni przed sytuacją, w której
-                   na bardzo niskim ekranie ze zdjęcia zostaje pasek.
-                   Gdy miejsca jest dużo, limit nie działa i wraca naturalne 4/5. */
-                max-height: max(180px, calc(100vh - 348px));
-                max-height: max(180px, calc(100svh - 348px));
+                max-height: max(200px, calc(100vh - 286px));
+                max-height: max(200px, calc(100svh - 286px));
             }
 
-            /* Nagłówek karty: dwa rzędy plakietek plus wyróżnienie zajmowały 123px. */
+            /* Tytuł „Wybierz apartament" powtarza to, co pasek kroków już pokazuje
+               („3 Apartament" podświetlone) — a zabierał 40px potrzebnych zdjęciu. */
+            #t-s3title {
+                display: none;
+            }
+
+            /* Nagłówek karty: nazwa, pięć plakietek w dwóch rzędach i wyróżnienie
+               zajmowały 110px. Zmniejszamy, nie usuwamy — to treść sprzedażowa. */
             .aopt-header {
-                padding: 10px 12px 9px;
-                gap: 8px;
+                padding: 8px 12px 7px;
+                gap: 7px;
             }
 
             .aopt-chip {
-                font-size: 9.5px;
+                font-size: 9px;
+                padding: 2px 6px;
             }
 
             .aopt-chips {
                 gap: 3px;
+            }
+
+            .aopt-name-wrap {
+                gap: 3px;
+            }
+
+            /* Każdy piksel odjęty tutaj powiększa zdjęcie — a przy dopasowaniu bez
+               przycinania większa wysokość oznacza mniejsze marginesy po bokach. */
+            .aname {
+                font-size: 15px;
+            }
+
+            .apt-badge {
+                font-size: 9.5px;
+                padding: 3px 8px;
             }
         }

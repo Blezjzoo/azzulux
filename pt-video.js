@@ -19,12 +19,40 @@
     var btn = sec && sec.querySelector('#pt-reveal-btn');
     if (!sec || !iframe || !btn) return;   // bez przycisku nie chowamy treści
 
-    function reveal() { sec.classList.add('pt-revealed'); }
+    /* Wysokość sekcji w px dla reguły pokrycia wideo w styles.css.
+       CSS sam tego nie policzy: pokrycie wymaga porównania proporcji sekcji z 9:16,
+       a sekcja zmienia wysokość — przed odsłonięciem to jeden ekran, po kliknięciu
+       rośnie do wysokości treści. Bez aktualizacji wideo przestałoby dochodzić do
+       krawędzi dokładnie w tym momencie. */
+    function sizeVideo() {
+        sec.style.setProperty('--pt-sec-h', Math.round(sec.getBoundingClientRect().height) + 'px');
+    }
+
+    function reveal() {
+        sec.classList.add('pt-revealed');
+        /* po zdjęciu ograniczenia wysokości sekcja rośnie — przelicz po przerysowaniu */
+        setTimeout(sizeVideo, 0);
+        setTimeout(sizeVideo, 400);
+    }
+
+    sizeVideo();
+    var _tSize = null;
+    window.addEventListener('resize', function () {
+        clearTimeout(_tSize);
+        _tSize = setTimeout(sizeVideo, 150);
+    });
+    window.addEventListener('orientationchange', function () { setTimeout(sizeVideo, 200); });
 
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || !('IntersectionObserver' in window)) { reveal(); return; }
 
     sec.classList.add('pt-armed');
+    /* Dopiero teraz sekcja jest przycięta do jednego ekranu. Wysokość policzona
+       wcześniej dotyczyła sekcji nieprzyciętej (973px zamiast 700px) i wideo
+       skalowało się mocniej, niż trzeba — kadr tracił po bokach bez powodu. */
+    sizeVideo();
+    setTimeout(sizeVideo, 100);
+
     btn.addEventListener('click', reveal);
 
     var srcSet = false, player = null, playing = false;

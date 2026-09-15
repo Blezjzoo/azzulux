@@ -3633,13 +3633,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            height: 100%;
-            width: auto;
-            aspect-ratio: 9 / 16;
-            min-width: 100%;
             border: 0;
             opacity: 0;
             transition: opacity 1.2s ease;
+
+            /* Materiał jest pionowy 9:16 (240×426). Wcześniej było tu
+               height:100% + width:auto + aspect-ratio + min-width:100% — i min-width
+               wygrywało z szerokością wyliczoną z proporcji, więc ramka przyjmowała
+               kształt sekcji (402×700 zamiast 394×700). Odtwarzacz Vimeo dokładał
+               wtedy czarne pasy i wideo nie dochodziło do krawędzi.
+
+               Teraz liczymy pokrycie wprost: szerokość to większa z dwóch wartości —
+               pełna szerokość sekcji albo tyle, ile potrzeba, by przy proporcji 9:16
+               zakryć jej wysokość. Drugi wymiar dolicza aspect-ratio, a nadmiar
+               przycina .pt-video-layer (overflow: hidden). Działa i dla ekranu
+               telefonu, i dla szerokiego desktopu, i dla sekcji rozwiniętej po
+               kliknięciu — wysokość podaje --pt-sec-h, ustawiane w pt-video.js. */
+            width: max(100%, calc(var(--pt-sec-h, 100%) * 9 / 16));
+            height: auto;
+            aspect-ratio: 9 / 16;
         }
 
         .pt-playing .pt-video-frame {
@@ -3741,11 +3753,12 @@
             display: none;
             position: absolute;
             left: 50%;
-            /* 50% sekcji, a nie 46% wysokości okna: przed odsłonięciem sekcja jest
-               przycięta dokładnie do jednego ekranu (reguła niżej), więc środek sekcji
-               i środek ekranu to teraz to samo miejsce. Wcześniej sekcja bywała
-               1,6 ekranu wysoka i przycisk siedział na 29% jej wysokości. */
-            top: 50%;
+            /* Odniesienie do sekcji, a nie do wysokości okna: przed odsłonięciem sekcja
+               jest przycięta dokładnie do jednego ekranu, więc jej środek i środek
+               ekranu to to samo miejsce. Wcześniej sekcja bywała 1,6 ekranu wysoka
+               i przycisk siedział na 29% jej wysokości.
+               44%, nie 50% — optycznie środek wypada nieco powyżej geometrycznego. */
+            top: 44%;
             transform: translate(-50%, -50%);
             z-index: 3;
             border: 0;
@@ -4347,5 +4360,46 @@
             .cal-legend {
                 padding: 6px 10px;
                 gap: 8px;
+            }
+        }
+
+
+        /* ── Krok 3: przycisk „Sprawdź cenę" widoczny bez przewijania ────────────
+           Galeria miała sztywne aspect-ratio 4/5 — przy szerokości karty 368px dawało
+           to 460px zdjęcia i spychało przycisk 159px pod krawędź ekranu. A to właśnie
+           ten przycisk prowadzi dalej w lejku.
+
+           Zamiast sztywnej proporcji: limit wysokości powiązany z ekranem. Na wyższym
+           telefonie zdjęcie zostaje duże, na niższym samo się przycina (slajdy i tak
+           mają object-fit: cover, więc kadr się docina, nie ściska).
+
+           Celowo czysty CSS, bez JS: ma działać tak samo w Safari, Chrome i webview
+           Facebooka, bez zależności od timerów czy zdarzeń. svh to widok przy
+           rozwiniętym pasku przeglądarki, czyli wariant bezpieczny; deklaracja z vh
+           zostaje przed nią dla starszych silników, które svh zignorują. */
+        @media (max-width: 480px) {
+            .apt-gallery {
+                /* 348px to zmierzony narzut (330) plus zapas nad i pod zdjęciem: pasek kroków, tytuł
+                   z podtytułem, nagłówek karty i wiersz z przyciskiem. Zapisany wprost,
+                   bo procent wysokości ekranu skalował się źle — na 620px starczało,
+                   na 560px brakowało 10px. Dolne 180px chroni przed sytuacją, w której
+                   na bardzo niskim ekranie ze zdjęcia zostaje pasek.
+                   Gdy miejsca jest dużo, limit nie działa i wraca naturalne 4/5. */
+                max-height: max(180px, calc(100vh - 348px));
+                max-height: max(180px, calc(100svh - 348px));
+            }
+
+            /* Nagłówek karty: dwa rzędy plakietek plus wyróżnienie zajmowały 123px. */
+            .aopt-header {
+                padding: 10px 12px 9px;
+                gap: 8px;
+            }
+
+            .aopt-chip {
+                font-size: 9.5px;
+            }
+
+            .aopt-chips {
+                gap: 3px;
             }
         }

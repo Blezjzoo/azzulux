@@ -941,8 +941,10 @@
                 + '<div class="adots">' + dots + '</div>'
                 + '<div class="aopt-name-wrap">'
                 + '<div class="aname">' + o.name + '</div>'
-                + '<div class="aopt-chips">' + chips + '</div>'
-                + (badgeHtml ? '<div>' + badgeHtml + '</div>' : '')
+                /* Wyróżnienie „Najkorzystniejsza opcja" leci razem z plakietkami, a nie
+                   w osobnym <div> pod nimi — tamten zawsze tworzył trzeci rząd i zabierał
+                   ~24px wysokości, które są potrzebne zdjęciu. Teraz zawija się naturalnie. */
+                + '<div class="aopt-chips">' + chips + badgeHtml + '</div>'
                 + '</div>'
                 + '</div>'
                 + '<span class="aopt-chevron">&#8964;</span>'

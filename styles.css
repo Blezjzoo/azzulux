@@ -4388,11 +4388,13 @@
                contain pokazuje kadr w całości. Tło karty jest białe, więc ewentualny
                margines przy zdjęciach 3:4 zlewa się z kartą zamiast rysować ciemne pasy.
                Wysokość ograniczamy tak, by przycisk CTA zmieścił się na ekranie.
-               286px = zmierzony narzut (199px nad zdjęciem: pasek kroków, podtytuł
-               i nagłówek karty; 76px pod: nazwa i wiersz przycisku) plus 11px zapasu. */
+               253px = zmierzony narzut (166px nad zdjęciem: pasek kroków, podtytuł
+               i odchudzony nagłówek karty; 76px pod: nazwa i wiersz przycisku)
+               plus 11px zapasu. Każde odchudzenie ramy trzeba tu przenieść —
+               inaczej odzyskane miejsce zostaje niewykorzystane. */
             .apt-gallery {
-                max-height: max(200px, calc(100vh - 286px));
-                max-height: max(200px, calc(100svh - 286px));
+                max-height: max(200px, calc(100vh - 253px));
+                max-height: max(200px, calc(100svh - 253px));
             }
 
             /* Tytuł „Wybierz apartament" powtarza to, co pasek kroków już pokazuje
@@ -4424,11 +4426,23 @@
             /* Każdy piksel odjęty tutaj powiększa zdjęcie — a przy dopasowaniu bez
                przycinania większa wysokość oznacza mniejsze marginesy po bokach. */
             .aname {
-                font-size: 15px;
+                font-size: 14.5px;
+                line-height: 1.15;
             }
 
             .apt-badge {
-                font-size: 9.5px;
-                padding: 3px 8px;
+                font-size: 9px;
+                padding: 2px 7px;
+            }
+
+            /* Podtytuł z datami: sama treść zostaje, znika tylko nadmiar odstępu. */
+            #s3sub {
+                margin-bottom: 8px;
+                font-size: 12px;
+            }
+
+            /* Kropka statusu i strzałka rozwijania nie muszą rozpychać wiersza. */
+            .aopt-chevron {
+                font-size: 13px;
             }
         }

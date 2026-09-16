@@ -357,6 +357,136 @@
          return 'inne';
      }
 
+     /* ── ŚLAD INTERAKCJI (do rekonstrukcji wizyty w dashboardzie) ────────────
+        Zbieramy w pamięci kolejne zdarzenia z ich czasem względem wejścia, a całość
+        wysyłamy JAKO JEDEN WIERSZ przy opuszczaniu strony.
+
+        Dlaczego jeden wiersz, a nie osobne zdarzenia: rekonstrukcja wymaga gęstych
+        sygnałów (przewijanie, kliknięcia, przełączanie kroków). Zapisywanie każdego
+        osobno rozdmuchałoby arkusz o rząd wielkości i szybko rozjechało limity
+        Apps Scriptu. Tutaj cała wizyta to jeden rekord.
+
+        Zapis skrótowy — { t: sekundy od wejścia, a: akcja, v: wartość } — bo pełne
+        nazwy pól powtarzane setki razy zajmowałyby więcej miejsca niż same dane.
+
+        Limit 400 wpisów chroni przed sesją, która stoi otwarta godzinami; komórka
+        arkusza mieści 50 000 znaków, a 400 wpisów to około 8 000. */
+     var SLAD_LIMIT = 400;
+     var slad = [];
+     var sladStart = Date.now();
+     var sladWyslany = false;
+
+     function zapisz(akcja, wartosc) {
+         if (slad.length >= SLAD_LIMIT) return;
+         var wpis = { t: Math.round((Date.now() - sladStart) / 1000), a: akcja };
+         if (wartosc !== undefined && wartosc !== null && wartosc !== '') wpis.v = wartosc;
+         slad.push(wpis);
+     }
+
+     /* Przewijanie: zapisujemy tylko progi co 10% i tylko gdy użytkownik zejdzie
+        GŁĘBIEJ niż dotąd. Bez tego samo scrollowanie w górę i w dół wygenerowałoby
+        setki wpisów i zagłuszyło resztę śladu. */
+     var maxGlebokosc = 0;
+     var scrollCzeka = false;
+     window.addEventListener('scroll', function () {
+         if (scrollCzeka) return;
+         scrollCzeka = true;
+         setTimeout(function () {
+             scrollCzeka = false;
+             var wys = document.documentElement.scrollHeight - window.innerHeight;
+             if (wys <= 0) return;
+             var pct = Math.round(window.scrollY / wys * 100);
+             var prog = Math.floor(pct / 10) * 10;
+             if (prog > maxGlebokosc) {
+                 maxGlebokosc = prog;
+                 zapisz('scroll', prog);
+             }
+         }, 250);
+     }, { passive: true });
+
+     /* Który krok lejka jest widoczny — źródłem prawdy jest klasa "hidden" na #s1..#s4,
+        tak samo jak w pomiarze kroku 4 wyżej. Dzięki temu łapiemy też cofnięcia
+        przyciskiem przeglądarki, nie tylko kliknięcia w interfejsie. */
+     function obserwujKroki() {
+         var poprzedni = null;
+         function aktualny() {
+             for (var n = 1; n <= 4; n++) {
+                 var el = document.getElementById('s' + n);
+                 if (el && !el.classList.contains('hidden')) return n;
+             }
+             return null;
+         }
+         function sprawdz() {
+             var teraz = aktualny();
+             if (teraz && teraz !== poprzedni) {
+                 poprzedni = teraz;
+                 zapisz('krok', teraz);
+             }
+         }
+         for (var n = 1; n <= 4; n++) {
+             var el = document.getElementById('s' + n);
+             if (!el) continue;
+             new MutationObserver(sprawdz).observe(el, { attributes: true, attributeFilter: ['class'] });
+         }
+         sprawdz();
+     }
+
+     /* Kliknięcia — w fazie przechwytywania, żeby złapać także te elementy, które
+        zatrzymują propagację (np. przycisk wyboru apartamentu). */
+     function opisKlikniecia(el) {
+         if (el.closest('.btn-whatsapp')) return ['cta', 'whatsapp'];
+         if (el.closest('.btn-messenger')) return ['cta', 'messenger'];
+         if (el.closest('#btn1')) return ['klik', 'dalej'];
+         if (el.closest('#ap') || el.closest('#am')) return ['goscie', 'dorosli'];
+         if (el.closest('#kp') || el.closest('#km')) return ['goscie', 'dzieci'];
+         if (el.closest('.day')) return ['dzien', (el.closest('.day').innerText || '').trim().split('\n')[0]];
+         if (el.closest('.btn-select')) return ['klik', 'wybor-apartamentu'];
+         if (el.closest('.gal-next')) return ['galeria', 'dalej'];
+         if (el.closest('.gal-prev')) return ['galeria', 'wstecz'];
+         if (el.closest('.aopt-header')) return ['klik', 'rozwin-apartament'];
+         if (el.closest('.cnav-btn')) return ['klik', 'zmiana-miesiaca'];
+         if (el.closest('.faq-q')) return ['klik', 'faq'];
+         if (el.closest('.pt-mode')) return ['klik', 'tryb-mapy'];
+         if (el.closest('.btn-back')) return ['klik', 'wstecz'];
+         if (el.closest('.lang-btn')) return ['klik', 'jezyk'];
+         if (el.closest('#pt-reveal-btn')) return ['klik', 'dlaczego-u-nas'];
+         if (el.closest('.hero-cta')) return ['klik', 'sprawdz-dostepnosc'];
+         if (el.closest('#btn-waitlist')) return ['klik', 'przypomnij-mi'];
+         return null;
+     }
+
+     document.addEventListener('click', function (e) {
+         var opis = opisKlikniecia(e.target);
+         if (opis) zapisz(opis[0], opis[1]);
+     }, true);
+
+     function wyslijSlad() {
+         if (sladWyslany || slad.length === 0) return;
+         sladWyslany = true;
+         trackStage('Slad_Wizyty', {
+             ekran: window.innerWidth + 'x' + window.innerHeight,
+             czasSek: Math.round((Date.now() - sladStart) / 1000),
+             wpisow: slad.length,
+             /* Ucięty? Dashboard ma to pokazać, żeby nikt nie wyciągał wniosków
+                z niepełnej rekonstrukcji. */
+             uciety: slad.length >= SLAD_LIMIT,
+             slad: slad
+         });
+     }
+
+     /* pagehide i visibilitychange zamiast beforeunload — na mobile, a zwłaszcza
+        w przeglądarkach wbudowanych w aplikacje, beforeunload często nie odpala.
+        wyslijSlad() jest bezpieczne przy wielokrotnym wywołaniu. */
+     window.addEventListener('pagehide', wyslijSlad);
+     window.addEventListener('beforeunload', wyslijSlad);
+     document.addEventListener('visibilitychange', function () {
+         if (document.visibilityState === 'hidden') wyslijSlad();
+     });
+
+     document.addEventListener('DOMContentLoaded', function () {
+         setTimeout(obserwujKroki, 1500);
+     });
+
      // ── 6. Kliknięcia przycisków / elementów w całym lejku ──
      document.addEventListener('click', function(e) {
          var target = e.target.closest(
